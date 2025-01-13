@@ -1,7 +1,11 @@
 import { z } from 'zod';
 
 import {
+	BOOLEAN_REQUIRED,
 	FORTUNE_ZIP_EMAIL_PATTERN,
+	NUMBER,
+	NUMBER_DOUBLE,
+	NUMBER_DOUBLE_REQUIRED,
 	PASSWORD,
 	PHONE_NUMBER_REQUIRED,
 	STRING_NULLABLE,
@@ -22,75 +26,258 @@ export const DEPARTMENT_NULL: Partial<IDepartment> = {
 
 export type IDepartment = z.infer<typeof DEPARTMENT_SCHEMA>;
 
-// Designation Schema
-export const DESIGNATION_SCHEMA = z.object({
-	designation: STRING_REQUIRED,
+// Group Schema
+export const GROUP_SCHEMA = z.object({
+	name: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 
-export const DESIGNATION_NULL: Partial<IDesignation> = {
-	designation: '',
-	remarks: null,
-};
-
-export type IDesignation = z.infer<typeof DESIGNATION_SCHEMA>;
-
-// User Schema
-export const USER_SCHEMA = (isUpdate: boolean) => {
-	const baseSchema = z.object({
-		name: STRING_REQUIRED,
-		email: FORTUNE_ZIP_EMAIL_PATTERN,
-		department_uuid: STRING_REQUIRED,
-		designation_uuid: STRING_REQUIRED,
-		ext: STRING_NULLABLE,
-		phone: PHONE_NUMBER_REQUIRED,
-		remarks: STRING_NULLABLE,
-	});
-
-	if (isUpdate) {
-		return baseSchema.extend({
-			pass: STRING_OPTIONAL,
-			repeatPass: STRING_OPTIONAL,
-		});
-	}
-
-	return baseSchema
-		.extend({
-			pass: PASSWORD,
-			repeatPass: PASSWORD,
-		})
-		.refine((data) => data.pass === data.repeatPass, {
-			message: 'Passwords do not match',
-			path: ['repeatPass'],
-		});
-};
-
-export const USER_NULL: Partial<IUser> = {
+export const GROUP_NULL: Partial<IGroup> = {
 	name: '',
-	email: '',
-	department_uuid: '',
-	designation_uuid: '',
-	ext: null,
-	phone: '',
 	remarks: null,
 };
 
-export type IUser = z.infer<ReturnType<typeof USER_SCHEMA>>;
+export type IGroup = z.infer<typeof GROUP_SCHEMA>;
 
-// Reset Password Schema
-export const RESET_PASSWORD_SCHEMA = z
-	.object({
-		pass: PASSWORD,
-		repeatPass: PASSWORD,
-	})
-	.refine((data) => data.pass === data.repeatPass, {
-		message: 'Passwords do not match',
-		path: ['repeatPass'],
-	});
+//Category Schema
+export const CATEGORY_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	group_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
 
-export const RESET_PASSWORD_NULL: Partial<IResetPasswordSchema> = {
-	pass: '',
-	repeatPass: '',
+export const CATEGORY_NULL: Partial<ICategory> = {
+	name: '',
+	group_uuid: '',
+	remarks: null,
 };
 
-export type IResetPasswordSchema = z.infer<typeof RESET_PASSWORD_SCHEMA>;
+export type ICategory = z.infer<typeof CATEGORY_SCHEMA>;
+
+//Brand Schema
+export const BRAND_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const BRAND_NULL: Partial<IBrand> = {
+	name: '',
+	remarks: null,
+};
+
+export type IBrand = z.infer<typeof BRAND_SCHEMA>;
+
+//Size Schema
+export const SIZE_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const SIZE_NULL: Partial<ISize> = {
+	name: '',
+	remarks: null,
+};
+
+export type ISize = z.infer<typeof SIZE_SCHEMA>;
+
+//Vendor Schema
+export const VENDOR_SCHEMA = z.object({
+	brand_uuid: STRING_REQUIRED,
+	uuid: STRING_REQUIRED,
+	name: STRING_REQUIRED,
+	company_name: STRING_REQUIRED,
+	phone: STRING_REQUIRED,
+	address: STRING_REQUIRED,
+	description: STRING_REQUIRED,
+	is_active: BOOLEAN_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const VENDOR_NULL: Partial<IVendor> = {
+	brand_uuid: '',
+	uuid: '',
+	name: '',
+	company_name: '',
+	phone: '',
+	address: '',
+	description: '',
+	is_active: false,
+	remarks: '',
+};
+
+export type IVendor = z.infer<typeof VENDOR_SCHEMA>;
+
+//Product Schema
+export const PRODUCT_SCHEMA = z.object({
+	category_uuid: STRING_REQUIRED,
+	brand_uuid: STRING_REQUIRED,
+	size_uuid: STRING_REQUIRED,
+	name: STRING_REQUIRED,
+	warranty_days: STRING_REQUIRED,
+	service_warranty: z.enum(['service', 'inventory']),
+	type: STRING_REQUIRED,
+	is_maintaing_stock: BOOLEAN_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const PRODUCT_NULL: Partial<IProduct> = {
+	category_uuid: '',
+	brand_uuid: '',
+	size_uuid: '',
+	name: '',
+	warranty_days: '',
+	service_warranty: 'service',
+	type: '',
+	is_maintaing_stock: false,
+	remarks: '',
+};
+
+export type IProduct = z.infer<typeof PRODUCT_SCHEMA>;
+
+//Stock Schema
+export const STOCK_SCHEMA = z.object({
+	product_uuid: STRING_REQUIRED,
+	warehouse_1: STRING_REQUIRED,
+	warehouse_2: STRING_REQUIRED,
+	warehouse_3: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const STOCK_NULL: Partial<IStock> = {
+	product_uuid: '',
+	warehouse_1: '',
+	warehouse_2: '',
+	warehouse_3: '',
+	remarks: null,
+};
+
+export type IStock = z.infer<typeof STOCK_SCHEMA>;
+
+//Branch Schema
+export const BRANCH_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	address: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const BRANCH_NULL: Partial<IBranch> = {
+	name: '',
+	address: '',
+	remarks: null,
+};
+
+export type IBranch = z.infer<typeof BRANCH_SCHEMA>;
+
+//Warehouse Schema
+export const WAREHOUSE_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	branch_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const WAREHOUSE_NULL: Partial<IWarehouse> = {
+	name: '',
+	branch_uuid: '',
+	remarks: null,
+};
+
+export type IWarehouse = z.infer<typeof WAREHOUSE_SCHEMA>;
+
+//Room Schema
+export const ROOM_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	warehouse_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const ROOM_NULL: Partial<IRoom> = {
+	name: '',
+	warehouse_uuid: '',
+	remarks: null,
+};
+
+export type IRoom = z.infer<typeof ROOM_SCHEMA>;
+
+//Rack Schema
+export const RACK_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	room_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const RACK_NULL: Partial<IRack> = {
+	name: '',
+	room_uuid: '',
+	remarks: null,
+};
+
+export type IRack = z.infer<typeof RACK_SCHEMA>;
+
+//Floor Schema
+export const FLOOR_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	rack_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const FLOOR_NULL: Partial<IFloor> = {
+	name: '',
+	rack_uuid: '',
+	remarks: null,
+};
+
+export type IFloor = z.infer<typeof FLOOR_SCHEMA>;
+
+//Box Schema
+export const BOX_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	floor_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const BOX_NULL: Partial<IBox> = {
+	name: '',
+	floor_uuid: '',
+	remarks: null,
+};
+
+export type IBox = z.infer<typeof BOX_SCHEMA>;
+
+// Purchase Schema
+export const PURCHASE_SCHEMA = z.object({
+	vendor_uuid: STRING_REQUIRED,
+	branch_uuid: STRING_REQUIRED,
+	date: z.date(),
+	payment_mood: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+	purchase_entry: z.array(
+		z.object({
+			purchase_uuid: STRING_REQUIRED,
+			stock_uuid: STRING_REQUIRED,
+			serial_no: STRING_REQUIRED,
+			quantity: NUMBER_DOUBLE_REQUIRED,
+			price_per_unit: NUMBER_DOUBLE_REQUIRED,
+			discount: NUMBER_DOUBLE_REQUIRED.default(0),
+		})
+	),
+});
+
+export const PURCHASE_NULL: Partial<IPurchase> = {
+	vendor_uuid: '',
+	branch_uuid: '',
+	date: new Date(),
+	payment_mood: '',
+	remarks: '',
+	purchase_entry: [
+		{
+			purchase_uuid: '',
+			stock_uuid: '',
+			serial_no: '',
+			quantity: 0,
+			price_per_unit: 0,
+			discount: 0,
+		},
+	],
+};
+
+export type IPurchase = z.infer<typeof PURCHASE_SCHEMA>;
