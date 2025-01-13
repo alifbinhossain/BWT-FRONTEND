@@ -19,7 +19,7 @@ const BrandLogo: React.FC<IBrandLogoProps> = ({ className, ...props }) => {
 			to={route.path!}
 			{...props}
 		>
-			FZL
+			BWT
 		</NavLink>
 	);
 };
