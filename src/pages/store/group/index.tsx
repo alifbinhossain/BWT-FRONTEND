@@ -5,8 +5,8 @@ import { Row } from '@tanstack/react-table';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { departmentColumns } from '../_config/columns';
-import { IDepartmentTableData } from '../_config/columns/columns.type';
+import { groupColumns } from '../_config/columns';
+import { IGroupTableData } from '../_config/columns/columns.type';
 import { useHrDepartments } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
@@ -14,8 +14,7 @@ const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Department = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
-		useHrDepartments<IDepartmentTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrDepartments<IGroupTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Department', url, 'admin__user_department'), [url]);
 
@@ -26,9 +25,9 @@ const Department = () => {
 		setIsOpenAddModal(true);
 	};
 
-	const [updatedData, setUpdatedData] = useState<IDepartmentTableData | null>(null);
+	const [updatedData, setUpdatedData] = useState<IGroupTableData | null>(null);
 
-	const handleUpdate = (row: Row<IDepartmentTableData>) => {
+	const handleUpdate = (row: Row<IGroupTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
@@ -41,10 +40,10 @@ const Department = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<IDepartmentTableData>) => {
+	const handleDelete = (row: Row<IGroupTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
-			name: row?.original?.department,
+			name: row?.original?.name,
 		});
 	};
 
@@ -52,20 +51,20 @@ const Department = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IDepartmentTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IGroupTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
 			selectedRows.map((row) => ({
 				id: row.uuid,
-				name: row.department,
+				name: row.name,
 				checked: true,
 			}))
 		);
 	};
 
 	// Table Columns
-	const columns = departmentColumns();
+	const columns = groupColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

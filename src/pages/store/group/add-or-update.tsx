@@ -12,7 +12,7 @@ import { AddModal } from '@core/modal';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IDepartmentTableData } from '../_config/columns/columns.type';
+import { IGroupTableData } from '../_config/columns/columns.type';
 import { useHrDepartmentsByUUID, useHrDesignations, useHrUsers } from '../_config/query';
 import { DEPARTMENT_NULL, DEPARTMENT_SCHEMA, IDepartment } from '../_config/schema';
 
@@ -20,8 +20,8 @@ interface IAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IDepartmentTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IDepartmentTableData | null>>;
+	updatedData?: IGroupTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<IGroupTableData | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
 		AxiosError<IResponse<any>, any>,
@@ -58,7 +58,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useHrDepartmentsByUUID<IDepartmentTableData>(updatedData?.uuid as string);
+	const { data } = useHrDepartmentsByUUID<IGroupTableData>(updatedData?.uuid as string);
 
 	const form = useRHF(DEPARTMENT_SCHEMA, DEPARTMENT_NULL);
 
@@ -77,7 +77,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: IDepartment) {
+	async function onSubmit(values: IGroupTableData) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({

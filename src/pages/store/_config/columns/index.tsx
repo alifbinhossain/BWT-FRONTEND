@@ -4,123 +4,339 @@ import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
 import { Switch } from '@/components/ui/switch';
 
-import { IDepartmentTableData, IDesignationTableData, IUserTableData } from './columns.type';
+import {
+	IBoxTableData,
+	IBranchTableData,
+	IBrandTableData,
+	ICategoryTableData,
+	IFloorTableData,
+	IGroupTableData,
+	IProductTableData,
+	IPurchaseTableData,
+	IRackTableData,
+	IRoomTableData,
+	ISizeTableData,
+	IStockTableData,
+	IVendorTableData,
+	IWarehouseTableData,
+} from './columns.type';
 
-// Department Columns
-export const departmentColumns = (): ColumnDef<IDepartmentTableData>[] => [
+// Group Columns
+export const groupColumns = (): ColumnDef<IGroupTableData>[] => [
 	{
-		accessorKey: 'department',
-		header: 'Department',
+		accessorKey: 'name',
+		header: 'Name',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
 	},
 ];
 
-// Designation Columns
-export const designationColumns = (): ColumnDef<IDesignationTableData>[] => [
+// Category Columns
+export const categoryColumns = (): ColumnDef<ICategoryTableData>[] => [
 	{
-		accessorKey: 'designation',
-		header: 'Designation',
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'group_name',
+		header: 'Group',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
 	},
 ];
 
-// User Columns
-export function userColumns({
-	pageAssignAccess,
-	resetPasswordAccess,
-	statusAccess,
-	handleStatus,
-	handleResetPassword,
-	handlePageAssign,
-}: {
-	statusAccess: boolean;
-	resetPasswordAccess: boolean;
-	pageAssignAccess: boolean;
-	handleStatus: (row: Row<any>) => void;
-	handleResetPassword: (row: Row<any>) => void;
-	handlePageAssign: (row: Row<any>) => void;
-}): ColumnDef<IUserTableData>[] {
-	return [
-		{
-			accessorKey: 'status',
-			header: 'Status',
-			enableColumnFilter: false,
-			cell: (info) => {
-				return (
-					<Switch checked={Number(info.getValue()) === 1} onCheckedChange={() => handleStatus(info.row)} />
-				);
-			},
-			size: 40,
-			meta: {
-				hidden: !statusAccess,
-			},
-		},
-		{
-			accessorKey: 'name',
-			header: 'Name',
-			enableColumnFilter: false,
-			cell: (info) => <span className='capitalize'>{info.getValue<string>()}</span>,
-		},
-		{
-			accessorKey: 'email',
-			header: 'Email',
-			enableColumnFilter: false,
-			cell: (info) => info.getValue(),
-		},
-		{
-			accessorKey: 'department',
-			header: 'Department',
-			enableColumnFilter: false,
-			cell: (info) => {
-				const { department, designation } = info.row.original;
+// Brand Columns
+export const brandColumns = (): ColumnDef<IBrandTableData>[] => [
+	{
+		accessorKey: 'id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
 
-				return (
-					<div className='flex flex-col'>
-						<span className='capitalize'>{department}</span>
-						<span className='text-xs capitalize text-gray-400'>{designation}</span>
-					</div>
-				);
-			},
-		},
+// Size Columns
+export const sizeColumns = (): ColumnDef<ISizeTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
 
-		{
-			accessorKey: 'reset_pass_actions',
-			id: 'reset_pass_actions',
-			header: () => (
-				<span>
-					Reset <br />
-					Password
-				</span>
-			),
-			enableColumnFilter: false,
-			enableSorting: false,
-			cell: (info) => <ResetPassword onClick={() => handleResetPassword(info.row)} />,
-			size: 40,
-			meta: {
-				hidden: !resetPasswordAccess,
-				disableFullFilter: true,
-			},
-		},
+// Vendor Columns
+export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'company_name',
+		header: 'Company',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'phone',
+		header: 'Phone',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'address',
+		header: 'Address',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'description',
+		header: 'Description',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'is_active',
+		header: 'Active',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
 
-		{
-			accessorKey: 'page_assign_actions',
-			id: 'page_assign_actions',
-			header: () => (
-				<span>
-					Page <br />
-					Assign
-				</span>
-			),
-			enableColumnFilter: false,
-			enableSorting: false,
-			cell: (info) => <PageAssign onClick={() => handlePageAssign(info.row)} />,
-			size: 40,
-			meta: {
-				hidden: !pageAssignAccess,
-				disableFullFilter: true,
-			},
-		},
-	];
-}
+// Product Columns
+export const productColumns = (): ColumnDef<IProductTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'category_name',
+		header: 'Category',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'size_name',
+		header: 'Size',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'warranty_days',
+		header: 'Warranty Days',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'service_warranty',
+		header: 'Service Warranty',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'type',
+		header: 'Type',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'is_maintaining_stock',
+		header: 'Maintaining Stock',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
+
+// Purchase Columns
+export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
+	{
+		accessorKey: 'id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'vendor_name',
+		header: 'Vendor',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'branch_name',
+		header: 'Branch',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'date',
+		header: 'Date',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'payment_mood',
+		header: 'Payment Mode',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
+
+// Stock Columns
+export const stockColumns = (): ColumnDef<IStockTableData>[] => [
+	{
+		accessorKey: 'id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'uuid',
+		header: 'UUID',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'product_uuid',
+		header: 'Product',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'warehouse_1',
+		header: 'Warehouse 1',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'warehouse_2',
+		header: 'Warehouse 2',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'warehouse_3',
+		header: 'Warehouse 3',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
+
+// Branch Columns
+export const branchColumns = (): ColumnDef<IBranchTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'address',
+		header: 'Address',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
+
+// Warehouse Columns
+export const warehouseColumns = (): ColumnDef<IWarehouseTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'branch_name',
+		header: 'Branch',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
+
+// Room Columns
+export const roomColumns = (): ColumnDef<IRoomTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
+
+// Rack Columns
+export const rackColumns = (): ColumnDef<IRackTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'room_name',
+		header: 'Room',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
+
+// Floor Columns
+export const floorColumns = (): ColumnDef<IFloorTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'rack_name',
+		header: 'Rack',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
+
+// Box Columns
+export const boxColumns = (): ColumnDef<IBoxTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'floor_name',
+		header: 'Rack',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
