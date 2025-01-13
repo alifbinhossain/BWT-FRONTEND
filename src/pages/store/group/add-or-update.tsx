@@ -12,16 +12,16 @@ import { AddModal } from '@core/modal';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IDesignationTableData } from '../_config/columns/columns.type';
-import { useHrDesignationByUUID, useHrUsers } from '../_config/query';
-import { DESIGNATION_NULL, DESIGNATION_SCHEMA, IDesignation } from '../_config/schema';
+import { IDepartmentTableData } from '../_config/columns/columns.type';
+import { useHrDepartmentsByUUID, useHrDesignations, useHrUsers } from '../_config/query';
+import { DEPARTMENT_NULL, DEPARTMENT_SCHEMA, IDepartment } from '../_config/schema';
 
 interface IAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IDesignationTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IDesignationTableData | null>>;
+	updatedData?: IDepartmentTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<IDepartmentTableData | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
 		AxiosError<IResponse<any>, any>,
@@ -58,15 +58,13 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useHrDesignationByUUID(updatedData?.uuid as string);
-	const { invalidateQuery: invalidateUserQuery } = useHrUsers({});
+	const { data } = useHrDepartmentsByUUID<IDepartmentTableData>(updatedData?.uuid as string);
 
-	const form = useRHF(DESIGNATION_SCHEMA, DESIGNATION_NULL);
+	const form = useRHF(DEPARTMENT_SCHEMA, DEPARTMENT_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(DESIGNATION_NULL);
-		invalidateUserQuery();
+		form.reset(DEPARTMENT_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -79,7 +77,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: IDesignation) {
+	async function onSubmit(values: IDepartment) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({
@@ -109,11 +107,11 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? 'Update Designation' : 'Add Designation'}
+			title={isUpdate ? 'Update Department' : 'Add Department'}
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<FormField control={form.control} name='designation' render={(props) => <CoreForm.Input {...props} />} />
+			<FormField control={form.control} name='department' render={(props) => <CoreForm.Input {...props} />} />
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);
