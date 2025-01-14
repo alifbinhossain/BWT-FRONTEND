@@ -1,8 +1,6 @@
 import { IToast } from '@/types';
 import { Slide, toast, ToastContainer, ToastContainerProps } from 'react-toastify';
 
-import 'react-toastify/dist/ReactToastify.min.css';
-
 const ToastBody = ({ text }: { text: string }) => (
 	<div className='flex items-center'>
 		<p className='text-sm font-medium text-gray-900'>{text}</p>
