@@ -3,53 +3,39 @@ import useTQuery from '@/hooks/useTQuery';
 
 import addUrlParams from '@/utils/routes/addUrlParams';
 
-import { hrQK } from './queryKeys';
+import { storeQK } from './queryKeys';
 
 // * User
 export const useHrUsers = <T>(params: IParams) =>
 	useTQuery<T>({
-		queryKey: hrQK.user(params),
+		queryKey: storeQK.user(params),
 		url: addUrlParams('/hr/user', params),
-	});
-
-export const useHrUsersByUUID = <T>(uuid: string) =>
-	useTQuery<T>({
-		queryKey: hrQK.userByUUID(uuid),
-		url: `/hr/user/${uuid}`,
-		enabled: !!uuid,
-	});
-
-export const useHrCanAccess = <T>(uuid: string) =>
-	useTQuery<T>({
-		queryKey: hrQK.userCanAccess(uuid),
-		url: `/hr/user/can-access/${uuid}`,
-		enabled: !!uuid,
 	});
 
 // * Department
 export const useHrDepartments = <T>() =>
 	useTQuery<T>({
-		queryKey: hrQK.department(),
+		queryKey: storeQK.department(),
 		url: '/hr/department',
 	});
 
 export const useHrDesignationByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.designationByUUID(uuid),
+		queryKey: storeQK.designationByUUID(uuid),
 		url: `/hr/designation/${uuid}`,
 		enabled: !!uuid,
 	});
 
-// * Designation
-export const useHrDesignations = <T>() =>
+// * Group
+export const useStoreGroups = <T>() =>
 	useTQuery<T>({
-		queryKey: hrQK.designation(),
-		url: '/hr/designation',
+		queryKey: storeQK.group(),
+		url: '/store/group',
 	});
 
-export const useHrDepartmentsByUUID = <T>(uuid: string) =>
+export const useStoreGroupsByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.departmentByUUID(uuid),
-		url: `/hr/department/${uuid}`,
+		queryKey: storeQK.groupByUUID(uuid),
+		url: `/store/group/${uuid}`,
 		enabled: !!uuid,
 	});

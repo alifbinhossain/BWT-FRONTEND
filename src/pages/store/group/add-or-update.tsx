@@ -13,8 +13,8 @@ import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IGroupTableData } from '../_config/columns/columns.type';
-import { useHrDepartmentsByUUID, useHrDesignations, useHrUsers } from '../_config/query';
-import { DEPARTMENT_NULL, DEPARTMENT_SCHEMA, IDepartment } from '../_config/schema';
+import { useStoreGroups, useStoreGroupsByUUID } from '../_config/query';
+import { GROUP_NULL, GROUP_SCHEMA } from '../_config/schema';
 
 interface IAddOrUpdateProps {
 	url: string;
@@ -58,13 +58,13 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useHrDepartmentsByUUID<IGroupTableData>(updatedData?.uuid as string);
+	const { data } = useStoreGroupsByUUID<IGroupTableData>(updatedData?.uuid as string);
 
-	const form = useRHF(DEPARTMENT_SCHEMA, DEPARTMENT_NULL);
+	const form = useRHF(GROUP_SCHEMA, GROUP_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(DEPARTMENT_NULL);
+		form.reset(GROUP_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -107,11 +107,11 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? 'Update Department' : 'Add Department'}
+			title={isUpdate ? `Update ${updatedData?.name} Group` : 'Add New Group'}
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<FormField control={form.control} name='department' render={(props) => <CoreForm.Input {...props} />} />
+			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);
