@@ -1,7 +1,11 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
+import { number } from 'zod';
 
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
+import StatusButton from '@/components/buttons/status';
+import { LinkOnly } from '@/components/others/link';
+import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
 import {
@@ -116,7 +120,9 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 		accessorKey: 'is_active',
 		header: 'Active',
 		enableColumnFilter: false,
-		cell: (info) => (info.getValue() ? 'Active' : 'Inactive'),
+		cell: (info) => {
+			return <StatusButton value={info.getValue() as boolean} />;
+		},
 	},
 ];
 
@@ -168,7 +174,9 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 		accessorKey: 'is_maintaining_stock',
 		header: 'Maintaining Stock',
 		enableColumnFilter: false,
-		cell: (info) => (info.getValue() ? 'Yes' : 'No'),
+		cell: (info) => {
+			return <StatusButton value={info.getValue() as boolean} />;
+		},
 	},
 ];
 
@@ -178,7 +186,7 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		accessorKey: 'id',
 		header: 'ID',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
+		cell: (info) => <LinkOnly uri={`/store/purchase/${info.getValue()}/details`} title={info.getValue() as string} />,
 	},
 	{
 		accessorKey: 'vendor_name',
@@ -196,7 +204,7 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		accessorKey: 'date',
 		header: 'Date',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
 		accessorKey: 'payment_mode',

@@ -125,7 +125,6 @@ const AddOrUpdate = () => {
 		});
 
 		// Create purchase entries
-		// TODO: Update field name (e.g. purchase_entry) and variable name ⬇️
 		const purchase_entry_entries = [...values.purchase_entry].map((item) => ({
 			...item,
 			purchase_uuid: new_purchase_uuid,
@@ -134,7 +133,6 @@ const AddOrUpdate = () => {
 			created_by,
 		}));
 
-		// TODO: Update url and variable name ⬇️
 		const purchase_entry_entries_promise = purchase_entry_entries.map((item) =>
 			postData.mutateAsync({
 				url: '/store/purchase-entry',
@@ -204,7 +202,7 @@ const AddOrUpdate = () => {
 		>
 			<Header />
 			<CoreForm.DynamicFields
-				title='purchase_entry'
+				title='Entry'
 				form={form}
 				fieldName='purchase_entry'
 				fieldDefs={useGenerateFieldDefs({

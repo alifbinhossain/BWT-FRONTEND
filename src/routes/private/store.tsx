@@ -16,6 +16,7 @@ const Floor = lazy(() => import('@/pages/store/floor'));
 const Box = lazy(() => import('@/pages/store/box'));
 const Purchase = lazy(() => import('@/pages/store/purchase'));
 const PurchaseAddOrUpdate = lazy(() => import('@/pages/store/purchase/add-or-update'));
+const PurchaseDetails = lazy(() => import('@/pages/store/purchase/details'));
 
 const StoreRoutes: IRoute[] = [
 	{
@@ -132,6 +133,14 @@ const StoreRoutes: IRoute[] = [
 				path: '/store/purchase/:uuid/update',
 				element: <PurchaseAddOrUpdate />,
 				page_name: 'store__purchase_update',
+				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Purchase Details',
+				path: '/store/purchase/:id/details',
+				element: <PurchaseDetails />,
+				page_name: 'store__purchase_details',
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
 			},

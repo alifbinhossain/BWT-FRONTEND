@@ -1,5 +1,12 @@
 const otherQK = {
 	all: () => ['other'],
+
+	//HR
+	hr: () => [...otherQK.all(), 'hr'],
+	//Department
+	department: () => [...otherQK.all(), 'department'],
+	//Designation
+	designation: () => [...otherQK.all(), 'designation'],
 	//Group
 	group: () => [...otherQK.all(), 'group'],
 

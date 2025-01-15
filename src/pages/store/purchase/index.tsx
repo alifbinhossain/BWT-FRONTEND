@@ -45,7 +45,7 @@ const Purchase = () => {
 
 	// Delete All Row Handlers
 	const handleDeleteAll = (rows: Row<IPurchaseTableData>[]) => {
-		// TODO: Update Row type
+		
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(

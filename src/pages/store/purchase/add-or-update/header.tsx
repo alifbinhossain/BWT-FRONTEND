@@ -41,8 +41,8 @@ const Header = () => {
 				)}
 			/>
 			<FormField control={form.control} name='date' render={(props) => <CoreForm.DatePicker {...props} />} />
-
 			<FormField control={form.control} name='payment_mode' render={(props) => <CoreForm.Input {...props} />} />
+			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</CoreForm.Section>
 	);
 };

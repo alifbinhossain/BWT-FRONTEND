@@ -2,6 +2,25 @@ import useTQuery from '@/hooks/useTQuery';
 
 import otherQK from './query-keys';
 
+// GET OTHER HR
+export const useOtherHR = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.hr(),
+		url: `/other/hr/value/label`,
+	});
+//GET OTHER DEPARTMENT
+export const useOtherDepartment = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.department(),
+		url: `/other/department/value/label`,
+	});
+// GET OTHER Designation
+export const useOtherDesignation = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.designation(),
+		url: `/other/designation/value/label`,
+	});
+
 // GET OTHER GROUP
 export const useOtherGroup = <T>() =>
 	useTQuery<T>({

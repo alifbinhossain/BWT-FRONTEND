@@ -16,7 +16,7 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 const Group = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreStocks<IStockTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Group', url, 'admin__user_department'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/Stock', url, 'store__stock'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
