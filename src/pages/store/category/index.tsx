@@ -7,13 +7,13 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { categoryColumns } from '../_config/columns';
 import { ICategoryTableData } from '../_config/columns/columns.type';
-import { useStoreCategories, useStoreGroups } from '../_config/query';
+import { useStoreCategories } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Group = () => {
+const Category = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useStoreCategories<ICategoryTableData[]>();
 
@@ -115,4 +115,4 @@ const Group = () => {
 	);
 };
 
-export default Group;
+export default Category;

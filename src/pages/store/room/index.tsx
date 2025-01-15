@@ -13,7 +13,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Group = () => {
+const Room = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreRooms<IRoomTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Store/Room', url, 'store__room'), [url]);
@@ -114,4 +114,4 @@ const Group = () => {
 	);
 };
 
-export default Group;
+export default Room;

@@ -7,7 +7,7 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { groupColumns } from '../_config/columns';
 import { IGroupTableData } from '../_config/columns/columns.type';
-import { useHrDepartments, useStoreGroups } from '../_config/query';
+import { useStoreGroups } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));

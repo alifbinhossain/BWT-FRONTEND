@@ -13,7 +13,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Group = () => {
+const Product = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreProducts<IProductTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Store/Product', url, 'store__product'), [url]);
@@ -114,4 +114,4 @@ const Group = () => {
 	);
 };
 
-export default Group;
+export default Product;

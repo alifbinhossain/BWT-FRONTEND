@@ -13,7 +13,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Group = () => {
+const Branch = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreBranches<IBranchTableData[]>();
 	console.log(data);
 
@@ -115,4 +115,4 @@ const Group = () => {
 	);
 };
 
-export default Group;
+export default Branch;

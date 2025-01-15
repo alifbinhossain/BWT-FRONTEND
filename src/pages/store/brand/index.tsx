@@ -5,7 +5,7 @@ import { Row } from '@tanstack/react-table';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { brandColumns, groupColumns } from '../_config/columns';
+import { brandColumns } from '../_config/columns';
 import { IBrandTableData } from '../_config/columns/columns.type';
 import { useStoreBrands } from '../_config/query';
 
@@ -13,10 +13,10 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Group = () => {
+const Brand = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreBrands<IBrandTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Group', url, 'admin__user_department'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/Brand', url, 'store__brand'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -114,4 +114,4 @@ const Group = () => {
 	);
 };
 
-export default Group;
+export default Brand;

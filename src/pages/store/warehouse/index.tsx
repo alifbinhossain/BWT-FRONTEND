@@ -13,7 +13,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Group = () => {
+const Warehouse = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useStoreWarehouses<IWarehouseTableData[]>();
 
@@ -115,4 +115,4 @@ const Group = () => {
 	);
 };
 
-export default Group;
+export default Warehouse;

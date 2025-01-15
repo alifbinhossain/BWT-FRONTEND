@@ -13,7 +13,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Group = () => {
+const Box = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreBoxes<IBoxTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Store/Box', url, 'store__box'), [url]);
@@ -114,4 +114,4 @@ const Group = () => {
 	);
 };
 
-export default Group;
+export default Box;
