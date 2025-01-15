@@ -2,16 +2,16 @@ import { ITableFacetedFilter } from '@/types';
 
 export const type1FacetedFilters: ITableFacetedFilter[] = [
 	{
-		id: 'contact_number',
-		title: 'Phone Number',
+		id: 'status',
+		title: 'Status',
 		options: [
 			{
-				label: '01878604394',
-				value: '01878604394',
+				label: 'Success',
+				value: 'success',
 			},
 			{
-				label: '01878604393',
-				value: '01878604393',
+				label: 'Failed',
+				value: 'failed',
 			},
 		],
 	},

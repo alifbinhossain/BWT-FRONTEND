@@ -15,6 +15,10 @@ type FieldText = {
 	// inputType?: 'text' | 'number';
 	placeholder?: string;
 };
+type FieldTextArea = {
+	type: 'textarea';
+	placeholder?: string;
+};
 type FieldNumber = {
 	type: 'number';
 	placeholder?: string;
@@ -39,7 +43,7 @@ export type FieldDef = {
 	className?: string;
 	isLoading?: boolean;
 	hidden?: boolean;
-} & (FieldText | FieldNumber | FieldSelect | FieldReadonly | FieldCustom | FieldJoinInputUnit);
+} & (FieldText | FieldNumber | FieldSelect | FieldReadonly | FieldCustom | FieldJoinInputUnit | FieldTextArea);
 
 export interface DynamicFieldsProps {
 	title: string;

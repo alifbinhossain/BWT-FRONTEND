@@ -103,6 +103,19 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 															)}
 														/>
 													)}
+													{fieldDef.type === 'textarea' && (
+														<FormField
+															control={form.control}
+															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															render={(props) => (
+																<CoreForm.Textarea
+																	disableLabel
+																	placeholder={fieldDef.placeholder}
+																	{...props}
+																/>
+															)}
+														/>
+													)}
 
 													{fieldDef.type === 'select' && (
 														<FormField

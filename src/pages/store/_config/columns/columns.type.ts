@@ -1,94 +1,165 @@
-// Vendor
+// Group
+export type IGroupTableData = {
+	uuid: string;
+	group_uuid: string;
+	name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+// Category
+export type ICategoryTableData = {
+	uuid: string;
+	id: string;
+	name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+// Brand
+export type IBrandTableData = {
+	uuid: string;
+	id: string;
+	name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+// Size
+export type ISizeTableData = {
+	uuid: string;
+	name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+//Vendor
 export type IVendorTableData = {
 	uuid: string;
+	brand_uuid: string;
 	name: string;
-	contact_name: string;
-	contact_number: string;
-	email: string;
-	office_address: string;
+	company_name: string;
+	phone: string;
+	address: string;
+	description: string;
+	is_active: boolean;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
 };
-
-// Type
-export type ITypeTableData = {
+//Product
+export type IProductTableData = {
 	uuid: string;
+	category_uuid: string;
+	brand_uuid: string;
+	size_uuid: string;
 	name: string;
-	short_name: string;
+	warranty_days: number;
+	service_warranty_days: number;
+	is_maintaining_stock: boolean;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
 };
-
-// Section
-export type ISectionTableData = {
+//Purchase
+export type IPurchaseTableData = {
 	uuid: string;
-	name: string;
-	short_name: string;
+	id: string;
+	vendor_uuid: string;
+	branch_uuid: string;
+	date: string;
+	payment_mode: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
 };
-
-// Stock
+//Purchase Entry
+export type IPurchaseEntryTableData = {
+	uuid: string;
+	purchase_uuid: string;
+	stock_uuid: string;
+	serial_no: string;
+	quantity: string;
+	price_per_unit: string;
+	discount: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+// Purchase Details
+export type IPurchaseDetails = {
+	uuid: string;
+	id: string;
+	vendor_uuid: string;
+	branch_uuid: string;
+	date: string;
+	payment_mode: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+	purchase_entry: IPurchaseEntryTableData[];
+};
+//Stock
 export type IStockTableData = {
 	uuid: string;
-	name: string;
-	threshold: number;
-	stock: number;
-	unit: string;
-	section_name: string;
-	type_name: string;
-	description: string;
+	id: string;
+	product_uuid: string;
+	warehouse1: number;
+	warehouse2: number;
+	warehouse3: number;
+	remarks: string;
 };
-
-// Stock Action Trx
-export type IStockActionTrx = {
+//Branch
+export type IBranchTableData = {
 	uuid: string;
-	stock: number;
 	name: string;
-};
-
-// Stock Action Trx Against Order
-export type IStockActionTrxAgainstOrder = {
-	uuid: string;
-	stock: number;
-	name: string;
-};
-
-// Receive
-export type IReceiveTableData = {
-	uuid: string;
-	purchase_id: string;
-	vendor_uuid: string;
-	vendor_name: string;
-	is_local: number;
-	lc_number: string;
-	challan_number: string;
-	created_by: string;
-	created_by_name: string;
+	address: string;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
 };
-
-export type IReceiveDetailsEntry = {
+//Warehouse
+export type IWarehouseTableData = {
 	uuid: string;
-	purchase_description_uuid: string;
-	material_uuid: string;
-	material_name: string;
-	unit: string;
-	quantity: number;
-	price: number;
+	brach_uuid: string;
+	name: string;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
 };
-
-export type IReceiveDetails = {
+//Room
+export type IRoomTableData = {
 	uuid: string;
-	purchase_id: string;
-	vendor_uuid: string;
-	vendor_name: string;
-	is_local: number;
-	lc_number: string;
-	challan_number: string;
-	created_by: string;
-	created_by_name: string;
+	warehouse_uuid: string;
+	name: string;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
-	purchase: IReceiveDetailsEntry[];
+};
+//Rack
+export type IRackTableData = {
+	uuid: string;
+	room_uuid: string;
+	name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+//Floor
+export type IFloorTableData = {
+	uuid: string;
+	rack_uuid: string;
+	name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+//Box
+export type IBoxTableData = {
+	uuid: string;
+	floor_uuid: string;
+	name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
 };

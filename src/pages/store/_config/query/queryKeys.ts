@@ -1,56 +1,75 @@
-// Material Query Keys
-export const materialQK = {
-	all: () => ['material'],
+import { IParams } from '@/types';
 
-	// stock
-	stock: () => [...materialQK.all(), 'stock'],
-	stockByUUID: (uuid: string) => [...materialQK.stock(), uuid],
+export const storeQK = {
+	all: () => ['store'],
 
-	// section
-	section: () => [...materialQK.all(), 'section'],
-	sectionByUUID: (uuid: string) => [...materialQK.section(), uuid],
+	// department
+	department: () => [...storeQK.all(), 'department'],
+	departmentByUUID: (uuid: string) => [...storeQK.department(), uuid],
 
-	// types
-	type: () => [...materialQK.all(), 'type'],
-	typeByUUID: (uuid: string) => [...materialQK.type(), uuid],
+	// designation
+	designation: () => [...storeQK.all(), 'designation'],
+	designationByUUID: (uuid: string) => [...storeQK.designation(), uuid],
 
-	// infos
-	info: () => [...materialQK.all(), 'info'],
-	infoByUUID: (uuid: string) => [...materialQK.info(), uuid],
+	// user
+	userDefault: () => [...storeQK.all(), 'user'],
+	user: ({ start_date, end_date, status }: IParams) => [...storeQK.userDefault(), start_date, end_date, status],
+	userByUUID: (uuid: string) => [...storeQK.userDefault(), uuid],
+	userCanAccess: (uuid: string) => [...storeQK.userDefault(), 'can-access', uuid],
 
-	// trx
-	trx: () => [...materialQK.all(), 'trx'],
-	trxByUUID: (uuid: string) => [...materialQK.trx(), uuid],
+	// group
+	group: () => [...storeQK.all(), 'group'],
+	groupByUUID: (uuid: string) => [...storeQK.group(), uuid],
 
-	// stock to sfg
-	stockToSGF: () => [...materialQK.all(), 'stock-to-sfg'],
-	stockToSFGByUUID: (uuid: string) => [...materialQK.stockToSGF(), uuid],
+	// category
+	category: () => [...storeQK.all(), 'category'],
+	categoryByUUID: (uuid: string) => [...storeQK.category(), uuid],
 
-	// trx against order description
-	trxAgainstOrderDescription: () => [...materialQK.all(), 'trx-against-order-description'],
-	trxAgainstOrderDescriptionByUUID: (uuid: string) => [...materialQK.trxAgainstOrderDescription(), uuid],
-};
+	//brand
+	brand: () => [...storeQK.all(), 'brand'],
+	brandByUUID: (uuid: string) => [...storeQK.brand(), uuid],
 
-// Purchase Query Keys
-export const purchaseQK = {
-	all: () => ['purchase'],
+	//size
+	size: () => [...storeQK.all(), 'size'],
+	sizeByUUID: (uuid: string) => [...storeQK.size(), uuid],
 
 	// vendor
-	vendor: () => [...purchaseQK.all(), 'vendor'],
-	vendorByUUID: (uuid: string) => [...purchaseQK.vendor(), uuid],
+	vendor: () => [...storeQK.all(), 'vendor'],
+	vendorByUUID: (uuid: string) => [...storeQK.vendor(), uuid],
 
-	// description
-	description: () => [...purchaseQK.all(), 'description'],
-	descriptionByUUID: (uuid: string) => [...purchaseQK.description(), uuid],
+	// product
+	product: () => [...storeQK.all(), 'product'],
+	productByUUID: (uuid: string) => [...storeQK.product(), uuid],
 
-	// entry
-	entry: () => [...purchaseQK.all(), 'entry'],
-	entryByUUID: (uuid: string) => [...purchaseQK.entry(), uuid],
+	// stock
+	stock: () => [...storeQK.all(), 'stock'],
+	stockByUUID: (uuid: string) => [...storeQK.stock(), uuid],
 
-	// details
-	details: () => [...purchaseQK.all(), 'details'],
-	detailsByUUID: (uuid: string) => [...purchaseQK.details(), uuid],
+	//branch
+	branch: () => [...storeQK.all(), 'branch'],
+	branchByUUID: (uuid: string) => [...storeQK.branch(), uuid],
 
-	// log
-	log: () => [...purchaseQK.all(), 'log'],
+	//warehouse
+	warehouse: () => [...storeQK.all(), 'warehouse'],
+	warehouseByUUID: (uuid: string) => [...storeQK.warehouse(), uuid],
+
+	//Rack
+	rack: () => [...storeQK.all(), 'rack'],
+	rackByUUID: (uuid: string) => [...storeQK.rack(), uuid],
+
+	//room
+	room: () => [...storeQK.all(), 'room'],
+	roomByUUID: (uuid: string) => [...storeQK.room(), uuid],
+
+	//Floor
+	floor: () => [...storeQK.all(), 'floor'],
+	floorByUUID: (uuid: string) => [...storeQK.floor(), uuid],
+
+	//Box
+	box: () => [...storeQK.all(), 'box'],
+	boxByUUID: (uuid: string) => [...storeQK.box(), uuid],
+
+	//Purchase
+	purchase: () => [...storeQK.all(), 'purchase'],
+	purchaseByUUID: (uuid: string) => [...storeQK.purchase(), uuid],
 };

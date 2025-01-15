@@ -1,29 +1,22 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
-import useAccess from '@/hooks/useAccess';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { stockColumns } from '../_config/columns';
-import { IStockActionTrx, IStockActionTrxAgainstOrder, IStockTableData } from '../_config/columns/columns.type';
-import { useMaterialInfo } from '../_config/query';
+import { IStockTableData } from '../_config/columns/columns.type';
+import { useStoreStocks } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
-const AgainstTrx = lazy(() => import('./material-trx'));
-const AgainstOrderTransfer = lazy(() => import('./against-order-transfer'));
 
 const Stock = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useMaterialInfo<IStockTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreStocks<IStockTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store / Stock', url, 'store__stock'), [url]);
-
-	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
-	const actionTrxAccess = pageAccess.includes('click_action');
-	const actionTrxAgainstOrderAccess = pageAccess.includes('click_trx_against_order');
+	const pageInfo = useMemo(() => new PageInfo('Store/Stock', url, 'store__stock'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -33,6 +26,7 @@ const Stock = () => {
 	};
 
 	const [updatedData, setUpdatedData] = useState<IStockTableData | null>(null);
+
 	const handleUpdate = (row: Row<IStockTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
@@ -49,7 +43,7 @@ const Stock = () => {
 	const handleDelete = (row: Row<IStockTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
-			name: row?.original?.name,
+			name: row?.original?.id,
 		});
 	};
 
@@ -63,47 +57,14 @@ const Stock = () => {
 		setDeleteItems(
 			selectedRows.map((row) => ({
 				id: row.uuid,
-				name: row.name,
+				name: row.id,
 				checked: true,
-			})) // TODO: Update Delete Item ID & Name
+			}))
 		);
 	};
 
-	// Action Trx Modal state
-	const [isOpenActionTrxModal, setIsOpenActionTrxModal] = useState(false);
-	const [updateActionTrxData, setUpdateActionTrxData] = useState<IStockActionTrx | null>(null);
-
-	const handleAgainstTrx = (row: Row<IStockTableData>) => {
-		// TODO: Update Action Trx Data type
-		setUpdateActionTrxData({
-			uuid: row.original.uuid,
-			name: row.original.name,
-			stock: row.original.stock,
-		});
-		setIsOpenActionTrxModal(true);
-	};
-
-	// Action Against Order Modal state
-	const [isOpenActionAgainstOrderModal, setIsOpenActionAgainstOrderModal] = useState(false);
-	const [updateActionAgainstOrderData, setUpdateActionAgainstOrderData] =
-		useState<IStockActionTrxAgainstOrder | null>(null);
-
-	const handleAgainstOrder = (row: Row<IStockTableData>) => {
-		setUpdateActionAgainstOrderData({
-			uuid: row.original.uuid,
-			name: row.original.name,
-			stock: row.original.stock,
-		});
-		setIsOpenActionAgainstOrderModal(true);
-	};
-
 	// Table Columns
-	const columns = stockColumns({
-		actionTrxAccess,
-		actionTrxAgainstOrderAccess,
-		handleAgainstTrx,
-		handleAgainstOrder,
-	});
+	const columns = stockColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -145,27 +106,6 @@ const Stock = () => {
 							setDeleteItems,
 							url,
 							deleteData,
-						}}
-					/>,
-
-					<AgainstTrx
-						{...{
-							open: isOpenActionTrxModal,
-							setOpen: setIsOpenActionTrxModal,
-							updatedData: updateActionTrxData,
-							setUpdatedData: setUpdateActionTrxData,
-							postData,
-							url: '/material/trx',
-						}}
-					/>,
-					<AgainstOrderTransfer
-						{...{
-							open: isOpenActionAgainstOrderModal,
-							setOpen: setIsOpenActionAgainstOrderModal,
-							updatedData: updateActionAgainstOrderData,
-							setUpdatedData: setUpdateActionAgainstOrderData,
-							postData,
-							url: '/zipper/material-trx-against-order',
 						}}
 					/>,
 				])}

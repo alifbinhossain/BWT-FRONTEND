@@ -7,16 +7,16 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { vendorColumns } from '../_config/columns';
 import { IVendorTableData } from '../_config/columns/columns.type';
-import { usePurchaseVendor } from '../_config/query';
+import { useStoreVendors } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Vendor = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = usePurchaseVendor<IVendorTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreVendors<IVendorTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Vendor', url, 'store__vendor'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/Vendor', url, 'store__vendor'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -26,6 +26,7 @@ const Vendor = () => {
 	};
 
 	const [updatedData, setUpdatedData] = useState<IVendorTableData | null>(null);
+
 	const handleUpdate = (row: Row<IVendorTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);

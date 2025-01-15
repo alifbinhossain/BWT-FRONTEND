@@ -5,18 +5,18 @@ import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
-import { IFormSelectOption } from '@core/form/types';
 import { AddModal } from '@core/modal';
 
-import { useOtherMaterialSection, useOtherMaterialType } from '@/lib/common-queries/other';
+import { useOtherProduct } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IStockTableData } from '../_config/columns/columns.type';
-import { useMaterialInfoByUUID } from '../_config/query';
-import { IMaterial, MATERIAL_NULL, MATERIAL_SCHEMA } from '../_config/schema';
+import { useStoreStocksByUUID } from '../_config/query';
+import { STOCK_NULL, STOCK_SCHEMA } from '../_config/schema';
 
 interface IAddOrUpdateProps {
 	url: string;
@@ -60,15 +60,14 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useMaterialInfoByUUID(updatedData?.uuid as string);
-	const { data: section } = useOtherMaterialSection<IFormSelectOption[]>();
-	const { data: materialType } = useOtherMaterialType<IFormSelectOption[]>();
+	const { data } = useStoreStocksByUUID<IStockTableData>(updatedData?.uuid as string);
+	const { data: productOptions } = useOtherProduct<IFormSelectOption[]>();
 
-	const form = useRHF(MATERIAL_SCHEMA, MATERIAL_NULL);
+	const form = useRHF(STOCK_SCHEMA, STOCK_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(MATERIAL_NULL);
+		form.reset(STOCK_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -81,10 +80,10 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: IMaterial) {
+	async function onSubmit(values: IStockTableData) {
 		if (isUpdate) {
 			// UPDATE ITEM
-			await updateData.mutateAsync({
+			updateData.mutateAsync({
 				url: `${url}/${updatedData?.uuid}`,
 				updatedData: {
 					...values,
@@ -94,7 +93,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 			});
 		} else {
 			// ADD NEW ITEM
-			await postData.mutateAsync({
+			postData.mutateAsync({
 				url,
 				newData: {
 					...values,
@@ -107,78 +106,42 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 		}
 	}
 
-	const unitOptions: IFormSelectOption[] = [
-		{ label: 'kg', value: 'kg' },
-		{ label: 'Litre', value: 'ltr' },
-		{ label: 'Meter', value: 'mtr' },
-		{ label: 'Piece', value: 'pcs' },
-	];
-
 	return (
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? 'Update Stock' : 'Add Stock'}
+			title={isUpdate ? `Update ${updatedData?.id} Stock` : 'Add New Stock'}
 			form={form}
 			onSubmit={onSubmit}
-			className='max-w-4xl'
 		>
-			<CoreForm.Section className='lg:grid-cols-2'>
-				<FormField
-					control={form.control}
-					name='section_uuid'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							label='Section'
-							placeholder='Select Section'
-							isDisabled={!!updatedData?.uuid}
-							options={section!}
-							{...props}
-						/>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='type_uuid'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							label='Type'
-							placeholder='Select Material Type'
-							isDisabled={!!updatedData?.uuid}
-							options={materialType!}
-							{...props}
-						/>
-					)}
-				/>
-			</CoreForm.Section>
-
-			<CoreForm.Section>
-				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
-				<FormField control={form.control} name='short_name' render={(props) => <CoreForm.Input {...props} />} />
-				<FormField
-					control={form.control}
-					name='threshold'
-					render={(props) => (
-						<CoreForm.JoinInputSelect
-							type='number'
-							selectField={{
-								name: 'unit',
-								options: unitOptions,
-							}}
-							{...props}
-						/>
-					)}
-				/>
-			</CoreForm.Section>
-
-			<CoreForm.Section className='lg:grid-cols-2'>
-				<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
-				<FormField
-					control={form.control}
-					name='description'
-					render={(props) => <CoreForm.Textarea {...props} />}
-				/>
-			</CoreForm.Section>
+			<FormField
+				control={form.control}
+				name='product_uuid'
+				render={(props) => (
+					<CoreForm.ReactSelect
+						label='Product'
+						placeholder='Select Product'
+						options={productOptions!}
+						{...props}
+					/>
+				)}
+			/>
+			<FormField
+				control={form.control}
+				name='warehouse_1'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
+			/>
+			<FormField
+				control={form.control}
+				name='warehouse_2'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
+			/>
+			<FormField
+				control={form.control}
+				name='warehouse_3'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
+			/>
+			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);
 };

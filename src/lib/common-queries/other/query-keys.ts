@@ -1,70 +1,47 @@
 const otherQK = {
 	all: () => ['other'],
 
-	//Order
-	order: () => [...otherQK.all(), 'order'],
-	orderDescription: () => [...otherQK.all(), 'order-description'],
-	orderEntry: () => [...otherQK.all(), 'order-entry'],
-	orderDescriptionByOrderNumber: (orderNumber: string) => [
-		...otherQK.all(),
-		'order-description-by-order-number',
-		orderNumber,
-	],
-	orderPropertiesByTypeName: (typeName: string) => [...otherQK.all(), 'properties-by-type-name', typeName],
-	orderNumberByMarketingAndPartyUUID: (marketingUUID: string, partyUUID: string) => [
-		...otherQK.all(),
-		'number-by-marketing-and-party',
-		marketingUUID,
-		partyUUID,
-	],
+	//HR
+	hr: () => [...otherQK.all(), 'hr'],
+	//Department
+	department: () => [...otherQK.all(), 'department'],
+	//Designation
+	designation: () => [...otherQK.all(), 'designation'],
+	//Group
+	group: () => [...otherQK.all(), 'group'],
+
+	//Brand
+	brand: () => [...otherQK.all(), 'brand'],
+	//Size
+	size: () => [...otherQK.all(), 'size'],
+	//Category
+	category: () => [...otherQK.all(), 'category'],
+
+	//Branch
+	branch: () => [...otherQK.all(), 'branch'],
+
+	//Product
+	product: () => [...otherQK.all(), 'product'],
 
 	//Vendor
 	vendor: () => [...otherQK.all(), 'vendor'],
 
-	//Bank
-	bank: () => [...otherQK.all(), 'bank'],
+	//Stock
+	stock: () => [...otherQK.all(), 'stock'],
 
-	//Material
-	material: () => [...otherQK.all(), 'material'],
-	materialSection: () => [...otherQK.all(), 'material-section'],
-	materialType: () => [...otherQK.all(), 'material-type'],
+	//Warehouse
+	warehouse: () => [...otherQK.all(), 'warehouse'],
 
-	//Lab Dip
-	labDip: () => [...otherQK.all(), 'lab-dip'],
+	//Room
+	room: () => [...otherQK.all(), 'room'],
 
-	//Slider Item
-	sliderItem: () => [...otherQK.all(), 'slider-item'],
+	//Rack
+	rack: () => [...otherQK.all(), 'rack'],
 
-	//Slider Item
-	threadCountLength: () => [...otherQK.all(), 'thread-count-length'],
-
-	//LC
-	lcByPartyUUID: (uuid: string) => [...otherQK.all(), 'lc-by-party', uuid],
-
-	//PI
-	pi: () => [...otherQK.all(), 'pi'],
-
-	//Department
-	department: () => [...otherQK.all(), 'department'],
-
-	//Designation
-	designation: () => [...otherQK.all(), 'designation'],
-
-	// Party
-	party: () => [...otherQK.all(), 'party'],
-
-	//Buyer
-	buyer: () => [...otherQK.all(), 'buyer'],
-
-	//Marketing
-	marketing: () => [...otherQK.all(), 'marketing'],
-	marketingUser: () => [...otherQK.all(), 'marketing-user'],
-
-	//Merchandiser
-	merchandiserByPartyUUID: (uuid: string) => [...otherQK.all(), 'merchandiser-by-party', uuid],
-
-	//Factory
-	factoryByPartyUUID: (uuid: string) => [...otherQK.all(), 'factory-by-party', uuid],
+	//Floor
+	floor: () => [...otherQK.all(), 'floor'],
+	//Box
+	box: () => [...otherQK.all(), 'box'],
 };
 
 export default otherQK;
