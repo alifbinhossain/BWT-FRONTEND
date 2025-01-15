@@ -1,20 +1,14 @@
-import { floor } from 'lodash';
 import { z } from 'zod';
 
 import {
 	BOOLEAN_REQUIRED,
-	FORTUNE_ZIP_EMAIL_PATTERN,
-	NUMBER,
-	NUMBER_DOUBLE,
 	NUMBER_DOUBLE_REQUIRED,
-	PASSWORD,
-	PHONE_NUMBER_REQUIRED,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
 	STRING_REQUIRED,
 } from '@/utils/validators';
 
-// Department Schema
+//* Department Schema
 export const DEPARTMENT_SCHEMA = z.object({
 	department: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
@@ -27,7 +21,7 @@ export const DEPARTMENT_NULL: Partial<IDepartment> = {
 
 export type IDepartment = z.infer<typeof DEPARTMENT_SCHEMA>;
 
-// Group Schema
+//* Group Schema
 export const GROUP_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
@@ -40,7 +34,7 @@ export const GROUP_NULL: Partial<IGroup> = {
 
 export type IGroup = z.infer<typeof GROUP_SCHEMA>;
 
-//Category Schema
+//* Category Schema
 export const CATEGORY_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	group_uuid: STRING_REQUIRED,
@@ -55,7 +49,7 @@ export const CATEGORY_NULL: Partial<ICategory> = {
 
 export type ICategory = z.infer<typeof CATEGORY_SCHEMA>;
 
-//Brand Schema
+//* Brand Schema
 export const BRAND_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
@@ -68,7 +62,7 @@ export const BRAND_NULL: Partial<IBrand> = {
 
 export type IBrand = z.infer<typeof BRAND_SCHEMA>;
 
-//Size Schema
+//* Size Schema
 export const SIZE_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
@@ -81,7 +75,7 @@ export const SIZE_NULL: Partial<ISize> = {
 
 export type ISize = z.infer<typeof SIZE_SCHEMA>;
 
-//Vendor Schema
+//* Vendor Schema
 export const VENDOR_SCHEMA = z.object({
 	brand_uuid: STRING_REQUIRED,
 	name: STRING_REQUIRED,
@@ -106,7 +100,7 @@ export const VENDOR_NULL: Partial<IVendor> = {
 
 export type IVendor = z.infer<typeof VENDOR_SCHEMA>;
 
-//Product Schema
+//* Product Schema
 export const PRODUCT_SCHEMA = z.object({
 	category_uuid: STRING_REQUIRED,
 	brand_uuid: STRING_REQUIRED,
@@ -133,7 +127,7 @@ export const PRODUCT_NULL: Partial<IProduct> = {
 
 export type IProduct = z.infer<typeof PRODUCT_SCHEMA>;
 
-//Stock Schema
+//* Stock Schema
 export const STOCK_SCHEMA = z.object({
 	product_uuid: STRING_REQUIRED,
 	warehouse_1: NUMBER_DOUBLE_REQUIRED,
@@ -152,7 +146,7 @@ export const STOCK_NULL: Partial<IStock> = {
 
 export type IStock = z.infer<typeof STOCK_SCHEMA>;
 
-//Branch Schema
+//* Branch Schema
 export const BRANCH_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	address: STRING_REQUIRED,
@@ -167,7 +161,7 @@ export const BRANCH_NULL: Partial<IBranch> = {
 
 export type IBranch = z.infer<typeof BRANCH_SCHEMA>;
 
-//Warehouse Schema
+//* Warehouse Schema
 export const WAREHOUSE_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	branch_uuid: STRING_REQUIRED,
@@ -182,7 +176,7 @@ export const WAREHOUSE_NULL: Partial<IWarehouse> = {
 
 export type IWarehouse = z.infer<typeof WAREHOUSE_SCHEMA>;
 
-//Room Schema
+//* Room Schema
 export const ROOM_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	warehouse_uuid: STRING_REQUIRED,
@@ -197,7 +191,7 @@ export const ROOM_NULL: Partial<IRoom> = {
 
 export type IRoom = z.infer<typeof ROOM_SCHEMA>;
 
-//Rack Schema
+//* Rack Schema
 export const RACK_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	room_uuid: STRING_REQUIRED,
@@ -212,7 +206,7 @@ export const RACK_NULL: Partial<IRack> = {
 
 export type IRack = z.infer<typeof RACK_SCHEMA>;
 
-//Floor Schema
+//* Floor Schema
 export const FLOOR_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	rack_uuid: STRING_REQUIRED,
@@ -227,7 +221,7 @@ export const FLOOR_NULL: Partial<IFloor> = {
 
 export type IFloor = z.infer<typeof FLOOR_SCHEMA>;
 
-//Box Schema
+//* Box Schema
 export const BOX_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	floor_uuid: STRING_REQUIRED,
@@ -242,7 +236,7 @@ export const BOX_NULL: Partial<IBox> = {
 
 export type IBox = z.infer<typeof BOX_SCHEMA>;
 
-// Purchase Schema
+//* Purchase Schema
 export const PURCHASE_SCHEMA = z.object({
 	vendor_uuid: STRING_REQUIRED,
 	branch_uuid: STRING_REQUIRED,

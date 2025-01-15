@@ -1,4 +1,4 @@
-// Group
+//* Group
 export type IGroupTableData = {
 	uuid: string;
 	group_uuid: string;
@@ -7,7 +7,7 @@ export type IGroupTableData = {
 	updated_at: string;
 	remarks: string;
 };
-// Category
+//* Category
 export type ICategoryTableData = {
 	uuid: string;
 	id: string;
@@ -16,7 +16,7 @@ export type ICategoryTableData = {
 	updated_at: string;
 	remarks: string;
 };
-// Brand
+//* Brand
 export type IBrandTableData = {
 	uuid: string;
 	id: string;
@@ -25,7 +25,7 @@ export type IBrandTableData = {
 	updated_at: string;
 	remarks: string;
 };
-// Size
+//* Size
 export type ISizeTableData = {
 	uuid: string;
 	name: string;
@@ -33,7 +33,7 @@ export type ISizeTableData = {
 	updated_at: string;
 	remarks: string;
 };
-//Vendor
+//* Vendor
 export type IVendorTableData = {
 	uuid: string;
 	brand_uuid: string;
@@ -47,7 +47,7 @@ export type IVendorTableData = {
 	updated_at: string;
 	remarks: string;
 };
-//Product
+//* Product
 export type IProductTableData = {
 	uuid: string;
 	category_uuid: string;
@@ -61,7 +61,7 @@ export type IProductTableData = {
 	updated_at: string;
 	remarks: string;
 };
-//Purchase
+//* Purchase
 export type IPurchaseTableData = {
 	uuid: string;
 	id: string;
@@ -73,7 +73,7 @@ export type IPurchaseTableData = {
 	updated_at: string;
 	remarks: string;
 };
-//Purchase Entry
+//* Purchase Entry
 export type IPurchaseEntryTableData = {
 	uuid: string;
 	purchase_uuid: string;
@@ -87,7 +87,7 @@ export type IPurchaseEntryTableData = {
 	updated_at: string;
 	remarks: string;
 };
-// Purchase Details
+//* Purchase Details
 export type IPurchaseDetails = {
 	uuid: string;
 	id: string;
@@ -102,7 +102,7 @@ export type IPurchaseDetails = {
 	remarks: string;
 	purchase_entry: IPurchaseEntryTableData[];
 };
-//Stock
+//* Stock
 export type IStockTableData = {
 	uuid: string;
 	id: string;
@@ -112,7 +112,7 @@ export type IStockTableData = {
 	warehouse3: number;
 	remarks: string;
 };
-//Branch
+//* Branch
 export type IBranchTableData = {
 	uuid: string;
 	name: string;
@@ -121,7 +121,7 @@ export type IBranchTableData = {
 	updated_at: string;
 	remarks: string;
 };
-//Warehouse
+//* Warehouse
 export type IWarehouseTableData = {
 	uuid: string;
 	brach_uuid: string;
@@ -130,7 +130,7 @@ export type IWarehouseTableData = {
 	updated_at: string;
 	remarks: string;
 };
-//Room
+//* Room
 export type IRoomTableData = {
 	uuid: string;
 	warehouse_uuid: string;
@@ -139,7 +139,7 @@ export type IRoomTableData = {
 	updated_at: string;
 	remarks: string;
 };
-//Rack
+//* Rack
 export type IRackTableData = {
 	uuid: string;
 	room_uuid: string;
@@ -148,7 +148,7 @@ export type IRackTableData = {
 	updated_at: string;
 	remarks: string;
 };
-//Floor
+//* Floor
 export type IFloorTableData = {
 	uuid: string;
 	rack_uuid: string;
@@ -157,7 +157,7 @@ export type IFloorTableData = {
 	updated_at: string;
 	remarks: string;
 };
-//Box
+//* Box
 export type IBoxTableData = {
 	uuid: string;
 	floor_uuid: string;

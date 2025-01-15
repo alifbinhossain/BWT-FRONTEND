@@ -18,7 +18,7 @@ const Box = () => {
 
 	const pageInfo = useMemo(() => new PageInfo('Store/Box', url, 'store__box'), [url]);
 
-	// Add/Update Modal state
+	//* Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 
 	const handleCreate = () => {
@@ -32,14 +32,14 @@ const Box = () => {
 		setIsOpenAddModal(true);
 	};
 
-	// Delete Modal state
-	// Single Delete Item
+	//* Delete Modal state
+	//* Single Delete Item
 	const [deleteItem, setDeleteItem] = useState<{
 		id: string;
 		name: string;
 	} | null>(null);
 
-	// Single Delete Handler
+	//* Single Delete Handler
 	const handleDelete = (row: Row<IBoxTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
@@ -47,10 +47,10 @@ const Box = () => {
 		});
 	};
 
-	// Delete All Item
+	//* Delete All Item
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
-	// Delete All Row Handlers
+	//* Delete All Row Handlers
 	const handleDeleteAll = (rows: Row<IBoxTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
@@ -63,7 +63,7 @@ const Box = () => {
 		);
 	};
 
-	// Table Columns
+	//* Table Columns
 	const columns = boxColumns();
 
 	return (

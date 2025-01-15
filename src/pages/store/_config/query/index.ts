@@ -1,7 +1,4 @@
-import { IParams } from '@/types';
 import useTQuery from '@/hooks/useTQuery';
-
-import addUrlParams from '@/utils/routes/addUrlParams';
 
 import { storeQK } from './queryKeys';
 

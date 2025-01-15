@@ -1,7 +1,4 @@
 import { useEffect } from 'react';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
@@ -10,45 +7,16 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherBox, useOtherFloor } from '@/lib/common-queries/other';
+import { useOtherFloor } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IBoxTableData } from '../_config/columns/columns.type';
 import { useStoreBoxesByUUID } from '../_config/query';
 import { BOX_NULL, BOX_SCHEMA } from '../_config/schema';
+import { IBoxAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IBoxTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IBoxTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IBoxAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
