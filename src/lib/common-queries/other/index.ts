@@ -33,6 +33,12 @@ export const useOtherProduct = <T>() =>
 		queryKey: otherQK.product(),
 		url: `/other/product/value/label`,
 	});
+//GET OTHER VENDOR
+export const useOtherVendor = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.vendor(),
+		url: `/other/vendor/value/label`,
+	});
 //GET OTHER STOCK
 export const useOtherStock = <T>() =>
 	useTQuery<T>({
