@@ -56,7 +56,7 @@ export const categoryColumns = (): ColumnDef<ICategoryTableData>[] => [
 // Brand Columns
 export const brandColumns = (): ColumnDef<IBrandTableData>[] => [
 	{
-		accessorKey: 'id',
+		accessorKey: 'brand_id',
 		header: 'ID',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
@@ -184,7 +184,7 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 // Purchase Columns
 export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 	{
-		accessorKey: 'id',
+		accessorKey: 'purchase_id',
 		header: 'ID',
 		enableColumnFilter: false,
 		cell: (info) => {
@@ -254,7 +254,7 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 // Stock Columns
 export const stockColumns = (): ColumnDef<IStockTableData>[] => [
 	{
-		accessorKey: 'id',
+		accessorKey: 'stock_id',
 		header: 'ID',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
