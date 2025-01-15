@@ -8,15 +8,21 @@ import { formatDateTable } from '@/utils/formatDate';
 import { IPurchaseDetails } from '../../_config/columns/columns.type'; // TODO: update data type
 
 const Information: React.FC<{ data: IPurchaseDetails }> = ({ data }) => {
-	// TODO: update the renderItems to match the data type
+	console.log({
+		data,
+	});
 	const renderItems = (): ITableListItems => {
 		return [
 			{
 				label: 'id',
 				value: data.id,
 			},
-			{ label: 'Stock', value: data.stock },
-			{ label: 'UUID', value: data.uuid },
+			{ label: 'Vendor', value: data.vendor_name },
+			{ label: 'Branch', value: data.branch_name },
+			{
+				label: 'Date',
+				value: formatDateTable(data.date),
+			},
 			{
 				label: 'Created At',
 				value: formatDateTable(data.created_at),
