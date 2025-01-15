@@ -200,6 +200,12 @@ export const useOtherCategory = <T>() =>
 		queryKey: otherQK.category(),
 		url: `/other/category/value/label`,
 	});
+//GET OTHER PRODUCT
+export const useOtherProduct = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.product(),
+		url: `/other/product/value/label`,
+	});
 
 //GET OTHER Branch
 export const useOtherBranch = <T>() =>

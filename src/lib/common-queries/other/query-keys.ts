@@ -79,6 +79,9 @@ const otherQK = {
 	//Branch
 	branch: () => [...otherQK.all(), 'branch'],
 
+	//Product
+	product: () => [...otherQK.all(), 'product'],
+
 	//Warehouse
 	warehouse: () => [...otherQK.all(), 'warehouse'],
 

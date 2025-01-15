@@ -5,16 +5,16 @@ import { Row } from '@tanstack/react-table';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { groupColumns } from '../_config/columns';
-import { IGroupTableData } from '../_config/columns/columns.type';
-import { useHrDepartments, useStoreGroups } from '../_config/query';
+import { stockColumns } from '../_config/columns';
+import { IStockTableData } from '../_config/columns/columns.type';
+import { useStoreStocks } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Group = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreGroups<IGroupTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreStocks<IStockTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Store/Group', url, 'admin__user_department'), [url]);
 
@@ -25,9 +25,9 @@ const Group = () => {
 		setIsOpenAddModal(true);
 	};
 
-	const [updatedData, setUpdatedData] = useState<IGroupTableData | null>(null);
+	const [updatedData, setUpdatedData] = useState<IStockTableData | null>(null);
 
-	const handleUpdate = (row: Row<IGroupTableData>) => {
+	const handleUpdate = (row: Row<IStockTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
@@ -40,10 +40,10 @@ const Group = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<IGroupTableData>) => {
+	const handleDelete = (row: Row<IStockTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
-			name: row?.original?.name,
+			name: row?.original?.id,
 		});
 	};
 
@@ -51,20 +51,20 @@ const Group = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IGroupTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IStockTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
 			selectedRows.map((row) => ({
 				id: row.uuid,
-				name: row.name,
+				name: row.id,
 				checked: true,
 			}))
 		);
 	};
 
 	// Table Columns
-	const columns = groupColumns();
+	const columns = stockColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
