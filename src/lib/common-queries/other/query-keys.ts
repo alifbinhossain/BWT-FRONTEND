@@ -82,6 +82,9 @@ const otherQK = {
 	//Product
 	product: () => [...otherQK.all(), 'product'],
 
+	//Stock
+	stock: () => [...otherQK.all(), 'stock'],
+
 	//Warehouse
 	warehouse: () => [...otherQK.all(), 'warehouse'],
 

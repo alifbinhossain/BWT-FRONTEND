@@ -55,7 +55,8 @@ export type IProductTableData = {
 	size_uuid: string;
 	name: string;
 	warranty_days: number;
-	is_maintaing_stock: boolean;
+	service_warranty_days: number;
+	is_maintaining_stock: boolean;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
@@ -67,7 +68,7 @@ export type IPurchaseTableData = {
 	vendor_uuid: string;
 	branch_uuid: string;
 	date: string;
-	payment_method: string;
+	payment_mode: string;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
@@ -84,6 +85,19 @@ export type IPurchaseEntryTableData = {
 	created_at: string;
 	updated_at: string;
 	remarks: string;
+};
+// Purchase Details
+export type IPurchaseDetails = {
+	uuid: string;
+	id: string;
+	vendor_uuid: string;
+	branch_uuid: string;
+	date: string;
+	payment_mode: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+	purchase_entry: IPurchaseEntryTableData[];
 };
 //Stock
 export type IStockTableData = {

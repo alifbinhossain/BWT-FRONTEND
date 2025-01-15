@@ -123,17 +123,17 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.name} Group` : 'Add New Group'}
+			title={isUpdate ? `Update ${updatedData?.name} Product` : 'Add New Product'}
 			form={form}
 			onSubmit={onSubmit}
 		>
 			<FormField
 				control={form.control}
-				name='is_maintaing_stock'
+				name='is_maintaining_stock'
 				render={(props) => (
 					<CoreForm.Checkbox
 						label='Maintain Stock'
-						defaultChecked={form.getValues('is_maintaing_stock')}
+						defaultChecked={form.getValues('is_maintaining_stock')}
 						{...props}
 					/>
 				)}
@@ -172,8 +172,8 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 			/>
 			<FormField
 				control={form.control}
-				name='service_warranty'
-				render={(props) => <CoreForm.Input {...props} />}
+				name='service_warranty_days'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
 			/>
 			<FormField
 				control={form.control}

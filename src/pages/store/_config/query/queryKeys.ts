@@ -68,4 +68,8 @@ export const storeQK = {
 	//Box
 	box: () => [...storeQK.all(), 'box'],
 	boxByUUID: (uuid: string) => [...storeQK.box(), uuid],
+
+	//Purchase
+	purchase: () => [...storeQK.all(), 'purchase'],
+	purchaseByUUID: (uuid: string) => [...storeQK.purchase(), uuid],
 };

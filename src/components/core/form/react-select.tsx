@@ -40,7 +40,7 @@ const FormReactSelect: React.FC<FormReactSelectProps> = ({
 										return options.find((option: IFormSelectOption) => option.value === item);
 									})
 								: []
-							: options.filter((item: IFormSelectOption) => item.value === field.value)
+							: options?.filter((item: IFormSelectOption) => item.value === field.value)
 					}
 					// value={() => {
 					// 	if (!isMulti) {

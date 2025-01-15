@@ -206,6 +206,12 @@ export const useOtherProduct = <T>() =>
 		queryKey: otherQK.product(),
 		url: `/other/product/value/label`,
 	});
+//GET OTHER STOCK
+export const useOtherStock = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.stock(),
+		url: `/other/stock/value/label`,
+	});
 
 //GET OTHER Branch
 export const useOtherBranch = <T>() =>

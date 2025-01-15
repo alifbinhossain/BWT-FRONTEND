@@ -210,3 +210,17 @@ export const useStoreBoxesByUUID = <T>(uuid: string) =>
 		url: `/store/box/${uuid}`,
 		enabled: !!uuid,
 	});
+
+//* Purchase
+export const useStorePurchases = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.purchase(),
+		url: '/store/purchase',
+	});
+
+export const useStorePurchasesByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.purchaseByUUID(uuid),
+		url: `/store/purchase/${uuid}`,
+		enabled: !!uuid,
+	});

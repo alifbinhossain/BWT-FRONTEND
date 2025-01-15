@@ -12,6 +12,7 @@ import {
 	IFloorTableData,
 	IGroupTableData,
 	IProductTableData,
+	IPurchaseDetails,
 	IPurchaseTableData,
 	IRackTableData,
 	IRoomTableData,
@@ -152,7 +153,7 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 		cell: (info) => info.getValue(),
 	},
 	{
-		accessorKey: 'service_warranty',
+		accessorKey: 'service_warranty_days',
 		header: 'Service Warranty',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
@@ -167,7 +168,7 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 		accessorKey: 'is_maintaining_stock',
 		header: 'Maintaining Stock',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
+		cell: (info) => (info.getValue() ? 'Yes' : 'No'),
 	},
 ];
 
@@ -198,8 +199,47 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		cell: (info) => info.getValue(),
 	},
 	{
-		accessorKey: 'payment_mood',
+		accessorKey: 'payment_mode',
 		header: 'Payment Mode',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];
+// Purchase Entry Columns
+export const purchaseEntryColumns = (): ColumnDef<IPurchaseDetails>[] => [
+	{
+		accessorKey: 'id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'stock_name',
+		header: 'Stock',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'serial_no',
+		header: 'Serial No',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'Quantity',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'price_per_unit',
+		header: 'Price Per Unit',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'discount',
+		header: 'Discount',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
 	},
@@ -214,13 +254,7 @@ export const stockColumns = (): ColumnDef<IStockTableData>[] => [
 		cell: (info) => info.getValue(),
 	},
 	{
-		accessorKey: 'uuid',
-		header: 'UUID',
-		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
-	},
-	{
-		accessorKey: 'product_uuid',
+		accessorKey: 'product_name',
 		header: 'Product',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
