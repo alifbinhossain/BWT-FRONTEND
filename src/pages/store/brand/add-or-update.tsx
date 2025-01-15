@@ -12,16 +12,16 @@ import { AddModal } from '@core/modal';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IGroupTableData } from '../_config/columns/columns.type';
-import { useStoreGroups, useStoreGroupsByUUID } from '../_config/query';
-import { GROUP_NULL, GROUP_SCHEMA } from '../_config/schema';
+import { IBrandTableData } from '../_config/columns/columns.type';
+import { useStoreBrandsByUUID } from '../_config/query';
+import { BRAND_NULL, BRAND_SCHEMA } from '../_config/schema';
 
 interface IAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IGroupTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IGroupTableData | null>>;
+	updatedData?: IBrandTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<IBrandTableData | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
 		AxiosError<IResponse<any>, any>,
@@ -58,13 +58,13 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useStoreGroupsByUUID<IGroupTableData>(updatedData?.uuid as string);
+	const { data } = useStoreBrandsByUUID<IBrandTableData>(updatedData?.uuid as string);
 
-	const form = useRHF(GROUP_SCHEMA, GROUP_NULL);
+	const form = useRHF(BRAND_SCHEMA, BRAND_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(GROUP_NULL);
+		form.reset(BRAND_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -77,7 +77,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: IGroupTableData) {
+	async function onSubmit(values: IBrandTableData) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({
@@ -107,7 +107,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.name} Group` : 'Add New Group'}
+			title={isUpdate ? `Update ${updatedData?.name} Brand` : 'Add New Brand'}
 			form={form}
 			onSubmit={onSubmit}
 		>

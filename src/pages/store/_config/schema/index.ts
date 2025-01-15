@@ -83,7 +83,6 @@ export type ISize = z.infer<typeof SIZE_SCHEMA>;
 //Vendor Schema
 export const VENDOR_SCHEMA = z.object({
 	brand_uuid: STRING_REQUIRED,
-	uuid: STRING_REQUIRED,
 	name: STRING_REQUIRED,
 	company_name: STRING_REQUIRED,
 	phone: STRING_REQUIRED,
@@ -95,7 +94,6 @@ export const VENDOR_SCHEMA = z.object({
 
 export const VENDOR_NULL: Partial<IVendor> = {
 	brand_uuid: '',
-	uuid: '',
 	name: '',
 	company_name: '',
 	phone: '',
@@ -113,9 +111,9 @@ export const PRODUCT_SCHEMA = z.object({
 	brand_uuid: STRING_REQUIRED,
 	size_uuid: STRING_REQUIRED,
 	name: STRING_REQUIRED,
-	warranty_days: STRING_REQUIRED,
-	service_warranty: z.enum(['service', 'inventory']),
-	type: STRING_REQUIRED,
+	warranty_days: NUMBER_DOUBLE_REQUIRED,
+	type: z.enum(['service', 'inventory']),
+	service_warranty: STRING_REQUIRED,
 	is_maintaing_stock: BOOLEAN_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
@@ -125,9 +123,9 @@ export const PRODUCT_NULL: Partial<IProduct> = {
 	brand_uuid: '',
 	size_uuid: '',
 	name: '',
-	warranty_days: '',
-	service_warranty: 'service',
-	type: '',
+	warranty_days: 0,
+	service_warranty: '',
+	type: 'service',
 	is_maintaing_stock: false,
 	remarks: '',
 };

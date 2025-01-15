@@ -5,18 +5,18 @@ import { Row } from '@tanstack/react-table';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { groupColumns } from '../_config/columns';
-import { IGroupTableData } from '../_config/columns/columns.type';
-import { useHrDepartments, useStoreGroups } from '../_config/query';
+import { boxColumns } from '../_config/columns';
+import { IBoxTableData } from '../_config/columns/columns.type';
+import { useStoreBoxes } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Group = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreGroups<IGroupTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreBoxes<IBoxTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Group', url, 'admin__user_department'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/Box', url, 'store__box'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -25,9 +25,9 @@ const Group = () => {
 		setIsOpenAddModal(true);
 	};
 
-	const [updatedData, setUpdatedData] = useState<IGroupTableData | null>(null);
+	const [updatedData, setUpdatedData] = useState<IBoxTableData | null>(null);
 
-	const handleUpdate = (row: Row<IGroupTableData>) => {
+	const handleUpdate = (row: Row<IBoxTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
@@ -40,7 +40,7 @@ const Group = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<IGroupTableData>) => {
+	const handleDelete = (row: Row<IBoxTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
 			name: row?.original?.name,
@@ -51,7 +51,7 @@ const Group = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IGroupTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IBoxTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
@@ -64,7 +64,7 @@ const Group = () => {
 	};
 
 	// Table Columns
-	const columns = groupColumns();
+	const columns = boxColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

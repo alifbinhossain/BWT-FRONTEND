@@ -20,6 +20,7 @@ export type ICategoryTableData = {
 export type IBrandTableData = {
 	uuid: string;
 	id: string;
+	name: string;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
@@ -53,7 +54,7 @@ export type IProductTableData = {
 	brand_uuid: string;
 	size_uuid: string;
 	name: string;
-	warranty_days: string;
+	warranty_days: number;
 	is_maintaing_stock: boolean;
 	created_at: string;
 	updated_at: string;

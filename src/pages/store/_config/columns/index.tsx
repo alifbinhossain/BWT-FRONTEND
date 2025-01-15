@@ -115,7 +115,7 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 		accessorKey: 'is_active',
 		header: 'Active',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
+		cell: (info) => (info.getValue() ? 'Active' : 'Inactive'),
 	},
 ];
 

@@ -5,23 +5,25 @@ import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
+import { useOtherRack } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IGroupTableData } from '../_config/columns/columns.type';
-import { useStoreGroups, useStoreGroupsByUUID } from '../_config/query';
-import { GROUP_NULL, GROUP_SCHEMA } from '../_config/schema';
+import { IFloorTableData } from '../_config/columns/columns.type';
+import { useStoreFloorsByUUID } from '../_config/query';
+import { FLOOR_NULL, FLOOR_SCHEMA } from '../_config/schema';
 
 interface IAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IGroupTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IGroupTableData | null>>;
+	updatedData?: IFloorTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<IFloorTableData | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
 		AxiosError<IResponse<any>, any>,
@@ -58,13 +60,14 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useStoreGroupsByUUID<IGroupTableData>(updatedData?.uuid as string);
+	const { data } = useStoreFloorsByUUID<IFloorTableData>(updatedData?.uuid as string);
+	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
 
-	const form = useRHF(GROUP_SCHEMA, GROUP_NULL);
+	const form = useRHF(FLOOR_SCHEMA, FLOOR_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(GROUP_NULL);
+		form.reset(FLOOR_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -77,7 +80,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: IGroupTableData) {
+	async function onSubmit(values: IFloorTableData) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({
@@ -107,11 +110,18 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.name} Group` : 'Add New Group'}
+			title={isUpdate ? `Update ${updatedData?.name} Floor` : 'Add New Floor'}
 			form={form}
 			onSubmit={onSubmit}
 		>
 			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
+			<FormField
+				control={form.control}
+				name='rack_uuid'
+				render={(props) => (
+					<CoreForm.ReactSelect label='Rack' placeholder='Select Rack' options={rackOption!} {...props} />
+				)}
+			/>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

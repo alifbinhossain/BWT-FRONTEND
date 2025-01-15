@@ -65,6 +65,33 @@ const otherQK = {
 
 	//Factory
 	factoryByPartyUUID: (uuid: string) => [...otherQK.all(), 'factory-by-party', uuid],
+
+	//Group
+	group: () => [...otherQK.all(), 'group'],
+
+	//Brand
+	brand: () => [...otherQK.all(), 'brand'],
+	//Size
+	size: () => [...otherQK.all(), 'size'],
+	//Category
+	category: () => [...otherQK.all(), 'category'],
+
+	//Branch
+	branch: () => [...otherQK.all(), 'branch'],
+
+	//Warehouse
+	warehouse: () => [...otherQK.all(), 'warehouse'],
+
+	//Room
+	room: () => [...otherQK.all(), 'room'],
+
+	//Rack
+	rack: () => [...otherQK.all(), 'rack'],
+
+	//Floor
+	floor: () => [...otherQK.all(), 'floor'],
+	//Box
+	box: () => [...otherQK.all(), 'box'],
 };
 
 export default otherQK;
