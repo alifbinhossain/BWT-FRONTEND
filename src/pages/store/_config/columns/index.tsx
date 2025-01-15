@@ -186,7 +186,10 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		accessorKey: 'id',
 		header: 'ID',
 		enableColumnFilter: false,
-		cell: (info) => <LinkOnly uri={`/store/purchase/${info.getValue()}/details`} title={info.getValue() as string} />,
+		cell: (info) => {
+			const uuid = info.row.original.uuid;
+			return <LinkOnly uri={`/store/purchase/${uuid}/details`} title={info.getValue() as string} />;
+		},
 	},
 	{
 		accessorKey: 'vendor_name',

@@ -200,6 +200,6 @@ export const useStorePurchases = <T>() =>
 export const useStorePurchasesByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: storeQK.purchaseByUUID(uuid),
-		url: `/store/purchase/${uuid}`,
+		url: `/store/purchase/purchase-entry-details/by/${uuid}`,
 		enabled: !!uuid,
 	});

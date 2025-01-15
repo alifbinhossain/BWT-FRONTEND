@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { IPurchaseDetails } from '../../_config/columns/columns.type'; 
-import { useTestDetailsByUUID } from '../../_config/query'; // TODO: replace with details query
+import { IPurchaseDetails } from '../../_config/columns/columns.type';
+import { useStorePurchasesByUUID } from '../../_config/query'; // TODO: replace with details query
 import EntryTable from './entry-table';
 import Information from './information';
 
 const DetailsPage = () => {
 	const { id } = useParams();
-	const { data, isLoading } = useTestDetailsByUUID<IPurchaseDetails>(id as string); // TODO: update query and data type
+	const { data, isLoading } = useStorePurchasesByUUID<IPurchaseDetails>(id as string); // TODO: update query and data type
 
 	useEffect(() => {
-		document.title = 'Purchase Details'; 
+		document.title = 'Purchase Details';
 	}, []);
 
 	if (isLoading) return <div>Loading...</div>;

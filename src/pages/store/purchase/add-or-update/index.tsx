@@ -161,6 +161,12 @@ const AddOrUpdate = () => {
 			quantity: 0,
 			price_per_unit: 0,
 			discount: 0,
+			remarks: '',
+			warehouse_uuid: '',
+			room_uuid: '',
+			rack_uuid: '',
+			floor_uuid: '',
+			box_uuid: '',
 		});
 	};
 
@@ -191,6 +197,12 @@ const AddOrUpdate = () => {
 			quantity: field.quantity,
 			price_per_unit: field.price_per_unit,
 			discount: field.discount,
+			remarks: field.remarks,
+			warehouse_uuid: field.warehouse_uuid,
+			room_uuid: field.room_uuid,
+			rack_uuid: field.rack_uuid,
+			floor_uuid: field.floor_uuid,
+			box_uuid: field.box_uuid,
 		});
 	};
 

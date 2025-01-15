@@ -138,7 +138,7 @@ const StoreRoutes: IRoute[] = [
 			},
 			{
 				name: 'Purchase Details',
-				path: '/store/purchase/:id/details',
+				path: '/store/purchase/:uuid/details',
 				element: <PurchaseDetails />,
 				page_name: 'store__purchase_details',
 				hidden: true,

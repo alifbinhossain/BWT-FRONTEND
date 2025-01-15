@@ -1,3 +1,4 @@
+import { floor } from 'lodash';
 import { z } from 'zod';
 
 import {
@@ -257,6 +258,12 @@ export const PURCHASE_SCHEMA = z.object({
 			quantity: NUMBER_DOUBLE_REQUIRED,
 			price_per_unit: NUMBER_DOUBLE_REQUIRED,
 			discount: NUMBER_DOUBLE_REQUIRED.default(0),
+			remarks: STRING_NULLABLE,
+			warehouse_uuid: STRING_REQUIRED,
+			room_uuid: STRING_REQUIRED,
+			box_uuid: STRING_REQUIRED,
+			rack_uuid: STRING_REQUIRED,
+			floor_uuid: STRING_REQUIRED,
 		})
 	),
 });
@@ -276,6 +283,12 @@ export const PURCHASE_NULL: Partial<IPurchase> = {
 			quantity: 0,
 			price_per_unit: 0,
 			discount: 0,
+			remarks: '',
+			warehouse_uuid: '',
+			room_uuid: '',
+			box_uuid: '',
+			rack_uuid: '',
+			floor_uuid: '',
 		},
 	],
 };
