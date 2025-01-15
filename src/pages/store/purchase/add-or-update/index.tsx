@@ -60,7 +60,7 @@ const AddOrUpdate = () => {
 				if (item.uuid === undefined) {
 					const newData = {
 						...item,
-						purchase_description_uuid: uuid,
+						purchase_uuid: uuid,
 						created_at: getDateTime(),
 						created_by: user?.uuid,
 						uuid: nanoid(),
@@ -89,7 +89,7 @@ const AddOrUpdate = () => {
 					.then(() => form.reset(PURCHASE_NULL))
 					.then(() => {
 						invalidateTestDetails(); // TODO: Update invalidate query
-						// navigate(`/test/type3/${id}`);
+						navigate(`/store/purchase/${uuid}/details`);
 					});
 			} catch (err) {
 				console.error(`Error with Promise.all: ${err}`);
@@ -147,7 +147,7 @@ const AddOrUpdate = () => {
 				.then(() => form.reset(PURCHASE_NULL)) // TODO: Update reset data
 				.then(() => {
 					invalidateTestDetails(); // TODO: Update invalidate query
-					navigate(`/test/type3`); // TODO: Update navigate url
+					navigate(`/store/purchase/${new_purchase_uuid}/details`);
 				});
 		} catch (err) {
 			console.error(`Error with Promise.all: ${err}`);
