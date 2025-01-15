@@ -78,6 +78,7 @@ export type IPurchaseEntryTableData = {
 	uuid: string;
 	purchase_uuid: string;
 	stock_uuid: string;
+	stock_id: string;
 	serial_no: string;
 	quantity: string;
 	price_per_unit: string;
@@ -91,7 +92,9 @@ export type IPurchaseDetails = {
 	uuid: string;
 	id: string;
 	vendor_uuid: string;
+	vendor_name: string;
 	branch_uuid: string;
+	branch_name: string;
 	date: string;
 	payment_mode: string;
 	created_at: string;

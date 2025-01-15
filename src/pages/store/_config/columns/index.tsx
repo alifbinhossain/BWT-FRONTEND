@@ -17,6 +17,7 @@ import {
 	IGroupTableData,
 	IProductTableData,
 	IPurchaseDetails,
+	IPurchaseEntryTableData,
 	IPurchaseTableData,
 	IRackTableData,
 	IRoomTableData,
@@ -217,15 +218,9 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 	},
 ];
 // Purchase Entry Columns
-export const purchaseEntryColumns = (): ColumnDef<IPurchaseDetails>[] => [
+export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => [
 	{
-		accessorKey: 'id',
-		header: 'ID',
-		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
-	},
-	{
-		accessorKey: 'stock_name',
+		accessorKey: 'stock_id',
 		header: 'Stock',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
