@@ -1,14 +1,16 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
+import useAccess from '@/hooks/useAccess';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { stockColumns } from '../_config/columns';
-import { IStockTableData } from '../_config/columns/columns.type';
+import { IStockActionTrx, IStockTableData } from '../_config/columns/columns.type';
 import { useStoreStocks } from '../_config/query';
 
+const AgainstTrx = lazy(() => import('./trx'));
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
@@ -17,6 +19,9 @@ const Stock = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreStocks<IStockTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Store/Stock', url, 'store__stock'), [url]);
+
+	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
+	const actionTrxAccess = pageAccess.includes('click_trx');
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -43,7 +48,7 @@ const Stock = () => {
 	const handleDelete = (row: Row<IStockTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
-			name: row?.original?.id,
+			name: row?.original?.stock_id,
 		});
 	};
 
@@ -57,14 +62,26 @@ const Stock = () => {
 		setDeleteItems(
 			selectedRows.map((row) => ({
 				id: row.uuid,
-				name: row.id,
+				name: row.stock_id,
 				checked: true,
 			}))
 		);
 	};
 
+	// Action Trx Modal state
+	const [isOpenActionTrxModal, setIsOpenActionTrxModal] = useState(false);
+	const [updateActionTrxData, setUpdateActionTrxData] = useState<IStockActionTrx | null>(null);
+
+	const handleAgainstTrx = (row: Row<IStockTableData>) => {
+		setUpdateActionTrxData({
+			uuid: row.original.uuid,
+			name: row.original.product_name,
+		});
+		setIsOpenActionTrxModal(true);
+	};
+
 	// Table Columns
-	const columns = stockColumns();
+	const columns = stockColumns({ actionTrxAccess, handleAgainstTrx });
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -106,6 +123,16 @@ const Stock = () => {
 							setDeleteItems,
 							url,
 							deleteData,
+						}}
+					/>,
+					<AgainstTrx
+						{...{
+							open: isOpenActionTrxModal,
+							setOpen: setIsOpenActionTrxModal,
+							updatedData: updateActionTrxData,
+							setUpdatedData: setUpdateActionTrxData,
+							postData,
+							url: '/store/internal-transfer',
 						}}
 					/>,
 				])}

@@ -137,12 +137,19 @@ export type IPurchaseReturnDetails = {
 //* Stock
 export type IStockTableData = {
 	uuid: string;
-	id: string;
+	stock_id: string;
 	product_uuid: string;
+	product_name: string;
 	warehouse1: number;
 	warehouse2: number;
 	warehouse3: number;
 	remarks: string;
+};
+//* Stock Transfer
+
+export type IStockActionTrx = {
+	uuid: string;
+	name: string;
 };
 //* Branch
 export type IBranchTableData = {

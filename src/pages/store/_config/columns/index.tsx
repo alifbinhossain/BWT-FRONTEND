@@ -1,6 +1,7 @@
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
+import Transfer from '@/components/buttons/transfer';
 import { LinkOnly } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
@@ -259,7 +260,13 @@ export const purchaseReturnEntryColumns = (): ColumnDef<IPurchaseReturnEntryTabl
 ];
 
 //* Stock Columns
-export const stockColumns = (): ColumnDef<IStockTableData>[] => [
+export const stockColumns = ({
+	actionTrxAccess,
+	handleAgainstTrx,
+}: {
+	actionTrxAccess: boolean;
+	handleAgainstTrx: (row: Row<any>) => void;
+}): ColumnDef<IStockTableData>[] => [
 	{
 		accessorKey: 'stock_id',
 		header: 'ID',
@@ -269,6 +276,16 @@ export const stockColumns = (): ColumnDef<IStockTableData>[] => [
 		accessorKey: 'product_name',
 		header: 'Product',
 		enableColumnFilter: false,
+	},
+	{
+		id: 'action_trx',
+		header: 'Material Trx',
+		cell: (info) => <Transfer onClick={() => handleAgainstTrx(info.row)} />,
+		size: 40,
+		meta: {
+			hidden: !actionTrxAccess,
+			disableFullFilter: true,
+		},
 	},
 	{
 		accessorKey: 'warehouse_1',

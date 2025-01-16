@@ -146,6 +146,35 @@ export const STOCK_NULL: Partial<IStock> = {
 
 export type IStock = z.infer<typeof STOCK_SCHEMA>;
 
+//* Internal Transfer Schema
+export const INTERNAL_TRANSFER_SCHEMA = z.object({
+	stock_uuid: STRING_REQUIRED,
+	from_branch_uuid: STRING_REQUIRED,
+	to_branch_uuid: STRING_REQUIRED,
+	warehouse_uuid: STRING_REQUIRED,
+	room_uuid: STRING_REQUIRED,
+	rack_uuid: STRING_REQUIRED,
+	floor_uuid: STRING_REQUIRED,
+	box_uuid: STRING_REQUIRED,
+	quantity: NUMBER_DOUBLE_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const INTERNAL_TRANSFER_NULL: Partial<IInternalTransfer> = {
+	stock_uuid: '',
+	from_branch_uuid: '',
+	to_branch_uuid: '',
+	warehouse_uuid: '',
+	room_uuid: '',
+	rack_uuid: '',
+	floor_uuid: '',
+	box_uuid: '',
+	quantity: 0,
+	remarks: null,
+};
+
+export type IInternalTransfer = z.infer<typeof INTERNAL_TRANSFER_SCHEMA>;
+
 //* Branch Schema
 export const BRANCH_SCHEMA = z.object({
 	name: STRING_REQUIRED,

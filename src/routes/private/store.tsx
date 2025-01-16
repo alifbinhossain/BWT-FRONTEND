@@ -72,7 +72,7 @@ const StoreRoutes: IRoute[] = [
 				path: '/store/stock',
 				element: <Stock />,
 				page_name: 'store__stock',
-				actions: ['create', 'read', 'update', 'delete'],
+				actions: ['create', 'read', 'update', 'delete', 'click_trx'],
 			},
 			{
 				name: 'Branch',
