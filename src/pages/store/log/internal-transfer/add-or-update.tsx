@@ -1,4 +1,7 @@
 import { useEffect } from 'react';
+import { IInternalTransferTableData } from '@/pages/store/_config/columns/columns.type';
+import { useStoreInternalTransfersByUUID } from '@/pages/store/_config/query';
+import { INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '@/pages/store/_config/schema';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -21,15 +24,12 @@ import {
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IStockActionTrx } from '../_config/columns/columns.type';
-import { INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '../_config/schema';
-
-interface ITrxProps {
+interface IAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IStockActionTrx | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IStockActionTrx | null>>;
+	updatedData?: IInternalTransferTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<IInternalTransferTableData | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
 		AxiosError<IResponse<any>, any>,
@@ -41,11 +41,32 @@ interface ITrxProps {
 		},
 		any
 	>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
 }
 
-const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedData, postData }) => {
+const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+	url,
+	open,
+	setOpen,
+	updatedData,
+	setUpdatedData,
+	postData,
+	updateData,
+}) => {
 	const isUpdate = !!updatedData;
 
+	const { user } = useAuth();
+	const { data } = useStoreInternalTransfersByUUID<IInternalTransferTableData>(updatedData?.uuid as string);
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: RoomOptions } = useOtherRoom<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
@@ -53,7 +74,6 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
 	const { data: branchOptions } = useOtherBranch<IFormSelectOption[]>();
 
-	const { user } = useAuth();
 	const form = useRHF(INTERNAL_TRANSFER_SCHEMA, INTERNAL_TRANSFER_NULL);
 
 	const onClose = () => {
@@ -62,27 +82,46 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 		setOpen((prev) => !prev);
 	};
 
+	// Reset form values when data is updated
+	useEffect(() => {
+		if (data && isUpdate) {
+			form.reset(data);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data, isUpdate]);
+
 	// Submit handler
-	async function onSubmit(values: IStockActionTrx) {
-		// ADD NEW ITEM
-		postData.mutateAsync({
-			url,
-			newData: {
-				...values,
-				stock_uuid: updatedData?.uuid,
-				created_at: getDateTime(),
-				created_by: user?.uuid,
-				uuid: nanoid(),
-			},
-			onClose,
-		});
+	async function onSubmit(values: IInternalTransferTableData) {
+		if (isUpdate) {
+			// UPDATE ITEM
+			updateData.mutateAsync({
+				url: `${url}/${updatedData?.uuid}`,
+				updatedData: {
+					...values,
+					updated_at: getDateTime(),
+				},
+				onClose,
+			});
+		} else {
+			// ADD NEW ITEM
+			postData.mutateAsync({
+				url,
+				newData: {
+					...values,
+					created_at: getDateTime(),
+					created_by: user?.uuid,
+					uuid: nanoid(),
+				},
+				onClose,
+			});
+		}
 	}
 
 	return (
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.name} Stock` : 'Add New Stock'}
+			title={isUpdate ? `Update ${updatedData?.internal_transfer_id} Transfer` : 'Add New Transfer'}
 			form={form}
 			onSubmit={onSubmit}
 		>
@@ -160,4 +199,4 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 	);
 };
 
-export default Trx;
+export default AddOrUpdate;

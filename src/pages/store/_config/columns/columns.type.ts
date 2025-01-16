@@ -145,7 +145,27 @@ export type IStockTableData = {
 	warehouse3: number;
 	remarks: string;
 };
-//* Stock Transfer
+// * Internal Transfer
+export interface IInternalTransferTableData {
+	uuid: string;
+	internal_transfer_id: string;
+	stock_uuid: string;
+	stock_id: string;
+	from_branch_uuid: string;
+	to_branch_uuid: string;
+	warehouse_uuid: string;
+	room_uuid: string;
+	rack_uuid: string;
+	floor_uuid: string;
+	box_uuid: string;
+	quantity: number;
+	remarks: string;
+	created_at: string;
+	created_by: string;
+	updated_at: string;
+}
+
+//* Internal Transfer Action
 
 export type IStockActionTrx = {
 	uuid: string;

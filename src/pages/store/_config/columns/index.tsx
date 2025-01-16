@@ -12,6 +12,7 @@ import {
 	ICategoryTableData,
 	IFloorTableData,
 	IGroupTableData,
+	IInternalTransferTableData,
 	IProductTableData,
 	IPurchaseEntryTableData,
 	IPurchaseReturnEntryTableData,
@@ -328,6 +329,60 @@ export const warehouseColumns = (): ColumnDef<IWarehouseTableData>[] => [
 	{
 		accessorKey: 'branch_name',
 		header: 'Branch',
+		enableColumnFilter: false,
+	},
+];
+
+//* Internal Transfer Columns
+export const internalTransferColumns = (): ColumnDef<IInternalTransferTableData>[] => [
+	{
+		accessorKey: 'internal_transfer_id',
+		header: 'ID',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'stock_id',
+		header: 'Stock',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'from_branch_name',
+		header: 'From',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'to_branch_name',
+		header: 'To',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'room_name',
+		header: 'Room',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'rack_name',
+		header: 'Rack',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'floor_name',
+		header: 'Floor',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'box_name',
+		header: 'Box',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'Quantity',
 		enableColumnFilter: false,
 	},
 ];

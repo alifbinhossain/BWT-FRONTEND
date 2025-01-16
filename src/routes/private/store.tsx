@@ -1,6 +1,10 @@
 import { lazy } from 'react';
 import { IRoute } from '@/types';
 
+
+
+
+
 const Group = lazy(() => import('@/pages/store/group'));
 const Category = lazy(() => import('@/pages/store/category'));
 const Brand = lazy(() => import('@/pages/store/brand'));
@@ -20,6 +24,7 @@ const PurchaseDetails = lazy(() => import('@/pages/store/purchase/details'));
 const PurchaseReturn = lazy(() => import('@/pages/store/purchase-return'));
 const PurchaseReturnAddOrUpdate = lazy(() => import('@/pages/store/purchase-return/add-or-update'));
 const PurchaseReturnDetails = lazy(() => import('@/pages/store/purchase-return/details'));
+const Log = lazy(() => import('@/pages/store/log'));
 
 const StoreRoutes: IRoute[] = [
 	{
@@ -177,6 +182,20 @@ const StoreRoutes: IRoute[] = [
 				page_name: 'store__purchase_return_details',
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Log',
+				path: '/store/log',
+				element: <Log />,
+				page_name: 'store__log',
+				actions: [
+					'create',
+					'read',
+					'update',
+					'delete',
+					'click_internal_transfer_update',
+					'click_internal_transfer_delete',
+				],
 			},
 		],
 	},

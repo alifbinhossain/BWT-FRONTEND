@@ -148,7 +148,7 @@ export type IStock = z.infer<typeof STOCK_SCHEMA>;
 
 //* Internal Transfer Schema
 export const INTERNAL_TRANSFER_SCHEMA = z.object({
-	stock_uuid: STRING_REQUIRED,
+	stock_uuid: STRING_OPTIONAL,
 	from_branch_uuid: STRING_REQUIRED,
 	to_branch_uuid: STRING_REQUIRED,
 	warehouse_uuid: STRING_REQUIRED,
