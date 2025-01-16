@@ -110,7 +110,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.id} Stock` : 'Add New Stock'}
+			title={isUpdate ? `Update ${updatedData?.stock_id} Stock` : 'Add New Stock'}
 			form={form}
 			onSubmit={onSubmit}
 		>

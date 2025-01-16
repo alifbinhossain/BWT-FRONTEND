@@ -146,6 +146,35 @@ export const STOCK_NULL: Partial<IStock> = {
 
 export type IStock = z.infer<typeof STOCK_SCHEMA>;
 
+//* Internal Transfer Schema
+export const INTERNAL_TRANSFER_SCHEMA = z.object({
+	stock_uuid: STRING_OPTIONAL,
+	from_branch_uuid: STRING_REQUIRED,
+	to_branch_uuid: STRING_REQUIRED,
+	warehouse_uuid: STRING_REQUIRED,
+	room_uuid: STRING_REQUIRED,
+	rack_uuid: STRING_REQUIRED,
+	floor_uuid: STRING_REQUIRED,
+	box_uuid: STRING_REQUIRED,
+	quantity: NUMBER_DOUBLE_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const INTERNAL_TRANSFER_NULL: Partial<IInternalTransfer> = {
+	stock_uuid: '',
+	from_branch_uuid: '',
+	to_branch_uuid: '',
+	warehouse_uuid: '',
+	room_uuid: '',
+	rack_uuid: '',
+	floor_uuid: '',
+	box_uuid: '',
+	quantity: 0,
+	remarks: null,
+};
+
+export type IInternalTransfer = z.infer<typeof INTERNAL_TRANSFER_SCHEMA>;
+
 //* Branch Schema
 export const BRANCH_SCHEMA = z.object({
 	name: STRING_REQUIRED,
@@ -248,6 +277,7 @@ export const PURCHASE_SCHEMA = z.object({
 			uuid: STRING_OPTIONAL,
 			purchase_uuid: STRING_OPTIONAL,
 			stock_uuid: STRING_REQUIRED,
+			stock_id: STRING_OPTIONAL,
 			serial_no: STRING_REQUIRED,
 			quantity: NUMBER_DOUBLE_REQUIRED,
 			price_per_unit: NUMBER_DOUBLE_REQUIRED,
@@ -273,6 +303,7 @@ export const PURCHASE_NULL: Partial<IPurchase> = {
 			uuid: '',
 			purchase_uuid: '',
 			stock_uuid: '',
+			stock_id: '',
 			serial_no: '',
 			quantity: 0,
 			price_per_unit: 0,
@@ -288,3 +319,38 @@ export const PURCHASE_NULL: Partial<IPurchase> = {
 };
 
 export type IPurchase = z.infer<typeof PURCHASE_SCHEMA>;
+
+//* Purchase Return Schema
+export const PURCHASE_RETURN_SCHEMA = z.object({
+	purchase_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+	purchase_return_entry: z.array(
+		z.object({
+			uuid: STRING_OPTIONAL,
+			purchase_return_uuid: STRING_OPTIONAL,
+			product_uuid: STRING_REQUIRED,
+			product_name: STRING_OPTIONAL,
+			quantity: NUMBER_DOUBLE_REQUIRED,
+			price_per_unit: NUMBER_DOUBLE_REQUIRED,
+			remarks: STRING_NULLABLE,
+		})
+	),
+});
+
+export const PURCHASE_RETURN_NULL: Partial<IPurchaseReturn> = {
+	purchase_uuid: '',
+	remarks: '',
+	purchase_return_entry: [
+		{
+			uuid: '',
+			purchase_return_uuid: '',
+			product_uuid: '',
+			product_name: '',
+			quantity: 0,
+			price_per_unit: 0,
+			remarks: '',
+		},
+	],
+};
+
+export type IPurchaseReturn = z.infer<typeof PURCHASE_RETURN_SCHEMA>;

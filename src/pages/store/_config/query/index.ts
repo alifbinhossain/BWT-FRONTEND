@@ -200,3 +200,31 @@ export const useStorePurchasesByUUID = <T>(uuid: string) =>
 		url: `/store/purchase/purchase-entry-details/by/${uuid}`,
 		enabled: !!uuid,
 	});
+
+//* Purchase Return
+export const useStorePurchaseReturn = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.purchaseReturn(),
+		url: '/store/purchase-return',
+	});
+
+export const useStorePurchaseReturnByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.purchaseReturnByUUID(uuid),
+		url: `/store/purchase-return/purchase-return-entry-details/by/${uuid}`,
+		enabled: !!uuid,
+	});
+
+//* Internal Transfer
+export const useStoreInternalTransfers = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.internalTransfer(),
+		url: '/store/internal-transfer',
+	});
+
+export const useStoreInternalTransfersByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.internalTransferByUUID(uuid),
+		url: `/store/internal-transfer/${uuid}`,
+		enabled: !!uuid,
+	});

@@ -5,20 +5,21 @@ import TableList, { ITableListItems } from '@/components/others/table-list';
 
 import { formatDateTable } from '@/utils/formatDate';
 
-import { IPurchaseDetails } from '../../_config/columns/columns.type'; // TODO: update data type
+import { IPurchaseReturnDetails } from '../../_config/columns/columns.type'; // TODO: update data type
 
-const Information: React.FC<{ data: IPurchaseDetails }> = ({ data }) => {
+const Information: React.FC<{ data: IPurchaseReturnDetails }> = ({ data }) => {
+	console.log({
+		data,
+	});
 	const renderItems = (): ITableListItems => {
 		return [
 			{
 				label: 'ID',
-				value: data.purchase_id,
+				value: data.purchase_return_id,
 			},
-			{ label: 'Vendor', value: data.vendor_name },
-			{ label: 'Branch', value: data.branch_name },
 			{
-				label: 'Date',
-				value: formatDateTable(data.date),
+				label: 'Purchase ID',
+				value: data.purchase_id,
 			},
 			{
 				label: 'Created At',

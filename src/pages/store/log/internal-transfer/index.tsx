@@ -1,27 +1,22 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
+import { internalTransferColumns } from '@/pages/store/_config/columns';
+import { IInternalTransferTableData } from '@/pages/store/_config/columns/columns.type';
+import { useStoreInternalTransfers } from '@/pages/store/_config/query';
 import { Row } from '@tanstack/react-table';
-import useAccess from '@/hooks/useAccess';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { stockColumns } from '../_config/columns';
-import { IStockActionTrx, IStockTableData } from '../_config/columns/columns.type';
-import { useStoreStocks } from '../_config/query';
-
-const AgainstTrx = lazy(() => import('./trx'));
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Stock = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreStocks<IStockTableData[]>();
+const Group = () => {
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
+		useStoreInternalTransfers<IInternalTransferTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Stock', url, 'store__stock'), [url]);
-
-	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
-	const actionTrxAccess = pageAccess.includes('click_trx');
+	const pageInfo = useMemo(() => new PageInfo('Store/Internal Transfer', url, 'store__log'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -30,9 +25,9 @@ const Stock = () => {
 		setIsOpenAddModal(true);
 	};
 
-	const [updatedData, setUpdatedData] = useState<IStockTableData | null>(null);
+	const [updatedData, setUpdatedData] = useState<IInternalTransferTableData | null>(null);
 
-	const handleUpdate = (row: Row<IStockTableData>) => {
+	const handleUpdate = (row: Row<IInternalTransferTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
@@ -45,10 +40,10 @@ const Stock = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<IStockTableData>) => {
+	const handleDelete = (row: Row<IInternalTransferTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
-			name: row?.original?.stock_id,
+			name: row?.original?.internal_transfer_id,
 		});
 	};
 
@@ -56,32 +51,20 @@ const Stock = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IStockTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IInternalTransferTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
 			selectedRows.map((row) => ({
 				id: row.uuid,
-				name: row.stock_id,
+				name: row.internal_transfer_id,
 				checked: true,
 			}))
 		);
 	};
 
-	// Action Trx Modal state
-	const [isOpenActionTrxModal, setIsOpenActionTrxModal] = useState(false);
-	const [updateActionTrxData, setUpdateActionTrxData] = useState<IStockActionTrx | null>(null);
-
-	const handleAgainstTrx = (row: Row<IStockTableData>) => {
-		setUpdateActionTrxData({
-			uuid: row.original.uuid,
-			name: row.original.product_name,
-		});
-		setIsOpenActionTrxModal(true);
-	};
-
 	// Table Columns
-	const columns = stockColumns({ actionTrxAccess, handleAgainstTrx });
+	const columns = internalTransferColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -125,20 +108,10 @@ const Stock = () => {
 							deleteData,
 						}}
 					/>,
-					<AgainstTrx
-						{...{
-							open: isOpenActionTrxModal,
-							setOpen: setIsOpenActionTrxModal,
-							updatedData: updateActionTrxData,
-							setUpdatedData: setUpdateActionTrxData,
-							postData,
-							url: '/store/internal-transfer',
-						}}
-					/>,
 				])}
 			</TableProvider>
 		</PageProvider>
 	);
 };
 
-export default Stock;
+export default Group;
