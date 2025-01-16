@@ -13,6 +13,8 @@ import {
 	IGroupTableData,
 	IProductTableData,
 	IPurchaseEntryTableData,
+	IPurchaseReturnEntryTableData,
+	IPurchaseReturnTableData,
 	IPurchaseTableData,
 	IRackTableData,
 	IRoomTableData,
@@ -22,7 +24,7 @@ import {
 	IWarehouseTableData,
 } from './columns.type';
 
-// Group Columns
+//* Group Columns
 export const groupColumns = (): ColumnDef<IGroupTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -31,7 +33,7 @@ export const groupColumns = (): ColumnDef<IGroupTableData>[] => [
 	},
 ];
 
-// Category Columns
+//* Category Columns
 export const categoryColumns = (): ColumnDef<ICategoryTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -45,7 +47,7 @@ export const categoryColumns = (): ColumnDef<ICategoryTableData>[] => [
 	},
 ];
 
-// Brand Columns
+//* Brand Columns
 export const brandColumns = (): ColumnDef<IBrandTableData>[] => [
 	{
 		accessorKey: 'brand_id',
@@ -59,7 +61,7 @@ export const brandColumns = (): ColumnDef<IBrandTableData>[] => [
 	},
 ];
 
-// Size Columns
+//* Size Columns
 export const sizeColumns = (): ColumnDef<ISizeTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -68,7 +70,7 @@ export const sizeColumns = (): ColumnDef<ISizeTableData>[] => [
 	},
 ];
 
-// Vendor Columns
+//* Vendor Columns
 export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -110,7 +112,7 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 	},
 ];
 
-// Product Columns
+//* Product Columns
 export const productColumns = (): ColumnDef<IProductTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -157,7 +159,7 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 	},
 ];
 
-// Purchase Columns
+//* Purchase Columns
 export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 	{
 		accessorKey: 'purchase_id',
@@ -190,7 +192,7 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
-// Purchase Entry Columns
+//* Purchase Entry Columns
 export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => [
 	{
 		accessorKey: 'stock_id',
@@ -219,7 +221,44 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 	},
 ];
 
-// Stock Columns
+//* Purchase Return Columns
+export const purchaseReturnColumns = (): ColumnDef<IPurchaseReturnTableData>[] => [
+	{
+		accessorKey: 'purchase_return_id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.uuid;
+			return <LinkOnly uri={`/store/purchase-return/${uuid}/details`} title={info.getValue() as string} />;
+		},
+	},
+	{
+		accessorKey: 'purchase_id',
+		header: 'ID',
+		enableColumnFilter: false,
+	},
+];
+
+//* Purchase Return Entry Columns
+export const purchaseReturnEntryColumns = (): ColumnDef<IPurchaseReturnEntryTableData>[] => [
+	{
+		accessorKey: 'product_id',
+		header: 'Product ID',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'Quantity',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'price_per_unit',
+		header: 'Price Per Unit',
+		enableColumnFilter: false,
+	},
+];
+
+//* Stock Columns
 export const stockColumns = (): ColumnDef<IStockTableData>[] => [
 	{
 		accessorKey: 'stock_id',
@@ -248,7 +287,7 @@ export const stockColumns = (): ColumnDef<IStockTableData>[] => [
 	},
 ];
 
-// Branch Columns
+//* Branch Columns
 export const branchColumns = (): ColumnDef<IBranchTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -262,7 +301,7 @@ export const branchColumns = (): ColumnDef<IBranchTableData>[] => [
 	},
 ];
 
-// Warehouse Columns
+//* Warehouse Columns
 export const warehouseColumns = (): ColumnDef<IWarehouseTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -276,7 +315,7 @@ export const warehouseColumns = (): ColumnDef<IWarehouseTableData>[] => [
 	},
 ];
 
-// Room Columns
+//* Room Columns
 export const roomColumns = (): ColumnDef<IRoomTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -290,7 +329,7 @@ export const roomColumns = (): ColumnDef<IRoomTableData>[] => [
 	},
 ];
 
-// Rack Columns
+//* Rack Columns
 export const rackColumns = (): ColumnDef<IRackTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -304,7 +343,7 @@ export const rackColumns = (): ColumnDef<IRackTableData>[] => [
 	},
 ];
 
-// Floor Columns
+//* Floor Columns
 export const floorColumns = (): ColumnDef<IFloorTableData>[] => [
 	{
 		accessorKey: 'name',
@@ -318,7 +357,7 @@ export const floorColumns = (): ColumnDef<IFloorTableData>[] => [
 	},
 ];
 
-// Box Columns
+//* Box Columns
 export const boxColumns = (): ColumnDef<IBoxTableData>[] => [
 	{
 		accessorKey: 'name',

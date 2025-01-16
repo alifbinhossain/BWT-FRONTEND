@@ -17,6 +17,9 @@ const Box = lazy(() => import('@/pages/store/box'));
 const Purchase = lazy(() => import('@/pages/store/purchase'));
 const PurchaseAddOrUpdate = lazy(() => import('@/pages/store/purchase/add-or-update'));
 const PurchaseDetails = lazy(() => import('@/pages/store/purchase/details'));
+const PurchaseReturn = lazy(() => import('@/pages/store/purchase-return'));
+const PurchaseReturnAddOrUpdate = lazy(() => import('@/pages/store/purchase-return/add-or-update'));
+const PurchaseReturnDetails = lazy(() => import('@/pages/store/purchase-return/details'));
 
 const StoreRoutes: IRoute[] = [
 	{
@@ -141,6 +144,37 @@ const StoreRoutes: IRoute[] = [
 				path: '/store/purchase/:uuid/details',
 				element: <PurchaseDetails />,
 				page_name: 'store__purchase_details',
+				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Purchase Return',
+				path: '/store/purchase-return',
+				element: <PurchaseReturn />,
+				page_name: 'store__purchase_return',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Purchase Return Add',
+				path: '/store/purchase-return/add',
+				element: <PurchaseReturnAddOrUpdate />,
+				page_name: 'store__purchase_return_add',
+				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Purchase Return Update',
+				path: '/store/purchase-return/:uuid/update',
+				element: <PurchaseReturnAddOrUpdate />,
+				page_name: 'store__purchase_return_update',
+				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Purchase Return Details',
+				path: '/store/purchase-return/:uuid/details',
+				element: <PurchaseReturnDetails />,
+				page_name: 'store__purchase_return_details',
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
 			},

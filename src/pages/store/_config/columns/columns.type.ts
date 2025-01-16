@@ -102,6 +102,38 @@ export type IPurchaseDetails = {
 	remarks: string;
 	purchase_entry: IPurchaseEntryTableData[];
 };
+//* Purchase Return
+export type IPurchaseReturnTableData = {
+	uuid: string;
+	id: string;
+	purchase_uuid: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+//* Purchase Return Entry
+export type IPurchaseReturnEntryTableData = {
+	uuid: string;
+	purchase_return_uuid: string;
+	product_uuid: string;
+	quantity: string;
+	price_per_unit: string;
+	discount: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+//* Purchase Return Details
+export type IPurchaseReturnDetails = {
+	uuid: string;
+	id: string;
+	purchase_uuid: string;
+	purchase_id: string;
+	remarks: string;
+	created_at: string;
+	updated_at: string;
+	purchase_return_entry: IPurchaseReturnEntryTableData[];
+};
 //* Stock
 export type IStockTableData = {
 	uuid: string;

@@ -65,13 +65,18 @@ export const useOtherStock = <T>() =>
 		url: `/other/stock/value/label`,
 	});
 
-//GET OTHER Branch
+//GET OTHER BRANCH
 export const useOtherBranch = <T>() =>
 	useTQuery<T>({
 		queryKey: otherQK.branch(),
 		url: `/other/branch/value/label`,
 	});
-
+//GET OTHER PURCHASE
+export const useOtherPurchase = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.purchase(),
+		url: `/other/purchase/value/label`,
+	});
 //GET OTHER WAREHOUSE
 export const useOtherWarehouse = <T>() =>
 	useTQuery<T>({

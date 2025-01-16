@@ -29,6 +29,8 @@ const otherQK = {
 	//Stock
 	stock: () => [...otherQK.all(), 'stock'],
 
+	//purchase
+	purchase: () => [...otherQK.all(), 'purchase'],
 	//Warehouse
 	warehouse: () => [...otherQK.all(), 'warehouse'],
 

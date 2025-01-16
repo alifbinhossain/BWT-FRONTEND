@@ -288,3 +288,36 @@ export const PURCHASE_NULL: Partial<IPurchase> = {
 };
 
 export type IPurchase = z.infer<typeof PURCHASE_SCHEMA>;
+
+//* Purchase Return Schema
+export const PURCHASE_RETURN_SCHEMA = z.object({
+	purchase_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+	purchase_return_entry: z.array(
+		z.object({
+			uuid: STRING_OPTIONAL,
+			purchase_return_uuid: STRING_OPTIONAL,
+			product_uuid: STRING_REQUIRED,
+			quantity: NUMBER_DOUBLE_REQUIRED,
+			price_per_unit: NUMBER_DOUBLE_REQUIRED,
+			remarks: STRING_NULLABLE,
+		})
+	),
+});
+
+export const PURCHASE_RETURN_NULL: Partial<IPurchaseReturn> = {
+	purchase_uuid: '',
+	remarks: '',
+	purchase_return_entry: [
+		{
+			uuid: '',
+			purchase_return_uuid: '',
+			product_uuid: '',
+			quantity: 0,
+			price_per_unit: 0,
+			remarks: '',
+		},
+	],
+};
+
+export type IPurchaseReturn = z.infer<typeof PURCHASE_RETURN_SCHEMA>;

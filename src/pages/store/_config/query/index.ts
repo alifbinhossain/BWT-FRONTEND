@@ -200,3 +200,17 @@ export const useStorePurchasesByUUID = <T>(uuid: string) =>
 		url: `/store/purchase/purchase-entry-details/by/${uuid}`,
 		enabled: !!uuid,
 	});
+
+//* Purchase Return
+export const useStorePurchaseReturn = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.purchaseReturn(),
+		url: '/store/purchase-return',
+	});
+
+export const useStorePurchaseReturnByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.purchaseReturnByUUID(uuid),
+		url: `/store/purchase-return/purchase-return-entry-details/by/${uuid}`,
+		enabled: !!uuid,
+	});
