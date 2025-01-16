@@ -14,11 +14,11 @@ const Information: React.FC<{ data: IPurchaseReturnDetails }> = ({ data }) => {
 	const renderItems = (): ITableListItems => {
 		return [
 			{
-				label: 'id',
-				value: data.id,
+				label: 'ID',
+				value: data.purchase_return_id,
 			},
 			{
-				label: 'purchase_id',
+				label: 'Purchase ID',
 				value: data.purchase_id,
 			},
 			{

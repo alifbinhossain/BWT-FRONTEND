@@ -90,7 +90,7 @@ export type IPurchaseEntryTableData = {
 //* Purchase Details
 export type IPurchaseDetails = {
 	uuid: string;
-	id: string;
+	purchase_id: string;
 	vendor_uuid: string;
 	vendor_name: string;
 	branch_uuid: string;
@@ -126,7 +126,7 @@ export type IPurchaseReturnEntryTableData = {
 //* Purchase Return Details
 export type IPurchaseReturnDetails = {
 	uuid: string;
-	id: string;
+	purchase_return_id: string;
 	purchase_uuid: string;
 	purchase_id: string;
 	remarks: string;

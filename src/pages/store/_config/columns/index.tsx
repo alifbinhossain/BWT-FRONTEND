@@ -236,7 +236,7 @@ export const purchaseReturnColumns = (): ColumnDef<IPurchaseReturnTableData>[] =
 	},
 	{
 		accessorKey: 'purchase_id',
-		header: 'ID',
+		header: 'Purchase ID',
 		enableColumnFilter: false,
 	},
 ];
@@ -244,7 +244,7 @@ export const purchaseReturnColumns = (): ColumnDef<IPurchaseReturnTableData>[] =
 //* Purchase Return Entry Columns
 export const purchaseReturnEntryColumns = (): ColumnDef<IPurchaseReturnEntryTableData>[] => [
 	{
-		accessorKey: 'product_id',
+		accessorKey: 'product_name',
 		header: 'Product ID',
 		enableColumnFilter: false,
 	},

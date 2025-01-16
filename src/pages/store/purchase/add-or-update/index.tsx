@@ -177,10 +177,11 @@ const AddOrUpdate = () => {
 
 	// Delete Handler
 	const handleRemove = (index: number) => {
+		const stock_id: string = String(form.getValues('purchase_entry')[index].stock_id);
 		if (fields[index].uuid) {
 			setDeleteItem({
 				id: fields[index].uuid,
-				name: fields[index].stock_uuid,
+				name: stock_id,
 			});
 		} else {
 			remove(index);
