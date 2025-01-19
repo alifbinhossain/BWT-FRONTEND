@@ -17,38 +17,9 @@ import { getDateTime } from '@/utils';
 import { IStockTableData } from '../_config/columns/columns.type';
 import { useStoreStocksByUUID } from '../_config/query';
 import { STOCK_NULL, STOCK_SCHEMA } from '../_config/schema';
+import { IStockAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IStockTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IStockTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IStockAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,

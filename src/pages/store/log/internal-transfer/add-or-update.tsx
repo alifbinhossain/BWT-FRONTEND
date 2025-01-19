@@ -24,37 +24,9 @@ import {
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IInternalTransferTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IInternalTransferTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
+import { IInternalTransferAddOrUpdateProps } from '../../_config/types';
 
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,

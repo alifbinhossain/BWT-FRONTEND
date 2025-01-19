@@ -17,38 +17,9 @@ import { getDateTime } from '@/utils';
 import { IVendorTableData } from '../_config/columns/columns.type';
 import { useStoreVendorsByUUID } from '../_config/query';
 import { VENDOR_NULL, VENDOR_SCHEMA } from '../_config/schema';
+import { IVendorAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IVendorTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IVendorTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IVendorAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,

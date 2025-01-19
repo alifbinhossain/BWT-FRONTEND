@@ -17,38 +17,9 @@ import { getDateTime } from '@/utils';
 import { ICategoryTableData } from '../_config/columns/columns.type';
 import { useStoreCategoriesByUUID } from '../_config/query';
 import { CATEGORY_NULL, CATEGORY_SCHEMA } from '../_config/schema';
+import { ICategoryAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: ICategoryTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<ICategoryTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<ICategoryAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,

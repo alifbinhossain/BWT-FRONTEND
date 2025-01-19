@@ -17,38 +17,9 @@ import { getDateTime } from '@/utils';
 import { IRackTableData } from '../_config/columns/columns.type';
 import { useStoreRacksByUUID } from '../_config/query';
 import { RACK_NULL, RACK_SCHEMA } from '../_config/schema';
+import { IRackAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IRackTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IRackTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IRackAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,

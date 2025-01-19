@@ -25,6 +25,16 @@ export type IBrandTableData = {
 	updated_at: string;
 	remarks: string;
 };
+//* Model
+export type IModelTableData = {
+	uuid: string;
+	id: string;
+	name: string;
+	brand_uuid: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
 //* Size
 export type ISizeTableData = {
 	uuid: string;
