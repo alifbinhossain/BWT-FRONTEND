@@ -17,38 +17,9 @@ import { getDateTime } from '@/utils';
 import { IUserTableData } from '../_config/columns/columns.type';
 import { useHrUsersByUUID } from '../_config/query';
 import { IUser, USER_NULL, USER_SCHEMA } from '../_config/schema';
+import { IUserAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IUserTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IUserTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,

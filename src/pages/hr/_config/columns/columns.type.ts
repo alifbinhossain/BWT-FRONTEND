@@ -1,4 +1,4 @@
-// Department
+//* Department
 export type IDepartmentTableData = {
 	uuid: string;
 	department: string;
@@ -7,7 +7,7 @@ export type IDepartmentTableData = {
 	remarks: string;
 };
 
-// Designation
+//* Designation
 export type IDesignationTableData = {
 	uuid: string;
 	designation: string;
@@ -16,7 +16,7 @@ export type IDesignationTableData = {
 	remarks: string;
 };
 
-// User
+//* User
 export type IUserTableData = {
 	uuid: string;
 	name: string;
@@ -33,13 +33,13 @@ export type IUserTableData = {
 	remarks: string;
 };
 
-// Reset Password
+//* Reset Password
 export type IResetPassword = {
 	uuid: string;
 	name: string;
 };
 
-// Page Assign
+//* Page Assign
 export type IPageAssign = {
 	uuid: string;
 	name: string;

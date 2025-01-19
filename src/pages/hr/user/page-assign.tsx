@@ -20,25 +20,7 @@ import { flattenRoutes, getDateTime } from '@/utils';
 
 import { IPageAssign } from '../_config/columns/columns.type';
 import { useHrCanAccess } from '../_config/query';
-
-interface IPageAssignProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IPageAssign | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IPageAssign | null>>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
+import { IPageAssignProps } from '../_config/types';
 
 const PageAssign: React.FC<IPageAssignProps> = ({ url, open, setOpen, updatedData, setUpdatedData, updateData }) => {
 	const { data } = useHrCanAccess<any>(updatedData?.uuid as string);

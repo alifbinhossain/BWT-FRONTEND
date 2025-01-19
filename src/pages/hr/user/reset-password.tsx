@@ -11,25 +11,7 @@ import { getDateTime } from '@/utils';
 
 import { IResetPassword } from '../_config/columns/columns.type';
 import { IResetPasswordSchema, RESET_PASSWORD_NULL, RESET_PASSWORD_SCHEMA } from '../_config/schema';
-
-interface IResetPasswordProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IResetPassword | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IResetPassword | null>>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
+import { IResetPasswordProps } from '../_config/types';
 
 const ResetPassword: React.FC<IResetPasswordProps> = ({
 	url,
