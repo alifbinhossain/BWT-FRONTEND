@@ -13,6 +13,7 @@ import {
 	IFloorTableData,
 	IGroupTableData,
 	IInternalTransferTableData,
+	IModelTableData,
 	IProductTableData,
 	IPurchaseEntryTableData,
 	IPurchaseReturnEntryTableData,
@@ -59,6 +60,19 @@ export const brandColumns = (): ColumnDef<IBrandTableData>[] => [
 	{
 		accessorKey: 'name',
 		header: 'Name',
+		enableColumnFilter: false,
+	},
+];
+//* Model Columns
+export const modelColumns = (): ColumnDef<IModelTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
 		enableColumnFilter: false,
 	},
 ];
@@ -127,8 +141,8 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'brand_name',
-		header: 'Brand',
+		accessorKey: 'model_name',
+		header: 'Model',
 		enableColumnFilter: false,
 	},
 	{

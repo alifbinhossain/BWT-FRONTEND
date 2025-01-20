@@ -13,6 +13,10 @@ export const storeQK = {
 	brand: () => [...storeQK.all(), 'brand'],
 	brandByUUID: (uuid: string) => [...storeQK.brand(), uuid],
 
+	//* model
+	model: () => [...storeQK.all(), 'model'],
+	modelByUUID: (uuid: string) => [...storeQK.model(), uuid],
+
 	//* size
 	size: () => [...storeQK.all(), 'size'],
 	sizeByUUID: (uuid: string) => [...storeQK.size(), uuid],

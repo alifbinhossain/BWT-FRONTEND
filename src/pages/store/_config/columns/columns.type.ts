@@ -28,7 +28,6 @@ export type IBrandTableData = {
 //* Model
 export type IModelTableData = {
 	uuid: string;
-	id: string;
 	name: string;
 	brand_uuid: string;
 	created_at: string;
@@ -61,7 +60,7 @@ export type IVendorTableData = {
 export type IProductTableData = {
 	uuid: string;
 	category_uuid: string;
-	brand_uuid: string;
+	model_uuid: string;
 	size_uuid: string;
 	name: string;
 	warranty_days: number;

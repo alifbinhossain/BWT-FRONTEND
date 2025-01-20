@@ -45,6 +45,21 @@ export const useStoreBrandsByUUID = <T>(uuid: string) =>
 		enabled: !!uuid,
 	});
 
+//* Model
+
+export const useStoreModels = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.model(),
+		url: '/store/model',
+	});
+
+export const useStoreModelsByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.modelByUUID(uuid),
+		url: `/store/model/${uuid}`,
+		enabled: !!uuid,
+	});
+
 //* Size
 
 export const useStoreSizes = <T>() =>

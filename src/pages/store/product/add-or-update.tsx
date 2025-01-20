@@ -10,7 +10,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherBrand, useOtherCategory, useOtherSize } from '@/lib/common-queries/other';
+import { useOtherCategory, useOtherModel, useOtherSize } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -32,7 +32,7 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStoreProductsByUUID<IProductTableData>(updatedData?.uuid as string);
-	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
+	const { data: modelOptions } = useOtherModel<IFormSelectOption[]>();
 	const { data: sizeOptions } = useOtherSize<IFormSelectOption[]>();
 	const { data: categoryOptions } = useOtherCategory<IFormSelectOption[]>();
 
@@ -124,9 +124,9 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 			/>
 			<FormField
 				control={form.control}
-				name='brand_uuid'
+				name='model_uuid'
 				render={(props) => (
-					<CoreForm.ReactSelect label='Brand' placeholder='Select Brand' options={brandOptions!} {...props} />
+					<CoreForm.ReactSelect label='Model' placeholder='Select Model' options={modelOptions!} {...props} />
 				)}
 			/>
 			<FormField

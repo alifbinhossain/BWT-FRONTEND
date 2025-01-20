@@ -62,6 +62,21 @@ export const BRAND_NULL: Partial<IBrand> = {
 
 export type IBrand = z.infer<typeof BRAND_SCHEMA>;
 
+//* Model Schema
+export const MODEL_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	brand_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const MODEL_NULL: Partial<IModel> = {
+	name: '',
+	brand_uuid: '',
+	remarks: null,
+};
+
+export type IModel = z.infer<typeof MODEL_SCHEMA>;
+
 //* Size Schema
 export const SIZE_SCHEMA = z.object({
 	name: STRING_REQUIRED,
@@ -103,7 +118,7 @@ export type IVendor = z.infer<typeof VENDOR_SCHEMA>;
 //* Product Schema
 export const PRODUCT_SCHEMA = z.object({
 	category_uuid: STRING_REQUIRED,
-	brand_uuid: STRING_REQUIRED,
+	model_uuid: STRING_REQUIRED,
 	size_uuid: STRING_REQUIRED,
 	name: STRING_REQUIRED,
 	warranty_days: NUMBER_DOUBLE_REQUIRED,
@@ -115,7 +130,7 @@ export const PRODUCT_SCHEMA = z.object({
 
 export const PRODUCT_NULL: Partial<IProduct> = {
 	category_uuid: '',
-	brand_uuid: '',
+	model_uuid: '',
 	size_uuid: '',
 	name: '',
 	warranty_days: 0,

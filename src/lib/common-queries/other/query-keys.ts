@@ -1,48 +1,50 @@
 const otherQK = {
 	all: () => ['other'],
 
-	//HR
+	//* HR
 	hr: () => [...otherQK.all(), 'hr'],
-	//Department
+	//* Department
 	department: () => [...otherQK.all(), 'department'],
-	//Designation
+	//* Designation
 	designation: () => [...otherQK.all(), 'designation'],
-	//Group
+	//* Group
 	group: () => [...otherQK.all(), 'group'],
 
-	//Brand
+	//* Brand
 	brand: () => [...otherQK.all(), 'brand'],
-	//Size
+	//* Model
+	model: () => [...otherQK.all(), 'model'],
+	//* Size
 	size: () => [...otherQK.all(), 'size'],
-	//Category
+	//* Category
 	category: () => [...otherQK.all(), 'category'],
 
-	//Branch
+	//* Branch
 	branch: () => [...otherQK.all(), 'branch'],
 
-	//Product
+	//* Product
 	product: () => [...otherQK.all(), 'product'],
 
-	//Vendor
+	//* Vendor
 	vendor: () => [...otherQK.all(), 'vendor'],
 
-	//Stock
+	//* Stock
 	stock: () => [...otherQK.all(), 'stock'],
 
-	//purchase
+	//* purchase
 	purchase: () => [...otherQK.all(), 'purchase'],
-	//Warehouse
+	//* Warehouse
 	warehouse: () => [...otherQK.all(), 'warehouse'],
 
-	//Room
+	//* Room
 	room: () => [...otherQK.all(), 'room'],
 
-	//Rack
+	//* Rack
 	rack: () => [...otherQK.all(), 'rack'],
 
-	//Floor
+	//* Floor
 	floor: () => [...otherQK.all(), 'floor'],
-	//Box
+	//* Box
 	box: () => [...otherQK.all(), 'box'],
 };
 
