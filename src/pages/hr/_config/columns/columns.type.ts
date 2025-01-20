@@ -25,6 +25,7 @@ export type IUserTableData = {
 	designation: string;
 	department_uuid: string;
 	department: string;
+	user_type: string;
 	ext: string;
 	phone: string;
 	created_at: string;

@@ -40,6 +40,7 @@ export const USER_SCHEMA = (isUpdate: boolean) => {
 	const baseSchema = z.object({
 		name: STRING_REQUIRED,
 		email: FORTUNE_ZIP_EMAIL_PATTERN,
+		user_type: z.enum(['employ', 'customer']),
 		department_uuid: STRING_REQUIRED,
 		designation_uuid: STRING_REQUIRED,
 		ext: STRING_NULLABLE,
@@ -69,6 +70,7 @@ export const USER_NULL: Partial<IUser> = {
 	name: '',
 	email: '',
 	department_uuid: '',
+	user_type: 'employ',
 	designation_uuid: '',
 	ext: null,
 	phone: '',

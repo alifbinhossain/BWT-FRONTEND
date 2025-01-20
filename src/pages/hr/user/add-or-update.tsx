@@ -34,6 +34,16 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 	const { data } = useHrUsersByUUID(updatedData?.uuid as string);
 	const { data: departmentData } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: designationData } = useOtherDesignation<IFormSelectOption[]>();
+	const typeOptions = [
+		{
+			label: 'Customer',
+			value: 'customer',
+		},
+		{
+			label: 'Employ',
+			value: 'employ',
+		},
+	];
 
 	const form = useRHF(USER_SCHEMA(isUpdate) as any, USER_NULL);
 
@@ -88,7 +98,19 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<div className='grid grid-cols-2 gap-4'>
+			<div className='grid grid-cols-3 gap-4'>
+				<FormField
+					control={form.control}
+					name='user_type'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							label='User Type'
+							placeholder='Select Type'
+							options={typeOptions!}
+							{...props}
+						/>
+					)}
+				/>
 				<FormField
 					control={form.control}
 					name='department_uuid'
@@ -113,6 +135,8 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						/>
 					)}
 				/>
+			</div>
+			<div className='grid grid-cols-2 gap-4'>
 				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
 				<FormField control={form.control} name='email' render={(props) => <CoreForm.Input {...props} />} />
 				<FormField control={form.control} name='ext' render={(props) => <CoreForm.Input {...props} />} />
