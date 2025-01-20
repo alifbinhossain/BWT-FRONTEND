@@ -10,7 +10,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherRoom } from '@/lib/common-queries/other';
+import { useOtherRoom, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -32,7 +32,7 @@ const AddOrUpdate: React.FC<IRackAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStoreRacksByUUID<IRackTableData>(updatedData?.uuid as string);
-	const { data: roomOption } = useOtherRoom<IFormSelectOption[]>();
+	const { data: warehouseOption } = useOtherWarehouse<IFormSelectOption[]>();
 
 	const form = useRHF(RACK_SCHEMA, RACK_NULL);
 
@@ -90,7 +90,12 @@ const AddOrUpdate: React.FC<IRackAddOrUpdateProps> = ({
 				control={form.control}
 				name='room_uuid'
 				render={(props) => (
-					<CoreForm.ReactSelect label='Room' placeholder='Select Room' options={roomOption!} {...props} />
+					<CoreForm.ReactSelect
+						label='Warehouse'
+						placeholder='Select warehouse'
+						options={warehouseOption!}
+						{...props}
+					/>
 				)}
 			/>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />

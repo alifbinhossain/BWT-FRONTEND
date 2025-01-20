@@ -210,7 +210,7 @@ export type IRoomTableData = {
 //* Rack
 export type IRackTableData = {
 	uuid: string;
-	room_uuid: string;
+	warehouse_uuid: string;
 	name: string;
 	created_at: string;
 	updated_at: string;
