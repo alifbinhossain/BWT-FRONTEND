@@ -59,11 +59,15 @@ export const storeQK = {
 
 	//* Purchase
 	purchase: () => [...storeQK.all(), 'purchase'],
+	purchaseEntry: () => [...storeQK.purchase(), 'purchaseEntry'],
 	purchaseByUUID: (uuid: string) => [...storeQK.purchase(), uuid],
+	purchaseEntryByUUID: (uuid: string) => [...storeQK.purchaseEntry(), uuid],
 
 	//* Purchase Return
 	purchaseReturn: () => [...storeQK.all(), 'purchaseReturn'],
+	purchaseReturnEntry: () => [...storeQK.purchaseReturn(), 'purchaseReturnEntry'],
 	purchaseReturnByUUID: (uuid: string) => [...storeQK.purchaseReturn(), uuid],
+	purchaseReturnEntryByUUID: (uuid: string) => [...storeQK.purchaseReturnEntry(), uuid],
 
 	//* Internal Transfer
 	internalTransfer: () => [...storeQK.all(), 'internalTransfer'],

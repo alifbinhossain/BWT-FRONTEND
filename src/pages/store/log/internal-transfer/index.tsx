@@ -12,7 +12,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Group = () => {
+const InternalTransfer = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useStoreInternalTransfers<IInternalTransferTableData[]>();
 
@@ -20,10 +20,6 @@ const Group = () => {
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
-
-	const handleCreate = () => {
-		setIsOpenAddModal(true);
-	};
 
 	const [updatedData, setUpdatedData] = useState<IInternalTransferTableData | null>(null);
 
@@ -73,7 +69,6 @@ const Group = () => {
 				columns={columns}
 				data={data ?? []}
 				isLoading={isLoading}
-				handleCreate={handleCreate}
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
@@ -87,7 +82,6 @@ const Group = () => {
 							setOpen: setIsOpenAddModal,
 							updatedData,
 							setUpdatedData,
-							postData,
 							updateData,
 						}}
 					/>,
@@ -114,4 +108,4 @@ const Group = () => {
 	);
 };
 
-export default Group;
+export default InternalTransfer;

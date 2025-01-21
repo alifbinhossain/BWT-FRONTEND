@@ -198,7 +198,6 @@ const StoreRoutes: IRoute[] = [
 				element: <Log />,
 				page_name: 'store__log',
 				actions: [
-					'create',
 					'read',
 					'update',
 					'delete',

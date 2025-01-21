@@ -94,8 +94,8 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'brand_name',
-		header: 'Brand',
+		accessorKey: 'model_name',
+		header: 'Model',
 		enableColumnFilter: false,
 	},
 	{

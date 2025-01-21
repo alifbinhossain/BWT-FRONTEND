@@ -1,22 +1,28 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
+import { purchaseEntryColumns } from '@/pages/store/_config/columns';
+import { IPurchaseEntryTableData } from '@/pages/store/_config/columns/columns.type';
+import { useStorePurchaseEntry } from '@/pages/store/_config/query';
 import { Row } from '@tanstack/react-table';
+
+
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { vendorColumns } from '../_config/columns';
-import { IVendorTableData } from '../_config/columns/columns.type';
-import { useStoreVendors } from '../_config/query';
+
+
+
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Vendor = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreVendors<IVendorTableData[]>();
+const PurchaseLog = () => {
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
+		useStorePurchaseEntry<IPurchaseEntryTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Vendor', url, 'store__vendor'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/Log/Purchase', url, 'store__log'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -25,9 +31,9 @@ const Vendor = () => {
 		setIsOpenAddModal(true);
 	};
 
-	const [updatedData, setUpdatedData] = useState<IVendorTableData | null>(null);
+	const [updatedData, setUpdatedData] = useState<IPurchaseEntryTableData | null>(null);
 
-	const handleUpdate = (row: Row<IVendorTableData>) => {
+	const handleUpdate = (row: Row<IPurchaseEntryTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
@@ -40,10 +46,10 @@ const Vendor = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<IVendorTableData>) => {
+	const handleDelete = (row: Row<IPurchaseEntryTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
-			name: row?.original?.name,
+			name: row?.original?.purchase_id,
 		});
 	};
 
@@ -51,23 +57,23 @@ const Vendor = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IVendorTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IPurchaseEntryTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
 			selectedRows.map((row) => ({
 				id: row.uuid,
-				name: row.name,
+				name: row.purchase_id,
 				checked: true,
 			}))
 		);
 	};
 
 	// Table Columns
-	const columns = vendorColumns();
+	const columns = purchaseEntryColumns();
 
 	return (
-		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName() }>
+		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 			<TableProvider
 				title={pageInfo.getTitle()}
 				columns={columns}
@@ -87,7 +93,6 @@ const Vendor = () => {
 							setOpen: setIsOpenAddModal,
 							updatedData,
 							setUpdatedData,
-							postData,
 							updateData,
 						}}
 					/>,
@@ -114,4 +119,4 @@ const Vendor = () => {
 	);
 };
 
-export default Vendor;
+export default PurchaseLog;

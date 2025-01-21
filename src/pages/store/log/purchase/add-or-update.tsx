@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { IInternalTransferTableData } from '@/pages/store/_config/columns/columns.type';
-import { useStoreInternalTransfersByUUID } from '@/pages/store/_config/query';
-import { INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '@/pages/store/_config/schema';
+import { IPurchaseEntryTableData } from '@/pages/store/_config/columns/columns.type';
+import { useStorePurchaseEntryByUUID } from '@/pages/store/_config/query';
+import { PURCHASE_LOG_NULL, PURCHASE_LOG_SCHEMA } from '@/pages/store/_config/schema';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -19,14 +19,16 @@ import {
 	useOtherFloor,
 	useOtherRack,
 	useOtherRoom,
+	useOtherStock,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IInternalTransferAddOrUpdateProps } from '../../_config/types';
+import { IPurchaseLogAddOrUpdateProps } from '../../_config/types';
+import { error } from 'console';
 
-const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
@@ -37,19 +39,18 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useStoreInternalTransfersByUUID<IInternalTransferTableData>(updatedData?.uuid as string);
+	const { data } = useStorePurchaseEntryByUUID<IPurchaseEntryTableData>(updatedData?.uuid as string);
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
-	const { data: RoomOptions } = useOtherRoom<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
-	const { data: branchOptions } = useOtherBranch<IFormSelectOption[]>();
+	const { data: stockOptions } = useOtherStock<IFormSelectOption[]>();
 
-	const form = useRHF(INTERNAL_TRANSFER_SCHEMA, INTERNAL_TRANSFER_NULL);
+	const form = useRHF(PURCHASE_LOG_SCHEMA, PURCHASE_LOG_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(INTERNAL_TRANSFER_NULL);
+		form.reset(PURCHASE_LOG_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -61,8 +62,9 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
 
+
 	// Submit handler
-	async function onSubmit(values: IInternalTransferTableData) {
+	async function onSubmit(values: IPurchaseEntryTableData) {
 		// UPDATE ITEM
 		updateData.mutateAsync({
 			url: `${url}/${updatedData?.uuid}`,
@@ -78,34 +80,18 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.internal_transfer_id} Transfer` : 'Add New Transfer'}
+			title={`Update ${updatedData?.purchase_id} Log`}
 			form={form}
 			onSubmit={onSubmit}
 		>
 			<FormField
 				control={form.control}
-				name='from_branch_uuid'
+				name='stock_uuid'
 				render={(props) => (
-					<CoreForm.ReactSelect
-						label='Branch'
-						placeholder='Select Branch'
-						options={branchOptions!}
-						{...props}
-					/>
+					<CoreForm.ReactSelect label='Stock' placeholder='Select Stock' options={stockOptions!} {...props} />
 				)}
 			/>
-			<FormField
-				control={form.control}
-				name='to_branch_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect
-						label='Branch'
-						placeholder='Select Branch'
-						options={branchOptions!}
-						{...props}
-					/>
-				)}
-			/>
+			<FormField control={form.control} name='serial_no' render={(props) => <CoreForm.Input {...props} />} />
 			<FormField
 				control={form.control}
 				name='warehouse_uuid'
@@ -116,13 +102,6 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 						options={warehouseOptions!}
 						{...props}
 					/>
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='room_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Room' placeholder='Select Room' options={RoomOptions!} {...props} />
 				)}
 			/>
 			<FormField

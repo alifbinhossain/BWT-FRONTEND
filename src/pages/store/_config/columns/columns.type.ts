@@ -45,7 +45,7 @@ export type ISizeTableData = {
 //* Vendor
 export type IVendorTableData = {
 	uuid: string;
-	brand_uuid: string;
+	model_uuid: string;
 	name: string;
 	company_name: string;
 	phone: string;
@@ -86,12 +86,13 @@ export type IPurchaseTableData = {
 export type IPurchaseEntryTableData = {
 	uuid: string;
 	purchase_uuid: string;
+	purchase_id: string;
 	stock_uuid: string;
 	stock_id: string;
 	serial_no: string;
-	quantity: string;
-	price_per_unit: string;
-	discount: string;
+	quantity: number;
+	price_per_unit: number;
+	discount: number;
 	created_at: string;
 	updated_at: string;
 	remarks: string;

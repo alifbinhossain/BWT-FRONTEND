@@ -12,6 +12,7 @@ import {
 	IInternalTransferTableData,
 	IModelTableData,
 	IProductTableData,
+	IPurchaseEntryTableData,
 	IRackTableData,
 	ISizeTableData,
 	IStockTableData,
@@ -427,17 +428,26 @@ export interface IInternalTransferAddOrUpdateProps {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	updatedData?: IInternalTransferTableData | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<IInternalTransferTableData | null>>;
-	postData: UseMutationResult<
+	updateData: UseMutationResult<
 		IResponse<any>,
 		AxiosError<IResponse<any>, any>,
 		{
 			url: string;
-			newData: any;
+			updatedData: any;
 			isOnCloseNeeded?: boolean;
 			onClose?: (() => void) | undefined;
 		},
 		any
 	>;
+}
+
+//* Purchase Log
+export interface IPurchaseLogAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: IPurchaseEntryTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<IPurchaseEntryTableData | null>>;
 	updateData: UseMutationResult<
 		IResponse<any>,
 		AxiosError<IResponse<any>, any>,
