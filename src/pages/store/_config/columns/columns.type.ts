@@ -127,9 +127,8 @@ export type IPurchaseReturnEntryTableData = {
 	purchase_return_uuid: string;
 	purchase_return_id: string;
 	product_uuid: string;
-	quantity: string;
-	price_per_unit: string;
-	discount: string;
+	quantity: number;
+	price_per_unit: number;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
