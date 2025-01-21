@@ -2,23 +2,10 @@ import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import {
-	IBoxTableData,
-	IBranchTableData,
-	IBrandTableData,
-	ICategoryTableData,
-	IFloorTableData,
-	IGroupTableData,
-	IInternalTransferTableData,
-	IModelTableData,
-	IProductTableData,
-	IPurchaseEntryTableData,
-	IRackTableData,
-	ISizeTableData,
-	IStockTableData,
-	IVendorTableData,
-	IWarehouseTableData,
-} from '../columns/columns.type';
+
+
+import { IBoxTableData, IBranchTableData, IBrandTableData, ICategoryTableData, IFloorTableData, IGroupTableData, IInternalTransferTableData, IModelTableData, IProductTableData, IPurchaseEntryTableData, IPurchaseReturnEntryTableData, IRackTableData, ISizeTableData, IStockTableData, IVendorTableData, IWarehouseTableData } from '../columns/columns.type';
+
 
 //* Group
 export interface IGroupAddOrUpdateProps {
@@ -448,6 +435,26 @@ export interface IPurchaseLogAddOrUpdateProps {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	updatedData?: IPurchaseEntryTableData | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<IPurchaseEntryTableData | null>>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+
+//* Purchase Return Log
+export interface IPurchaseReturnLogAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: IPurchaseReturnEntryTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<IPurchaseReturnEntryTableData | null>>;
 	updateData: UseMutationResult<
 		IResponse<any>,
 		AxiosError<IResponse<any>, any>,

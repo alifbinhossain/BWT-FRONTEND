@@ -125,6 +125,7 @@ export type IPurchaseReturnTableData = {
 export type IPurchaseReturnEntryTableData = {
 	uuid: string;
 	purchase_return_uuid: string;
+	purchase_return_id: string;
 	product_uuid: string;
 	quantity: string;
 	price_per_unit: string;

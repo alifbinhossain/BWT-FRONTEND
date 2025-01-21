@@ -402,3 +402,26 @@ export const PURCHASE_LOG_NULL: Partial<IPurchaseLog> = {
 };
 
 export type IPurchaseLog = z.infer<typeof PURCHASE_LOG_SCHEMA>;
+
+//* Purchase Return Log
+export const PURCHASE_RETURN_LOG_SCHEMA = z.object({
+	uuid: STRING_OPTIONAL,
+	purchase_return_uuid: STRING_OPTIONAL,
+	product_uuid: STRING_REQUIRED,
+	product_name: STRING_OPTIONAL,
+	quantity: NUMBER_DOUBLE_REQUIRED,
+	price_per_unit: NUMBER_DOUBLE_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const PURCHASE_RETURN_LOG_NULL: Partial<IPurchaseReturnLog> = {
+	uuid: '',
+	purchase_return_uuid: '',
+	product_uuid: '',
+	product_name: '',
+	quantity: 0,
+	price_per_unit: 0,
+	remarks: '',
+};
+
+export type IPurchaseReturnLog = z.infer<typeof PURCHASE_RETURN_LOG_SCHEMA>;
