@@ -1,9 +1,7 @@
 import { lazy } from 'react';
-import { Diagnosis } from '@/pages/work/diagnosis';
-import { Job } from '@/pages/work/job';
-import { Problem } from '@/pages/work/library/problem';
-import { Section } from '@/pages/work/library/section';
-import { Process } from '@/pages/work/process';
+import Job from '@/pages/work/job';
+import Problem from '@/pages/work/library/problem';
+import Section from '@/pages/work/library/section';
 import { IRoute } from '@/types';
 
 const workRoutes: IRoute[] = [
@@ -15,20 +13,6 @@ const workRoutes: IRoute[] = [
 				path: '/work/job',
 				element: <Job />,
 				page_name: 'work__job',
-				actions: ['create', 'read', 'update', 'delete'],
-			},
-			{
-				name: 'Diagnosis',
-				path: '/work/diagnosis',
-				element: <Diagnosis />,
-				page_name: 'work__diagnosis',
-				actions: ['create', 'read', 'update', 'delete'],
-			},
-			{
-				name: 'Process',
-				path: '/work/process',
-				element: <Process />,
-				page_name: 'work__process',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{

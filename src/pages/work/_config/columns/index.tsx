@@ -5,10 +5,18 @@ import Transfer from '@/components/buttons/transfer';
 import { LinkOnly } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
-import { IDiagnosisTableData, IJobTableData } from './columns.type';
+import { IDiagnosisTableData, IJobTableData, IProblemsTableData } from './columns.type';
 
+//* Problems Columns
+export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+	},
+];
 //* Job Columns
-export const jobColumns: ColumnDef<IJobTableData>[] = [
+export const jobColumns = (): ColumnDef<IJobTableData>[] => [
 	{
 		accessorKey: 'id',
 		header: 'ID',
@@ -80,66 +88,11 @@ export const jobColumns: ColumnDef<IJobTableData>[] = [
 		enableColumnFilter: false,
 	},
 ];
-// id: string;
-// uuid: string;
-// order_uuid: string;
-// engineer_uuid: string;
-// problems_uuid: string[];
-// problem_statement: string;
-// status: boolean;
-// status_update_date: string;
-// proposed_cost: number;
-// is_proceed_to_repair: boolean;
-// remarks: string;
-// created_by: string;
-// created_at: string;
-// updated_at: string;
-//* Diagnosis Columns
-const diagnosisColumns: ColumnDef<IDiagnosisTableData>[] = [
+//* Section Columns
+export const sectionColumns = (): ColumnDef<IProblemsTableData>[] => [
 	{
-		accessorKey: 'id',
-		header: 'ID',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'order_uuid',
-		header: 'Job ID',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'engineer_uuid',
-		header: 'Engineer',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'problem_uuid',
-		header: 'Problem',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'problem_statement',
-		header: 'Problem Statement',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'status',
-		header: 'Status',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'status_update_date',
-		header: 'Status Update Date',
-		enableColumnFilter: false,
-	},
-
-	{
-		accessorKey: 'is_proceed_to_repair',
-		header: 'Proceed to Repair',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'proposed_cost',
-		header: 'Proposed Cost',
+		accessorKey: 'name',
+		header: 'Name',
 		enableColumnFilter: false,
 	},
 ];

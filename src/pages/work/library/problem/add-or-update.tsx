@@ -1,4 +1,8 @@
 import { useEffect } from 'react';
+import { IProblemsTableData } from '@/pages/work/_config/columns/columns.type';
+import { useWorkProblemsByUUID } from '@/pages/work/_config/query';
+import { PROBLEM_NULL, PROBLEM_SCHEMA } from '@/pages/work/_config/schema';
+import { IProblemAddOrUpdateProps } from '@/pages/work/_config/types';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -14,12 +18,7 @@ import { useOtherRack } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IFloorTableData } from '../_config/columns/columns.type';
-import { useStoreFloorsByUUID } from '../_config/query';
-import { FLOOR_NULL, FLOOR_SCHEMA } from '../_config/schema';
-import { IFloorAddOrUpdateProps } from '../_config/types';
-
-const AddOrUpdate: React.FC<IFloorAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IProblemAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
@@ -31,14 +30,14 @@ const AddOrUpdate: React.FC<IFloorAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useStoreFloorsByUUID<IFloorTableData>(updatedData?.uuid as string);
+	const { data } = useWorkProblemsByUUID<IProblemsTableData>(updatedData?.uuid as string);
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
 
-	const form = useRHF(FLOOR_SCHEMA, FLOOR_NULL);
+	const form = useRHF(PROBLEM_SCHEMA, PROBLEM_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(FLOOR_NULL);
+		form.reset(PROBLEM_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -51,7 +50,7 @@ const AddOrUpdate: React.FC<IFloorAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: IFloorTableData) {
+	async function onSubmit(values: IProblemsTableData) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({
@@ -86,13 +85,6 @@ const AddOrUpdate: React.FC<IFloorAddOrUpdateProps> = ({
 			onSubmit={onSubmit}
 		>
 			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
-			<FormField
-				control={form.control}
-				name='rack_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Rack' placeholder='Select Rack' options={rackOption!} {...props} />
-				)}
-			/>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

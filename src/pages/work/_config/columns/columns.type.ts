@@ -10,6 +10,7 @@ export type IProblemsTableData = {
 //* Job Columns
 export type IJobTableData = {
 	id: string;
+	job_id: string;
 	uuid: string;
 	user_uuid: string;
 	model_uuid: string;

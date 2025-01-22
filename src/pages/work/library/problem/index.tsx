@@ -1,8 +1,8 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
-import { problemColumns } from '@pages/work/_config/columns';
+import { problemsColumns } from '@pages/work/_config/columns';
 import { IProblemsTableData } from '@pages/work/_config/columns/columns.type';
-import { useStoreFloors } from '@pages/work/_config/query';
+import { useWorkProblems } from '@pages/work/_config/query';
 import { Row } from '@tanstack/react-table';
 
 import { PageInfo } from '@/utils';
@@ -12,10 +12,10 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Floor = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreFloors<IProblemsTableData[]>();
+const Problems = () => {
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkProblems<IProblemsTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Floor', url, 'store__floor'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/Problem', url, 'store__problem'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -63,7 +63,7 @@ const Floor = () => {
 	};
 
 	// Table Columns
-	const columns = problemColumns();
+	const columns = problemsColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -113,4 +113,4 @@ const Floor = () => {
 	);
 };
 
-export default Floor;
+export default Problems;
