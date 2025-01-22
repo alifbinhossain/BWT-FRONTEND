@@ -1,4 +1,8 @@
 import { useEffect } from 'react';
+import { IFloorTableData } from '@/pages/work/_config/columns/columns.type';
+import { useStoreFloorsByUUID } from '@/pages/work/_config/query';
+import { FLOOR_NULL, FLOOR_SCHEMA } from '@/pages/work/_config/schema';
+import { IFloorAddOrUpdateProps } from '@/pages/work/_config/types';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -13,11 +17,6 @@ import { AddModal } from '@core/modal';
 import { useOtherRack } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
-
-import { IFloorTableData } from '../_config/columns/columns.type';
-import { useStoreFloorsByUUID } from '../_config/query';
-import { FLOOR_NULL, FLOOR_SCHEMA } from '../_config/schema';
-import { IFloorAddOrUpdateProps } from '../_config/types';
 
 const AddOrUpdate: React.FC<IFloorAddOrUpdateProps> = ({
 	url,

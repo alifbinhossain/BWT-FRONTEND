@@ -1,13 +1,12 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
+import { floorColumns } from '@pages/work/_config/columns';
+import { IFloorTableData } from '@pages/work/_config/columns/columns.type';
+import { useStoreFloors } from '@pages/work/_config/query';
 import { Row } from '@tanstack/react-table';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
-
-import { floorColumns } from '../_config/columns';
-import { IFloorTableData } from '../_config/columns/columns.type';
-import { useStoreFloors } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
