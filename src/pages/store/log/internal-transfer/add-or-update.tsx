@@ -87,7 +87,7 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 				name='from_branch_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
-						label='Branch'
+						label='From'
 						placeholder='Select Branch'
 						options={branchOptions!}
 						{...props}
@@ -98,12 +98,7 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 				control={form.control}
 				name='to_branch_uuid'
 				render={(props) => (
-					<CoreForm.ReactSelect
-						label='Branch'
-						placeholder='Select Branch'
-						options={branchOptions!}
-						{...props}
-					/>
+					<CoreForm.ReactSelect label='To' placeholder='Select Branch' options={branchOptions!} {...props} />
 				)}
 			/>
 			<FormField

@@ -5,14 +5,8 @@ import { IPurchaseEntryTableData } from '@/pages/store/_config/columns/columns.t
 import { useStorePurchaseEntry } from '@/pages/store/_config/query';
 import { Row } from '@tanstack/react-table';
 
-
-
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
-
-
-
-
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -22,7 +16,7 @@ const PurchaseLog = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useStorePurchaseEntry<IPurchaseEntryTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Log/Purchase', url, 'store__log'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/Log->Purchase', url, 'store__log'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);

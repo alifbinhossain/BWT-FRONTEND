@@ -16,7 +16,7 @@ const PurchaseReturnLog = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useStorePurchaseReturnEntry<IPurchaseReturnEntryTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Log/Purchase Return', url, 'store__log'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/Log->Purchase Return', url, 'store__log'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);

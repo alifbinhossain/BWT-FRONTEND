@@ -235,6 +235,26 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 		header: 'Discount',
 		enableColumnFilter: false,
 	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'rack_name',
+		header: 'Rack',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'floor_name',
+		header: 'Floor',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'box_name',
+		header: 'Box',
+		enableColumnFilter: false,
+	},
 ];
 
 //* Purchase Return Columns
@@ -294,7 +314,7 @@ export const stockColumns = ({
 	},
 	{
 		id: 'action_trx',
-		header: 'Material Trx',
+		header: 'Internal Transfer',
 		cell: (info) => <Transfer onClick={() => handleAgainstTrx(info.row)} />,
 		size: 40,
 		meta: {

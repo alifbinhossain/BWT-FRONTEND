@@ -1,7 +1,7 @@
 import { error } from 'console';
 import { useEffect } from 'react';
 import { IPurchaseReturnEntryTableData } from '@/pages/store/_config/columns/columns.type';
-import { useStorePurchaseEntryByUUID } from '@/pages/store/_config/query';
+import { useStorePurchaseReturnEntryByUUID } from '@/pages/store/_config/query';
 import { PURCHASE_RETURN_LOG_NULL, PURCHASE_RETURN_LOG_SCHEMA } from '@/pages/store/_config/schema';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
@@ -40,7 +40,7 @@ const AddOrUpdate: React.FC<IPurchaseReturnLogAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useStorePurchaseEntryByUUID<IPurchaseReturnEntryTableData>(updatedData?.uuid as string);
+	const { data } = useStorePurchaseReturnEntryByUUID<IPurchaseReturnEntryTableData>(updatedData?.uuid as string);
 	const { data: productOptions } = useOtherProduct<IFormSelectOption[]>();
 
 	const form = useRHF(PURCHASE_RETURN_LOG_SCHEMA, PURCHASE_RETURN_LOG_NULL);
