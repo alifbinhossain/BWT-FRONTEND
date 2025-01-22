@@ -1,8 +1,8 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
-import { sectionColumns } from '@pages/work/_config/columns';
-import { ISectionTableData } from '@pages/work/_config/columns/columns.type';
-import { useWorkSections } from '@pages/work/_config/query';
+import { problemsColumns } from '../_config/columns';
+import { IProblemsTableData } from '../_config/columns/columns.type';
+import { useWorkProblems } from '../_config/query';
 import { Row } from '@tanstack/react-table';
 
 import { PageInfo } from '@/utils';
@@ -12,10 +12,10 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Section = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkSections<ISectionTableData[]>();
+const Problems = () => {
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkProblems<IProblemsTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/section', url, 'store__section'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/Problem', url, 'store__problem'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -24,9 +24,9 @@ const Section = () => {
 		setIsOpenAddModal(true);
 	};
 
-	const [updatedData, setUpdatedData] = useState<ISectionTableData | null>(null);
+	const [updatedData, setUpdatedData] = useState<IProblemsTableData | null>(null);
 
-	const handleUpdate = (row: Row<ISectionTableData>) => {
+	const handleUpdate = (row: Row<IProblemsTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
@@ -39,7 +39,7 @@ const Section = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<ISectionTableData>) => {
+	const handleDelete = (row: Row<IProblemsTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
 			name: row?.original?.name,
@@ -50,7 +50,7 @@ const Section = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<ISectionTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IProblemsTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
@@ -63,7 +63,7 @@ const Section = () => {
 	};
 
 	// Table Columns
-	const columns = sectionColumns();
+	const columns = problemsColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -113,4 +113,4 @@ const Section = () => {
 	);
 };
 
-export default Section;
+export default Problems;

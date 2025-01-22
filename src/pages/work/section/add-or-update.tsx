@@ -1,8 +1,4 @@
 import { useEffect } from 'react';
-import { IProblemsTableData } from '@/pages/work/_config/columns/columns.type';
-import { useWorkProblemsByUUID } from '@/pages/work/_config/query';
-import { PROBLEM_NULL, PROBLEM_SCHEMA } from '@/pages/work/_config/schema';
-import { IProblemAddOrUpdateProps } from '@/pages/work/_config/types';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -18,7 +14,12 @@ import { useOtherRack } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-const AddOrUpdate: React.FC<IProblemAddOrUpdateProps> = ({
+import { ISectionTableData } from '../_config/columns/columns.type';
+import { useWorkSectionsByUUID } from '../_config/query';
+import { SECTION_NULL, SECTION_SCHEMA } from '../_config/schema';
+import { ISectionAddOrUpdateProps } from '../_config/types';
+
+const AddOrUpdate: React.FC<ISectionAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
@@ -30,14 +31,14 @@ const AddOrUpdate: React.FC<IProblemAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useWorkProblemsByUUID<IProblemsTableData>(updatedData?.uuid as string);
+	const { data } = useWorkSectionsByUUID<ISectionTableData>(updatedData?.uuid as string);
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
 
-	const form = useRHF(PROBLEM_SCHEMA, PROBLEM_NULL);
+	const form = useRHF(SECTION_SCHEMA, SECTION_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(PROBLEM_NULL);
+		form.reset(SECTION_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -50,7 +51,7 @@ const AddOrUpdate: React.FC<IProblemAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: IProblemsTableData) {
+	async function onSubmit(values: ISectionTableData) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({

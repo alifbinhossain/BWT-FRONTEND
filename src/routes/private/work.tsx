@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import Job from '@/pages/work/job';
-import Problem from '@/pages/work/library/problem';
-import Section from '@/pages/work/library/section';
+import Problem from '@/pages/work/problem';
+import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
 
 const workRoutes: IRoute[] = [

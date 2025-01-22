@@ -5,7 +5,7 @@ import Transfer from '@/components/buttons/transfer';
 import { LinkOnly } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
-import { IDiagnosisTableData, IJobTableData, IProblemsTableData } from './columns.type';
+import { IJobTableData, IProblemsTableData, ISectionTableData } from './columns.type';
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -89,7 +89,7 @@ export const jobColumns = (): ColumnDef<IJobTableData>[] => [
 	},
 ];
 //* Section Columns
-export const sectionColumns = (): ColumnDef<IProblemsTableData>[] => [
+export const sectionColumns = (): ColumnDef<ISectionTableData>[] => [
 	{
 		accessorKey: 'name',
 		header: 'Name',

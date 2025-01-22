@@ -1,21 +1,22 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
-import { problemsColumns } from '@pages/work/_config/columns';
-import { IProblemsTableData } from '@pages/work/_config/columns/columns.type';
-import { useWorkProblems } from '@pages/work/_config/query';
 import { Row } from '@tanstack/react-table';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
+import { sectionColumns } from '../_config/columns';
+import { ISectionTableData } from '../_config/columns/columns.type';
+import { useWorkSections } from '../_config/query';
+
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Problems = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkProblems<IProblemsTableData[]>();
+const Section = () => {
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkSections<ISectionTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Problem', url, 'store__problem'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Store/section', url, 'store__section'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -24,9 +25,9 @@ const Problems = () => {
 		setIsOpenAddModal(true);
 	};
 
-	const [updatedData, setUpdatedData] = useState<IProblemsTableData | null>(null);
+	const [updatedData, setUpdatedData] = useState<ISectionTableData | null>(null);
 
-	const handleUpdate = (row: Row<IProblemsTableData>) => {
+	const handleUpdate = (row: Row<ISectionTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
@@ -39,7 +40,7 @@ const Problems = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<IProblemsTableData>) => {
+	const handleDelete = (row: Row<ISectionTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
 			name: row?.original?.name,
@@ -50,7 +51,7 @@ const Problems = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IProblemsTableData>[]) => {
+	const handleDeleteAll = (rows: Row<ISectionTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
@@ -63,7 +64,7 @@ const Problems = () => {
 	};
 
 	// Table Columns
-	const columns = problemsColumns();
+	const columns = sectionColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -113,4 +114,4 @@ const Problems = () => {
 	);
 };
 
-export default Problems;
+export default Section;
