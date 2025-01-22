@@ -46,6 +46,10 @@ const otherQK = {
 	floor: () => [...otherQK.all(), 'floor'],
 	//* Box
 	box: () => [...otherQK.all(), 'box'],
+	//* Problem
+	problem: () => [...otherQK.all(), 'problem'],
+	//* User
+	user: () => [...otherQK.all(), 'user'],
 };
 
 export default otherQK;

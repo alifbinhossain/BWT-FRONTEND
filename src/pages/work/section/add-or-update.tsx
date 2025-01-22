@@ -81,7 +81,7 @@ const AddOrUpdate: React.FC<ISectionAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.name} Floor` : 'Add New Floor'}
+			title={isUpdate ? `Update ${updatedData?.name} Section` : 'Add New Section'}
 			form={form}
 			onSubmit={onSubmit}
 		>

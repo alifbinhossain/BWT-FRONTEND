@@ -81,7 +81,7 @@ const AddOrUpdate: React.FC<IProblemAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.name} Floor` : 'Add New Floor'}
+			title={isUpdate ? `Update ${updatedData?.name} Problem` : 'Add New Problem'}
 			form={form}
 			onSubmit={onSubmit}
 		>

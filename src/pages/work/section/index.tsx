@@ -16,7 +16,7 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 const Section = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkSections<ISectionTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/section', url, 'store__section'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Work/section', url, 'work__section'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);

@@ -18,22 +18,22 @@ export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
 //* Job Columns
 export const jobColumns = (): ColumnDef<IJobTableData>[] => [
 	{
-		accessorKey: 'id',
+		accessorKey: 'order_id',
 		header: 'ID',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'user_uuid',
-		header: 'User',
+		accessorKey: 'user_name',
+		header: 'Customer',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'model_uuid',
+		accessorKey: 'model_name',
 		header: 'Model',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'size_uuid',
+		accessorKey: 'size_name',
 		header: 'Size',
 		enableColumnFilter: false,
 	},
@@ -43,7 +43,7 @@ export const jobColumns = (): ColumnDef<IJobTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'problem_uuid',
+		accessorKey: 'problems_name',
 		header: 'Problem',
 		enableColumnFilter: false,
 	},
@@ -68,22 +68,22 @@ export const jobColumns = (): ColumnDef<IJobTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'warehouse_uuid',
+		accessorKey: 'warehouse_name',
 		header: 'Warehouse',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'rack_uuid',
+		accessorKey: 'rack_name',
 		header: 'Rack',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'floor_uuid',
+		accessorKey: 'floor_name',
 		header: 'Floor',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'box_uuid',
+		accessorKey: 'box_name',
 		header: 'Box',
 		enableColumnFilter: false,
 	},

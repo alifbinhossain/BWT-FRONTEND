@@ -7,7 +7,16 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherFloor } from '@/lib/common-queries/other';
+import {
+	useOtherBox,
+	useOtherFloor,
+	useOtherModel,
+	useOtherProblem,
+	useOtherRack,
+	useOtherSize,
+	useOtherUser,
+	useOtherWarehouse,
+} from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -29,7 +38,23 @@ const AddOrUpdate: React.FC<IJobAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useWorkJobsByUUID<IJobTableData>(updatedData?.uuid as string);
-	const { data: userOption } = useOtherFloor<IFormSelectOption[]>();
+	const { data: userOption } = useOtherUser<IFormSelectOption[]>();
+	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
+	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
+	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>();
+	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
+	const { data: warehouseOption } = useOtherWarehouse<IFormSelectOption[]>();
+	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
+	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
+	const accessoriesOption = [
+		{ label: 'Power Cable', value: 'power_cable' },
+		{ label: 'HDMI Cable', value: 'hdmi_cable' },
+		{ label: 'Remote', value: 'remote' },
+		{ label: 'USB Cable', value: 'usb_cable' },
+		{ label: 'Ethernet Cable', value: 'ethernet_cable' },
+		{ label: 'Charger', value: 'charger' },
+		{ label: 'Others', value: 'others' },
+	];
 
 	const form = useRHF(JOB_SCHEMA, JOB_NULL);
 
@@ -65,6 +90,7 @@ const AddOrUpdate: React.FC<IJobAddOrUpdateProps> = ({
 				url,
 				newData: {
 					...values,
+
 					created_at: getDateTime(),
 					created_by: user?.uuid,
 					uuid: nanoid(),
@@ -78,100 +104,181 @@ const AddOrUpdate: React.FC<IJobAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.job_id} Job` : 'Add New Job'}
+			title={isUpdate ? `Update ${updatedData?.order_id} Job` : 'Add New Job'}
+			isSmall={true}
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<FormField
-				control={form.control}
-				name='user_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='User' placeholder='Select User' options={userOption!} {...props} />
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='model_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Model' placeholder='Select Model' options={userOption!} {...props} />
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='size_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Size' placeholder='Select Size' options={userOption!} {...props} />
-				)}
-			/>
-			<FormField control={form.control} name='serial_no' render={(props) => <CoreForm.Input {...props} />} />
-			<FormField
-				control={form.control}
-				name='problem_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect
-						isMulti={true}
-						label='Problem'
-						placeholder='Select Problems'
-						options={userOption!}
-						{...props}
+			<div className='flex justify-end'>
+				<FormField
+					control={form.control}
+					name='is_product_received'
+					render={(props) => <CoreForm.Checkbox label='Receive' className='h-5' {...props} />}
+				/>
+			</div>
+			<div className='flex space-x-4'>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='user_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Customer'
+								placeholder='Select Customer'
+								options={userOption!}
+								{...props}
+							/>
+						)}
 					/>
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='problem_statement'
-				render={(props) => <CoreForm.Textarea {...props} />}
-			/>
-			<FormField control={form.control} name='accessories' render={(props) => <CoreForm.Textarea {...props} />} />
-			<FormField
-				control={form.control}
-				name='is_product_received'
-				render={(props) => <CoreForm.Checkbox {...props} />}
-			/>
-			<FormField
-				control={form.control}
-				name='receive_date'
-				render={(props) => <CoreForm.DatePicker {...props} />}
-			/>
-			<FormField
-				control={form.control}
-				name='rack_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect
-						isMulti={true}
-						label='Rack'
-						placeholder='Select Racks'
-						options={userOption!}
-						{...props}
+				</div>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='receive_date'
+						render={(props) => <CoreForm.DatePicker {...props} />}
 					/>
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='floor_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect
-						isMulti={true}
-						label='Floor'
-						placeholder='Select Floors'
-						options={userOption!}
-						{...props}
+				</div>
+			</div>
+
+			<div className='flex space-x-4'>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='model_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Model'
+								placeholder='Select Model'
+								options={modelOption!}
+								{...props}
+							/>
+						)}
 					/>
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='box_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect
-						isMulti={true}
-						label='Box'
-						placeholder='Select Boxes'
-						options={userOption!}
-						{...props}
+				</div>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='size_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Size'
+								placeholder='Select Size'
+								options={sizeOption!}
+								{...props}
+							/>
+						)}
 					/>
-				)}
-			/>
+				</div>
+			</div>
+			<div className='flex space-x-4'>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='serial_no'
+						render={(props) => <CoreForm.Input {...props} />}
+					/>
+				</div>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='problems_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								isMulti={true}
+								label='Problem'
+								placeholder='Select Problems'
+								options={problemOption!}
+								{...props}
+							/>
+						)}
+					/>
+				</div>
+			</div>
+
+			<div className='flex space-x-4'>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='problem_statement'
+						render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+					/>
+				</div>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='accessories'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								isMulti={true}
+								label='Accessories'
+								placeholder='Select accessories'
+								options={accessoriesOption!}
+								{...props}
+							/>
+						)}
+					/>
+				</div>
+			</div>
+
+			<div className='flex space-x-4'>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='warehouse_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Warehouse'
+								placeholder='Select Warehouse'
+								options={warehouseOption!}
+								{...props}
+							/>
+						)}
+					/>
+				</div>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='rack_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Rack'
+								placeholder='Select Racks'
+								options={rackOption!}
+								{...props}
+							/>
+						)}
+					/>
+				</div>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='floor_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Floor'
+								placeholder='Select Floors'
+								options={floorOption!}
+								{...props}
+							/>
+						)}
+					/>
+				</div>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='box_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Box'
+								placeholder='Select Boxes'
+								options={boxOption!}
+								{...props}
+							/>
+						)}
+					/>
+				</div>
+			</div>
+
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

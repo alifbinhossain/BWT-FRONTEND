@@ -20,12 +20,12 @@ export const useWorkProblemsByUUID = <T>(uuid: string) =>
 export const useWorkJobs = <T>() =>
 	useTQuery<T>({
 		queryKey: workQK.job(),
-		url: '/work/job',
+		url: '/work/order',
 	});
 export const useWorkJobsByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: workQK.jobByUUID(uuid),
-		url: `/work/job/${uuid}`,
+		url: `/work/order/${uuid}`,
 		enabled: !!uuid,
 	});
 //* Section

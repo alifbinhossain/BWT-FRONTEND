@@ -16,7 +16,7 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 const Box = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkJobs<IJobTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Job', url, 'store__job'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Work/Job', url, 'work__job'), [url]);
 
 	//* Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -43,7 +43,7 @@ const Box = () => {
 	const handleDelete = (row: Row<IJobTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
-			name: row?.original?.job_id,
+			name: row?.original?.order_id,
 		});
 	};
 
@@ -57,7 +57,7 @@ const Box = () => {
 		setDeleteItems(
 			selectedRows.map((row) => ({
 				id: row.uuid,
-				name: row.job_id,
+				name: row.order_id,
 				checked: true,
 			}))
 		);

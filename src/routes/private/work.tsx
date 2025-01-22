@@ -23,6 +23,7 @@ const workRoutes: IRoute[] = [
 						path: '/work/problem',
 						element: <Problem />,
 						page_name: 'work__problem',
+						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
 						name: 'Section',

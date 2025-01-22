@@ -10,21 +10,30 @@ export type IProblemsTableData = {
 //* Job Columns
 export type IJobTableData = {
 	id: string;
-	job_id: string;
+	order_id: string;
 	uuid: string;
 	user_uuid: string;
+	user_name: string;
+	user_id: string;
 	model_uuid: string;
+	model_name: string;
 	size_uuid: string;
+	size_name: string;
 	serial_no: string;
-	problem_uuid: string[];
+	problems_uuid: string[];
+	problems_name: string[];
 	problem_statement: string;
 	accessories: string[];
 	is_product_received: boolean;
 	receive_date: string;
 	warehouse_uuid: string;
+	warehouse_name: string;
 	rack_uuid: string;
+	rack_name: string;
 	floor_uuid: string;
+	floor_name: string;
 	box_uuid: string;
+	box_name: string;
 	created_by: string;
 	created_at: string;
 	updated_at: string;

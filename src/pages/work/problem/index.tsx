@@ -1,12 +1,13 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
-import { problemsColumns } from '../_config/columns';
-import { IProblemsTableData } from '../_config/columns/columns.type';
-import { useWorkProblems } from '../_config/query';
 import { Row } from '@tanstack/react-table';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
+
+import { problemsColumns } from '../_config/columns';
+import { IProblemsTableData } from '../_config/columns/columns.type';
+import { useWorkProblems } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -15,7 +16,7 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 const Problems = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkProblems<IProblemsTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Store/Problem', url, 'store__problem'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Work/Problem', url, 'work__problem'), [url]);
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);

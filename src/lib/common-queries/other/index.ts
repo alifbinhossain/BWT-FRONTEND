@@ -119,3 +119,16 @@ export const useOtherBox = <T>() =>
 		queryKey: otherQK.box(),
 		url: `/other/box/value/label`,
 	});
+
+//* GET OTHER PROBLEM
+export const useOtherProblem = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.problem(),
+		url: `/other/problem/value/label`,
+	});
+//* GET OTHER USER
+export const useOtherUser = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.user(),
+		url: `/other/user/value/label`,
+	});
