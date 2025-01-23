@@ -5,18 +5,19 @@ import { Row } from '@tanstack/react-table';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { jobColumns } from '../_config/columns';
-import { IJobTableData } from '../_config/columns/columns.type';
-import { useWorkJobs } from '../_config/query';
+import { diagnosisColumns } from '../_config/columns';
+import { IDiagnosisTableData } from '../_config/columns/columns.type';
+import { useWorkDiagnosis } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Box = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkJobs<IJobTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
+		useWorkDiagnosis<IDiagnosisTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Work/Job', url, 'work__job'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Work/Diagnosis', url, 'work__diagnosis'), [url]);
 
 	//* Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -25,9 +26,9 @@ const Box = () => {
 		setIsOpenAddModal(true);
 	};
 
-	const [updatedData, setUpdatedData] = useState<IJobTableData | null>(null);
+	const [updatedData, setUpdatedData] = useState<IDiagnosisTableData | null>(null);
 
-	const handleUpdate = (row: Row<IJobTableData>) => {
+	const handleUpdate = (row: Row<IDiagnosisTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
@@ -40,7 +41,7 @@ const Box = () => {
 	} | null>(null);
 
 	//* Single Delete Handler
-	const handleDelete = (row: Row<IJobTableData>) => {
+	const handleDelete = (row: Row<IDiagnosisTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
 			name: row?.original?.order_id,
@@ -51,7 +52,7 @@ const Box = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	//* Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IJobTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IDiagnosisTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
@@ -64,7 +65,7 @@ const Box = () => {
 	};
 
 	//* Table Columns
-	const columns = jobColumns();
+	const columns = diagnosisColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

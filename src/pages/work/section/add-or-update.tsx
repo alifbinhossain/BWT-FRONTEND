@@ -32,7 +32,6 @@ const AddOrUpdate: React.FC<ISectionAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useWorkSectionsByUUID<ISectionTableData>(updatedData?.uuid as string);
-	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
 
 	const form = useRHF(SECTION_SCHEMA, SECTION_NULL);
 

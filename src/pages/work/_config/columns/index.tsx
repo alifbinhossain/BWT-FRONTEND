@@ -5,7 +5,7 @@ import Transfer from '@/components/buttons/transfer';
 import { LinkOnly } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
-import { IJobTableData, IProblemsTableData, ISectionTableData } from './columns.type';
+import { IDiagnosisTableData, IOrderTableData, IProblemsTableData, ISectionTableData } from './columns.type';
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -15,8 +15,8 @@ export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
-//* Job Columns
-export const jobColumns = (): ColumnDef<IJobTableData>[] => [
+//* Order Columns
+export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'order_id',
 		header: 'ID',
@@ -88,11 +88,60 @@ export const jobColumns = (): ColumnDef<IJobTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
+//* Diagnosis Columns
+export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
+	{
+		accessorKey: 'diagnosis_id',
+		header: 'Diagnosis ID',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'order_id',
+		header: 'Order ID',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'problems_names',
+		header: 'Diagnosis Problem',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'problem_statement',
+		header: 'Diagnosis Problem Statement',
+		enableColumnFilter: false,
+	},
+
+	{
+		accessorKey: 'status',
+		header: 'Diagnosis Status',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'status_update_date',
+		header: 'Diagnosis Date',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'proposed_cost',
+		header: 'Proposed Cost',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'is_proceed_to_repair',
+		header: 'Proceed to Repair',
+		enableColumnFilter: false,
+	},
+];
 //* Section Columns
 export const sectionColumns = (): ColumnDef<ISectionTableData>[] => [
 	{
 		accessorKey: 'name',
 		header: 'Name',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'category',
+		header: 'Category',
 		enableColumnFilter: false,
 	},
 ];

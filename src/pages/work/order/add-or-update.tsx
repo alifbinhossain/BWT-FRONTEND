@@ -20,12 +20,12 @@ import {
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IJobTableData } from '../_config/columns/columns.type';
+import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkJobsByUUID } from '../_config/query';
 import { JOB_NULL, JOB_SCHEMA } from '../_config/schema';
-import { IJobAddOrUpdateProps } from '../_config/types';
+import { IOrderAddOrUpdateProps } from '../_config/types';
 
-const AddOrUpdate: React.FC<IJobAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
@@ -37,7 +37,7 @@ const AddOrUpdate: React.FC<IJobAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useWorkJobsByUUID<IJobTableData>(updatedData?.uuid as string);
+	const { data } = useWorkJobsByUUID<IOrderTableData>(updatedData?.uuid as string);
 	const { data: userOption } = useOtherUser<IFormSelectOption[]>();
 	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
 	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
@@ -73,7 +73,7 @@ const AddOrUpdate: React.FC<IJobAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: IJobTableData) {
+	async function onSubmit(values: IOrderTableData) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({
@@ -104,7 +104,7 @@ const AddOrUpdate: React.FC<IJobAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.order_id} Job` : 'Add New Job'}
+			title={isUpdate ? `Update ${updatedData?.order_id} Order` : 'Add New Order'}
 			isSmall={true}
 			form={form}
 			onSubmit={onSubmit}

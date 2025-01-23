@@ -2,6 +2,7 @@ import { size } from 'lodash';
 import { z } from 'zod';
 
 import {
+	BOOLEAN_OPTIONAL,
 	BOOLEAN_REQUIRED,
 	NUMBER_DOUBLE_REQUIRED,
 	STRING_ARRAY,
@@ -50,31 +51,19 @@ export type IJob = z.infer<typeof JOB_SCHEMA>;
 
 //* Diagnosis Schema
 export const DIAGNOSIS_SCHEMA = z.object({
-	uuid: STRING_OPTIONAL,
-	job_uuid: STRING_OPTIONAL,
-	problem_uuid: STRING_ARRAY,
+	problems_uuid: STRING_ARRAY,
 	problem_statement: STRING_REQUIRED,
-	accessories: STRING_ARRAY_OPTIONAL,
-	is_product_received: BOOLEAN_REQUIRED,
-	receive_date: STRING_OPTIONAL,
-	warehouse_uuid: STRING_OPTIONAL,
-	rack_uuid: STRING_OPTIONAL,
-	floor_uuid: STRING_OPTIONAL,
-	box_uuid: STRING_OPTIONAL,
+	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
+	proposed_cost: NUMBER_DOUBLE_REQUIRED,
+	is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
 	remarks: STRING_NULLABLE,
 });
 export const DIAGNOSIS_NULL: Partial<IDiagnosis> = {
-	uuid: '',
-	job_uuid: '',
-	problem_uuid: [],
+	problems_uuid: [],
 	problem_statement: '',
-	accessories: [],
-	is_product_received: false,
-	receive_date: '',
-	warehouse_uuid: '',
-	rack_uuid: '',
-	floor_uuid: '',
-	box_uuid: '',
+	status: 'pending',
+	proposed_cost: 0,
+	is_proceed_to_repair: false,
 	remarks: null,
 };
 export type IDiagnosis = z.infer<typeof DIAGNOSIS_SCHEMA>;
@@ -96,11 +85,13 @@ export type ISection = z.infer<typeof SECTION_SCHEMA>;
 export const PROBLEM_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
 	name: STRING_REQUIRED,
+	category: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 export const PROBLEM_NULL: Partial<IProblem> = {
 	uuid: '',
 	name: '',
+	category: '',
 	remarks: null,
 };
 export type IProblem = z.infer<typeof PROBLEM_SCHEMA>;

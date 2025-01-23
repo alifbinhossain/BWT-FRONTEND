@@ -1,5 +1,6 @@
 import { lazy } from 'react';
-import Job from '@/pages/work/job';
+import Diagnosis from '@/pages/work/diagonsis';
+import Job from '@/pages/work/order';
 import Problem from '@/pages/work/problem';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
@@ -10,9 +11,16 @@ const workRoutes: IRoute[] = [
 		children: [
 			{
 				name: 'Job',
-				path: '/work/job',
+				path: '/work/order',
 				element: <Job />,
-				page_name: 'work__job',
+				page_name: 'work__order',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Diagnosis',
+				path: '/work/diagnosis',
+				element: <Diagnosis />,
+				page_name: 'work__diagnosis',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{

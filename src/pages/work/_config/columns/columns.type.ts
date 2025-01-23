@@ -7,8 +7,8 @@ export type IProblemsTableData = {
 	created_at: string;
 	updated_at: string;
 };
-//* Job Columns
-export type IJobTableData = {
+//* Order Columns
+export type IOrderTableData = {
 	id: string;
 	order_id: string;
 	uuid: string;
@@ -39,15 +39,18 @@ export type IJobTableData = {
 	updated_at: string;
 	remarks: string;
 };
+
 //* Diagnosis Columns
 export type IDiagnosisTableData = {
-	id: string;
 	uuid: string;
+	id: string;
+	diagnosis_id: string;
 	order_uuid: string;
+	order_id: string;
 	engineer_uuid: string;
 	problems_uuid: string[];
 	problem_statement: string;
-	status: boolean;
+	status: 'pending' | 'rejected' | 'accepted' | 'not_repairable';
 	status_update_date: string;
 	proposed_cost: number;
 	is_proceed_to_repair: boolean;

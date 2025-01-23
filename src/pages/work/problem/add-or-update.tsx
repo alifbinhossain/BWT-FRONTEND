@@ -32,7 +32,11 @@ const AddOrUpdate: React.FC<IProblemAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useWorkProblemsByUUID<IProblemsTableData>(updatedData?.uuid as string);
-	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
+	
+	const categoryOption = [
+		{ label: 'Employee', value: 'employee' },
+		{ label: 'Customer', value: 'customer' },
+	];
 
 	const form = useRHF(PROBLEM_SCHEMA, PROBLEM_NULL);
 
@@ -86,6 +90,20 @@ const AddOrUpdate: React.FC<IProblemAddOrUpdateProps> = ({
 			onSubmit={onSubmit}
 		>
 			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
+			<div className='flex-1'>
+				<FormField
+					control={form.control}
+					name='category'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							label='Category'
+							placeholder='Select Category'
+							options={categoryOption!}
+							{...props}
+						/>
+					)}
+				/>
+			</div>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

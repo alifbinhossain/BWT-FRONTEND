@@ -28,6 +28,18 @@ export const useWorkJobsByUUID = <T>(uuid: string) =>
 		url: `/work/order/${uuid}`,
 		enabled: !!uuid,
 	});
+//* Diagnosis
+export const useWorkDiagnosis = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.diagnosis(),
+		url: '/work/diagnosis',
+	});
+export const useWorkDiagnosisByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.diagnosisByUUID(uuid),
+		url: `/work/diagnosis/${uuid}`,
+		enabled: !!uuid,
+	});
 //* Section
 export const useWorkSections = <T>() =>
 	useTQuery<T>({
