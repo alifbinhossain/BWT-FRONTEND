@@ -16,7 +16,7 @@ export const useWorkProblemsByUUID = <T>(uuid: string) =>
 		enabled: !!uuid,
 	});
 
-//* Job
+//* Order
 export const useWorkJobs = <T>() =>
 	useTQuery<T>({
 		queryKey: workQK.job(),
@@ -28,6 +28,14 @@ export const useWorkJobsByUUID = <T>(uuid: string) =>
 		url: `/work/order/${uuid}`,
 		enabled: !!uuid,
 	});
+
+export const useWorkOrderByDetails = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.orderByDetails(uuid),
+		url: `/work/diagnosis-details-by-order/${uuid}`,
+		enabled: !!uuid,
+	});
+
 //* Diagnosis
 export const useWorkDiagnosis = <T>() =>
 	useTQuery<T>({

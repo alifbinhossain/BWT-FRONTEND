@@ -1,12 +1,15 @@
+import { orderByDetails } from '.';
+
 export const workQK = {
 	all: () => ['work'],
 
 	//* problem
 	problem: () => [...workQK.all(), 'problem'],
 	problemByUUID: (uuid: string) => [...workQK.problem(), uuid],
-	//* job
+	//* order
 	job: () => [...workQK.all(), 'job'],
 	jobByUUID: (uuid: string) => [...workQK.job(), uuid],
+	orderByDetails: (uuid: string) => [...workQK.job(), 'orderByDetails', uuid],
 	//* diagnosis
 	diagnosis: () => [...workQK.all(), 'diagnosis'],
 	diagnosisByUUID: (uuid: string) => [...workQK.diagnosis(), uuid],

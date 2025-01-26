@@ -8,7 +8,7 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { purchaseColumns } from '../_config/columns';
 import { IPurchaseTableData } from '../_config/columns/columns.type';
-import { type1FacetedFilters } from '../_config/columns/facetedFilters'; // TODO: Import faceted filters (Optional)
+import { type1FacetedFilters } from '../_config/columns/facetedFilters'; 
 import { useStorePurchases } from '../_config/query';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
