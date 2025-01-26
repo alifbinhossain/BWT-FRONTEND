@@ -67,7 +67,7 @@ const Vendor = () => {
 	const columns = vendorColumns();
 
 	return (
-		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
+		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName() }>
 			<TableProvider
 				title={pageInfo.getTitle()}
 				columns={columns}

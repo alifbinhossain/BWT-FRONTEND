@@ -15,6 +15,8 @@ export const STRING = (message = 'Required', typeError = 'Invalid String') =>
 export const STRING_NULLABLE = STRING().nullable();
 export const STRING_REQUIRED = STRING('Required').min(1, 'Required');
 export const STRING_OPTIONAL = STRING().optional();
+export const STRING_ARRAY = STRING().array();
+export const STRING_ARRAY_OPTIONAL = STRING_ARRAY.optional();
 
 // DATE
 export const DATE = (message = 'Required') => z.date({ required_error: message });

@@ -10,45 +10,16 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherBrand } from '@/lib/common-queries/other';
+import { useOtherModel } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IVendorTableData } from '../_config/columns/columns.type';
 import { useStoreVendorsByUUID } from '../_config/query';
 import { VENDOR_NULL, VENDOR_SCHEMA } from '../_config/schema';
+import { IVendorAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IVendorTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IVendorTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IVendorAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
@@ -61,7 +32,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStoreVendorsByUUID<IVendorTableData>(updatedData?.uuid as string);
-	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
+	const { data: modelOptions } = useOtherModel<IFormSelectOption[]>();
 
 	const form = useRHF(VENDOR_SCHEMA, VENDOR_NULL);
 
@@ -124,9 +95,9 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
 			<FormField
 				control={form.control}
-				name='brand_uuid'
+				name='model_uuid'
 				render={(props) => (
-					<CoreForm.ReactSelect label='Brand' placeholder='Select Brand' options={brandOptions!} {...props} />
+					<CoreForm.ReactSelect label='Model' placeholder='Select Model' options={modelOptions!} {...props} />
 				)}
 			/>
 			<FormField control={form.control} name='company_name' render={(props) => <CoreForm.Input {...props} />} />

@@ -25,6 +25,15 @@ export type IBrandTableData = {
 	updated_at: string;
 	remarks: string;
 };
+//* Model
+export type IModelTableData = {
+	uuid: string;
+	name: string;
+	brand_uuid: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
 //* Size
 export type ISizeTableData = {
 	uuid: string;
@@ -36,7 +45,7 @@ export type ISizeTableData = {
 //* Vendor
 export type IVendorTableData = {
 	uuid: string;
-	brand_uuid: string;
+	model_uuid: string;
 	name: string;
 	company_name: string;
 	phone: string;
@@ -51,7 +60,7 @@ export type IVendorTableData = {
 export type IProductTableData = {
 	uuid: string;
 	category_uuid: string;
-	brand_uuid: string;
+	model_uuid: string;
 	size_uuid: string;
 	name: string;
 	warranty_days: number;
@@ -77,12 +86,13 @@ export type IPurchaseTableData = {
 export type IPurchaseEntryTableData = {
 	uuid: string;
 	purchase_uuid: string;
+	purchase_id: string;
 	stock_uuid: string;
 	stock_id: string;
 	serial_no: string;
-	quantity: string;
-	price_per_unit: string;
-	discount: string;
+	quantity: number;
+	price_per_unit: number;
+	discount: number;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
@@ -115,10 +125,10 @@ export type IPurchaseReturnTableData = {
 export type IPurchaseReturnEntryTableData = {
 	uuid: string;
 	purchase_return_uuid: string;
+	purchase_return_id: string;
 	product_uuid: string;
-	quantity: string;
-	price_per_unit: string;
-	discount: string;
+	quantity: number;
+	price_per_unit: number;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
@@ -201,7 +211,7 @@ export type IRoomTableData = {
 //* Rack
 export type IRackTableData = {
 	uuid: string;
-	room_uuid: string;
+	warehouse_uuid: string;
 	name: string;
 	created_at: string;
 	updated_at: string;

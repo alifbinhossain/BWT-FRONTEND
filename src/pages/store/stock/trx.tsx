@@ -82,7 +82,7 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.name} Stock` : 'Add New Stock'}
+			title={'Transfer Material'}
 			form={form}
 			onSubmit={onSubmit}
 		>
@@ -91,7 +91,7 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 				name='from_branch_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
-						label='Branch'
+						label='From'
 						placeholder='Select Branch'
 						options={branchOptions!}
 						{...props}
@@ -102,12 +102,7 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 				control={form.control}
 				name='to_branch_uuid'
 				render={(props) => (
-					<CoreForm.ReactSelect
-						label='Branch'
-						placeholder='Select Branch'
-						options={branchOptions!}
-						{...props}
-					/>
+					<CoreForm.ReactSelect label='To' placeholder='Select Branch' options={branchOptions!} {...props} />
 				)}
 			/>
 			<FormField

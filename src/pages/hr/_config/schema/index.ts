@@ -9,7 +9,7 @@ import {
 	STRING_REQUIRED,
 } from '@/utils/validators';
 
-// Department Schema
+//* Department Schema
 export const DEPARTMENT_SCHEMA = z.object({
 	department: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
@@ -22,7 +22,7 @@ export const DEPARTMENT_NULL: Partial<IDepartment> = {
 
 export type IDepartment = z.infer<typeof DEPARTMENT_SCHEMA>;
 
-// Designation Schema
+//* Designation Schema
 export const DESIGNATION_SCHEMA = z.object({
 	designation: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
@@ -35,11 +35,12 @@ export const DESIGNATION_NULL: Partial<IDesignation> = {
 
 export type IDesignation = z.infer<typeof DESIGNATION_SCHEMA>;
 
-// User Schema
+//* User Schema
 export const USER_SCHEMA = (isUpdate: boolean) => {
 	const baseSchema = z.object({
 		name: STRING_REQUIRED,
 		email: FORTUNE_ZIP_EMAIL_PATTERN,
+		user_type: z.enum(['employ', 'customer']),
 		department_uuid: STRING_REQUIRED,
 		designation_uuid: STRING_REQUIRED,
 		ext: STRING_NULLABLE,
@@ -69,6 +70,7 @@ export const USER_NULL: Partial<IUser> = {
 	name: '',
 	email: '',
 	department_uuid: '',
+	user_type: 'employ',
 	designation_uuid: '',
 	ext: null,
 	phone: '',
@@ -77,7 +79,7 @@ export const USER_NULL: Partial<IUser> = {
 
 export type IUser = z.infer<ReturnType<typeof USER_SCHEMA>>;
 
-// Reset Password Schema
+//* Reset Password Schema
 export const RESET_PASSWORD_SCHEMA = z
 	.object({
 		pass: PASSWORD,

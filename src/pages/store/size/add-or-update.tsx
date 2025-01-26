@@ -15,38 +15,9 @@ import { getDateTime } from '@/utils';
 import { ISizeTableData } from '../_config/columns/columns.type';
 import { useStoreSizesByUUID } from '../_config/query';
 import { SIZE_NULL, SIZE_SCHEMA } from '../_config/schema';
+import { ISizeAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: ISizeTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<ISizeTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<ISizeAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,

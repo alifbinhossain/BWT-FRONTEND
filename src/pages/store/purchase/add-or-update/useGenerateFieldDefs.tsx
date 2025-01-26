@@ -24,7 +24,6 @@ interface IGenerateFieldDefsProps {
 const useGenerateFieldDefs = ({ copy, remove, watch }: IGenerateFieldDefsProps): FieldDef[] => {
 	const { data: stockOptions } = useOtherStock<IFormSelectOption[]>();
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
-	const { data: RoomOptions } = useOtherRoom<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
@@ -63,13 +62,6 @@ const useGenerateFieldDefs = ({ copy, remove, watch }: IGenerateFieldDefsProps):
 			type: 'select',
 			placeholder: 'Select Warehouse',
 			options: warehouseOptions || [],
-		},
-		{
-			header: 'Room',
-			accessorKey: 'room_uuid',
-			type: 'select',
-			placeholder: 'Select Room',
-			options: RoomOptions || [],
 		},
 		{
 			header: 'Rack',

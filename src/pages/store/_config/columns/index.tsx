@@ -13,6 +13,7 @@ import {
 	IFloorTableData,
 	IGroupTableData,
 	IInternalTransferTableData,
+	IModelTableData,
 	IProductTableData,
 	IPurchaseEntryTableData,
 	IPurchaseReturnEntryTableData,
@@ -62,6 +63,19 @@ export const brandColumns = (): ColumnDef<IBrandTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
+//* Model Columns
+export const modelColumns = (): ColumnDef<IModelTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
+	},
+];
 
 //* Size Columns
 export const sizeColumns = (): ColumnDef<ISizeTableData>[] => [
@@ -80,8 +94,8 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'brand_name',
-		header: 'Brand',
+		accessorKey: 'model_name',
+		header: 'Model',
 		enableColumnFilter: false,
 	},
 	{
@@ -127,8 +141,8 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'brand_name',
-		header: 'Brand',
+		accessorKey: 'model_name',
+		header: 'Model',
 		enableColumnFilter: false,
 	},
 	{
@@ -221,6 +235,26 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 		header: 'Discount',
 		enableColumnFilter: false,
 	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'rack_name',
+		header: 'Rack',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'floor_name',
+		header: 'Floor',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'box_name',
+		header: 'Box',
+		enableColumnFilter: false,
+	},
 ];
 
 //* Purchase Return Columns
@@ -280,7 +314,7 @@ export const stockColumns = ({
 	},
 	{
 		id: 'action_trx',
-		header: 'Material Trx',
+		header: 'Internal Transfer',
 		cell: (info) => <Transfer onClick={() => handleAgainstTrx(info.row)} />,
 		size: 40,
 		meta: {

@@ -4,6 +4,7 @@ import { IRoute } from '@/types';
 const Group = lazy(() => import('@/pages/store/group'));
 const Category = lazy(() => import('@/pages/store/category'));
 const Brand = lazy(() => import('@/pages/store/brand'));
+const Model = lazy(() => import('@/pages/store/model'));
 const Size = lazy(() => import('@/pages/store/size'));
 const Vendor = lazy(() => import('@/pages/store/vendor'));
 const Product = lazy(() => import('@/pages/store/product'));
@@ -120,6 +121,13 @@ const StoreRoutes: IRoute[] = [
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
+						name: 'Model',
+						path: '/store/model',
+						element: <Model />,
+						page_name: 'store__model',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
 						name: 'Size',
 						path: '/store/size',
 						element: <Size />,
@@ -190,7 +198,6 @@ const StoreRoutes: IRoute[] = [
 				element: <Log />,
 				page_name: 'store__log',
 				actions: [
-					'create',
 					'read',
 					'update',
 					'delete',

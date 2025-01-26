@@ -24,43 +24,14 @@ import {
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IInternalTransferTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IInternalTransferTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
+import { IInternalTransferAddOrUpdateProps } from '../../_config/types';
 
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
 	updatedData,
 	setUpdatedData,
-	postData,
 	updateData,
 }) => {
 	const isUpdate = !!updatedData;
@@ -92,29 +63,15 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 
 	// Submit handler
 	async function onSubmit(values: IInternalTransferTableData) {
-		if (isUpdate) {
-			// UPDATE ITEM
-			updateData.mutateAsync({
-				url: `${url}/${updatedData?.uuid}`,
-				updatedData: {
-					...values,
-					updated_at: getDateTime(),
-				},
-				onClose,
-			});
-		} else {
-			// ADD NEW ITEM
-			postData.mutateAsync({
-				url,
-				newData: {
-					...values,
-					created_at: getDateTime(),
-					created_by: user?.uuid,
-					uuid: nanoid(),
-				},
-				onClose,
-			});
-		}
+		// UPDATE ITEM
+		updateData.mutateAsync({
+			url: `${url}/${updatedData?.uuid}`,
+			updatedData: {
+				...values,
+				updated_at: getDateTime(),
+			},
+			onClose,
+		});
 	}
 
 	return (
@@ -130,7 +87,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 				name='from_branch_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
-						label='Branch'
+						label='From'
 						placeholder='Select Branch'
 						options={branchOptions!}
 						{...props}
@@ -141,12 +98,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 				control={form.control}
 				name='to_branch_uuid'
 				render={(props) => (
-					<CoreForm.ReactSelect
-						label='Branch'
-						placeholder='Select Branch'
-						options={branchOptions!}
-						{...props}
-					/>
+					<CoreForm.ReactSelect label='To' placeholder='Select Branch' options={branchOptions!} {...props} />
 				)}
 			/>
 			<FormField

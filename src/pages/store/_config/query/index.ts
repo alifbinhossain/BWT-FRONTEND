@@ -1,6 +1,9 @@
 import useTQuery from '@/hooks/useTQuery';
 
+
+
 import { storeQK } from './queryKeys';
+
 
 // * Group
 export const useStoreGroups = <T>() =>
@@ -42,6 +45,21 @@ export const useStoreBrandsByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: storeQK.brandByUUID(uuid),
 		url: `/store/brand/${uuid}`,
+		enabled: !!uuid,
+	});
+
+//* Model
+
+export const useStoreModels = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.model(),
+		url: '/store/model',
+	});
+
+export const useStoreModelsByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.modelByUUID(uuid),
+		url: `/store/model/${uuid}`,
 		enabled: !!uuid,
 	});
 
@@ -200,7 +218,18 @@ export const useStorePurchasesByUUID = <T>(uuid: string) =>
 		url: `/store/purchase/purchase-entry-details/by/${uuid}`,
 		enabled: !!uuid,
 	});
-
+export const useStorePurchaseEntry = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.purchaseEntry(),
+		url: '/store/purchase-entry',
+	});
+export const useStorePurchaseEntryByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.purchaseEntryByUUID(uuid),
+		url: `/store/purchase-entry/${uuid}`,
+		enabled: !!uuid,
+		
+	});
 //* Purchase Return
 export const useStorePurchaseReturn = <T>() =>
 	useTQuery<T>({
@@ -212,6 +241,18 @@ export const useStorePurchaseReturnByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: storeQK.purchaseReturnByUUID(uuid),
 		url: `/store/purchase-return/purchase-return-entry-details/by/${uuid}`,
+		enabled: !!uuid,
+	});
+
+export const useStorePurchaseReturnEntry = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.purchaseReturnEntry(),
+		url: '/store/purchase-return-entry',
+	});
+export const useStorePurchaseReturnEntryByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.purchaseReturnEntryByUUID(uuid),
+		url: `/store/purchase-return-entry/${uuid}`,
 		enabled: !!uuid,
 	});
 

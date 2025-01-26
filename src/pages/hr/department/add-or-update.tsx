@@ -15,38 +15,9 @@ import { getDateTime } from '@/utils';
 import { IDepartmentTableData } from '../_config/columns/columns.type';
 import { useHrDepartmentsByUUID, useHrDesignations, useHrUsers } from '../_config/query';
 import { DEPARTMENT_NULL, DEPARTMENT_SCHEMA, IDepartment } from '../_config/schema';
+import { IDepartmentAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IDepartmentTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IDepartmentTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IDepartmentAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
