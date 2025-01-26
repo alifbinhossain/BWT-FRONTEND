@@ -22,6 +22,7 @@ const workRoutes: IRoute[] = [
 				path: '/work/order/details/:uuid',
 				element: <OrderDetails />,
 				page_name: 'work__order_details',
+				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{

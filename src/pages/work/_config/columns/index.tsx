@@ -62,14 +62,30 @@ export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'accessories',
+		accessorFn: (row) => {
+			return row.accessories.map((item) => item).join(', ').replace(/_/g, ' ');
+		},
 		header: 'Accessories',
 		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.row.original.accessories as string[];
+			return (
+				<div className='flex flex-wrap gap-1'>
+					{value?.map((item, index) => (
+						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+							{item.replace(/_/g, ' ')}
+						</span>
+					))}
+				</div>
+			);
+		},
 	},
+
 	{
 		accessorKey: 'is_product_received',
 		header: 'Product Received',
 		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
 		accessorKey: 'receive_date',
@@ -109,6 +125,10 @@ export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
 		accessorKey: 'order_id',
 		header: 'Order ID',
 		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.order_uuid;
+			return <LinkOnly uri={`/work/order/details/${uuid}`} title={info.getValue() as string} />;
+		},
 	},
 	{
 		accessorKey: 'problems_names',
@@ -125,6 +145,18 @@ export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
 		accessorKey: 'status',
 		header: 'Diagnosis Status',
 		enableColumnFilter: false,
+		cell: (info) => {
+			const status = info.getValue() as string;
+			const bgColorClass =
+				{
+					accepted: 'bg-success',
+					rejected: 'bg-red-500',
+					'not repairable': 'bg-gray-500',
+					pending: 'bg-warning',
+				}[status.toLowerCase()] || '';
+
+			return <span className={`rounded px-2 py-1 capitalize text-white ${bgColorClass}`}>{status}</span>;
+		},
 	},
 	{
 		accessorKey: 'status_update_date',
@@ -141,6 +173,7 @@ export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
 		accessorKey: 'is_proceed_to_repair',
 		header: 'Proceed to Repair',
 		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 ];
 //* Section Columns
