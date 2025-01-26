@@ -1,5 +1,6 @@
 import React from 'react';
 
+import StatusButton from '@/components/buttons/status';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
 
@@ -56,7 +57,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 		return [
 			{
 				label: 'Received',
-				value: data.is_product_received,
+				value: <StatusButton value={data.is_product_received as boolean} />,
 			},
 			{
 				label: 'Receiving Date',
@@ -85,7 +86,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			},
 		];
 	};
-	const renderDiagosisItems = (): ITableListItems => {
+	const renderDiagnosisItems = (): ITableListItems => {
 		return [
 			{
 				label: 'Problem',
@@ -97,7 +98,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			},
 			{
 				label: 'Proceed to Repair',
-				value: data.diagnosis?.is_proceed_to_repair,
+				value: <StatusButton value={data.diagnosis?.is_proceed_to_repair as boolean} />,
 			},
 			{
 				label: 'Status Update Date',
@@ -109,7 +110,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 	return (
 		<>
 			<SectionContainer title={'Customer'}>
-				<div className='flex '>
+				<div className='flex'>
 					<TableList title='General' className='flex-1' items={renderGeneralItems()} />
 					<TableList title='Product' className='flex-1' items={renderProductItems()} />
 					<TableList title='Problem' className='flex-1' items={renderProblemItems()} />
@@ -118,7 +119,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				</div>
 			</SectionContainer>
 			<SectionContainer title={'Diagnosis'}>
-				<TableList title='Diagnosis' items={renderDiagosisItems()} />
+				<TableList title='Diagnosis' items={renderDiagnosisItems()} />
 			</SectionContainer>
 		</>
 	);
