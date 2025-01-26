@@ -26,6 +26,10 @@ export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
 		accessorKey: 'order_id',
 		header: 'ID',
 		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.uuid;
+			return <LinkOnly uri={`/work/order/details/${uuid}`} title={info.getValue() as string} />;
+		},
 	},
 	{
 		accessorKey: 'user_name',

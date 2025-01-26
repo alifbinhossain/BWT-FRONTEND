@@ -8,6 +8,26 @@ export type IProblemsTableData = {
 	created_at: string;
 	updated_at: string;
 };
+//* Diagnosis Columns
+export type IDiagnosisTableData = {
+	uuid: string;
+	id: string;
+	diagnosis_id: string;
+	order_uuid: string;
+	order_id: string;
+	engineer_uuid: string;
+	problems_uuid: string[];
+	problems_name: string[];
+	problem_statement: string;
+	status: 'pending' | 'rejected' | 'accepted' | 'not_repairable';
+	status_update_date: string;
+	proposed_cost: number;
+	is_proceed_to_repair: boolean;
+	remarks: string;
+	created_by: string;
+	created_at: string;
+	updated_at: string;
+};
 //* Order Columns
 export type IOrderTableData = {
 	id: string;
@@ -18,6 +38,7 @@ export type IOrderTableData = {
 	user_id: string;
 	model_uuid: string;
 	model_name: string;
+	brand_name: string;
 	size_uuid: string;
 	size_name: string;
 	serial_no: string;
@@ -38,28 +59,10 @@ export type IOrderTableData = {
 	created_by: string;
 	created_at: string;
 	updated_at: string;
+	diagnosis: IDiagnosisTableData;
 	remarks: string;
 };
 
-//* Diagnosis Columns
-export type IDiagnosisTableData = {
-	uuid: string;
-	id: string;
-	diagnosis_id: string;
-	order_uuid: string;
-	order_id: string;
-	engineer_uuid: string;
-	problems_uuid: string[];
-	problem_statement: string;
-	status: 'pending' | 'rejected' | 'accepted' | 'not_repairable';
-	status_update_date: string;
-	proposed_cost: number;
-	is_proceed_to_repair: boolean;
-	remarks: string;
-	created_by: string;
-	created_at: string;
-	updated_at: string;
-};
 //* Section Columns
 export type ISectionTableData = {
 	uuid: string;

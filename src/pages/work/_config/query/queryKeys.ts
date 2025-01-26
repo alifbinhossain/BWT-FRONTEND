@@ -1,5 +1,3 @@
-import { orderByDetails } from '.';
-
 export const workQK = {
 	all: () => ['work'],
 
