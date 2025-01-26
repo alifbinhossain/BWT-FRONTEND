@@ -14,6 +14,11 @@ export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
 		header: 'Name',
 		enableColumnFilter: false,
 	},
+	{
+		accessorKey: 'category',
+		header: 'Category',
+		enableColumnFilter: false,
+	},
 ];
 //* Order Columns
 export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
@@ -66,6 +71,7 @@ export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
 		accessorKey: 'receive_date',
 		header: 'Receive Date',
 		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
 		accessorKey: 'warehouse_name',
@@ -118,8 +124,9 @@ export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
 	},
 	{
 		accessorKey: 'status_update_date',
-		header: 'Diagnosis Date',
+		header: 'Diagnosis Status Date',
 		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
 		accessorKey: 'proposed_cost',
@@ -137,11 +144,6 @@ export const sectionColumns = (): ColumnDef<ISectionTableData>[] => [
 	{
 		accessorKey: 'name',
 		header: 'Name',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'category',
-		header: 'Category',
 		enableColumnFilter: false,
 	},
 ];

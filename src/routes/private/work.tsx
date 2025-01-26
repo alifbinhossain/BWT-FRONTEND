@@ -10,7 +10,7 @@ const workRoutes: IRoute[] = [
 		name: 'Work',
 		children: [
 			{
-				name: 'Job',
+				name: 'Order',
 				path: '/work/order',
 				element: <Job />,
 				page_name: 'work__order',

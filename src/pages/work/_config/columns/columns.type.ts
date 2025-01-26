@@ -2,6 +2,7 @@
 export type IProblemsTableData = {
 	uuid: string;
 	name: string;
+	category: 'employee' | 'customer';
 	remarks: string;
 	created_by: string;
 	created_at: string;

@@ -62,7 +62,7 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 				...values,
 				updated_at: getDateTime(),
 				engineer_uuid: user?.uuid,
-				diagnosis_date: getDateTime(),
+				status_update_date: data?.status !== values.status ? getDateTime() : data?.status_update_date,
 			},
 			onClose,
 		});
