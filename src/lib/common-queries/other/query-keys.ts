@@ -48,6 +48,8 @@ const otherQK = {
 	box: () => [...otherQK.all(), 'box'],
 	//* Problem
 	problem: () => [...otherQK.all(), 'problem'],
+	//*Section
+	section: () => [...otherQK.all(), 'section'],
 	//* User
 	user: () => [...otherQK.all(), 'user'],
 };

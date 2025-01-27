@@ -1,5 +1,6 @@
 import { watch } from 'fs';
 import { useEffect } from 'react';
+import { create } from 'lodash';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
@@ -86,12 +87,29 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				onClose,
 			});
 		} else {
+			// ADD NEW USER IF NOT EXIST
+			if (values?.is_new_customer) {
+				postData.mutateAsync({
+					url: `/hr/user`,
+					newData: {
+						name: values.name,
+						phone: values.phone,
+						user_type: 'customer',
+						password: values?.phone,
+						email: `${nanoid()}@bwt.com`,
+						created_at: getDateTime(),
+						created_by: user?.uuid,
+						uuid: nanoid(),
+					},
+					onClose,
+				});
+			}
+
 			// ADD NEW ITEM
 			postData.mutateAsync({
 				url,
 				newData: {
 					...values,
-
 					created_at: getDateTime(),
 					created_by: user?.uuid,
 					uuid: nanoid(),
@@ -148,7 +166,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					{form.watch('is_new_customer') && (
 						<FormField
 							control={form.control}
-							name='phone_no'
+							name='phone'
 							render={(props) => <CoreForm.Input label='Customer Phone No' {...props} />}
 						/>
 					)}

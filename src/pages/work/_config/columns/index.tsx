@@ -134,7 +134,7 @@ export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
 		},
 	},
 	{
-		accessorKey: 'problems_names',
+		accessorKey: 'problems_name',
 		header: 'Diagnosis Problem',
 		enableColumnFilter: false,
 	},

@@ -21,11 +21,11 @@ const customIssue = (message: string, path: string) => ({
 //* Order Schema
 export const ORDER_SCHEMA = z
 	.object({
-		is_new_customer: BOOLEAN_REQUIRED,
+		is_new_customer: BOOLEAN_OPTIONAL.default(false),
 		uuid: STRING_OPTIONAL,
 		name: STRING_OPTIONAL,
-		phone_no: STRING_OPTIONAL,
-		user_uuid: STRING_OPTIONAL,
+		phone: STRING_OPTIONAL,
+		user_uuid: STRING_NULLABLE,
 		model_uuid: STRING_REQUIRED,
 		size_uuid: STRING_REQUIRED,
 		serial_no: STRING_REQUIRED,
@@ -33,32 +33,40 @@ export const ORDER_SCHEMA = z
 		problem_statement: STRING_REQUIRED,
 		accessories: STRING_ARRAY_OPTIONAL,
 		is_product_received: BOOLEAN_REQUIRED,
-		receive_date: STRING_OPTIONAL,
-		warehouse_uuid: STRING_OPTIONAL,
-		rack_uuid: STRING_OPTIONAL,
-		floor_uuid: STRING_OPTIONAL,
-		box_uuid: STRING_OPTIONAL,
+		receive_date: STRING_NULLABLE,
+		warehouse_uuid: STRING_NULLABLE,
+		rack_uuid: STRING_NULLABLE,
+		floor_uuid: STRING_NULLABLE,
+		box_uuid: STRING_NULLABLE,
 		remarks: STRING_NULLABLE,
 	})
 	.superRefine((data, ctx) => {
 		if (!data.is_new_customer && !data.user_uuid) {
 			ctx.addIssue(customIssue('Required', 'user_uuid'));
 		}
-		if (data.is_new_customer && (!data.name || !data.phone_no)) {
-			ctx.addIssue(customIssue('Required', 'name'));
-			ctx.addIssue(customIssue('Required', 'phone_no'));
+		if (data.is_new_customer) {
+			if (!data.name) {
+				ctx.addIssue(customIssue('Required', 'name'));
+			}
+			if (!data.phone) {
+				ctx.addIssue(customIssue('Required', 'phone'));
+			}
 		}
-		if (data.is_product_received && !data.receive_date) {
-			ctx.addIssue(customIssue('Required', 'receive_date'));
-			ctx.addIssue(customIssue('Required', 'warehouse_uuid'));
+		if (data.is_product_received) {
+			if (!data.receive_date) {
+				ctx.addIssue(customIssue('Required', 'receive_date'));
+			}
+			if (!data.warehouse_uuid) {
+				ctx.addIssue(customIssue('Required', 'warehouse_uuid'));
+			}
 		}
 	});
 export const ORDER_NULL: Partial<IJob> = {
 	is_new_customer: false,
 	uuid: '',
-	user_uuid: '',
+	user_uuid: null,
 	name: '',
-	phone_no: '',
+	phone: '',
 	model_uuid: '',
 	size_uuid: '',
 	serial_no: '',
@@ -67,10 +75,10 @@ export const ORDER_NULL: Partial<IJob> = {
 	accessories: [],
 	is_product_received: false,
 	receive_date: '',
-	warehouse_uuid: '',
-	rack_uuid: '',
-	floor_uuid: '',
-	box_uuid: '',
+	warehouse_uuid: null,
+	rack_uuid: null,
+	floor_uuid: null,
+	box_uuid: null,
 	remarks: null,
 };
 export type IJob = z.infer<typeof ORDER_SCHEMA>;

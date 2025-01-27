@@ -30,6 +30,9 @@ export type IDiagnosisTableData = {
 };
 //* Order Columns
 export type IOrderTableData = {
+	is_new_customer: boolean;
+	name: string;
+	phone: string;
 	id: string;
 	order_id: string;
 	uuid: string;
