@@ -12,6 +12,12 @@ import {
 	STRING_REQUIRED,
 } from '@/utils/validators';
 
+const customIssue = (message: string, path: string) => ({
+	code: z.ZodIssueCode.custom,
+	message: message,
+	path: [path],
+});
+
 //* Order Schema
 export const ORDER_SCHEMA = z
 	.object({
@@ -28,7 +34,7 @@ export const ORDER_SCHEMA = z
 		accessories: STRING_ARRAY_OPTIONAL,
 		is_product_received: BOOLEAN_REQUIRED,
 		receive_date: STRING_OPTIONAL,
-		warehouse_uuid: STRING_REQUIRED,
+		warehouse_uuid: STRING_OPTIONAL,
 		rack_uuid: STRING_OPTIONAL,
 		floor_uuid: STRING_OPTIONAL,
 		box_uuid: STRING_OPTIONAL,
@@ -36,23 +42,15 @@ export const ORDER_SCHEMA = z
 	})
 	.superRefine((data, ctx) => {
 		if (!data.is_new_customer && !data.user_uuid) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: 'Please select user',
-				path: ['user_uuid'],
-			});
+			ctx.addIssue(customIssue('Required', 'user_uuid'));
 		}
 		if (data.is_new_customer && (!data.name || !data.phone_no)) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: 'Required',
-				path: ['name'],
-			});
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: 'Required',
-				path: ['phone_no'],
-			});
+			ctx.addIssue(customIssue('Required', 'name'));
+			ctx.addIssue(customIssue('Required', 'phone_no'));
+		}
+		if (data.is_product_received && !data.receive_date) {
+			ctx.addIssue(customIssue('Required', 'receive_date'));
+			ctx.addIssue(customIssue('Required', 'warehouse_uuid'));
 		}
 	});
 export const ORDER_NULL: Partial<IJob> = {
@@ -78,20 +76,28 @@ export const ORDER_NULL: Partial<IJob> = {
 export type IJob = z.infer<typeof ORDER_SCHEMA>;
 
 //* Diagnosis Schema
-export const DIAGNOSIS_SCHEMA = z.object({
-	problems_uuid: STRING_ARRAY,
-	problem_statement: STRING_REQUIRED,
-	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
-	proposed_cost: NUMBER_DOUBLE_REQUIRED,
-	is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
-	remarks: STRING_NULLABLE,
-});
+export const DIAGNOSIS_SCHEMA = z
+	.object({
+		problems_uuid: STRING_ARRAY,
+		problem_statement: STRING_REQUIRED,
+		status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
+		proposed_cost: NUMBER_DOUBLE_REQUIRED,
+		is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
+		section_uuid: STRING_ARRAY_OPTIONAL,
+		remarks: STRING_NULLABLE,
+	})
+	.superRefine((data, ctx) => {
+		if (!data.is_proceed_to_repair && !data.section_uuid && size(data.section_uuid) < 1) {
+			ctx.addIssue(customIssue('Required', 'section_uuid'));
+		}
+	});
 export const DIAGNOSIS_NULL: Partial<IDiagnosis> = {
 	problems_uuid: [],
 	problem_statement: '',
 	status: 'pending',
 	proposed_cost: 0,
 	is_proceed_to_repair: false,
+	section_uuid: [],
 	remarks: null,
 };
 export type IDiagnosis = z.infer<typeof DIAGNOSIS_SCHEMA>;
