@@ -12,27 +12,55 @@ import {
 	STRING_REQUIRED,
 } from '@/utils/validators';
 
-//* Job Schema
-export const JOB_SCHEMA = z.object({
-	uuid: STRING_OPTIONAL,
-	user_uuid: STRING_REQUIRED,
-	model_uuid: STRING_REQUIRED,
-	size_uuid: STRING_REQUIRED,
-	serial_no: STRING_REQUIRED,
-	problems_uuid: STRING_ARRAY,
-	problem_statement: STRING_REQUIRED,
-	accessories: STRING_ARRAY_OPTIONAL,
-	is_product_received: BOOLEAN_REQUIRED,
-	receive_date: STRING_OPTIONAL,
-	warehouse_uuid: STRING_REQUIRED,
-	rack_uuid: STRING_OPTIONAL,
-	floor_uuid: STRING_OPTIONAL,
-	box_uuid: STRING_OPTIONAL,
-	remarks: STRING_NULLABLE,
-});
-export const JOB_NULL: Partial<IJob> = {
+//* Order Schema
+export const ORDER_SCHEMA = z
+	.object({
+		is_new_customer: BOOLEAN_REQUIRED,
+		uuid: STRING_OPTIONAL,
+		name: STRING_OPTIONAL,
+		phone_no: STRING_OPTIONAL,
+		user_uuid: STRING_OPTIONAL,
+		model_uuid: STRING_REQUIRED,
+		size_uuid: STRING_REQUIRED,
+		serial_no: STRING_REQUIRED,
+		problems_uuid: STRING_ARRAY,
+		problem_statement: STRING_REQUIRED,
+		accessories: STRING_ARRAY_OPTIONAL,
+		is_product_received: BOOLEAN_REQUIRED,
+		receive_date: STRING_OPTIONAL,
+		warehouse_uuid: STRING_REQUIRED,
+		rack_uuid: STRING_OPTIONAL,
+		floor_uuid: STRING_OPTIONAL,
+		box_uuid: STRING_OPTIONAL,
+		remarks: STRING_NULLABLE,
+	})
+	.superRefine((data, ctx) => {
+		if (!data.is_new_customer && !data.user_uuid) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Please select user',
+				path: ['user_uuid'],
+			});
+		}
+		if (data.is_new_customer && (!data.name || !data.phone_no)) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Required',
+				path: ['name'],
+			});
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Required',
+				path: ['phone_no'],
+			});
+		}
+	});
+export const ORDER_NULL: Partial<IJob> = {
+	is_new_customer: false,
 	uuid: '',
 	user_uuid: '',
+	name: '',
+	phone_no: '',
 	model_uuid: '',
 	size_uuid: '',
 	serial_no: '',
@@ -47,7 +75,7 @@ export const JOB_NULL: Partial<IJob> = {
 	box_uuid: '',
 	remarks: null,
 };
-export type IJob = z.infer<typeof JOB_SCHEMA>;
+export type IJob = z.infer<typeof ORDER_SCHEMA>;
 
 //* Diagnosis Schema
 export const DIAGNOSIS_SCHEMA = z.object({

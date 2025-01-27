@@ -1,3 +1,4 @@
+import { watch } from 'fs';
 import { useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
@@ -22,7 +23,7 @@ import { getDateTime } from '@/utils';
 
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkJobsByUUID } from '../_config/query';
-import { JOB_NULL, JOB_SCHEMA } from '../_config/schema';
+import { ORDER_NULL, ORDER_SCHEMA } from '../_config/schema';
 import { IOrderAddOrUpdateProps } from '../_config/types';
 
 const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
@@ -56,11 +57,11 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 		{ label: 'Others', value: 'others' },
 	];
 
-	const form = useRHF(JOB_SCHEMA, JOB_NULL);
+	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(JOB_NULL);
+		form.reset(ORDER_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -109,7 +110,12 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<div className='flex justify-end'>
+			<div className='flex justify-end gap-2'>
+				<FormField
+					control={form.control}
+					name='is_new_customer'
+					render={(props) => <CoreForm.Checkbox label='New Customer' className='h-5' {...props} />}
+				/>
 				<FormField
 					control={form.control}
 					name='is_product_received'
@@ -118,18 +124,34 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			</div>
 			<div className='flex space-x-4'>
 				<div className='flex-1'>
-					<FormField
-						control={form.control}
-						name='user_uuid'
-						render={(props) => (
-							<CoreForm.ReactSelect
-								label='Customer'
-								placeholder='Select Customer'
-								options={userOption!}
-								{...props}
-							/>
-						)}
-					/>
+					{!form.watch('is_new_customer') && (
+						<FormField
+							control={form.control}
+							name='user_uuid'
+							render={(props) => (
+								<CoreForm.ReactSelect
+									label='Customer'
+									placeholder='Select Customer'
+									options={userOption!}
+									{...props}
+								/>
+							)}
+						/>
+					)}
+					{form.watch('is_new_customer') && (
+						<FormField
+							control={form.control}
+							name='name'
+							render={(props) => <CoreForm.Input label='Customer Name' {...props} />}
+						/>
+					)}
+					{form.watch('is_new_customer') && (
+						<FormField
+							control={form.control}
+							name='phone_no'
+							render={(props) => <CoreForm.Input label='Customer Phone No' {...props} />}
+						/>
+					)}
 				</div>
 				<div className='flex-1'>
 					<FormField
