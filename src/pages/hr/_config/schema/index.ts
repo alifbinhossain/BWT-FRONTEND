@@ -40,19 +40,36 @@ export const USER_SCHEMA = (isUpdate: boolean) => {
 	const baseSchema = z.object({
 		name: STRING_REQUIRED,
 		email: FORTUNE_ZIP_EMAIL_PATTERN,
-		user_type: z.enum(['employ', 'customer']),
-		department_uuid: STRING_REQUIRED,
-		designation_uuid: STRING_REQUIRED,
+		user_type: z.enum(['employee', 'customer']),
+		department_uuid: STRING_NULLABLE,
+		designation_uuid: STRING_NULLABLE,
 		ext: STRING_NULLABLE,
 		phone: PHONE_NUMBER_REQUIRED,
 		remarks: STRING_NULLABLE,
 	});
 
 	if (isUpdate) {
-		return baseSchema.extend({
-			pass: STRING_OPTIONAL,
-			repeatPass: STRING_OPTIONAL,
-		});
+		return baseSchema
+			.extend({
+				pass: STRING_OPTIONAL,
+				repeatPass: STRING_OPTIONAL,
+			})
+			.superRefine((data, ctx) => {
+				if (data.user_type === 'employee') {
+					if (!data.department_uuid)
+						ctx.addIssue({
+							code: z.ZodIssueCode.custom,
+							message: 'Required',
+							path: ['department_uuid'],
+						});
+					if (!data.designation_uuid)
+						ctx.addIssue({
+							code: z.ZodIssueCode.custom,
+							message: 'Required',
+							path: ['designation_uuid'],
+						});
+				}
+			});
 	}
 
 	return baseSchema
@@ -60,18 +77,37 @@ export const USER_SCHEMA = (isUpdate: boolean) => {
 			pass: PASSWORD,
 			repeatPass: PASSWORD,
 		})
-		.refine((data) => data.pass === data.repeatPass, {
-			message: 'Passwords do not match',
-			path: ['repeatPass'],
+		.superRefine((data, ctx) => {
+			if (data.pass !== data.repeatPass) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Passwords do not match',
+					path: ['repeatPass'],
+				});
+			}
+			if (data.user_type === 'employee') {
+				if (!data.department_uuid)
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'Required',
+						path: ['department_uuid'],
+					});
+				if (!data.designation_uuid)
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'Required',
+						path: ['designation_uuid'],
+					});
+			}
 		});
 };
 
 export const USER_NULL: Partial<IUser> = {
 	name: '',
 	email: '',
-	department_uuid: '',
-	user_type: 'employ',
-	designation_uuid: '',
+	department_uuid: null,
+	user_type: 'employee',
+	designation_uuid: null,
 	ext: null,
 	phone: '',
 	remarks: null,

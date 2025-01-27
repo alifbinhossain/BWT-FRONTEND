@@ -1,5 +1,6 @@
 import { watch } from 'fs';
 import { useEffect } from 'react';
+import Designation from '@/pages/hr/designation';
 import { create } from 'lodash';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
@@ -88,28 +89,13 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			});
 		} else {
 			// ADD NEW USER IF NOT EXIST
-			if (values?.is_new_customer) {
-				postData.mutateAsync({
-					url: `/hr/user`,
-					newData: {
-						name: values.name,
-						phone: values.phone,
-						user_type: 'customer',
-						password: values?.phone,
-						email: `${nanoid()}@bwt.com`,
-						created_at: getDateTime(),
-						created_by: user?.uuid,
-						uuid: nanoid(),
-					},
-					onClose,
-				});
-			}
-
+			const new_uuid: string = nanoid();
 			// ADD NEW ITEM
 			postData.mutateAsync({
 				url,
 				newData: {
 					...values,
+					user_uuid: values?.is_new_customer ? new_uuid : values?.user_uuid,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
 					uuid: nanoid(),

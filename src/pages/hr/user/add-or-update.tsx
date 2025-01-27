@@ -41,7 +41,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 		},
 		{
 			label: 'Employ',
-			value: 'employ',
+			value: 'employee',
 		},
 	];
 
@@ -111,30 +111,34 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						/>
 					)}
 				/>
-				<FormField
-					control={form.control}
-					name='department_uuid'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							label='Department'
-							placeholder='Select Department'
-							options={departmentData!}
-							{...props}
-						/>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='designation_uuid'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							label='Designation'
-							placeholder='Select Designation'
-							options={designationData!}
-							{...props}
-						/>
-					)}
-				/>
+				{form.watch('user_type') === 'employee' && (
+					<FormField
+						control={form.control}
+						name='department_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Department'
+								placeholder='Select Department'
+								options={departmentData!}
+								{...props}
+							/>
+						)}
+					/>
+				)}
+				{form.watch('user_type') === 'employee' && (
+					<FormField
+						control={form.control}
+						name='designation_uuid'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Designation'
+								placeholder='Select Designation'
+								options={designationData!}
+								{...props}
+							/>
+						)}
+					/>
+				)}
 			</div>
 			<div className='grid grid-cols-2 gap-4'>
 				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
