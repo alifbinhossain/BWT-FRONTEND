@@ -17,7 +17,7 @@ import {
 	useOtherProblem,
 	useOtherRack,
 	useOtherSize,
-	useOtherUser,
+	useOtherUserByQuery,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
@@ -41,7 +41,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useWorkJobsByUUID<IOrderTableData>(updatedData?.uuid as string);
-	const { data: userOption } = useOtherUser<IFormSelectOption[]>();
+	const { data: userOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
 	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>();

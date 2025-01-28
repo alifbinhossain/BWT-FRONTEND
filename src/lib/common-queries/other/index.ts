@@ -139,3 +139,8 @@ export const useOtherUser = <T>() =>
 		queryKey: otherQK.user(),
 		url: `/other/user/value/label`,
 	});
+export const useOtherUserByQuery = <T>(query: string) =>
+	useTQuery<T>({
+		queryKey: otherQK.userByQuery(query),
+		url: `/other/user/value/label${query}`,
+	});
