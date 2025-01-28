@@ -46,9 +46,14 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>();
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
-	const { data: warehouseOption } = useOtherWarehouse<IFormSelectOption[]>();
+	// const { data: warehouseOption } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
 	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
+	const warehouseOptions = [
+		{ label: 'Warehouse 1', value: 'warehouse_1' },
+		{ label: 'Warehouse 2', value: 'warehouse_2' },
+		{ label: 'Warehouse 3', value: 'warehouse_3' },
+	];
 	const accessoriesOption = [
 		{ label: 'Power Cable', value: 'power_cable' },
 		{ label: 'HDMI Cable', value: 'hdmi_cable' },
@@ -255,7 +260,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 							<CoreForm.ReactSelect
 								label='Warehouse'
 								placeholder='Select Warehouse'
-								options={warehouseOption!}
+								options={warehouseOptions!}
 								{...props}
 							/>
 						)}

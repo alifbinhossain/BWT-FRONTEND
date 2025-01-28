@@ -1,3 +1,4 @@
+import { error } from 'console';
 import { useEffect } from 'react';
 import { IPurchaseEntryTableData } from '@/pages/store/_config/columns/columns.type';
 import { useStorePurchaseEntryByUUID } from '@/pages/store/_config/query';
@@ -26,7 +27,6 @@ import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IPurchaseLogAddOrUpdateProps } from '../../_config/types';
-import { error } from 'console';
 
 const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 	url,
@@ -40,11 +40,16 @@ const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStorePurchaseEntryByUUID<IPurchaseEntryTableData>(updatedData?.uuid as string);
-	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
+	// const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
 	const { data: stockOptions } = useOtherStock<IFormSelectOption[]>();
+	const warehouseOptions = [
+		{ label: 'Warehouse 1', value: 'warehouse_1' },
+		{ label: 'Warehouse 2', value: 'warehouse_2' },
+		{ label: 'Warehouse 3', value: 'warehouse_3' },
+	];
 
 	const form = useRHF(PURCHASE_LOG_SCHEMA, PURCHASE_LOG_NULL);
 
@@ -61,7 +66,6 @@ const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
-
 
 	// Submit handler
 	async function onSubmit(values: IPurchaseEntryTableData) {

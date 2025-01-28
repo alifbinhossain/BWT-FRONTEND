@@ -142,9 +142,9 @@ const AddOrUpdate = () => {
 		);
 
 		try {
-			// TODO: Update promises name ⬇️
+		
 			await Promise.all([purchase_promise, ...purchase_entry_entries_promise])
-				.then(() => form.reset(PURCHASE_NULL)) // TODO: Update reset data
+				.then(() => form.reset(PURCHASE_NULL))
 				.then(() => {
 					invalidateTestDetails(); // TODO: Update invalidate query
 					navigate(`/store/purchase/${new_purchase_uuid}/details`);
