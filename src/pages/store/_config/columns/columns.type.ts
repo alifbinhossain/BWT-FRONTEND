@@ -164,7 +164,6 @@ export interface IInternalTransferTableData {
 	from_branch_uuid: string;
 	to_branch_uuid: string;
 	warehouse_uuid: string;
-	room_uuid: string;
 	rack_uuid: string;
 	floor_uuid: string;
 	box_uuid: string;

@@ -119,13 +119,6 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 			/>
 			<FormField
 				control={form.control}
-				name='room_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Room' placeholder='Select Room' options={RoomOptions!} {...props} />
-				)}
-			/>
-			<FormField
-				control={form.control}
 				name='rack_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect label='Rack' placeholder='Select Rack' options={RackOptions!} {...props} />

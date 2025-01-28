@@ -88,7 +88,7 @@ const AddOrUpdate: React.FC<IRackAddOrUpdateProps> = ({
 			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
 			<FormField
 				control={form.control}
-				name='room_uuid'
+				name='warehouse_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
 						label='Warehouse'
