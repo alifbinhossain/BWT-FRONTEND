@@ -38,12 +38,17 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStoreInternalTransfersByUUID<IInternalTransferTableData>(updatedData?.uuid as string);
-	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
+	// const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: RoomOptions } = useOtherRoom<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
 	const { data: branchOptions } = useOtherBranch<IFormSelectOption[]>();
+	const warehouseOptions = [
+		{ label: 'Warehouse 1', value: 'warehouse_1' },
+		{ label: 'Warehouse 2', value: 'warehouse_2' },
+		{ label: 'Warehouse 3', value: 'warehouse_3' },
+	];
 
 	const form = useRHF(INTERNAL_TRANSFER_SCHEMA, INTERNAL_TRANSFER_NULL);
 

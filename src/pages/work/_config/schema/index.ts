@@ -95,7 +95,7 @@ export const DIAGNOSIS_SCHEMA = z
 		remarks: STRING_NULLABLE,
 	})
 	.superRefine((data, ctx) => {
-		if (!data.is_proceed_to_repair && !data.section_uuid && size(data.section_uuid) < 1) {
+		if (data.is_proceed_to_repair && !data.section_uuid && size(data.section_uuid) < 1) {
 			ctx.addIssue(customIssue('Required', 'section_uuid'));
 		}
 	});
