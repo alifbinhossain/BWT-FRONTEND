@@ -1,12 +1,7 @@
-import { error } from 'console';
 import { useEffect } from 'react';
 import { IPurchaseEntryTableData } from '@/pages/store/_config/columns/columns.type';
 import { useStorePurchaseEntryByUUID } from '@/pages/store/_config/query';
 import { PURCHASE_LOG_NULL, PURCHASE_LOG_SCHEMA } from '@/pages/store/_config/schema';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
 import { IFormSelectOption } from '@/components/core/form/types';
@@ -14,16 +9,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import {
-	useOtherBox,
-	useOtherBranch,
-	useOtherFloor,
-	useOtherRack,
-	useOtherRoom,
-	useOtherStock,
-	useOtherWarehouse,
-} from '@/lib/common-queries/other';
-import nanoid from '@/lib/nanoid';
+import { useOtherBox, useOtherFloor, useOtherRack, useOtherStock, useOtherWarehouse } from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
 
 import { IPurchaseLogAddOrUpdateProps } from '../../_config/types';
@@ -38,18 +24,12 @@ const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 }) => {
 	const isUpdate = !!updatedData;
 
-	const { user } = useAuth();
 	const { data } = useStorePurchaseEntryByUUID<IPurchaseEntryTableData>(updatedData?.uuid as string);
-	// const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
+	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
 	const { data: stockOptions } = useOtherStock<IFormSelectOption[]>();
-	const warehouseOptions = [
-		{ label: 'Warehouse 1', value: 'warehouse_1' },
-		{ label: 'Warehouse 2', value: 'warehouse_2' },
-		{ label: 'Warehouse 3', value: 'warehouse_3' },
-	];
 
 	const form = useRHF(PURCHASE_LOG_SCHEMA, PURCHASE_LOG_NULL);
 

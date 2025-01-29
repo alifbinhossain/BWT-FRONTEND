@@ -167,7 +167,6 @@ export const INTERNAL_TRANSFER_SCHEMA = z.object({
 	from_branch_uuid: STRING_REQUIRED,
 	to_branch_uuid: STRING_REQUIRED,
 	warehouse_uuid: STRING_REQUIRED,
-
 	rack_uuid: STRING_REQUIRED,
 	floor_uuid: STRING_REQUIRED,
 	box_uuid: STRING_REQUIRED,

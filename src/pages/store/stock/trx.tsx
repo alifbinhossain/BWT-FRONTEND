@@ -15,7 +15,6 @@ import {
 	useOtherBranch,
 	useOtherFloor,
 	useOtherRack,
-	useOtherRoom,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
@@ -44,10 +43,7 @@ interface ITrxProps {
 }
 
 const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedData, postData }) => {
-	const isUpdate = !!updatedData;
-
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
-	const { data: RoomOptions } = useOtherRoom<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
