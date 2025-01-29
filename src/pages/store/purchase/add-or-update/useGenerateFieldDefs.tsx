@@ -20,7 +20,7 @@ interface IGenerateFieldDefsProps {
 	watch?: UseFormWatch<IPurchase>;
 }
 
-const useGenerateFieldDefs = ({ copy, remove, watch }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ copy, remove}: IGenerateFieldDefsProps): FieldDef[] => {
 	const { data: stockOptions } = useOtherStock<IFormSelectOption[]>();
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();

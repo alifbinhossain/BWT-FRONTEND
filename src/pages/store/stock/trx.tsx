@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -75,13 +74,7 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 	}
 
 	return (
-		<AddModal
-			open={open}
-			setOpen={onClose}
-			title={'Transfer Material'}
-			form={form}
-			onSubmit={onSubmit}
-		>
+		<AddModal open={open} setOpen={onClose} title={'Transfer Material'} form={form} onSubmit={onSubmit}>
 			<FormField
 				control={form.control}
 				name='from_branch_uuid'
