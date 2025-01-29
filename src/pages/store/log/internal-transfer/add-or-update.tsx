@@ -2,10 +2,6 @@ import { useEffect } from 'react';
 import { IInternalTransferTableData } from '@/pages/store/_config/columns/columns.type';
 import { useStoreInternalTransfersByUUID } from '@/pages/store/_config/query';
 import { INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '@/pages/store/_config/schema';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
 import { IFormSelectOption } from '@/components/core/form/types';
@@ -18,10 +14,8 @@ import {
 	useOtherBranch,
 	useOtherFloor,
 	useOtherRack,
-	useOtherRoom,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
-import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IInternalTransferAddOrUpdateProps } from '../../_config/types';
@@ -36,10 +30,9 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 }) => {
 	const isUpdate = !!updatedData;
 
-	const { user } = useAuth();
 	const { data } = useStoreInternalTransfersByUUID<IInternalTransferTableData>(updatedData?.uuid as string);
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
-	const { data: RoomOptions } = useOtherRoom<IFormSelectOption[]>();
+
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
@@ -111,13 +104,6 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 						options={warehouseOptions!}
 						{...props}
 					/>
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='room_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Room' placeholder='Select Room' options={RoomOptions!} {...props} />
 				)}
 			/>
 			<FormField

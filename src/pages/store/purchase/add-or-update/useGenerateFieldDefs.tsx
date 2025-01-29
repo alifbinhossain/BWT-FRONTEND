@@ -8,7 +8,6 @@ import {
 	useOtherBox,
 	useOtherFloor,
 	useOtherRack,
-	useOtherRoom,
 	useOtherStock,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
@@ -21,13 +20,12 @@ interface IGenerateFieldDefsProps {
 	watch?: UseFormWatch<IPurchase>;
 }
 
-const useGenerateFieldDefs = ({ copy, remove, watch }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ copy, remove}: IGenerateFieldDefsProps): FieldDef[] => {
 	const { data: stockOptions } = useOtherStock<IFormSelectOption[]>();
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
-
 	return [
 		{
 			header: 'Stock',

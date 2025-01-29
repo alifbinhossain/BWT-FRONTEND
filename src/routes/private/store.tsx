@@ -11,7 +11,6 @@ const Product = lazy(() => import('@/pages/store/product'));
 const Stock = lazy(() => import('@/pages/store/stock'));
 const Branch = lazy(() => import('@/pages/store/branch'));
 const Warehouse = lazy(() => import('@/pages/store/warehouse'));
-const Room = lazy(() => import('@/pages/store/room'));
 const Rack = lazy(() => import('@/pages/store/rack'));
 const Floor = lazy(() => import('@/pages/store/floor'));
 const Box = lazy(() => import('@/pages/store/box'));
@@ -162,13 +161,13 @@ const StoreRoutes: IRoute[] = [
 						page_name: 'store__warehouse',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
-					{
-						name: 'Room',
-						path: '/store/room',
-						element: <Room />,
-						page_name: 'store__room',
-						actions: ['create', 'read', 'update', 'delete'],
-					},
+					// {
+					// 	name: 'Room',
+					// 	path: '/store/room',
+					// 	element: <Room />,
+					// 	page_name: 'store__room',
+					// 	actions: ['create', 'read', 'update', 'delete'],
+					// },
 					{
 						name: 'Rack',
 						path: '/store/rack',

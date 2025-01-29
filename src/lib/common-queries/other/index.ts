@@ -126,9 +126,21 @@ export const useOtherProblem = <T>() =>
 		queryKey: otherQK.problem(),
 		url: `/other/problem/value/label`,
 	});
+//* GET OTHER SECTION
+export const useOtherSection = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.section(),
+		url: `/other/section/value/label`,
+	});
+
 //* GET OTHER USER
 export const useOtherUser = <T>() =>
 	useTQuery<T>({
 		queryKey: otherQK.user(),
 		url: `/other/user/value/label`,
+	});
+export const useOtherUserByQuery = <T>(query: string) =>
+	useTQuery<T>({
+		queryKey: otherQK.userByQuery(query),
+		url: `/other/user/value/label${query}`,
 	});

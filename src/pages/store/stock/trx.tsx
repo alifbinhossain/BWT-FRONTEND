@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -15,7 +14,6 @@ import {
 	useOtherBranch,
 	useOtherFloor,
 	useOtherRack,
-	useOtherRoom,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
@@ -44,10 +42,7 @@ interface ITrxProps {
 }
 
 const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedData, postData }) => {
-	const isUpdate = !!updatedData;
-
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
-	const { data: RoomOptions } = useOtherRoom<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
@@ -79,13 +74,7 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 	}
 
 	return (
-		<AddModal
-			open={open}
-			setOpen={onClose}
-			title={'Transfer Material'}
-			form={form}
-			onSubmit={onSubmit}
-		>
+		<AddModal open={open} setOpen={onClose} title={'Transfer Material'} form={form} onSubmit={onSubmit}>
 			<FormField
 				control={form.control}
 				name='from_branch_uuid'
@@ -115,13 +104,6 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 						options={warehouseOptions!}
 						{...props}
 					/>
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='room_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Room' placeholder='Select Room' options={RoomOptions!} {...props} />
 				)}
 			/>
 			<FormField

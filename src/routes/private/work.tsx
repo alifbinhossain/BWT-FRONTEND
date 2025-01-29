@@ -1,4 +1,3 @@
-import { lazy } from 'react';
 import Diagnosis from '@/pages/work/diagonsis';
 import Order from '@/pages/work/order';
 import OrderDetails from '@/pages/work/order/details';

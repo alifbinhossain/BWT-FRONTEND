@@ -167,7 +167,6 @@ export const INTERNAL_TRANSFER_SCHEMA = z.object({
 	from_branch_uuid: STRING_REQUIRED,
 	to_branch_uuid: STRING_REQUIRED,
 	warehouse_uuid: STRING_REQUIRED,
-	room_uuid: STRING_REQUIRED,
 	rack_uuid: STRING_REQUIRED,
 	floor_uuid: STRING_REQUIRED,
 	box_uuid: STRING_REQUIRED,
@@ -180,7 +179,7 @@ export const INTERNAL_TRANSFER_NULL: Partial<IInternalTransfer> = {
 	from_branch_uuid: '',
 	to_branch_uuid: '',
 	warehouse_uuid: '',
-	room_uuid: '',
+
 	rack_uuid: '',
 	floor_uuid: '',
 	box_uuid: '',
@@ -238,13 +237,13 @@ export type IRoom = z.infer<typeof ROOM_SCHEMA>;
 //* Rack Schema
 export const RACK_SCHEMA = z.object({
 	name: STRING_REQUIRED,
-	room_uuid: STRING_REQUIRED,
+	warehouse_uuid: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 
 export const RACK_NULL: Partial<IRack> = {
 	name: '',
-	room_uuid: '',
+	warehouse_uuid: '',
 	remarks: null,
 };
 

@@ -1,7 +1,4 @@
 import { useEffect } from 'react';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
@@ -10,7 +7,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherRoom, useOtherWarehouse } from '@/lib/common-queries/other';
+import { useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -88,7 +85,7 @@ const AddOrUpdate: React.FC<IRackAddOrUpdateProps> = ({
 			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
 			<FormField
 				control={form.control}
-				name='room_uuid'
+				name='warehouse_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
 						label='Warehouse'

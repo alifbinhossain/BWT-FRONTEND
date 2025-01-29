@@ -48,8 +48,11 @@ const otherQK = {
 	box: () => [...otherQK.all(), 'box'],
 	//* Problem
 	problem: () => [...otherQK.all(), 'problem'],
+	//*Section
+	section: () => [...otherQK.all(), 'section'],
 	//* User
 	user: () => [...otherQK.all(), 'user'],
+	userByQuery: (query: string) => [...otherQK.all(), 'byUserQuery', query],
 };
 
 export default otherQK;

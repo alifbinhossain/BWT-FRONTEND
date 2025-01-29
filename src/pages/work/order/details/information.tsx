@@ -64,17 +64,17 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				value: formatDateTable(data.receive_date),
 			},
 			{
-				label:'Accessories',
+				label: 'Accessories',
 				value: (
-				<div className='flex flex-wrap gap-1'>
-					{(data.accessories as string[])?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			)
-			}
+					<div className='flex flex-wrap gap-1'>
+						{(data.accessories as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
+			},
 		];
 	};
 
@@ -114,7 +114,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			},
 			{
 				label: 'Status Update Date',
-				value: formatDateTable(data.diagnosis?.status_update_date),
+				value: data.diagnosis?.status_update_date && formatDateTable(data.diagnosis?.status_update_date),
 			},
 		];
 	};

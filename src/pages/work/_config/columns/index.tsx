@@ -63,7 +63,10 @@ export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
 	},
 	{
 		accessorFn: (row) => {
-			return row.accessories.map((item) => item).join(', ').replace(/_/g, ' ');
+			return row.accessories
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
 		},
 		header: 'Accessories',
 		enableColumnFilter: false,
@@ -131,7 +134,7 @@ export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
 		},
 	},
 	{
-		accessorKey: 'problems_names',
+		accessorKey: 'problems_name',
 		header: 'Diagnosis Problem',
 		enableColumnFilter: false,
 	},
@@ -151,7 +154,7 @@ export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
 				{
 					accepted: 'bg-success',
 					rejected: 'bg-red-500',
-					'not repairable': 'bg-gray-500',
+					not_repairable: 'bg-gray-500',
 					pending: 'bg-warning',
 				}[status.toLowerCase()] || '';
 

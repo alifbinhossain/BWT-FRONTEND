@@ -2,10 +2,6 @@ import { useEffect } from 'react';
 import { IPurchaseEntryTableData } from '@/pages/store/_config/columns/columns.type';
 import { useStorePurchaseEntryByUUID } from '@/pages/store/_config/query';
 import { PURCHASE_LOG_NULL, PURCHASE_LOG_SCHEMA } from '@/pages/store/_config/schema';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
 import { IFormSelectOption } from '@/components/core/form/types';
@@ -13,20 +9,10 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import {
-	useOtherBox,
-	useOtherBranch,
-	useOtherFloor,
-	useOtherRack,
-	useOtherRoom,
-	useOtherStock,
-	useOtherWarehouse,
-} from '@/lib/common-queries/other';
-import nanoid from '@/lib/nanoid';
+import { useOtherBox, useOtherFloor, useOtherRack, useOtherStock, useOtherWarehouse } from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
 
 import { IPurchaseLogAddOrUpdateProps } from '../../_config/types';
-import { error } from 'console';
 
 const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 	url,
@@ -38,7 +24,6 @@ const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 }) => {
 	const isUpdate = !!updatedData;
 
-	const { user } = useAuth();
 	const { data } = useStorePurchaseEntryByUUID<IPurchaseEntryTableData>(updatedData?.uuid as string);
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
@@ -61,7 +46,6 @@ const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
-
 
 	// Submit handler
 	async function onSubmit(values: IPurchaseEntryTableData) {

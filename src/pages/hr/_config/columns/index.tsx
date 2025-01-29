@@ -70,6 +70,12 @@ export function userColumns({
 			cell: (info) => <span className='capitalize'>{info.getValue<string>()}</span>,
 		},
 		{
+			accessorKey: 'phone',
+			header: 'Phone',
+			enableColumnFilter: false,
+			cell: (info) => <span className='capitalize'>{info.getValue<string>()}</span>,
+		},
+		{
 			accessorKey: 'email',
 			header: 'Email',
 			enableColumnFilter: false,
