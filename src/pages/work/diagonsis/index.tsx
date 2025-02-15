@@ -1,6 +1,8 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
+import { useNavigate } from 'react-router-dom';
+import useAccess from '@/hooks/useAccess';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
@@ -14,10 +16,13 @@ const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Box = () => {
+	const navigate = useNavigate();
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useWorkDiagnosis<IDiagnosisTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Diagnosis', url, 'work__diagnosis'), [url]);
+	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
+	const actionTrxAccess = pageAccess.includes('click_trx');
 
 	//* Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -63,9 +68,13 @@ const Box = () => {
 			}))
 		);
 	};
+	//* handle Transfer
+	const handleAgainstTrx = (row: Row<IDiagnosisTableData>) => {
+		navigate(`/work/transfer-section/${row.original.uuid}/${row.original.order_uuid}`);
+	};
 
 	//* Table Columns
-	const columns = diagnosisColumns();
+	const columns = diagnosisColumns({ actionTrxAccess, handleAgainstTrx });
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

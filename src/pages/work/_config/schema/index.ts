@@ -9,7 +9,6 @@ import {
 	STRING_ARRAY_OPTIONAL,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
-	STRING_REQUIRED,
 } from '@/utils/validators';
 
 const customIssue = (message: string, path: string) => ({
@@ -25,12 +24,15 @@ export const ORDER_SCHEMA = z
 		uuid: STRING_OPTIONAL,
 		name: STRING_OPTIONAL,
 		phone: STRING_OPTIONAL,
+		business_type: STRING_OPTIONAL,
+		designation_uuid: STRING_OPTIONAL,
+		department_uuid: STRING_OPTIONAL,
 		user_uuid: STRING_NULLABLE,
-		model_uuid: STRING_REQUIRED,
-		size_uuid: STRING_REQUIRED,
-		serial_no: STRING_REQUIRED,
+		model_uuid: STRING_OPTIONAL,
+		size_uuid: STRING_OPTIONAL,
+		serial_no: STRING_OPTIONAL,
 		problems_uuid: STRING_ARRAY,
-		problem_statement: STRING_REQUIRED,
+		problem_statement: STRING_OPTIONAL,
 		accessories: STRING_ARRAY_OPTIONAL,
 		is_product_received: BOOLEAN_REQUIRED,
 		receive_date: STRING_NULLABLE,
@@ -50,6 +52,17 @@ export const ORDER_SCHEMA = z
 			}
 			if (!data.phone) {
 				ctx.addIssue(customIssue('Required', 'phone'));
+			}
+			if (!data.business_type) {
+				ctx.addIssue(customIssue('Required', 'business_type'));
+			}
+			if (data.business_type === 'company') {
+				if (!data.department_uuid) {
+					ctx.addIssue(customIssue('Required', 'department_uuid'));
+				}
+				if (!data.designation_uuid) {
+					ctx.addIssue(customIssue('Required', 'designation_uuid'));
+				}
 			}
 		}
 		if (data.is_product_received) {
@@ -87,25 +100,18 @@ export type IJob = z.infer<typeof ORDER_SCHEMA>;
 export const DIAGNOSIS_SCHEMA = z
 	.object({
 		problems_uuid: STRING_ARRAY,
-		problem_statement: STRING_REQUIRED,
+		problem_statement: STRING_OPTIONAL,
 		status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
 		proposed_cost: NUMBER_DOUBLE_REQUIRED,
 		is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
-		section_uuid: STRING_ARRAY_OPTIONAL,
 		remarks: STRING_NULLABLE,
 	})
-	.superRefine((data, ctx) => {
-		if (data.is_proceed_to_repair && !data.section_uuid && size(data.section_uuid) < 1) {
-			ctx.addIssue(customIssue('Required', 'section_uuid'));
-		}
-	});
 export const DIAGNOSIS_NULL: Partial<IDiagnosis> = {
 	problems_uuid: [],
 	problem_statement: '',
 	status: 'pending',
 	proposed_cost: 0,
 	is_proceed_to_repair: false,
-	section_uuid: [],
 	remarks: null,
 };
 export type IDiagnosis = z.infer<typeof DIAGNOSIS_SCHEMA>;
@@ -113,7 +119,7 @@ export type IDiagnosis = z.infer<typeof DIAGNOSIS_SCHEMA>;
 //* Section Schema
 export const SECTION_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
-	name: STRING_REQUIRED,
+	name: STRING_OPTIONAL,
 	remarks: STRING_NULLABLE,
 });
 export const SECTION_NULL: Partial<ISection> = {
@@ -126,8 +132,8 @@ export type ISection = z.infer<typeof SECTION_SCHEMA>;
 //* Problem Schema
 export const PROBLEM_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
-	name: STRING_REQUIRED,
-	category: STRING_REQUIRED,
+	name: STRING_OPTIONAL,
+	category: STRING_OPTIONAL,
 	remarks: STRING_NULLABLE,
 });
 export const PROBLEM_NULL: Partial<IProblem> = {
@@ -138,40 +144,85 @@ export const PROBLEM_NULL: Partial<IProblem> = {
 };
 export type IProblem = z.infer<typeof PROBLEM_SCHEMA>;
 //* Process Schema
+// "id": 7,
+//             "process_id": "WP-25-0007",
+//             "uuid": "5GTb6jSNKUtaStl",
+//             "section_uuid": "eF0nyqEQ4nxQk5Q",
+//             "section_name": "Cable Repair Section",
+//             "diagnosis_uuid": "719609105b8e913",
+//             "engineer_uuid": null,
+//             "problems_uuid": null,
+//             "problem_statement": null,
+//             "status": false,
+//             "status_update_date": null,
+//             "is_transferred_for_qc": false,
+//             "is_ready_for_delivery": false,
+//             "warehouse_uuid": null,
+//             "warehouse_name": null,
+//             "rack_uuid": null,
+//             "rack_name": null,
+//             "floor_uuid": null,
+//             "floor_name": null,
+//             "box_uuid": null,
+//             "box_name": null,
+//             "process_uuid": "5GTb6jSNKUtaStl",
+//             "created_by": "igD0v9DIJQhJeet",
+//             "created_by_name": "admin",
+//             "created_at": "2025-02-13 17:31:29",
+//             "updated_at": null,
+//             "remarks": null
 export const PROCESS_SCHEMA = z.object({
-	uuid: STRING_OPTIONAL,
-	section_uuid: STRING_REQUIRED,
-	diagnosis_uuid: STRING_REQUIRED,
-	engineer_uuid: STRING_REQUIRED,
-	problems_uuid: STRING_ARRAY,
-	problem_statement: STRING_REQUIRED,
-	status: BOOLEAN_REQUIRED,
-	status_update_date: STRING_REQUIRED,
-	is_transferred_for_qc: BOOLEAN_REQUIRED,
-	is_ready_for_delivery: BOOLEAN_REQUIRED,
-	warehouse_uuid: STRING_REQUIRED,
-	rack_uuid: STRING_REQUIRED,
-	floor_uuid: STRING_REQUIRED,
-	box_uuid: STRING_REQUIRED,
-	process_uuid: STRING_REQUIRED,
+	problems_uuid: STRING_ARRAY_OPTIONAL,
+	problem_statement: STRING_NULLABLE,
+	status: BOOLEAN_OPTIONAL,
+	status_update_date: STRING_NULLABLE,
+	is_transferred_for_qc: BOOLEAN_OPTIONAL,
+	is_ready_for_delivery: BOOLEAN_OPTIONAL,
+	warehouse_uuid: STRING_NULLABLE,
+	rack_uuid: STRING_NULLABLE,
+	floor_uuid: STRING_NULLABLE,
+	box_uuid: STRING_NULLABLE,
 	remarks: STRING_NULLABLE,
 });
-export const PROCESS_NULL: Partial<IProcess> = {
-	uuid: '',
-	section_uuid: '',
-	diagnosis_uuid: '',
-	engineer_uuid: '',
+
+export const PROCESS_NULL: Partial<IWorkProcess> = {
 	problems_uuid: [],
-	problem_statement: '',
-	status: false,
-	status_update_date: '',
-	is_transferred_for_qc: false,
-	is_ready_for_delivery: false,
-	warehouse_uuid: '',
-	rack_uuid: '',
-	floor_uuid: '',
-	box_uuid: '',
-	process_uuid: '',
+	problem_statement: null,
+	status: undefined,
+	status_update_date: undefined,
+	is_transferred_for_qc: undefined,
+	is_ready_for_delivery: undefined,
+	warehouse_uuid: undefined,
+	rack_uuid: undefined,
+	floor_uuid: undefined,
+	box_uuid: undefined,
 	remarks: null,
 };
-export type IProcess = z.infer<typeof PROCESS_SCHEMA>;
+export type IWorkProcess = z.infer<typeof PROCESS_SCHEMA>;
+
+//* Transfer Process Section Schema
+export const TRANSFER_PROCESS_SECTION_SCHEMA = z.object({
+	entry: z.array(
+		z.object({
+			uuid: STRING_OPTIONAL,
+			process_uuid: STRING_OPTIONAL,
+			diagnosis_uuid: STRING_OPTIONAL,
+			prev_process_uuid: STRING_OPTIONAL,
+			section_uuid: STRING_OPTIONAL,
+			remarks: STRING_NULLABLE,
+		})
+	),
+});
+export const TRANSFER_PROCESS_SECTION_NULL: Partial<IWorkTransfer> = {
+	entry: [
+		{
+			uuid: undefined,
+			process_uuid: '',
+			diagnosis_uuid: '',
+			prev_process_uuid: '',
+			section_uuid: '',
+			remarks: null,
+		},
+	],
+};
+export type IWorkTransfer = z.infer<typeof TRANSFER_PROCESS_SECTION_SCHEMA>;

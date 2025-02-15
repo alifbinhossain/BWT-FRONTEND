@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { IOrderTableData } from '../../_config/columns/columns.type';
-import {useWorkOrderByDetails } from '../../_config/query';
+import { IOrderTableData} from '../../_config/columns/columns.type';
+import { useWorkOrderByDetails } from '../../_config/query';
 import Information from './information';
+import EntryTable from './process';
 
 const DetailsPage = () => {
 	const { uuid } = useParams();
@@ -18,6 +19,7 @@ const DetailsPage = () => {
 	return (
 		<div className='space-y-8'>
 			<Information data={(data || []) as IOrderTableData} />
+			<EntryTable data={(data || []) as IOrderTableData} />
 		</div>
 	);
 };

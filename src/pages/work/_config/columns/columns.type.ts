@@ -33,6 +33,7 @@ export type IOrderTableData = {
 	is_new_customer: boolean;
 	name: string;
 	phone: string;
+	user_phone: string;
 	id: string;
 	order_id: string;
 	uuid: string;
@@ -63,6 +64,7 @@ export type IOrderTableData = {
 	created_at: string;
 	updated_at: string;
 	diagnosis: IDiagnosisTableData;
+	process: IProcessTableData[];
 	remarks: string;
 };
 
@@ -78,11 +80,15 @@ export type ISectionTableData = {
 //* Process Columns
 export type IProcessTableData = {
 	id: string;
+	index: number;
+	process_id: string;
 	uuid: string;
 	section_uuid: string;
+	order_uuid: string;
 	diagnosis_uuid: string;
 	engineer_uuid: string;
 	problems_uuid: string[];
+	problems_name: string[];
 	problem_statement: string;
 	status: boolean;
 	status_update_date: string;

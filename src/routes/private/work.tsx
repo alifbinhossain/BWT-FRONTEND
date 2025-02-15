@@ -1,4 +1,5 @@
 import Diagnosis from '@/pages/work/diagonsis';
+import Transfer from '@/pages/work/diagonsis/transfer-section';
 import Order from '@/pages/work/order';
 import OrderDetails from '@/pages/work/order/details';
 import Problem from '@/pages/work/problem';
@@ -14,7 +15,7 @@ const workRoutes: IRoute[] = [
 				path: '/work/order',
 				element: <Order />,
 				page_name: 'work__order',
-				actions: ['create', 'read', 'update', 'delete'],
+				actions: ['create', 'read', 'update', 'delete', 'click_trx'],
 			},
 			{
 				name: 'Order Details',
@@ -29,6 +30,14 @@ const workRoutes: IRoute[] = [
 				path: '/work/diagnosis',
 				element: <Diagnosis />,
 				page_name: 'work__diagnosis',
+				actions: ['read', 'update', 'delete', 'click_trx'],
+			},
+			{
+				name: 'Transfer Process Section',
+				path: '/work/transfer-section/:diagnosis_uuid/:order_uuid',
+				element: <Transfer />,
+				hidden: true,
+				page_name: 'work_transfer',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{

@@ -60,3 +60,20 @@ export const useWorkSectionsByUUID = <T>(uuid: string) =>
 		url: `/work/section/${uuid}`,
 		enabled: !!uuid,
 	});
+//* Process
+export const useWorkProcesses = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.process(),
+		url: '/work/process',
+	});
+export const useWorkProcessesByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.processByUUID(uuid),
+		url: `/work/process/${uuid}`,
+		enabled: !!uuid,
+	});
+export const useWorkGetTransferSection = <T>(diagnosis_uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.transferSection(diagnosis_uuid),
+		url: `/work/process?diagnosis_uuid=${diagnosis_uuid}`,
+	});

@@ -7,7 +7,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherProblem, useOtherSection } from '@/lib/common-queries/other';
+import { useOtherProblem } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -22,15 +22,13 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 	setOpen,
 	updatedData,
 	setUpdatedData,
-	postData,
 	updateData,
 }) => {
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
 	const { data } = useWorkDiagnosisByUUID<IDiagnosisTableData>(updatedData?.uuid as string);
-	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>();
-	const { data: sectionOption } = useOtherSection<IFormSelectOption[]>();
+	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
 	const statusOption = [
 		{ label: 'Pending', value: 'pending' },
 		{ label: 'Rejected', value: 'rejected' },
@@ -121,30 +119,13 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 					/>
 				</div>
 			</div>
-			<div className='flex'>
-				<FormField
-					control={form.control}
-					name='is_proceed_to_repair'
-					render={(props) => <CoreForm.Checkbox label='Proceed to Repair' className='h-5' {...props} />}
-				/>
-			</div>
-			{form.watch('is_proceed_to_repair') && (
-				<div className='flex space-x-4'>
-					<div className='flex-1'>
-						<FormField
-							control={form.control}
-							name='section_uuid'
-							render={(props) => (
-								<CoreForm.ReactSelect
-									isMulti={true}
-									label='Section'
-									placeholder='Select Section'
-									options={sectionOption!}
-									{...props}
-								/>
-							)}
-						/>
-					</div>
+			{form.watch('status') === 'accepted' && (
+				<div className='flex'>
+					<FormField
+						control={form.control}
+						name='is_proceed_to_repair'
+						render={(props) => <CoreForm.Checkbox label='Proceed to Repair' className='h-5' {...props} />}
+					/>
 				</div>
 			)}
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />

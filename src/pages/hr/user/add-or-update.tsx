@@ -1,7 +1,4 @@
 import { useEffect } from 'react';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
@@ -14,7 +11,6 @@ import { useOtherDepartment, useOtherDesignation } from '@/lib/common-queries/ot
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IUserTableData } from '../_config/columns/columns.type';
 import { useHrUsersByUUID } from '../_config/query';
 import { IUser, USER_NULL, USER_SCHEMA } from '../_config/schema';
 import { IUserAddOrUpdateProps } from '../_config/types';
@@ -34,6 +30,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 	const { data } = useHrUsersByUUID(updatedData?.uuid as string);
 	const { data: departmentData } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: designationData } = useOtherDesignation<IFormSelectOption[]>();
+	
 	const typeOptions = [
 		{
 			label: 'Customer',
@@ -42,6 +39,16 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 		{
 			label: 'Employ',
 			value: 'employee',
+		},
+	];
+	const businessType = [
+		{
+			label: 'Company',
+			value: 'company',
+		},
+		{
+			label: 'Individual',
+			value: 'individual',
 		},
 	];
 
@@ -63,7 +70,6 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 
 	// Submit handler
 	async function onSubmit(values: IUser) {
-		console.log({ values });
 		if (isUpdate) {
 			// UPDATE ITEM
 			await updateData.mutateAsync({
@@ -111,7 +117,21 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						/>
 					)}
 				/>
-				{form.watch('user_type') === 'employee' && (
+				{form.watch('user_type') === 'customer' && (
+					<FormField
+						control={form.control}
+						name='business_type'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Business Type'
+								placeholder='Select Business Type'
+								options={businessType!}
+								{...props}
+							/>
+						)}
+					/>
+				)}
+				{(form.watch('user_type') === 'employee' || form.watch('business_type') === 'company') && (
 					<FormField
 						control={form.control}
 						name='department_uuid'
@@ -125,7 +145,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						)}
 					/>
 				)}
-				{form.watch('user_type') === 'employee' && (
+				{(form.watch('user_type') === 'employee' || form.watch('business_type') === 'company') && (
 					<FormField
 						control={form.control}
 						name='designation_uuid'

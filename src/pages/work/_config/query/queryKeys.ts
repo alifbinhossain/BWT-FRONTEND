@@ -14,4 +14,10 @@ export const workQK = {
 	//* section
 	section: () => [...workQK.all(), 'section'],
 	sectionByUUID: (uuid: string) => [...workQK.section(), uuid],
+	//*process
+	process: () => [...workQK.all(), 'process'],
+	processByUUID: (uuid: string) => [...workQK.process(), uuid],
+
+	//*transfer-section
+	transferSection: (diagnosis_uuid: string) => [...workQK.all(), 'transferSection', diagnosis_uuid],
 };
