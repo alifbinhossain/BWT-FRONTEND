@@ -1,5 +1,5 @@
 import { size } from 'lodash';
-import { z } from 'zod';
+import { nullable, z } from 'zod';
 
 import {
 	BOOLEAN_OPTIONAL,
@@ -9,6 +9,7 @@ import {
 	STRING_ARRAY_OPTIONAL,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
+	STRING_REQUIRED,
 } from '@/utils/validators';
 
 const customIssue = (message: string, path: string) => ({
@@ -28,11 +29,11 @@ export const ORDER_SCHEMA = z
 		designation_uuid: STRING_OPTIONAL,
 		department_uuid: STRING_OPTIONAL,
 		user_uuid: STRING_NULLABLE,
-		model_uuid: STRING_OPTIONAL,
-		size_uuid: STRING_OPTIONAL,
-		serial_no: STRING_OPTIONAL,
+		model_uuid: STRING_REQUIRED,
+		size_uuid: STRING_REQUIRED,
+		serial_no: STRING_REQUIRED,
 		problems_uuid: STRING_ARRAY,
-		problem_statement: STRING_OPTIONAL,
+		problem_statement: STRING_REQUIRED,
 		accessories: STRING_ARRAY_OPTIONAL,
 		is_product_received: BOOLEAN_REQUIRED,
 		receive_date: STRING_NULLABLE,
@@ -43,6 +44,9 @@ export const ORDER_SCHEMA = z
 		remarks: STRING_NULLABLE,
 	})
 	.superRefine((data, ctx) => {
+		if (data?.problems_uuid.length === 0) {
+			ctx.addIssue(customIssue('Required', 'problems_uuid'));
+		}
 		if (!data.is_new_customer && !data.user_uuid) {
 			ctx.addIssue(customIssue('Required', 'user_uuid'));
 		}
@@ -97,15 +101,14 @@ export const ORDER_NULL: Partial<IJob> = {
 export type IJob = z.infer<typeof ORDER_SCHEMA>;
 
 //* Diagnosis Schema
-export const DIAGNOSIS_SCHEMA = z
-	.object({
-		problems_uuid: STRING_ARRAY,
-		problem_statement: STRING_OPTIONAL,
-		status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
-		proposed_cost: NUMBER_DOUBLE_REQUIRED,
-		is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
-		remarks: STRING_NULLABLE,
-	})
+export const DIAGNOSIS_SCHEMA = z.object({
+	problems_uuid: STRING_ARRAY,
+	problem_statement: STRING_OPTIONAL,
+	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
+	proposed_cost: NUMBER_DOUBLE_REQUIRED,
+	is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
+	remarks: STRING_NULLABLE,
+});
 export const DIAGNOSIS_NULL: Partial<IDiagnosis> = {
 	problems_uuid: [],
 	problem_statement: '',
@@ -144,33 +147,6 @@ export const PROBLEM_NULL: Partial<IProblem> = {
 };
 export type IProblem = z.infer<typeof PROBLEM_SCHEMA>;
 //* Process Schema
-// "id": 7,
-//             "process_id": "WP-25-0007",
-//             "uuid": "5GTb6jSNKUtaStl",
-//             "section_uuid": "eF0nyqEQ4nxQk5Q",
-//             "section_name": "Cable Repair Section",
-//             "diagnosis_uuid": "719609105b8e913",
-//             "engineer_uuid": null,
-//             "problems_uuid": null,
-//             "problem_statement": null,
-//             "status": false,
-//             "status_update_date": null,
-//             "is_transferred_for_qc": false,
-//             "is_ready_for_delivery": false,
-//             "warehouse_uuid": null,
-//             "warehouse_name": null,
-//             "rack_uuid": null,
-//             "rack_name": null,
-//             "floor_uuid": null,
-//             "floor_name": null,
-//             "box_uuid": null,
-//             "box_name": null,
-//             "process_uuid": "5GTb6jSNKUtaStl",
-//             "created_by": "igD0v9DIJQhJeet",
-//             "created_by_name": "admin",
-//             "created_at": "2025-02-13 17:31:29",
-//             "updated_at": null,
-//             "remarks": null
 export const PROCESS_SCHEMA = z.object({
 	problems_uuid: STRING_ARRAY_OPTIONAL,
 	problem_statement: STRING_NULLABLE,
@@ -205,9 +181,6 @@ export const TRANSFER_PROCESS_SECTION_SCHEMA = z.object({
 	entry: z.array(
 		z.object({
 			uuid: STRING_OPTIONAL,
-			process_uuid: STRING_OPTIONAL,
-			diagnosis_uuid: STRING_OPTIONAL,
-			prev_process_uuid: STRING_OPTIONAL,
 			section_uuid: STRING_OPTIONAL,
 			remarks: STRING_NULLABLE,
 		})
@@ -217,9 +190,6 @@ export const TRANSFER_PROCESS_SECTION_NULL: Partial<IWorkTransfer> = {
 	entry: [
 		{
 			uuid: undefined,
-			process_uuid: '',
-			diagnosis_uuid: '',
-			prev_process_uuid: '',
 			section_uuid: '',
 			remarks: null,
 		},

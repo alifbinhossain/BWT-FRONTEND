@@ -22,7 +22,7 @@ const AddOrUpdate = () => {
 	const isUpdate = true;
 	const { url: ProcessTransferUrl, updateData, postData, deleteData } = useWorkProcesses();
 
-	const { data } = useWorkGetTransferSection(diagnosis_uuid || '');
+	const { data } = useWorkGetTransferSection(order_uuid || '');
 
 	const form = useRHF(TRANSFER_PROCESS_SECTION_SCHEMA, TRANSFER_PROCESS_SECTION_NULL);
 
@@ -46,14 +46,14 @@ const AddOrUpdate = () => {
 				if (item.uuid === undefined || item.uuid === null) {
 					const newData = {
 						...item,
-						diagnosis_uuid: diagnosis_uuid,
+						diagnosis_uuid: diagnosis_uuid !== 'null' ? diagnosis_uuid : null,
+						order_uuid: diagnosis_uuid === 'null' ? order_uuid : null,
 						index: index + 1,
-						process_uuid: index === 0 ? null : item.prev_process_uuid,
 						created_at: getDateTime(),
 						created_by: user?.uuid,
 						uuid: nanoid(),
 					};
-					values.entry[index].prev_process_uuid = newData.uuid;
+				
 					return postData.mutateAsync({
 						url: ProcessTransferUrl,
 						newData: newData,
@@ -62,6 +62,9 @@ const AddOrUpdate = () => {
 				} else {
 					const updatedData = {
 						...item,
+						diagnosis_uuid: diagnosis_uuid !== 'null' ? diagnosis_uuid : null,
+						order_uuid: diagnosis_uuid === 'null' ? null : order_uuid,
+						index: index + 1,
 						updated_at: getDateTime(),
 					};
 					return updateData.mutateAsync({
@@ -93,12 +96,12 @@ const AddOrUpdate = () => {
 				...item,
 				diagnosis_uuid: diagnosis_uuid,
 				index: index,
-				process_uuid: index === 0 ? null : item.prev_process_uuid,
+				
 				created_at: getDateTime(),
 				created_by: user?.uuid,
 				uuid: nanoid(),
 			};
-			values.entry[index].prev_process_uuid = newData.uuid;
+		
 			return postData.mutateAsync({
 				url: ProcessTransferUrl,
 				newData: newData,

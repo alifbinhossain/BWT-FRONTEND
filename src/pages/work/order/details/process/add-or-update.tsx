@@ -1,4 +1,4 @@
-import { stat } from 'fs';
+
 import { useEffect } from 'react';
 import { IProcessTableData } from '@/pages/work/_config/columns/columns.type';
 import useAuth from '@/hooks/useAuth';
@@ -47,6 +47,7 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(PROCESS_NULL);
 		setOpen((prev) => !prev);
+		window.location.reload();
 	};
 
 	// Reset form values when data is updated

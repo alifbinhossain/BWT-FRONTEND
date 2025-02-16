@@ -120,7 +120,8 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				floor_uuid: null,
 				box_uuid: null,
 			}),
-			...(isNewCustomer && !isUpdate && { user_uuid: null }),
+			...(isNewCustomer && { user_uuid: nanoid() }),
+			...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
 		};
 
 		if (isUpdate) {

@@ -72,8 +72,8 @@ export const useWorkProcessesByUUID = <T>(uuid: string) =>
 		url: `/work/process/${uuid}`,
 		enabled: !!uuid,
 	});
-export const useWorkGetTransferSection = <T>(diagnosis_uuid: string) =>
+export const useWorkGetTransferSection = <T>(order_uuid: string) =>
 	useTQuery<T>({
-		queryKey: workQK.transferSection(diagnosis_uuid),
-		url: `/work/process?diagnosis_uuid=${diagnosis_uuid}`,
+		queryKey: workQK.transferSection(order_uuid),
+		url: `/work/process?order_uuid=${order_uuid}&entry=true`,
 	});

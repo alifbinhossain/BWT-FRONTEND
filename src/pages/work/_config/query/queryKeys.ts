@@ -19,5 +19,5 @@ export const workQK = {
 	processByUUID: (uuid: string) => [...workQK.process(), uuid],
 
 	//*transfer-section
-	transferSection: (diagnosis_uuid: string) => [...workQK.all(), 'transferSection', diagnosis_uuid],
+	transferSection: (order_uuid: string) => [...workQK.all(), 'transferSection', order_uuid],
 };

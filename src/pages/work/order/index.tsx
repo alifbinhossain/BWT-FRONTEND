@@ -68,7 +68,7 @@ const Box = () => {
 		);
 	};
 	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
-		navigate(`/work/transfer-section/${row.original.uuid}/${row.original.uuid}`);
+		navigate(`/work/transfer-section/${null}/${row.original.uuid}`);
 	};
 	//* Table Columns
 	const columns = orderColumns({ actionTrxAccess, handleAgainstTrx });

@@ -39,6 +39,8 @@ export type IOrderTableData = {
 	uuid: string;
 	user_uuid: string;
 	user_name: string;
+	designation_uuid: string;
+	department_uuid: string;
 	user_id: string;
 	model_uuid: string;
 	model_name: string;

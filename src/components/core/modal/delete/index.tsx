@@ -20,6 +20,7 @@ const DeleteModal: React.FC<IDeleteModalProps> = ({ deleteItem, setDeleteItem, u
 			onClose: () => {
 				onClose?.();
 				setDeleteItem(null);
+				window.location.reload();
 			},
 		});
 	};
