@@ -1,6 +1,9 @@
 import useTQuery from '@/hooks/useTQuery';
 
+
+
 import otherQK from './query-keys';
+
 
 //* GET OTHER HR
 export const useOtherHR = <T>() =>
@@ -121,10 +124,10 @@ export const useOtherBox = <T>() =>
 	});
 
 //* GET OTHER PROBLEM
-export const useOtherProblem = <T>() =>
+export const useOtherProblem = <T>(query: string) =>
 	useTQuery<T>({
-		queryKey: otherQK.problem(),
-		url: `/other/problem/value/label`,
+		queryKey: otherQK.problem(query),
+		url: `/other/problem/value/label?category=${query}`,
 	});
 //* GET OTHER SECTION
 export const useOtherSection = <T>() =>

@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherRack } from '@/lib/common-queries/other';
+import { useOtherSection } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -32,6 +28,7 @@ const AddOrUpdate: React.FC<ISectionAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useWorkSectionsByUUID<ISectionTableData>(updatedData?.uuid as string);
+	const { invalidateQuery: invalidateSection } = useOtherSection();
 
 	const form = useRHF(SECTION_SCHEMA, SECTION_NULL);
 
@@ -39,6 +36,7 @@ const AddOrUpdate: React.FC<ISectionAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(SECTION_NULL);
 		setOpen((prev) => !prev);
+		invalidateSection();
 	};
 
 	// Reset form values when data is updated

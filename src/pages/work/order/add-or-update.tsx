@@ -9,6 +9,8 @@ import { AddModal } from '@core/modal';
 
 import {
 	useOtherBox,
+	useOtherDepartment,
+	useOtherDesignation,
 	useOtherFloor,
 	useOtherModel,
 	useOtherProblem,
@@ -41,15 +43,18 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const { data: userOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
 	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
-	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>();
+	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
 	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
 	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
+	const { data: departmentOption } = useOtherDepartment<IFormSelectOption[]>();
+	const { data: designationOption } = useOtherDesignation<IFormSelectOption[]>();
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
 	const isProductReceived = form.watch('is_product_received');
 	const isNewCustomer = form.watch('is_new_customer');
+	const isBusinessTypeCompany = form.watch('business_type') === 'company' && isNewCustomer;
 
 	const accessoriesOption = [
 		{ label: 'Power Cable', value: 'power_cable' },
@@ -59,6 +64,10 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 		{ label: 'Ethernet Cable', value: 'ethernet_cable' },
 		{ label: 'Charger', value: 'charger' },
 		{ label: 'Others', value: 'others' },
+	];
+	const businessTypeOptions = [
+		{ label: 'Individual', value: 'individual' },
+		{ label: 'Company', value: 'company' },
 	];
 	// Reset form values when data is updated
 	useEffect(() => {
@@ -79,13 +88,22 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	}, [isProductReceived, form]);
 
 	useEffect(() => {
-		if (!isNewCustomer) {
-			form.resetField('user_uuid');
+		if (isNewCustomer) {
+			if (!isBusinessTypeCompany) {
+				form.resetField('user_uuid');
+				form.resetField('department_uuid');
+				form.resetField('designation_uuid');
+			} else {
+				form.resetField('user_uuid');
+			}
 		} else {
 			form.resetField('name');
 			form.resetField('phone');
+			form.resetField('business_type');
+			form.resetField('designation_uuid');
+			form.resetField('department_uuid');
 		}
-	}, [isNewCustomer, form]);
+	}, [isNewCustomer, form, isBusinessTypeCompany]);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -104,7 +122,8 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				floor_uuid: null,
 				box_uuid: null,
 			}),
-			...(isNewCustomer && !isUpdate && { user_uuid: null }),
+			...(isNewCustomer && { user_uuid: nanoid() }),
+			...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
 		};
 
 		if (isUpdate) {
@@ -152,6 +171,11 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					name='is_product_received'
 					render={(props) => <CoreForm.Checkbox label='Product Received' {...props} />}
 				/>
+				<FormField
+					control={form.control}
+					name='is_diagnosis_need'
+					render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
+				/>
 			</div>
 
 			<div className='flex space-x-4'>
@@ -185,6 +209,20 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 									render={(props) => <CoreForm.Input label='Phone Number' {...props} />}
 								/>
 							</div>
+							<div className='flex-1'>
+								<FormField
+									control={form.control}
+									name='business_type'
+									render={(props) => (
+										<CoreForm.ReactSelect
+											label='Business Type'
+											options={businessTypeOptions || []}
+											placeholder='Select Business Type'
+											{...props}
+										/>
+									)}
+								/>
+							</div>
 						</div>
 					)}
 				</div>
@@ -197,6 +235,38 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					/>
 				)}
 			</div>
+			{isBusinessTypeCompany && (
+				<div className='flex space-x-4'>
+					<div className='flex-1'>
+						<FormField
+							control={form.control}
+							name='designation_uuid'
+							render={(props) => (
+								<CoreForm.ReactSelect
+									label='Designation'
+									options={designationOption || []}
+									placeholder='Select Problems'
+									{...props}
+								/>
+							)}
+						/>
+					</div>
+					<div className='flex-1'>
+						<FormField
+							control={form.control}
+							name='department_uuid'
+							render={(props) => (
+								<CoreForm.ReactSelect
+									label='Department'
+									options={departmentOption || []}
+									placeholder='Select Accessories'
+									{...props}
+								/>
+							)}
+						/>
+					</div>
+				</div>
+			)}
 
 			<div className='flex space-x-4'>
 				<div className='flex-1'>

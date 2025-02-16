@@ -1,6 +1,8 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
+import { useNavigate } from 'react-router-dom';
+import useAccess from '@/hooks/useAccess';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
@@ -14,9 +16,12 @@ const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Box = () => {
+	const navigate = useNavigate();
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkJobs<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Order', url, 'work__order'), [url]);
+	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
+	const actionTrxAccess = pageAccess.includes('click_trx');
 
 	//* Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -62,9 +67,11 @@ const Box = () => {
 			}))
 		);
 	};
-
+	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
+		navigate(`/work/transfer-section/${null}/${row.original.uuid}`);
+	};
 	//* Table Columns
-	const columns = orderColumns();
+	const columns = orderColumns({ actionTrxAccess, handleAgainstTrx });
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

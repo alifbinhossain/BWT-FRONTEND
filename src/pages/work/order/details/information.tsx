@@ -19,7 +19,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			{ label: 'User ID', value: data.user_id },
 			{
 				label: 'Phone No',
-				value: formatDateTable(data.created_at),
+				value: data?.user_phone,
 			},
 			{
 				label: 'Created At',
@@ -47,7 +47,15 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 		return [
 			{
 				label: 'Problems',
-				value: data.problems_name,
+				value: (
+					<div className='flex flex-wrap gap-1'>
+						{(data.problems_name as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
 			},
 			{ label: 'Statement', value: data.problem_statement },
 		];
@@ -102,7 +110,15 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 		return [
 			{
 				label: 'Problem',
-				value: data.diagnosis?.problems_name,
+				value: (
+					<div className='flex flex-wrap gap-1'>
+						{(data?.diagnosis?.problems_name as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
 			},
 			{
 				label: 'Statement',
@@ -130,9 +146,11 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 					<TableList title='Location' className='flex-1' items={renderLocationItems()} />
 				</div>
 			</SectionContainer>
-			<SectionContainer title={'Diagnosis'}>
-				<TableList title='Diagnosis' items={renderDiagnosisItems()} />
-			</SectionContainer>
+			{data?.is_diagnosis_need && (
+				<SectionContainer title={'Diagnosis'}>
+					<TableList items={renderDiagnosisItems()} />
+				</SectionContainer>
+			)}
 		</>
 	);
 };

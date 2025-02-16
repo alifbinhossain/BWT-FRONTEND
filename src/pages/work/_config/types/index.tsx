@@ -4,7 +4,13 @@ import { AxiosError } from 'axios';
 
 import '../columns/columns.type';
 
-import { IDiagnosisTableData, IOrderTableData, IProblemsTableData, ISectionTableData } from '../columns/columns.type';
+import {
+	IDiagnosisTableData,
+	IOrderTableData,
+	IProblemsTableData,
+	IProcessTableData,
+	ISectionTableData,
+} from '../columns/columns.type';
 
 //* Problems
 
@@ -97,8 +103,38 @@ export interface IDiagnosisAddOrUpdateProps {
 		any
 	>;
 }
-//* Sections
+//* Process
 
+export interface IProcessAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: IProcessTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+//*Sections
 export interface ISectionAddOrUpdateProps {
 	url: string;
 	open: boolean;

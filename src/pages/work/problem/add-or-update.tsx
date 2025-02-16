@@ -1,17 +1,12 @@
 import { useEffect } from 'react';
 import { IProblemsTableData } from '@/pages/work/_config/columns/columns.type';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherRack } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -32,7 +27,7 @@ const AddOrUpdate: React.FC<IProblemAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useWorkProblemsByUUID<IProblemsTableData>(updatedData?.uuid as string);
-	
+
 	const categoryOption = [
 		{ label: 'Employee', value: 'employee' },
 		{ label: 'Customer', value: 'customer' },

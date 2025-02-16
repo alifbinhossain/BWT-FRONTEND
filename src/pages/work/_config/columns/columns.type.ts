@@ -33,11 +33,14 @@ export type IOrderTableData = {
 	is_new_customer: boolean;
 	name: string;
 	phone: string;
+	user_phone: string;
 	id: string;
 	order_id: string;
 	uuid: string;
 	user_uuid: string;
 	user_name: string;
+	designation_uuid: string;
+	department_uuid: string;
 	user_id: string;
 	model_uuid: string;
 	model_name: string;
@@ -50,6 +53,7 @@ export type IOrderTableData = {
 	problem_statement: string;
 	accessories: string[];
 	is_product_received: boolean;
+	is_diagnosis_need: boolean;
 	receive_date: string;
 	warehouse_uuid: string;
 	warehouse_name: string;
@@ -63,6 +67,7 @@ export type IOrderTableData = {
 	created_at: string;
 	updated_at: string;
 	diagnosis: IDiagnosisTableData;
+	process: IProcessTableData[];
 	remarks: string;
 };
 
@@ -78,11 +83,15 @@ export type ISectionTableData = {
 //* Process Columns
 export type IProcessTableData = {
 	id: string;
+	index: number;
+	process_id: string;
 	uuid: string;
 	section_uuid: string;
+	order_uuid: string;
 	diagnosis_uuid: string;
 	engineer_uuid: string;
 	problems_uuid: string[];
+	problems_name: string[];
 	problem_statement: string;
 	status: boolean;
 	status_update_date: string;

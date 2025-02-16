@@ -5,7 +5,13 @@ import Transfer from '@/components/buttons/transfer';
 import { LinkOnly } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
-import { IDiagnosisTableData, IOrderTableData, IProblemsTableData, ISectionTableData } from './columns.type';
+import {
+	IDiagnosisTableData,
+	IOrderTableData,
+	IProblemsTableData,
+	IProcessTableData,
+	ISectionTableData,
+} from './columns.type';
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -21,7 +27,13 @@ export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
 	},
 ];
 //* Order Columns
-export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
+export const orderColumns = ({
+	actionTrxAccess,
+	handleAgainstTrx,
+}: {
+	actionTrxAccess: boolean;
+	handleAgainstTrx: (row: Row<any>) => void;
+}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'order_id',
 		header: 'ID',
@@ -55,6 +67,18 @@ export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
 		accessorKey: 'problems_name',
 		header: 'Problem',
 		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.row.original.problems_name as string[];
+			return (
+				<div className='flex flex-wrap gap-1'>
+					{value?.map((item, index) => (
+						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+							{item.replace(/_/g, ' ')}
+						</span>
+					))}
+				</div>
+			);
+		},
 	},
 	{
 		accessorKey: 'problem_statement',
@@ -97,6 +121,18 @@ export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
 		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
+		id: 'action_trx',
+		header: 'Section Transfer',
+		cell: (info) => (
+			<Transfer onClick={() => handleAgainstTrx(info.row)} disabled={!info.row.original.is_product_received} />
+		),
+		size: 40,
+		meta: {
+			hidden: !actionTrxAccess,
+			disableFullFilter: true,
+		},
+	},
+	{
 		accessorKey: 'warehouse_name',
 		header: 'Warehouse',
 		enableColumnFilter: false,
@@ -118,7 +154,13 @@ export const orderColumns = (): ColumnDef<IOrderTableData>[] => [
 	},
 ];
 //* Diagnosis Columns
-export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
+export const diagnosisColumns = ({
+	actionTrxAccess,
+	handleAgainstTrx,
+}: {
+	actionTrxAccess: boolean;
+	handleAgainstTrx: (row: Row<any>) => void;
+}): ColumnDef<IDiagnosisTableData>[] => [
 	{
 		accessorKey: 'diagnosis_id',
 		header: 'Diagnosis ID',
@@ -137,6 +179,18 @@ export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
 		accessorKey: 'problems_name',
 		header: 'Diagnosis Problem',
 		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.row.original.problems_name as string[];
+			return (
+				<div className='flex flex-wrap gap-1'>
+					{value?.map((item, index) => (
+						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+							{item.replace(/_/g, ' ')}
+						</span>
+					))}
+				</div>
+			);
+		},
 	},
 	{
 		accessorKey: 'problem_statement',
@@ -178,12 +232,94 @@ export const diagnosisColumns = (): ColumnDef<IDiagnosisTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
+	{
+		id: 'action_trx',
+		header: 'Section Transfer',
+		cell: (info) => (
+			<Transfer onClick={() => handleAgainstTrx(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
+		),
+		size: 40,
+		meta: {
+			hidden: !actionTrxAccess,
+			disableFullFilter: true,
+		},
+	},
 ];
 //* Section Columns
 export const sectionColumns = (): ColumnDef<ISectionTableData>[] => [
 	{
 		accessorKey: 'name',
 		header: 'Name',
+		enableColumnFilter: false,
+	},
+];
+//*Process Columns
+export const processColumns = (): ColumnDef<IProcessTableData>[] => [
+	{
+		accessorKey: 'index',
+		header: 'Index',
+		enableColumnFilter: false,
+		
+	},
+	{
+		accessorKey: 'section_name',
+		header: 'Section',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'process_id',
+		header: 'Process ID',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'status',
+		header: 'Process Status',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'status_update_date',
+		header: 'Status Update Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'is_transferred_for_qc',
+		header: 'Transfer QC',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'is_ready_for_delivery',
+		header: 'Ready for Delivery',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'problems_name',
+		header: 'Process Problem',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.row.original.problems_name as string[];
+			return (
+				<div className='flex flex-wrap gap-1'>
+					{value?.map((item, index) => (
+						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+							{item.replace(/_/g, ' ')}
+						</span>
+					))}
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'problem_statement',
+		header: 'Process Problem Statement',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'engineer_name',
+		header: 'Engineer',
 		enableColumnFilter: false,
 	},
 ];
