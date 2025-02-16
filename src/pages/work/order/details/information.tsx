@@ -146,9 +146,11 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 					<TableList title='Location' className='flex-1' items={renderLocationItems()} />
 				</div>
 			</SectionContainer>
-			<SectionContainer title={'Diagnosis'}>
-				<TableList items={renderDiagnosisItems()} />
-			</SectionContainer>
+			{data?.is_diagnosis_need && (
+				<SectionContainer title={'Diagnosis'}>
+					<TableList items={renderDiagnosisItems()} />
+				</SectionContainer>
+			)}
 		</>
 	);
 };

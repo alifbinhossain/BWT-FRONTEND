@@ -171,6 +171,11 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					name='is_product_received'
 					render={(props) => <CoreForm.Checkbox label='Product Received' {...props} />}
 				/>
+				<FormField
+					control={form.control}
+					name='is_diagnosis_need'
+					render={(props) => <CoreForm.Checkbox label='Diagnosis' {...props} />}
+				/>
 			</div>
 
 			<div className='flex space-x-4'>

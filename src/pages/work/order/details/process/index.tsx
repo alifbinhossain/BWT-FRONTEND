@@ -18,12 +18,13 @@ const EntryTable: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 	const { isLoading, url, deleteData, postData, updateData, refetch } = useWorkProcesses<IProcessTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Process', url, 'work__order_details'), [url]);
+	const diagnosis_uuid = data?.is_diagnosis_need ? data?.diagnosis?.uuid : 'null';
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 
 	const handleCreate = () => {
-		navigate(`/work/transfer-section/${data?.diagnosis?.uuid}/${data?.uuid}`);
+		navigate(`/work/transfer-section/${diagnosis_uuid}/${data?.uuid}`);
 	};
 
 	const [updatedData, setUpdatedData] = useState<IProcessTableData | null>(null);

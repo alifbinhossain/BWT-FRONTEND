@@ -53,7 +53,7 @@ const AddOrUpdate = () => {
 						created_by: user?.uuid,
 						uuid: nanoid(),
 					};
-				
+
 					return postData.mutateAsync({
 						url: ProcessTransferUrl,
 						newData: newData,
@@ -63,7 +63,7 @@ const AddOrUpdate = () => {
 					const updatedData = {
 						...item,
 						diagnosis_uuid: diagnosis_uuid !== 'null' ? diagnosis_uuid : null,
-						order_uuid: diagnosis_uuid === 'null' ? null : order_uuid,
+						order_uuid: diagnosis_uuid === 'null' ? order_uuid : null,
 						index: index + 1,
 						updated_at: getDateTime(),
 					};
@@ -96,12 +96,12 @@ const AddOrUpdate = () => {
 				...item,
 				diagnosis_uuid: diagnosis_uuid,
 				index: index,
-				
+
 				created_at: getDateTime(),
 				created_by: user?.uuid,
 				uuid: nanoid(),
 			};
-		
+
 			return postData.mutateAsync({
 				url: ProcessTransferUrl,
 				newData: newData,
