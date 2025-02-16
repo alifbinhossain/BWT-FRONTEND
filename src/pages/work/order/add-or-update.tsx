@@ -174,7 +174,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				<FormField
 					control={form.control}
 					name='is_diagnosis_need'
-					render={(props) => <CoreForm.Checkbox label='Diagnosis' {...props} />}
+					render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
 				/>
 			</div>
 
