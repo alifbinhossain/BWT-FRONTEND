@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { IProcessTableData } from '@/pages/work/_config/columns/columns.type';
 import useAuth from '@/hooks/useAuth';
@@ -16,7 +15,6 @@ import {
 	useOtherRack,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
-import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { useWorkProcessesByUUID } from '../../../_config/query';
@@ -29,7 +27,6 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 	setOpen,
 	updatedData,
 	setUpdatedData,
-	postData,
 	updateData,
 }) => {
 	const isUpdate = !!updatedData;
@@ -66,22 +63,9 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 				url: `${url}/${updatedData?.uuid}`,
 				updatedData: {
 					...values,
-					engineer_uuid: data?.status !== values.status ? user?.uuid : null,
-					status_update_date: data?.status !== values.status ? getDateTime() : data?.status_update_date,
+					engineer_uuid: data?.status !== values.status && values.status ? user?.uuid : null,
+					status_update_date: data?.status !== values.status && values.status ? getDateTime() : null,
 					updated_at: getDateTime(),
-				},
-				onClose,
-			});
-		} else {
-			// ADD NEW ITEM
-			postData.mutateAsync({
-				url,
-				newData: {
-					...values,
-					engineer_uuid: user?.uuid,
-					created_at: getDateTime(),
-					created_by: user?.uuid,
-					uuid: nanoid(),
 				},
 				onClose,
 			});

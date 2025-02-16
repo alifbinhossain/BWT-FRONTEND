@@ -88,11 +88,13 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	}, [isProductReceived, form]);
 
 	useEffect(() => {
-		if (!isNewCustomer) {
-			form.resetField('user_uuid');
+		if (isNewCustomer) {
 			if (!isBusinessTypeCompany) {
+				form.resetField('user_uuid');
 				form.resetField('department_uuid');
 				form.resetField('designation_uuid');
+			} else {
+				form.resetField('user_uuid');
 			}
 		} else {
 			form.resetField('name');
