@@ -154,7 +154,7 @@ export const PROCESS_SCHEMA = z.object({
 	status_update_date: STRING_NULLABLE,
 	is_transferred_for_qc: BOOLEAN_OPTIONAL,
 	is_ready_for_delivery: BOOLEAN_OPTIONAL,
-	warehouse_uuid: STRING_NULLABLE,
+	warehouse_uuid: STRING_REQUIRED,
 	rack_uuid: STRING_NULLABLE,
 	floor_uuid: STRING_NULLABLE,
 	box_uuid: STRING_NULLABLE,
