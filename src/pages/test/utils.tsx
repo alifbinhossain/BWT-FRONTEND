@@ -1,8 +1,17 @@
 export const DEFAULT_CARDS = [
 	// BACKLOG
-	{ title: 'Look into render bug in dashboard', id: '1', },
-	{ title: 'SOX compliance checklist', id: '2', },
-	{ title: '[SPIKE] Migrate to Azure', id: '3', },
-	{ title: 'Document Notifications service', id: '4', },
+	{
 	
+		uuid: 'DbULE0Hoz5AMZIM',
+		diagnosis_uuid: '3bca1a5afe50857',
+		section_uuid: 'Ewmpav6krRH3TLC',
+		remarks: '',
+	},
+	{
+		
+		uuid: 'SwCp4Z2jyRLRGQV',
+		diagnosis_uuid: '3bca1a5afe50857',
+		section_uuid: 'eF0nyqEQ4nxQk5Q',
+		remarks: '',
+	},
 ];

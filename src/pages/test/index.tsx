@@ -1,21 +1,68 @@
 import React, { useState } from 'react';
 import { motion as m } from 'framer-motion';
+import { useForm, UseFormReturn } from 'react-hook-form';
 
-import { ICard,IAddCard } from './types';
+import nanoid from '@/lib/nanoid';
+
+import { IAddCard, ICard } from './types';
 import { DEFAULT_CARDS } from './utils';
 
 const column = 'sections';
+
+// Define a type for the form data
+interface AddCardFormData {
+	section_uuid: string;
+}
+
+// Create a custom hook for the AddCard form
+const useAddCardForm = (
+	setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
+	setAdding: React.Dispatch<React.SetStateAction<boolean>>
+): UseFormReturn<AddCardFormData> => {
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<AddCardFormData>();
+
+	const onSubmit = (data: AddCardFormData) => {
+		if (!data.section_uuid.trim().length) return;
+
+		const newCard = {
+			section_uuid: data.section_uuid.trim(),
+			uuid: nanoid(),
+			remarks: '', // Added remarks here
+		};
+
+		setCards((pv) => [...pv, newCard]);
+		reset({ section_uuid: '' });
+		setAdding(false); // Close the form after submit if needed
+	};
+
+	return {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+		onSubmit,
+	};
+};
 
 export const Column = () => {
 	const [cards, setCards] = useState(DEFAULT_CARDS);
 	const [active, setActive] = useState(false);
 
-	const handleDragStart = (e: React.DragEvent<HTMLDivElement>, card: { title: string; id: string }) => {
-		e.dataTransfer.setData('cardId', card.id);
+	const handleDragStart = (
+		e: React.DragEvent<HTMLDivElement>,
+		card: { section_uuid: string; uuid: string; remarks: string }
+	) => {
+		e.dataTransfer.setData('cardId', card.uuid);
 	};
 
 	const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
 		const cardId = e.dataTransfer.getData('cardId');
+		console.log('cardId:', cardId);
 
 		setActive(false);
 		clearHighlights();
@@ -28,17 +75,17 @@ export const Column = () => {
 		if (before !== cardId) {
 			let copy = [...cards];
 
-			const cardToTransfer = copy.find((c) => c.id === cardId);
+			const cardToTransfer = copy.find((c) => c.uuid === cardId);
 			if (!cardToTransfer) return;
 
-			copy = copy.filter((c) => c.id !== cardId);
+			copy = copy.filter((c) => c.uuid !== cardId);
 
 			const moveToBack = before === '-1';
 
 			if (moveToBack) {
 				copy.push(cardToTransfer);
 			} else {
-				const insertAtIndex = copy.findIndex((el) => el.id === before);
+				const insertAtIndex = copy.findIndex((el) => el.uuid === before);
 				if (insertAtIndex === undefined) return;
 
 				copy.splice(insertAtIndex, 0, cardToTransfer);
@@ -106,6 +153,24 @@ export const Column = () => {
 		setActive(false);
 	};
 
+	const handleDeleteCard = (uuid: string) => {
+		setCards((prevCards) => prevCards.filter((card) => card.uuid !== uuid));
+	};
+
+	const handleSaveCard = (uuid: string, newSectionUuid: string, newRemarks: string) => {
+		setCards((prevCards) =>
+			prevCards.map((card) =>
+				card.uuid === uuid ? { ...card, section_uuid: newSectionUuid, remarks: newRemarks } : card
+			)
+		);
+	};
+
+	const handleSaveAll = () => {
+		console.log('Saving all cards:', cards);
+		// In a real application, you would handle saving the `cards` data here,
+		// e.g., send it to an API, update local storage, etc.
+	};
+
 	return (
 		<div
 			onDrop={handleDragEnd}
@@ -113,68 +178,163 @@ export const Column = () => {
 			onDragLeave={handleDragLeave}
 			className={`flex flex-col transition-colors ${active ? 'bg-secondary/5' : 'bg-neutral-800/0'}`}
 		>
-			{cards.map((c) => {
-				return <Card key={c.id} {...c} handleDragStart={handleDragStart} />;
+			{cards.map((c, index) => {
+				return (
+					<Card
+						key={c.uuid}
+						{...c}
+						index={index}
+						handleDragStart={handleDragStart}
+						handleDeleteCard={handleDeleteCard}
+						handleSaveCard={handleSaveCard}
+					/>
+				);
 			})}
-			<AddCard setCards={setCards} />
+			<AddCard setCards={setCards} handleSaveAll={handleSaveAll} />
 		</div>
 	);
 };
 
-const Card = ({ title, id, handleDragStart }: ICard) => {
+const Card = ({
+	section_uuid,
+	remarks,
+	uuid,
+	index,
+	handleDragStart,
+	handleDeleteCard,
+	handleSaveCard,
+}: ICard & {
+	handleDeleteCard: (uuid: string) => void;
+	handleSaveCard: (uuid: string, newSectionUuid: string, newRemarks: string) => void;
+}) => {
+	const [isEditing, setEditing] = useState(false);
+	const [cardSection, setCardSection] = useState(section_uuid);
+	const [cardRemarks, setRemarks] = useState(remarks);
+
+	const handleEdit = () => {
+		setEditing(true);
+	};
+
+	const handleSave = () => {
+		handleSaveCard(uuid, cardSection, cardRemarks);
+		setEditing(false);
+	};
+
+	const handleCancelEdit = () => {
+		setCardSection(section_uuid); // Revert to original title
+		setRemarks(remarks); // Revert to original remarks
+		setEditing(false);
+	};
+
 	return (
 		<>
 			<div
-				data-before={id || '-1'}
+				data-before={uuid || '-1'}
 				data-column={column}
 				className='my-0.5 h-0.5 w-full bg-violet-400 opacity-0'
 			/>
 			<m.div
 				layout
-				layoutId={id}
+				layoutId={uuid}
 				draggable='true'
-				onDragStart={(e: any) => handleDragStart(e, { title, id })}
+				onDragStart={(e: any) =>
+					handleDragStart(e, { section_uuid: cardSection, uuid, index, remarks: cardRemarks })
+				}
 				className='cursor-grab rounded border border-neutral-700 bg-secondary/10 p-3 active:cursor-grabbing'
 			>
-				<p className='flex-1 text-sm'>
-					#{id} - {title}
-				</p>
+				{isEditing ? (
+					<div>
+						<textarea
+							value={cardSection}
+							onChange={(e) => setCardSection(e.target.value)}
+							className='w-full rounded border border-violet-400 bg-violet-400/20 p-1 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0'
+						/>
+						<textarea
+							value={cardRemarks}
+							onChange={(e) => setRemarks(e.target.value)}
+							placeholder='Add remarks...'
+							className='mt-2 w-full rounded border border-violet-400 bg-violet-400/20 p-1 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0'
+						/>
+						<div className='mt-1.5 flex items-center justify-end gap-1.5'>
+							<button
+								onClick={handleCancelEdit}
+								className='px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-50'
+							>
+								Cancel
+							</button>
+							<button
+								onClick={handleSave}
+								className='flex items-center gap-1.5 rounded bg-neutral-50 px-3 py-1.5 text-xs text-neutral-950 transition-colors hover:bg-neutral-300'
+							>
+								<span>Save</span>
+							</button>
+						</div>
+					</div>
+				) : (
+					<div className='flex items-center justify-between'>
+						<p className='flex-1 text-sm'>
+							#{index + 1} - {cardSection} - {remarks}
+						</p>
+						<div className='flex gap-2'>
+							<button
+								onClick={handleEdit}
+								className='px-2 py-1 text-xs text-neutral-400 transition-colors hover:text-neutral-50'
+							>
+								Edit
+							</button>
+							<button
+								onClick={() => handleDeleteCard(uuid)}
+								className='px-2 py-1 text-xs text-red-400 transition-colors hover:text-red-50'
+							>
+								Delete
+							</button>
+						</div>
+					</div>
+				)}
 			</m.div>
 		</>
 	);
 };
 
-const AddCard = ({ setCards }: IAddCard) => {
-	const [text, setText] = useState('');
+const AddCard = ({ setCards, handleSaveAll }: IAddCard & { handleSaveAll: () => void }) => {
 	const [adding, setAdding] = useState(false);
 
-	// React Hook Form -> append
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+		onSubmit,
+	} = useAddCardForm(setCards, setAdding);
 
-		if (!text.trim().length) return;
+	const handleAddingClick = () => {
+		setAdding(true);
+	};
 
-		const newCard = {
-			title: text.trim(),
-			id: Math.random().toString(),
-		};
-
-		setCards((pv) => [...pv, newCard]);
-
+	const handleCloseForm = () => {
 		setAdding(false);
+		reset({ section_uuid: '' }); // Clear text when closing form
 	};
 
 	return adding ? (
-		<m.form layout onSubmit={handleSubmit}>
-			<textarea
-				onChange={(e) => setText(e.target.value)}
+		<m.form layout onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
+			<select
+				{...register('section_uuid', { required: 'Section is required' })}
 				autoFocus
-				placeholder='Add new task...'
+				placeholder='Select a section'
 				className='w-full rounded border border-violet-400 bg-violet-400/20 p-3 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0'
-			/>
+			>
+				<option value=''>Select a section</option>
+				<option value='section1'>Section 1</option>
+				<option value='section2'>Section 2</option>
+				<option value='section3'>Section 3</option>
+			</select>
+
+			{errors.section_uuid && <p className='text-xs text-red-500'>{errors.section_uuid.message}</p>}
 			<div className='mt-1.5 flex items-center justify-end gap-1.5'>
 				<button
-					onClick={() => setAdding(false)}
+					onClick={handleCloseForm}
+					type='button' // Prevent form submission when closing
 					className='px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-50'
 				>
 					Close
@@ -183,7 +343,7 @@ const AddCard = ({ setCards }: IAddCard) => {
 					type='submit'
 					className='flex items-center gap-1.5 rounded bg-neutral-50 px-3 py-1.5 text-xs text-neutral-950 transition-colors hover:bg-neutral-300'
 				>
-					<span>Save</span>
+					<span>Save Card</span>
 				</button>
 			</div>
 		</m.form>
@@ -191,17 +351,17 @@ const AddCard = ({ setCards }: IAddCard) => {
 		<div className='flex gap-2'>
 			<m.button
 				layout
-				onClick={() => setAdding(true)}
+				onClick={handleAddingClick}
 				className='transition-color flex h-9 w-full items-center justify-center gap-1.5 bg-primary px-3 py-1.5 text-xs text-neutral-50'
 			>
 				<span>Add card</span>
 			</m.button>
 			<m.button
 				layout
-				onClick={() => null}
+				onClick={handleSaveAll}
 				className='transition-color flex h-9 w-full items-center justify-center gap-1.5 bg-primary px-3 py-1.5 text-xs text-neutral-50'
 			>
-				<span>Save</span>
+				<span>Save Column</span>
 			</m.button>
 		</div>
 	);

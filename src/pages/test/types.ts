@@ -56,9 +56,15 @@ export interface KanbanProps {
 }
 
 export interface ICard {
-	title: string;
+	uuid: string;
+	section_uuid: string;
+	index: number;
+	remarks: string;
 	id: string;
-	handleDragStart: (e: React.DragEvent<HTMLDivElement>, card: { title: string; id: string; }) => void;
+	handleDragStart: (
+		e: React.DragEvent<HTMLDivElement>,
+		card: { uuid: string; section_uuid: string; index: number; remarks: string }
+	) => void;
 }
 
 export interface ColumnProps {
@@ -66,7 +72,13 @@ export interface ColumnProps {
 	headingColor: string;
 	cards: { title: string; id: string; column: string }[];
 	column: string;
-	setCards: React.Dispatch<React.SetStateAction<{ title: string; id: string; column: string }[]>>;
+	setCards: React.Dispatch<
+		React.SetStateAction<{ uuid: string; section_uuid: string; index: number; remarks: string }[]>
+	>;
 }
 
-export interface IAddCard { setCards: React.Dispatch<React.SetStateAction<{ title: string; id: string }[]>> }
+export interface IAddCard {
+	setCards: React.Dispatch<
+		React.SetStateAction<{ uuid: string; section_uuid: string; index: number; remarks: string }[]>
+	>;
+}
