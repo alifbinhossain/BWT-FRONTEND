@@ -1,4 +1,4 @@
-import { CustomKanban } from '@/pages/test';
+import { Column } from '@/pages/test';
 import Diagnosis from '@/pages/work/diagonsis';
 import Transfer from '@/pages/work/diagonsis/transfer-section';
 import Order from '@/pages/work/order';
@@ -44,7 +44,7 @@ const workRoutes: IRoute[] = [
 			{
 				name: 'Test',
 				path: '/work/test',
-				element: <CustomKanban />,
+				element: <Column />,
 				page_name: 'work__order',
 				actions: ['create', 'read', 'update', 'delete'],
 			},

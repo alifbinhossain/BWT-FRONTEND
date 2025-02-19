@@ -54,3 +54,19 @@ export interface KanbanProps {
 	handleAdd?: () => void;
 	fields: FieldArrayWithId<any>[];
 }
+
+export interface ICard {
+	title: string;
+	id: string;
+	handleDragStart: (e: React.DragEvent<HTMLDivElement>, card: { title: string; id: string; }) => void;
+}
+
+export interface ColumnProps {
+	title: string;
+	headingColor: string;
+	cards: { title: string; id: string; column: string }[];
+	column: string;
+	setCards: React.Dispatch<React.SetStateAction<{ title: string; id: string; column: string }[]>>;
+}
+
+export interface IAddCard { setCards: React.Dispatch<React.SetStateAction<{ title: string; id: string }[]>> }
