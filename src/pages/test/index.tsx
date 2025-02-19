@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { motion as m } from 'framer-motion';
 import { useForm, UseFormReturn } from 'react-hook-form';
 
+import { useOtherSection } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
+import { getDateTime } from '@/utils';
 
+import { useWorkGetTransferSection } from '../work/_config/query';
 import { IAddCard, ICard } from './types';
 import { DEFAULT_CARDS } from './utils';
 
@@ -12,31 +15,35 @@ const column = 'sections';
 // Define a type for the form data
 interface AddCardFormData {
 	section_uuid: string;
+	remarks: string;
 }
 
 // Create a custom hook for the AddCard form
 const useAddCardForm = (
 	setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
 	setAdding: React.Dispatch<React.SetStateAction<boolean>>
-): UseFormReturn<AddCardFormData> => {
+): UseFormReturn<AddCardFormData> & { onSubmit: (data: AddCardFormData) => void } => {
 	const {
 		register,
 		handleSubmit,
 		reset,
-		formState: { errors },
+		formState,
 	} = useForm<AddCardFormData>();
 
 	const onSubmit = (data: AddCardFormData) => {
 		if (!data.section_uuid.trim().length) return;
 
-		const newCard = {
+		const newCard: ICard = {
 			section_uuid: data.section_uuid.trim(),
 			uuid: nanoid(),
-			remarks: '', // Added remarks here
+			remarks: data.remarks,
+			index: 0, // Default value; will be updated in list rendering if needed
+			id: nanoid(), // Unique identifier for the card
+			handleDragStart: () => {}, // Placeholder function for dragStart event
 		};
 
 		setCards((pv) => [...pv, newCard]);
-		reset({ section_uuid: '' });
+		reset({ section_uuid: '', remarks: '' }); // Clear text after submit
 		setAdding(false); // Close the form after submit if needed
 	};
 
@@ -44,7 +51,7 @@ const useAddCardForm = (
 		register,
 		handleSubmit,
 		reset,
-		formState: { errors },
+		formState,
 		onSubmit,
 	};
 };
@@ -165,10 +172,8 @@ export const Column = () => {
 		);
 	};
 
-	const handleSaveAll = () => {
+	const handleSaveAll = async () => {
 		console.log('Saving all cards:', cards);
-		// In a real application, you would handle saving the `cards` data here,
-		// e.g., send it to an API, update local storage, etc.
 	};
 
 	return (
@@ -297,6 +302,7 @@ const Card = ({
 };
 
 const AddCard = ({ setCards, handleSaveAll }: IAddCard & { handleSaveAll: () => void }) => {
+	const { data } = useOtherSection();
 	const [adding, setAdding] = useState(false);
 
 	const {
@@ -321,16 +327,23 @@ const AddCard = ({ setCards, handleSaveAll }: IAddCard & { handleSaveAll: () => 
 			<select
 				{...register('section_uuid', { required: 'Section is required' })}
 				autoFocus
-				placeholder='Select a section'
 				className='w-full rounded border border-violet-400 bg-violet-400/20 p-3 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0'
 			>
-				<option value=''>Select a section</option>
-				<option value='section1'>Section 1</option>
-				<option value='section2'>Section 2</option>
-				<option value='section3'>Section 3</option>
+				<option value='' disabled hidden>Select a section</option>
+				{Array.isArray(data) ? data.map((section: { value: string; label: string }) => (
+					<option key={section.value} value={section.value}>
+						{section.label}
+					</option>
+				)) : null}
 			</select>
-
 			{errors.section_uuid && <p className='text-xs text-red-500'>{errors.section_uuid.message}</p>}
+			<textarea
+				{...register('remarks', { required: 'Task title is required' })}
+				autoFocus
+				placeholder='Add new task...'
+				className='w-full rounded border border-violet-400 bg-violet-400/20 p-3 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0'
+			/>
+			{errors.remarks && <p className='text-xs text-red-500'>{errors.remarks.message}</p>}
 			<div className='mt-1.5 flex items-center justify-end gap-1.5'>
 				<button
 					onClick={handleCloseForm}
