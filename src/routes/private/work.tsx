@@ -1,3 +1,4 @@
+import { Column } from '@/pages/test';
 import Diagnosis from '@/pages/work/diagonsis';
 import Transfer from '@/pages/work/diagonsis/transfer-section';
 import Order from '@/pages/work/order';
@@ -38,6 +39,13 @@ const workRoutes: IRoute[] = [
 				element: <Transfer />,
 				hidden: true,
 				page_name: 'work_transfer',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Test',
+				path: '/work/test',
+				element: <Column />,
+				page_name: 'work__order',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
