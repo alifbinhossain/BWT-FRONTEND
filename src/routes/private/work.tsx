@@ -36,7 +36,7 @@ const workRoutes: IRoute[] = [
 			{
 				name: 'Transfer Process Section',
 				path: '/work/transfer-section/:diagnosis_uuid/:order_uuid',
-				element: <Transfer />,
+				element: <Column />,
 				hidden: true,
 				page_name: 'work_transfer',
 				actions: ['create', 'read', 'update', 'delete'],

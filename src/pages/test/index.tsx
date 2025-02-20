@@ -1,69 +1,47 @@
-import React, { useState } from 'react';
-import { motion as m } from 'framer-motion';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import React, { lazy, Suspense, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import useAuth from '@/hooks/useAuth';
+import useRHF from '@/hooks/useRHF';
+
+import { IFormSelectOption } from '@/components/core/form/types';
 
 import { useOtherSection } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { useWorkGetTransferSection } from '../work/_config/query';
-import { IAddCard, ICard } from './types';
-import { DEFAULT_CARDS } from './utils';
+import { useWorkGetTransferSection, useWorkProcesses } from '../work/_config/query';
+import { TRANSFER_NULL, TRANSFER_SCHEMA } from './_config/schema';
+import { Card } from './card';
+import { AddCard } from './card/add-card';
+import { ICard, WorkSectionData } from './types';
+
+const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const column = 'sections';
 
-// Define a type for the form data
-interface AddCardFormData {
-	section_uuid: string;
-	remarks: string;
-}
-
-// Create a custom hook for the AddCard form
-const useAddCardForm = (
-	setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
-	setAdding: React.Dispatch<React.SetStateAction<boolean>>
-): UseFormReturn<AddCardFormData> & { onSubmit: (data: AddCardFormData) => void } => {
-	const {
-		register,
-		handleSubmit,
-		reset,
-		formState,
-	} = useForm<AddCardFormData>();
-
-	const onSubmit = (data: AddCardFormData) => {
-		if (!data.section_uuid.trim().length) return;
-
-		const newCard: ICard = {
-			section_uuid: data.section_uuid.trim(),
-			uuid: nanoid(),
-			remarks: data.remarks,
-			index: 0, // Default value; will be updated in list rendering if needed
-			id: nanoid(), // Unique identifier for the card
-			handleDragStart: () => {}, // Placeholder function for dragStart event
-		};
-
-		setCards((pv) => [...pv, newCard]);
-		reset({ section_uuid: '', remarks: '' }); // Clear text after submit
-		setAdding(false); // Close the form after submit if needed
-	};
-
-	return {
-		register,
-		handleSubmit,
-		reset,
-		formState,
-		onSubmit,
-	};
-};
-
 export const Column = () => {
-	const [cards, setCards] = useState(DEFAULT_CARDS);
+	const { url: ProcessTransferUrl, updateData, postData, deleteData } = useWorkProcesses();
+	const { user } = useAuth();
+	const navigate = useNavigate();
+	const { diagnosis_uuid, order_uuid } = useParams();
+	const { data: sectionOptions } = useOtherSection<IFormSelectOption[]>();
+
+	const { data } = useWorkGetTransferSection<WorkSectionData>(order_uuid!);
+	const form = useRHF(TRANSFER_SCHEMA, TRANSFER_NULL);
+
+	const [cards, setCards] = useState<ICard[]>(data?.entry || []);
+	const [adding, setAdding] = useState(false);
+	const [isEditing, setEditing] = useState(-1);
+	const [deleteItem, setDeleteItem] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
+	useMemo(() => {
+		setCards(data?.entry ?? []);
+	}, [data]);
 	const [active, setActive] = useState(false);
 
-	const handleDragStart = (
-		e: React.DragEvent<HTMLDivElement>,
-		card: { section_uuid: string; uuid: string; remarks: string }
-	) => {
+	const handleDragStart = (e: React.DragEvent<HTMLDivElement>, card: ICard) => {
 		e.dataTransfer.setData('cardId', card.uuid);
 	};
 
@@ -161,21 +139,94 @@ export const Column = () => {
 	};
 
 	const handleDeleteCard = (uuid: string) => {
+		setDeleteItem({
+			id: uuid,
+			name: uuid,
+		});
 		setCards((prevCards) => prevCards.filter((card) => card.uuid !== uuid));
 	};
 
-	const handleSaveCard = (uuid: string, newSectionUuid: string, newRemarks: string) => {
+	const handleSaveCard = (newCard: ICard) => {
 		setCards((prevCards) =>
-			prevCards.map((card) =>
-				card.uuid === uuid ? { ...card, section_uuid: newSectionUuid, remarks: newRemarks } : card
-			)
+			prevCards?.map((card) => (card.uuid === newCard.uuid ? { ...card, ...newCard } : card))
 		);
 	};
 
 	const handleSaveAll = async () => {
-		console.log('Saving all cards:', cards);
-	};
+		const isUpdate = true;
+		if (isUpdate) {
+			const entry_promise = cards.map((item, index) => {
+				if (!data?.entry.some((el: any) => el.uuid === item.uuid)) {
+					const newData = {
+						...item,
+						diagnosis_uuid: diagnosis_uuid !== 'null' ? diagnosis_uuid : null,
+						order_uuid: diagnosis_uuid === 'null' ? order_uuid : null,
+						index: index + 1,
+						created_at: getDateTime(),
+						created_by: user?.uuid,
+						uuid: nanoid(),
+					};
 
+					return postData.mutateAsync({
+						url: ProcessTransferUrl,
+						newData: newData,
+						isOnCloseNeeded: false,
+					});
+				} else {
+					const updatedData = {
+						...item,
+						diagnosis_uuid: diagnosis_uuid !== 'null' ? diagnosis_uuid : null,
+						order_uuid: diagnosis_uuid === 'null' ? order_uuid : null,
+						index: index + 1,
+						updated_at: getDateTime(),
+					};
+					return updateData.mutateAsync({
+						url: `${ProcessTransferUrl}/${item.uuid}`,
+						updatedData,
+						isOnCloseNeeded: false,
+					});
+				}
+			});
+
+			try {
+				await Promise.all([...entry_promise]).then(() => {
+					// invalidateTestDetails(); // TODO: Update invalidate query
+					navigate(`/work/order/details/${order_uuid}`);
+				});
+			} catch (err) {
+				console.error(`Error with Promise.all: ${err}`);
+			}
+
+			return;
+		}
+	};
+	const fliedDefs = [
+		{
+			header: 'Section',
+			accessorKey: 'section_uuid',
+			type: 'select',
+			placeholder: 'Select Section',
+			options: sectionOptions || [],
+		},
+		{
+			header: 'Remarks',
+			accessorKey: 'remarks',
+			type: 'textarea',
+		},
+	];
+	const onSubmit = (data: any) => {
+		if (!data) return;
+
+		const newCard: any = {
+			section_uuid: data.section_uuid.trim(),
+			uuid: nanoid(),
+			remarks: data.remarks ?? undefined,
+			index: 0,
+		};
+		setCards((pv) => [...pv, newCard]);
+		form.reset({ section_uuid: '', remarks: '' });
+		setAdding(false);
+	};
 	return (
 		<div
 			onDrop={handleDragEnd}
@@ -183,199 +234,48 @@ export const Column = () => {
 			onDragLeave={handleDragLeave}
 			className={`flex flex-col transition-colors ${active ? 'bg-secondary/5' : 'bg-neutral-800/0'}`}
 		>
-			{cards.map((c, index) => {
+			{cards?.map((c, index) => {
+				const transferData = { section_uuid: c.section_uuid, remarks: c.remarks, uuid: c.uuid, index };
 				return (
 					<Card
+						uuid={c.uuid}
+						section_uuid={c.section_uuid}
+						isEditing={isEditing}
+						setEditing={setEditing}
 						key={c.uuid}
-						{...c}
+						updateData={transferData}
 						index={index}
 						handleDragStart={handleDragStart}
 						handleDeleteCard={handleDeleteCard}
 						handleSaveCard={handleSaveCard}
+						form={form}
+						fieldDefs={fliedDefs}
+						defaultCard={TRANSFER_NULL}
 					/>
 				);
 			})}
-			<AddCard setCards={setCards} handleSaveAll={handleSaveAll} />
-		</div>
-	);
-};
-
-const Card = ({
-	section_uuid,
-	remarks,
-	uuid,
-	index,
-	handleDragStart,
-	handleDeleteCard,
-	handleSaveCard,
-}: ICard & {
-	handleDeleteCard: (uuid: string) => void;
-	handleSaveCard: (uuid: string, newSectionUuid: string, newRemarks: string) => void;
-}) => {
-	const [isEditing, setEditing] = useState(false);
-	const [cardSection, setCardSection] = useState(section_uuid);
-	const [cardRemarks, setRemarks] = useState(remarks);
-
-	const handleEdit = () => {
-		setEditing(true);
-	};
-
-	const handleSave = () => {
-		handleSaveCard(uuid, cardSection, cardRemarks);
-		setEditing(false);
-	};
-
-	const handleCancelEdit = () => {
-		setCardSection(section_uuid); // Revert to original title
-		setRemarks(remarks); // Revert to original remarks
-		setEditing(false);
-	};
-
-	return (
-		<>
-			<div
-				data-before={uuid || '-1'}
-				data-column={column}
-				className='my-0.5 h-0.5 w-full bg-violet-400 opacity-0'
+			<AddCard
+				onSubmit={onSubmit}
+				fieldDefs={fliedDefs}
+				form={form}
+				setCards={setCards}
+				handleSaveAll={handleSaveAll}
+				adding={adding}
+				setAdding={setAdding}
+				defaultCard={TRANSFER_NULL}
+				isEditing={isEditing}
+				setEditing={setEditing}
 			/>
-			<m.div
-				layout
-				layoutId={uuid}
-				draggable='true'
-				onDragStart={(e: any) =>
-					handleDragStart(e, { section_uuid: cardSection, uuid, index, remarks: cardRemarks })
-				}
-				className='cursor-grab rounded border border-neutral-700 bg-secondary/10 p-3 active:cursor-grabbing'
-			>
-				{isEditing ? (
-					<div>
-						<textarea
-							value={cardSection}
-							onChange={(e) => setCardSection(e.target.value)}
-							className='w-full rounded border border-violet-400 bg-violet-400/20 p-1 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0'
-						/>
-						<textarea
-							value={cardRemarks}
-							onChange={(e) => setRemarks(e.target.value)}
-							placeholder='Add remarks...'
-							className='mt-2 w-full rounded border border-violet-400 bg-violet-400/20 p-1 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0'
-						/>
-						<div className='mt-1.5 flex items-center justify-end gap-1.5'>
-							<button
-								onClick={handleCancelEdit}
-								className='px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-50'
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handleSave}
-								className='flex items-center gap-1.5 rounded bg-neutral-50 px-3 py-1.5 text-xs text-neutral-950 transition-colors hover:bg-neutral-300'
-							>
-								<span>Save</span>
-							</button>
-						</div>
-					</div>
-				) : (
-					<div className='flex items-center justify-between'>
-						<p className='flex-1 text-sm'>
-							#{index + 1} - {cardSection} - {remarks}
-						</p>
-						<div className='flex gap-2'>
-							<button
-								onClick={handleEdit}
-								className='px-2 py-1 text-xs text-neutral-400 transition-colors hover:text-neutral-50'
-							>
-								Edit
-							</button>
-							<button
-								onClick={() => handleDeleteCard(uuid)}
-								className='px-2 py-1 text-xs text-red-400 transition-colors hover:text-red-50'
-							>
-								Delete
-							</button>
-						</div>
-					</div>
-				)}
-			</m.div>
-		</>
-	);
-};
-
-const AddCard = ({ setCards, handleSaveAll }: IAddCard & { handleSaveAll: () => void }) => {
-	const { data } = useOtherSection();
-	const [adding, setAdding] = useState(false);
-
-	const {
-		register,
-		handleSubmit,
-		reset,
-		formState: { errors },
-		onSubmit,
-	} = useAddCardForm(setCards, setAdding);
-
-	const handleAddingClick = () => {
-		setAdding(true);
-	};
-
-	const handleCloseForm = () => {
-		setAdding(false);
-		reset({ section_uuid: '' }); // Clear text when closing form
-	};
-
-	return adding ? (
-		<m.form layout onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
-			<select
-				{...register('section_uuid', { required: 'Section is required' })}
-				autoFocus
-				className='w-full rounded border border-violet-400 bg-violet-400/20 p-3 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0'
-			>
-				<option value='' disabled hidden>Select a section</option>
-				{Array.isArray(data) ? data.map((section: { value: string; label: string }) => (
-					<option key={section.value} value={section.value}>
-						{section.label}
-					</option>
-				)) : null}
-			</select>
-			{errors.section_uuid && <p className='text-xs text-red-500'>{errors.section_uuid.message}</p>}
-			<textarea
-				{...register('remarks', { required: 'Task title is required' })}
-				autoFocus
-				placeholder='Add new task...'
-				className='w-full rounded border border-violet-400 bg-violet-400/20 p-3 text-sm text-neutral-50 placeholder-violet-300 focus:outline-0'
-			/>
-			{errors.remarks && <p className='text-xs text-red-500'>{errors.remarks.message}</p>}
-			<div className='mt-1.5 flex items-center justify-end gap-1.5'>
-				<button
-					onClick={handleCloseForm}
-					type='button' // Prevent form submission when closing
-					className='px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-50'
-				>
-					Close
-				</button>
-				<button
-					type='submit'
-					className='flex items-center gap-1.5 rounded bg-neutral-50 px-3 py-1.5 text-xs text-neutral-950 transition-colors hover:bg-neutral-300'
-				>
-					<span>Save Card</span>
-				</button>
-			</div>
-		</m.form>
-	) : (
-		<div className='flex gap-2'>
-			<m.button
-				layout
-				onClick={handleAddingClick}
-				className='transition-color flex h-9 w-full items-center justify-center gap-1.5 bg-primary px-3 py-1.5 text-xs text-neutral-50'
-			>
-				<span>Add card</span>
-			</m.button>
-			<m.button
-				layout
-				onClick={handleSaveAll}
-				className='transition-color flex h-9 w-full items-center justify-center gap-1.5 bg-primary px-3 py-1.5 text-xs text-neutral-50'
-			>
-				<span>Save Column</span>
-			</m.button>
+			{/* <Suspense fallback={null}>
+				<DeleteModal
+					{...{
+						deleteItem,
+						setDeleteItem,
+						url: `/work/process`,
+						deleteData,
+					}}
+				/>
+			</Suspense> */}
 		</div>
 	);
 };
