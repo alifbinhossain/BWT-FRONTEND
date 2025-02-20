@@ -4,23 +4,17 @@ import FieldActionButton from '@/components/buttons/field-action';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
 
-import {
-	useOtherBox,
-	useOtherFloor,
-	useOtherRack,
-	useOtherStock,
-	useOtherWarehouse,
-} from '@/lib/common-queries/other';
+import { useOtherBox, useOtherFloor, useOtherRack, useOtherStock, useOtherWarehouse } from '@/lib/common-queries/other';
 
 import { IPurchase } from '../../_config/schema';
 
 interface IGenerateFieldDefsProps {
-	copy: (index: number) => void;
-	remove: (index: number) => void;
+	copy: (index: any) => void;
+	remove: (index: any) => void;
 	watch?: UseFormWatch<IPurchase>;
 }
 
-const useGenerateFieldDefs = ({ copy, remove}: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldDef[] => {
 	const { data: stockOptions } = useOtherStock<IFormSelectOption[]>();
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();

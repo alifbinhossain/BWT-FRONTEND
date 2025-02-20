@@ -9,8 +9,8 @@ import { useOtherSection } from '@/lib/common-queries/other';
 import { IWorkTransfer } from '../../_config/schema';
 
 interface IGenerateFieldDefsProps {
-	copy: (index: number) => void;
-	remove: (index: number) => void;
+	copy: (index: any) => void;
+	remove: (index: any) => void;
 	watch?: UseFormWatch<IWorkTransfer>;
 }
 

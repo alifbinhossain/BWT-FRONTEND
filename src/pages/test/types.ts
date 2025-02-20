@@ -58,13 +58,9 @@ export interface KanbanProps {
 export interface ICard {
 	uuid: string;
 	section_uuid: string;
-	index: number;
-	remarks: string;
-	id: string;
-	handleDragStart: (
-		e: React.DragEvent<HTMLDivElement>,
-		card: { uuid: string; section_uuid: string; index: number; remarks: string }
-	) => void;
+	index?: number;
+	remarks?: string;
+	handleDragStart?: (e: React.DragEvent<HTMLDivElement>, card: ICard) => void;
 }
 
 export interface ColumnProps {
@@ -72,13 +68,17 @@ export interface ColumnProps {
 	headingColor: string;
 	cards: { title: string; id: string; column: string }[];
 	column: string;
-	setCards: React.Dispatch<
-		React.SetStateAction<{ uuid: string; section_uuid: string; index: number; remarks: string }[]>
-	>;
+	setCards: React.Dispatch<React.SetStateAction<ICard[]>>;
 }
 
 export interface IAddCard {
-	setCards: React.Dispatch<
-		React.SetStateAction<{ uuid: string; section_uuid: string; index: number; remarks: string }[]>
-	>;
+	setCards: React.Dispatch<React.SetStateAction<ICard[]>>;
+}
+export interface AddCardFormData {
+	uuid?: string;
+	section_uuid: string;
+	remarks: string | null;
+}
+export interface WorkSectionData {
+	entry: ICard[];
 }

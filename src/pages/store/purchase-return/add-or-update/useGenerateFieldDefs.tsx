@@ -9,8 +9,8 @@ import { useOtherProduct } from '@/lib/common-queries/other';
 import { IPurchaseReturn } from '../../_config/schema';
 
 interface IGenerateFieldDefsProps {
-	copy: (index: number) => void;
-	remove: (index: number) => void;
+	copy: (index: any) => void;
+	remove: (index: any) => void;
 	watch?: UseFormWatch<IPurchaseReturn>;
 }
 
