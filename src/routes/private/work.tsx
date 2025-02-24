@@ -1,6 +1,5 @@
 import { Column } from '@/pages/test';
 import Diagnosis from '@/pages/work/diagonsis';
-import Transfer from '@/pages/work/diagonsis/transfer-section';
 import Order from '@/pages/work/order';
 import OrderDetails from '@/pages/work/order/details';
 import Problem from '@/pages/work/problem';

@@ -62,6 +62,7 @@ export const Card = ({
 		form.reset(data);
 		setEditing(-1);
 	};
+
 	return (
 		<>
 			<div
@@ -85,7 +86,7 @@ export const Card = ({
 			>
 				{isEditing === data?.index ? (
 					<FormProvider {...form}>
-						<m.form layout onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2'>
+						<m.form layout onSubmit={form.handleSubmit(onSubmit)} className='flex gap-2'>
 							{fieldDefs
 								.filter((fieldDef: any) => !fieldDef.hidden)
 								.map((fieldDef: any) => {
@@ -93,7 +94,7 @@ export const Card = ({
 										return <Skeleton className='h-8 w-full bg-secondary/10' />;
 									} else {
 										return (
-											<>
+											<div className='flex-1'>
 												{fieldDef.type === 'text' && (
 													<FormField
 														control={form.control}
@@ -152,7 +153,7 @@ export const Card = ({
 														)}
 													/>
 												)}
-											</>
+											</div>
 										);
 									}
 								})}
@@ -160,13 +161,13 @@ export const Card = ({
 								<button
 									onClick={handleCancelEdit}
 									type='button'
-									className='px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-50'
+									className='flex items-center gap-1.5 rounded bg-red-500 px-3 py-1.5 text-xs text-neutral-50 transition-colors hover:bg-red-600'
 								>
 									Close
 								</button>
 								<button
 									type='submit'
-									className='flex items-center gap-1.5 rounded bg-neutral-50 px-3 py-1.5 text-xs text-neutral-950 transition-colors hover:bg-neutral-300'
+									className='flex items-center gap-1.5 rounded bg-primary px-3 py-1.5 text-xs text-neutral-50 transition-colors hover:bg-neutral-600'
 								>
 									<span>Save Card</span>
 								</button>
@@ -175,6 +176,8 @@ export const Card = ({
 					</FormProvider>
 				) : (
 					<div className='flex items-center justify-between'>
+						<div className='text-sm'>#{(index ?? 0) + 1}&emsp;</div>
+						<br />
 						{fieldDefs
 							.filter((fieldDef: any) => !fieldDef.hidden)
 							.map((fieldDef: any) => {
@@ -185,13 +188,13 @@ export const Card = ({
 									);
 									return (
 										<p key={fieldDef.accessorKey} className='flex-1 text-sm'>
-											{fieldDef.header}: {selectedOption?.label}
+											{selectedOption?.label}
 										</p>
 									);
 								}
 								return (
 									<p key={fieldDef.accessorKey} className='flex-1 text-sm'>
-										{fieldDef.header}:{data[fieldDef.accessorKey as keyof typeof data]}
+										{data[fieldDef.accessorKey as keyof typeof data]}
 									</p>
 								);
 							})}

@@ -259,7 +259,6 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 		accessorKey: 'index',
 		header: 'Index',
 		enableColumnFilter: false,
-		
 	},
 	{
 		accessorKey: 'section_name',
