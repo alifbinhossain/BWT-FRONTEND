@@ -63,8 +63,14 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 				url: `${url}/${updatedData?.uuid}`,
 				updatedData: {
 					...values,
-					engineer_uuid: data?.status !== values.status && values.status ? user?.uuid : null,
-					status_update_date: data?.status !== values.status && values.status ? getDateTime() : null,
+					engineer_uuid:
+						data?.status !== values.status ? (values.status ? user?.uuid : null) : values?.engineer_uuid,
+					status_update_date:
+						data?.status !== values.status
+							? values.status
+								? getDateTime()
+								: null
+							: values.status_update_date,
 					updated_at: getDateTime(),
 				},
 				onClose,
@@ -78,6 +84,7 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 			setOpen={onClose}
 			title={isUpdate ? `Update ${updatedData?.process_id} Process #${updatedData?.index}` : 'Add New Process'}
 			form={form}
+			isSmall={true}
 			onSubmit={onSubmit}
 		>
 			<div className='flex justify-end gap-2'>

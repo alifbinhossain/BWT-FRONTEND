@@ -82,3 +82,13 @@ export interface AddCardFormData {
 export interface WorkSectionData {
 	entry: ICard[];
 }
+export interface DynamicFieldsProps {
+	title: string;
+	form: UseFormReturn<any>;
+	fieldName: string;
+	fieldDefs: FieldDef[];
+	extraHeader?: React.ReactNode;
+	handleAdd?: () => void;
+	fields: FieldArrayWithId<any>[];
+	viewAs?: 'default' | 'spreadsheet';
+}

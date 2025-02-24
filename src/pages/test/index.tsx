@@ -13,6 +13,8 @@ import { useWorkGetTransferSection, useWorkProcesses } from '../work/_config/que
 import { TRANSFER_NULL, TRANSFER_SCHEMA } from './_config/schema';
 import { Card } from './card';
 import { AddCard } from './card/add-card';
+import DynamicFieldContainer from './container';
+import { Header } from './header';
 import { ICard, WorkSectionData } from './types';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -47,7 +49,6 @@ export const Column = () => {
 
 	const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
 		const cardId = e.dataTransfer.getData('cardId');
-		console.log('cardId:', cardId);
 
 		setActive(false);
 		clearHighlights();
@@ -151,7 +152,10 @@ export const Column = () => {
 			prevCards?.map((card) => (card.uuid === newCard.uuid ? { ...card, ...newCard } : card))
 		);
 	};
-
+	const handleAddingClick = () => {
+		setAdding(true);
+		setEditing(-1);
+	};
 	const handleSaveAll = async () => {
 		const isUpdate = true;
 		if (isUpdate) {
@@ -234,26 +238,30 @@ export const Column = () => {
 			onDragLeave={handleDragLeave}
 			className={`flex flex-col transition-colors ${active ? 'bg-secondary/5' : 'bg-neutral-800/0'}`}
 		>
-			{cards?.map((c, index) => {
-				const transferData = { section_uuid: c.section_uuid, remarks: c.remarks, uuid: c.uuid, index };
-				return (
-					<Card
-						uuid={c.uuid}
-						section_uuid={c.section_uuid}
-						isEditing={isEditing}
-						setEditing={setEditing}
-						key={c.uuid}
-						updateData={transferData}
-						index={index}
-						handleDragStart={handleDragStart}
-						handleDeleteCard={handleDeleteCard}
-						handleSaveCard={handleSaveCard}
-						form={form}
-						fieldDefs={fliedDefs}
-						defaultCard={TRANSFER_NULL}
-					/>
-				);
-			})}
+			<DynamicFieldContainer title={`Transfer Section`} handleAdd={handleAddingClick}>
+				<Header fliedDefs={fliedDefs} />
+				{cards?.map((c, index) => {
+					const transferData = { section_uuid: c.section_uuid, remarks: c.remarks, uuid: c.uuid, index };
+					return (
+						<Card
+							uuid={c.uuid}
+							section_uuid={c.section_uuid}
+							isEditing={isEditing}
+							setEditing={setEditing}
+							key={c.uuid}
+							updateData={transferData}
+							index={index}
+							handleDragStart={handleDragStart}
+							handleDeleteCard={handleDeleteCard}
+							handleSaveCard={handleSaveCard}
+							form={form}
+							fieldDefs={fliedDefs}
+							defaultCard={TRANSFER_NULL}
+						/>
+					);
+				})}
+				<div data-column='sections' data-before='-1' style={{ opacity: 0, height: '10px' }} />
+			</DynamicFieldContainer>
 			<AddCard
 				onSubmit={onSubmit}
 				fieldDefs={fliedDefs}
@@ -266,7 +274,8 @@ export const Column = () => {
 				isEditing={isEditing}
 				setEditing={setEditing}
 			/>
-			{/* <Suspense fallback={null}>
+
+			<Suspense fallback={null}>
 				<DeleteModal
 					{...{
 						deleteItem,
@@ -275,7 +284,7 @@ export const Column = () => {
 						deleteData,
 					}}
 				/>
-			</Suspense> */}
+			</Suspense>
 		</div>
 	);
 };
