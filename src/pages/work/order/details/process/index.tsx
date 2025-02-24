@@ -63,6 +63,7 @@ const EntryTable: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
+				defaultSorting={[{ id: 'index', desc: false }]}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

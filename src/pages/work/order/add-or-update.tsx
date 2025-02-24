@@ -22,8 +22,8 @@ import {
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkJobsByUUID } from '../_config/query';
+import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns.type';
+import { useWorkDiagnosis, useWorkJobsByUUID } from '../_config/query';
 import { ORDER_NULL, ORDER_SCHEMA } from '../_config/schema';
 import { IOrderAddOrUpdateProps } from '../_config/types';
 
@@ -50,6 +50,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
 	const { data: departmentOption } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: designationOption } = useOtherDesignation<IFormSelectOption[]>();
+	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
 	const isProductReceived = form.watch('is_product_received');
@@ -108,6 +109,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const onClose = () => {
 		setUpdatedData?.(null);
 		form.reset(ORDER_NULL);
+		invalidateDiagnosis();
 		setOpen(false);
 	};
 

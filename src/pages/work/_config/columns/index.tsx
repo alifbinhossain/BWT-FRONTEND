@@ -300,11 +300,14 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const value = info.row.original.problems_name as string[];
+			if (value?.length === 0) {
+				return <></>;
+			}
 			return (
 				<div className='flex flex-wrap gap-1'>
 					{value?.map((item, index) => (
 						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
+							{item?.replace(/_/g, ' ')}
 						</span>
 					))}
 				</div>

@@ -7,7 +7,7 @@ interface ILinkOnlyProps {
 
 export const LinkOnly = ({ uri, title }: ILinkOnlyProps) => {
 	return (
-		<Link to={uri} className='font-medium text-foreground underline hover:text-accent'>
+		<Link target='_blank' to={uri} className='font-medium text-foreground underline hover:text-accent'>
 			{title}
 		</Link>
 	);

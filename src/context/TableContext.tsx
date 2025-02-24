@@ -81,6 +81,7 @@ interface ITableProviderProps<TData, TValue> {
 	children?: React.ReactNode;
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	defaultSorting?: SortingState;
 	isLoading?: boolean;
 	enableRowSelection?: boolean;
 	enableDefaultColumns?: boolean;
@@ -108,6 +109,7 @@ function TableProvider<TData, TValue>({
 	columns,
 	data,
 	isLoading,
+	defaultSorting = [{ id: 'created_at', desc: true }],
 	enableRowSelection = false,
 	enableDefaultColumns = true,
 	handleCreate,
@@ -139,12 +141,7 @@ function TableProvider<TData, TValue>({
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(defaultVisibleColumns);
 
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-	const [sorting, setSorting] = useState<SortingState>([
-		{
-			id: 'created_at',
-			desc: true,
-		},
-	]);
+	const [sorting, setSorting] = useState<SortingState>(defaultSorting);
 
 	const [globalFilter, setGlobalFilter] = useState('');
 

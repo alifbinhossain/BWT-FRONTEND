@@ -84,6 +84,7 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 			setOpen={onClose}
 			title={isUpdate ? `Update ${updatedData?.process_id} Process #${updatedData?.index}` : 'Add New Process'}
 			form={form}
+			isSmall={true}
 			onSubmit={onSubmit}
 		>
 			<div className='flex justify-end gap-2'>

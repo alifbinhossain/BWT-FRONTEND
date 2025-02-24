@@ -14,6 +14,7 @@ import { TRANSFER_NULL, TRANSFER_SCHEMA } from './_config/schema';
 import { Card } from './card';
 import { AddCard } from './card/add-card';
 import DynamicFieldContainer from './container';
+import { Header } from './header';
 import { ICard, WorkSectionData } from './types';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -238,14 +239,7 @@ export const Column = () => {
 			className={`flex flex-col transition-colors ${active ? 'bg-secondary/5' : 'bg-neutral-800/0'}`}
 		>
 			<DynamicFieldContainer title={`Transfer Section`} handleAdd={handleAddingClick}>
-				<div className='flex items-center bg-primary/5 p-2'>
-					<span className='text-sm font-semibold'>ID&emsp;</span>
-					{fliedDefs.map((field: any) => (
-						<span key={field.accessorKey} className='flex-1 text-sm font-semibold'>
-							{field.header}
-						</span>
-					))}
-				</div>
+				<Header fliedDefs={fliedDefs} />
 				{cards?.map((c, index) => {
 					const transferData = { section_uuid: c.section_uuid, remarks: c.remarks, uuid: c.uuid, index };
 					return (

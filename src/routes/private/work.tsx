@@ -40,13 +40,13 @@ const workRoutes: IRoute[] = [
 				page_name: 'work_transfer',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
-			{
-				name: 'Test',
-				path: '/work/test',
-				element: <Column />,
-				page_name: 'work__order',
-				actions: ['create', 'read', 'update', 'delete'],
-			},
+			// {
+			// 	name: 'Test',
+			// 	path: '/work/test',
+			// 	element: <Column />,
+			// 	page_name: 'work__order',
+			// 	actions: ['create', 'read', 'update', 'delete'],
+			// },
 			{
 				name: 'Library',
 				children: [
