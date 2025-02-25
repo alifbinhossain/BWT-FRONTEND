@@ -19,10 +19,12 @@ export type IDiagnosisTableData = {
 	problems_uuid: string[];
 	problems_name: string[];
 	problem_statement: string;
+	customer_problem_statement: string;
 	status: 'pending' | 'rejected' | 'accepted' | 'not_repairable';
 	status_update_date: string;
 	proposed_cost: number;
 	is_proceed_to_repair: boolean;
+	customer_remarks: string;
 	remarks: string;
 	created_by: string;
 	created_at: string;
