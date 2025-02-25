@@ -91,7 +91,7 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 				<FormField
 					control={form.control}
 					name='status'
-					render={(props) => <CoreForm.Checkbox label='status' {...props} />}
+					render={(props) => <CoreForm.Checkbox label='Done' {...props} />}
 				/>
 				<FormField
 					control={form.control}

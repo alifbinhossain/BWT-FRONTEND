@@ -259,6 +259,7 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 		accessorKey: 'index',
 		header: 'Index',
 		enableColumnFilter: false,
+		
 	},
 	{
 		accessorKey: 'section_name',
@@ -274,7 +275,18 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 		accessorKey: 'status',
 		header: 'Process Status',
 		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+		cell: (info) => {
+			return (
+				<>
+					<StatusButton value={info.getValue() as boolean} />
+					{info.row.original.status_update_date ? (
+						<DateTime date={new Date(info.row.original.status_update_date)} isTime={false} />
+					) : (
+						''
+					)}
+				</>
+			);
+		},
 	},
 	{
 		accessorKey: 'status_update_date',
@@ -305,11 +317,8 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 			}
 			return (
 				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item?.replace(/_/g, ' ')}
-						</span>
-					))}
+					{value?.map((item, index) => <span key={index}>{item?.replace(/_/g, ' ')}</span>)}
+					<br />
 				</div>
 			);
 		},

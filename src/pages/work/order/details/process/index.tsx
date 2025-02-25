@@ -64,6 +64,7 @@ const EntryTable: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
 				defaultSorting={[{ id: 'index', desc: false }]}
+				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
