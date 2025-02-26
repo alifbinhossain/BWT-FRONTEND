@@ -242,6 +242,7 @@ const AddOrUpdate = () => {
 					copy: handleCopy,
 					remove: handleRemove,
 					watch: form.watch,
+					isProductReceived: isProductReceived,
 				})}
 				handleAdd={handleAdd}
 				fields={fields}

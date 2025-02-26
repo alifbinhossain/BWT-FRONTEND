@@ -20,9 +20,10 @@ interface IGenerateFieldDefsProps {
 	copy: (index: any) => void;
 	remove: (index: any) => void;
 	watch?: UseFormWatch<IOrder>;
+	isProductReceived?: boolean;
 }
 
-const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ copy, remove, isProductReceived }: IGenerateFieldDefsProps): FieldDef[] => {
 	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
 	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
@@ -95,6 +96,7 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 			type: 'select',
 			options: warehouseOptions || [],
 			placeholder: 'Select Warehouse',
+			hidden: !isProductReceived,
 		},
 		{
 			header: 'Rack',
@@ -102,6 +104,7 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 			type: 'select',
 			options: rackOption || [],
 			placeholder: 'Select Rack',
+			hidden: !isProductReceived,
 		},
 		{
 			header: 'Floor',
@@ -109,6 +112,7 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 			type: 'select',
 			options: floorOption || [],
 			placeholder: 'Select Floor',
+			hidden: !isProductReceived,
 		},
 		{
 			header: 'Box',
@@ -116,12 +120,12 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 			type: 'select',
 			options: boxOption || [],
 			placeholder: 'Select Box',
+			hidden: !isProductReceived,
 		},
 		{
 			header: 'Remarks',
 			accessorKey: 'remarks',
 			type: 'textarea',
-			
 		},
 		{
 			header: 'Actions',
