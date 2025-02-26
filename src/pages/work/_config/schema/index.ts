@@ -1,5 +1,4 @@
-
-import { nullable, z } from 'zod';
+import { z } from 'zod';
 
 import {
 	BOOLEAN_OPTIONAL,
@@ -18,26 +17,19 @@ const customIssue = (message: string, path: string) => ({
 	path: [path],
 });
 
-//* Order Schema
+//*Order Schema
 export const ORDER_SCHEMA = z
 	.object({
-		is_new_customer: BOOLEAN_OPTIONAL.default(false),
 		uuid: STRING_OPTIONAL,
-		name: STRING_OPTIONAL,
-		phone: STRING_OPTIONAL,
-		business_type: STRING_OPTIONAL,
 		is_diagnosis_need: BOOLEAN_REQUIRED.default(false),
-		designation_uuid: STRING_OPTIONAL,
-		department_uuid: STRING_OPTIONAL,
-		user_uuid: STRING_NULLABLE,
 		model_uuid: STRING_REQUIRED,
+		model_id: STRING_OPTIONAL,
 		size_uuid: STRING_REQUIRED,
+		quantity: NUMBER_DOUBLE_REQUIRED,
 		serial_no: STRING_REQUIRED,
 		problems_uuid: STRING_ARRAY,
 		problem_statement: STRING_REQUIRED,
 		accessories: STRING_ARRAY_OPTIONAL,
-		is_product_received: BOOLEAN_REQUIRED,
-		receive_date: STRING_NULLABLE,
 		warehouse_uuid: STRING_NULLABLE,
 		rack_uuid: STRING_NULLABLE,
 		floor_uuid: STRING_NULLABLE,
@@ -48,6 +40,40 @@ export const ORDER_SCHEMA = z
 		if (data?.problems_uuid.length === 0) {
 			ctx.addIssue(customIssue('Required', 'problems_uuid'));
 		}
+	});
+export const ORDER_NULL: Partial<IOrder> = {
+	is_diagnosis_need: false,
+	model_uuid: '',
+	size_uuid: '',
+	serial_no: '',
+	quantity: 1,
+	problems_uuid: [],
+	problem_statement: '',
+	accessories: [],
+	warehouse_uuid: null,
+	rack_uuid: null,
+	floor_uuid: null,
+	box_uuid: null,
+	remarks: null,
+};
+export type IOrder = z.infer<typeof ORDER_SCHEMA>;
+//* Info Schema
+export const INFO_SCHEMA = z
+	.object({
+		is_new_customer: BOOLEAN_OPTIONAL.default(false),
+		uuid: STRING_OPTIONAL,
+		user_uuid: STRING_NULLABLE,
+		name: STRING_OPTIONAL,
+		phone: STRING_OPTIONAL,
+		business_type: STRING_OPTIONAL,
+		designation_uuid: STRING_OPTIONAL,
+		department_uuid: STRING_OPTIONAL,
+		is_product_received: BOOLEAN_REQUIRED,
+		received_date: STRING_NULLABLE,
+		remarks: STRING_NULLABLE,
+		order_entry: z.array(ORDER_SCHEMA),
+	})
+	.superRefine((data, ctx) => {
 		if (!data.is_new_customer && !data.user_uuid) {
 			ctx.addIssue(customIssue('Required', 'user_uuid'));
 		}
@@ -71,49 +97,45 @@ export const ORDER_SCHEMA = z
 			}
 		}
 		if (data.is_product_received) {
-			if (!data.receive_date) {
-				ctx.addIssue(customIssue('Required', 'receive_date'));
+			if (!data.received_date) {
+				ctx.addIssue(customIssue('Required', 'received_date'));
 			}
-			if (!data.warehouse_uuid) {
-				ctx.addIssue(customIssue('Required', 'warehouse_uuid'));
-			}
+			data?.order_entry.map((entry, index) => {
+				if (!entry.warehouse_uuid) {
+					ctx.addIssue(customIssue('Required', `order_entry[${index}].warehouse_uuid`));
+				}
+			});
 		}
 	});
-export const ORDER_NULL: Partial<IJob> = {
+export const INFO_NULL: Partial<IInfo> = {
 	is_new_customer: false,
 	uuid: '',
 	user_uuid: null,
-	is_diagnosis_need: false,
+	is_product_received: false,
+	received_date: null,
 	name: '',
 	phone: '',
-	model_uuid: '',
-	size_uuid: '',
-	serial_no: '',
-	problems_uuid: [],
-	problem_statement: '',
-	accessories: [],
-	is_product_received: false,
-	receive_date: '',
-	warehouse_uuid: null,
-	rack_uuid: null,
-	floor_uuid: null,
-	box_uuid: null,
+	order_entry: [ORDER_NULL as IOrder],
 	remarks: null,
 };
-export type IJob = z.infer<typeof ORDER_SCHEMA>;
+
+export type IInfo = z.infer<typeof INFO_SCHEMA>;
 
 //* Diagnosis Schema
 export const DIAGNOSIS_SCHEMA = z.object({
 	problems_uuid: STRING_ARRAY,
 	problem_statement: STRING_OPTIONAL,
+	customer_problem_statement: STRING_OPTIONAL,
 	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
 	proposed_cost: NUMBER_DOUBLE_REQUIRED,
 	is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
 	remarks: STRING_NULLABLE,
+	customer_remarks: STRING_NULLABLE,
 });
 export const DIAGNOSIS_NULL: Partial<IDiagnosis> = {
 	problems_uuid: [],
 	problem_statement: '',
+	customer_problem_statement: undefined,
 	status: 'pending',
 	proposed_cost: 0,
 	is_proceed_to_repair: false,

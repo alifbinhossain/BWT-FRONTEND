@@ -2,6 +2,8 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 
+import { IFormSelectOption } from '@/components/core/form/types';
+
 export type IAuthResponse = {
 	status: number;
 	type: string;
@@ -64,8 +66,9 @@ export type ITableFacetedFilter = {
 
 export type ITableAdvanceFilter = {
 	state: boolean | undefined;
+	options?: IFormSelectOption[];
 	label: string;
-	onStateChange: () => void;
+	onStateChange: (type?: string) => void;
 	clear: () => void;
 };
 

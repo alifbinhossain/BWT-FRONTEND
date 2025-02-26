@@ -90,7 +90,7 @@ const AddOrUpdate: React.FC<IModelAddOrUpdateProps> = ({
 				control={form.control}
 				name='brand_uuid'
 				render={(props) => (
-					<CoreForm.ReactSelect label='Model' placeholder='Select Model' options={brandOptions!} {...props} />
+					<CoreForm.ReactSelect label='Brand' placeholder='Select Brand' options={brandOptions!} {...props} />
 				)}
 			/>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />

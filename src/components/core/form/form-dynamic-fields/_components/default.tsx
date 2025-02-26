@@ -17,7 +17,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 }) => {
 	return (
 		<div className='rounded-b-md border border-t-0'>
-			<Table className='overflow-x-auto'>
+			<Table className='table overflow-x-auto'>
 				<TableHeader>
 					<TableRow className='h-8 divide-x-[1px]'>
 						{fieldDefs
@@ -123,12 +123,37 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
 																<CoreForm.ReactSelect
+																	options={fieldDef.options}
+																	placeholder={fieldDef.placeholder}
 																	menuPortalTarget={document.body}
+																	disableLabel
+																	{...props}
+																/>
+															)}
+														/>
+													)}
+													{fieldDef.type === 'multiSelect' && (
+														<FormField
+															control={form.control}
+															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															render={(props) => (
+																<CoreForm.MultiSelect
 																	options={fieldDef.options}
 																	placeholder={fieldDef.placeholder}
 																	disableLabel
 																	{...props}
 																/>
+															)}
+														/>
+													)}
+													{fieldDef.type === 'checkBox' && (
+														<FormField
+															control={form.control}
+															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															render={(props) => (
+																<div className='flex w-full items-center justify-center'>
+																	<CoreForm.Checkbox disableLabel {...props} />
+																</div>
 															)}
 														/>
 													)}

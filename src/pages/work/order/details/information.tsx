@@ -69,7 +69,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			},
 			{
 				label: 'Receiving Date',
-				value: formatDateTable(data.receive_date),
+				value: formatDateTable(data.received_date),
 			},
 			{
 				label: 'Accessories',
@@ -121,8 +121,20 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				),
 			},
 			{
-				label: 'Statement',
+				label: 'Internal Problem Statement',
 				value: data.diagnosis?.problem_statement,
+			},
+			{
+				label: 'Customer Problem Statement',
+				value: data.diagnosis?.customer_problem_statement,
+			},
+			{
+				label: 'Proposed Cost',
+				value: data.diagnosis?.proposed_cost,
+			},
+			{
+				label: 'Customer FeedBack',
+				value: data.diagnosis?.customer_remarks,
 			},
 			{
 				label: 'Proceed to Repair',
@@ -138,7 +150,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 	return (
 		<>
 			<SectionContainer title={'Customer'}>
-				<div className='flex'>
+				<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
 					<TableList title='General' className='flex-1' items={renderGeneralItems()} />
 					<TableList title='Product' className='flex-1' items={renderProductItems()} />
 					<TableList title='Problem' className='flex-1' items={renderProblemItems()} />

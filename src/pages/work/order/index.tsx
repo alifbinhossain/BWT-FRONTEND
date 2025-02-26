@@ -9,21 +9,23 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { orderColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkJobs } from '../_config/query';
+import { useWorkOrder } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Box = () => {
+const Order = () => {
 	const navigate = useNavigate();
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkJobs<IOrderTableData[]>();
+
+	const pageAccess = useAccess('work__order') as string[];
+
+	const actionTrxAccess = pageAccess.includes('click_trx');
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkOrder<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Order', url, 'work__order'), [url]);
-	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
-	const actionTrxAccess = pageAccess.includes('click_trx');
 
-	//* Add/Update Modal state
+	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 
 	const handleCreate = () => {
@@ -37,14 +39,14 @@ const Box = () => {
 		setIsOpenAddModal(true);
 	};
 
-	//* Delete Modal state
-	//* Single Delete Item
+	// Delete Modal state
+	// Single Delete Item
 	const [deleteItem, setDeleteItem] = useState<{
 		id: string;
 		name: string;
 	} | null>(null);
 
-	//* Single Delete Handler
+	// Single Delete Handler
 	const handleDelete = (row: Row<IOrderTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
@@ -52,10 +54,10 @@ const Box = () => {
 		});
 	};
 
-	//* Delete All Item
+	// Delete All Item
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
-	//* Delete All Row Handlers
+	// Delete All Row Handlers
 	const handleDeleteAll = (rows: Row<IOrderTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
@@ -67,10 +69,12 @@ const Box = () => {
 			}))
 		);
 	};
+
+	// Table Columns
+
 	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
-		navigate(`/work/transfer-section/${null}/${row.original.uuid}`);
+		navigate(`/work/transfer-section/${row.original.info_uuid}/${null}/${row.original.uuid}`);
 	};
-	//* Table Columns
 	const columns = orderColumns({ actionTrxAccess, handleAgainstTrx });
 
 	return (
@@ -121,4 +125,4 @@ const Box = () => {
 	);
 };
 
-export default Box;
+export default Order;

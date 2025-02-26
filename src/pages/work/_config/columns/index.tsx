@@ -7,6 +7,7 @@ import DateTime from '@/components/ui/date-time';
 
 import {
 	IDiagnosisTableData,
+	IInfoTableData,
 	IOrderTableData,
 	IProblemsTableData,
 	IProcessTableData,
@@ -26,27 +27,77 @@ export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
+//* Info Columns
+export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
+	{
+		accessorKey: 'info_id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+		},
+	},
+	{
+		accessorKey: 'user_id',
+		header: 'User ID',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'user_name',
+		header: 'Customer',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'is_product_received',
+		header: 'Product Received',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'received_date',
+		header: 'Receive Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+];
 //* Order Columns
 export const orderColumns = ({
 	actionTrxAccess,
 	handleAgainstTrx,
 }: {
-	actionTrxAccess: boolean;
-	handleAgainstTrx: (row: Row<any>) => void;
-}): ColumnDef<IOrderTableData>[] => [
+	actionTrxAccess?: boolean;
+	handleAgainstTrx?: (row: Row<any>) => void;
+} = {}): ColumnDef<IOrderTableData>[] => [
+	{
+		accessorKey: 'is_diagnosis_need',
+		header: 'Diagnosis Need',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
 	{
 		accessorKey: 'order_id',
 		header: 'ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkOnly uri={`/work/order/details/${uuid}`} title={info.getValue() as string} />;
+			const info_uuid = info.row.original.info_uuid;
+			return (
+				<LinkOnly
+					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+					title={info.getValue() as string}
+				/>
+			);
 		},
 	},
 	{
-		accessorKey: 'user_name',
-		header: 'Customer',
+		accessorKey: 'info_id',
+		header: 'Info ID',
 		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.info_uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+		},
 	},
 	{
 		accessorKey: 'model_name',
@@ -61,6 +112,11 @@ export const orderColumns = ({
 	{
 		accessorKey: 'serial_no',
 		header: 'Serial No',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'Quantity',
 		enableColumnFilter: false,
 	},
 	{
@@ -107,25 +163,10 @@ export const orderColumns = ({
 			);
 		},
 	},
-
-	{
-		accessorKey: 'is_product_received',
-		header: 'Product Received',
-		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
-	},
-	{
-		accessorKey: 'receive_date',
-		header: 'Receive Date',
-		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
-	},
 	{
 		id: 'action_trx',
 		header: 'Section Transfer',
-		cell: (info) => (
-			<Transfer onClick={() => handleAgainstTrx(info.row)} disabled={!info.row.original.is_product_received} />
-		),
+		cell: (info) => <Transfer onClick={() => handleAgainstTrx?.(info.row)} />,
 		size: 40,
 		meta: {
 			hidden: !actionTrxAccess,
@@ -167,12 +208,27 @@ export const diagnosisColumns = ({
 		enableColumnFilter: false,
 	},
 	{
+		accessorKey: 'info_id',
+		header: 'Info ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.info_uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+		},
+	},
+	{
 		accessorKey: 'order_id',
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.order_uuid;
-			return <LinkOnly uri={`/work/order/details/${uuid}`} title={info.getValue() as string} />;
+			const info_uuid = info.row.original.info_uuid;
+			return (
+				<LinkOnly
+					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+					title={info.getValue() as string}
+				/>
+			);
 		},
 	},
 	{
@@ -274,7 +330,18 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 		accessorKey: 'status',
 		header: 'Process Status',
 		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+		cell: (info) => {
+			return (
+				<>
+					<StatusButton value={info.getValue() as boolean} />
+					{info.row.original.status_update_date ? (
+						<DateTime date={new Date(info.row.original.status_update_date)} isTime={false} />
+					) : (
+						''
+					)}
+				</>
+			);
+		},
 	},
 	{
 		accessorKey: 'status_update_date',
@@ -305,11 +372,8 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 			}
 			return (
 				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item?.replace(/_/g, ' ')}
-						</span>
-					))}
+					{value?.map((item, index) => <span key={index}>{item?.replace(/_/g, ' ')}</span>)}
+					<br />
 				</div>
 			);
 		},

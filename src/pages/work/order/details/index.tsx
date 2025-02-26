@@ -9,6 +9,7 @@ import EntryTable from './process';
 const DetailsPage = () => {
 	const { uuid } = useParams();
 	const { data, isLoading } = useWorkOrderByDetails<IOrderTableData>(uuid as string);
+	console.log(data);
 
 	useEffect(() => {
 		document.title = 'Order Details';
@@ -20,7 +21,7 @@ const DetailsPage = () => {
 		<div className='space-y-8'>
 			<Information data={(data || []) as IOrderTableData} />
 			{((data?.is_diagnosis_need && data?.diagnosis?.is_proceed_to_repair) || !data?.is_diagnosis_need) && (
-				<EntryTable data={(data || []) as IOrderTableData} />
+				<EntryTable data={(data || []) as IOrderTableData} isLoading={isLoading} />
 			)}
 		</div>
 	);

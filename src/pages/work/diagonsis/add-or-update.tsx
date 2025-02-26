@@ -8,7 +8,6 @@ import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
 import { useOtherProblem } from '@/lib/common-queries/other';
-import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IDiagnosisTableData } from '../_config/columns/columns.type';
@@ -82,8 +81,7 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 						control={form.control}
 						name='problems_uuid'
 						render={(props) => (
-							<CoreForm.ReactSelect
-								isMulti={true}
+							<CoreForm.MultiSelect
 								label='Problem'
 								placeholder='Select Problems'
 								options={problemOption!}
@@ -93,13 +91,21 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 					/>
 				</div>
 			</div>
-
 			<div className='flex space-x-4'>
 				<div className='flex-1'>
 					<FormField
 						control={form.control}
 						name='problem_statement'
 						render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+					/>
+				</div>
+			</div>
+			<div className='flex space-x-4'>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='customer_problem_statement'
+						render={(props) => <CoreForm.Textarea label='Customer Problem Statement' {...props} />}
 					/>
 				</div>
 			</div>
@@ -119,15 +125,20 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 					/>
 				</div>
 			</div>
-			{form.watch('status') === 'accepted' && (
-				<div className='flex'>
-					<FormField
-						control={form.control}
-						name='is_proceed_to_repair'
-						render={(props) => <CoreForm.Checkbox label='Proceed to Repair' className='h-5' {...props} />}
-					/>
-				</div>
-			)}
+
+			<div className='flex'>
+				<FormField
+					control={form.control}
+					name='is_proceed_to_repair'
+					render={(props) => <CoreForm.Checkbox label='Proceed to Repair' className='h-5' {...props} />}
+				/>
+			</div>
+			<FormField
+				control={form.control}
+				name='customer_remarks'
+				render={(props) => <CoreForm.Textarea label='Customer Remarks' {...props} />}
+			/>
+
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

@@ -9,21 +9,18 @@ import { AddModal } from '@core/modal';
 
 import {
 	useOtherBox,
-	useOtherDepartment,
-	useOtherDesignation,
 	useOtherFloor,
 	useOtherModel,
 	useOtherProblem,
 	useOtherRack,
 	useOtherSize,
-	useOtherUserByQuery,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkDiagnosis, useWorkJobsByUUID } from '../_config/query';
+import { useWorkDiagnosis, useWorkOrderByUUID } from '../_config/query';
 import { ORDER_NULL, ORDER_SCHEMA } from '../_config/schema';
 import { IOrderAddOrUpdateProps } from '../_config/types';
 
@@ -38,9 +35,8 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 }) => {
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
-	const { data } = useWorkJobsByUUID<IOrderTableData>(updatedData?.uuid as string);
+	const { data } = useWorkOrderByUUID<IOrderTableData>(updatedData?.uuid as string);
 
-	const { data: userOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
 	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
@@ -48,14 +44,9 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
 	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
 	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
-	const { data: departmentOption } = useOtherDepartment<IFormSelectOption[]>();
-	const { data: designationOption } = useOtherDesignation<IFormSelectOption[]>();
 	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
-	const isProductReceived = form.watch('is_product_received');
-	const isNewCustomer = form.watch('is_new_customer');
-	const isBusinessTypeCompany = form.watch('business_type') === 'company' && isNewCustomer;
 
 	const accessoriesOption = [
 		{ label: 'Power Cable', value: 'power_cable' },
@@ -66,10 +57,6 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 		{ label: 'Charger', value: 'charger' },
 		{ label: 'Others', value: 'others' },
 	];
-	const businessTypeOptions = [
-		{ label: 'Individual', value: 'individual' },
-		{ label: 'Company', value: 'company' },
-	];
 	// Reset form values when data is updated
 	useEffect(() => {
 		if (data && isUpdate) {
@@ -77,34 +64,6 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
-
-	useEffect(() => {
-		if (!isProductReceived) {
-			form.resetField('receive_date');
-			form.resetField('warehouse_uuid');
-			form.resetField('rack_uuid');
-			form.resetField('floor_uuid');
-			form.resetField('box_uuid');
-		}
-	}, [isProductReceived, form]);
-
-	useEffect(() => {
-		if (isNewCustomer) {
-			if (!isBusinessTypeCompany) {
-				form.resetField('user_uuid');
-				form.resetField('department_uuid');
-				form.resetField('designation_uuid');
-			} else {
-				form.resetField('user_uuid');
-			}
-		} else {
-			form.resetField('name');
-			form.resetField('phone');
-			form.resetField('business_type');
-			form.resetField('designation_uuid');
-			form.resetField('department_uuid');
-		}
-	}, [isNewCustomer, form, isBusinessTypeCompany]);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -117,15 +76,6 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	async function onSubmit(values: IOrderTableData) {
 		const payload = {
 			...values,
-			...(!isProductReceived && {
-				receive_date: null,
-				warehouse_uuid: null,
-				rack_uuid: null,
-				floor_uuid: null,
-				box_uuid: null,
-			}),
-			...(isNewCustomer && { user_uuid: nanoid() }),
-			...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
 		};
 
 		if (isUpdate) {
@@ -138,12 +88,10 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				onClose,
 			});
 		} else {
-			const newCustomerId = isNewCustomer ? nanoid() : payload.user_uuid;
 			await postData.mutateAsync({
 				url,
 				newData: {
 					...payload,
-					user_uuid: newCustomerId,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
 					uuid: nanoid(),
@@ -165,110 +113,10 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			<div className='flex justify-end gap-2'>
 				<FormField
 					control={form.control}
-					name='is_new_customer'
-					render={(props) => <CoreForm.Checkbox label='New Customer' {...props} />}
-				/>
-				<FormField
-					control={form.control}
-					name='is_product_received'
-					render={(props) => <CoreForm.Checkbox label='Product Received' {...props} />}
-				/>
-				<FormField
-					control={form.control}
 					name='is_diagnosis_need'
 					render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
 				/>
 			</div>
-
-			<div className='flex space-x-4'>
-				<div className='flex-1'>
-					{!isNewCustomer ? (
-						<FormField
-							control={form.control}
-							name='user_uuid'
-							render={(props) => (
-								<CoreForm.ReactSelect
-									label='Customer'
-									options={userOption || []}
-									placeholder='Select Customer'
-									{...props}
-								/>
-							)}
-						/>
-					) : (
-						<div className='flex space-x-4'>
-							<div className='flex-1'>
-								<FormField
-									control={form.control}
-									name='name'
-									render={(props) => <CoreForm.Input label='Customer Name' {...props} />}
-								/>
-							</div>
-							<div className='flex-1'>
-								<FormField
-									control={form.control}
-									name='phone'
-									render={(props) => <CoreForm.Input label='Phone Number' {...props} />}
-								/>
-							</div>
-							<div className='flex-1'>
-								<FormField
-									control={form.control}
-									name='business_type'
-									render={(props) => (
-										<CoreForm.ReactSelect
-											label='Business Type'
-											options={businessTypeOptions || []}
-											placeholder='Select Business Type'
-											{...props}
-										/>
-									)}
-								/>
-							</div>
-						</div>
-					)}
-				</div>
-
-				{isProductReceived && (
-					<FormField
-						control={form.control}
-						name='receive_date'
-						render={(props) => <CoreForm.DatePicker label='Receive Date' {...props} />}
-					/>
-				)}
-			</div>
-			{isBusinessTypeCompany && (
-				<div className='flex space-x-4'>
-					<div className='flex-1'>
-						<FormField
-							control={form.control}
-							name='designation_uuid'
-							render={(props) => (
-								<CoreForm.ReactSelect
-									label='Designation'
-									options={designationOption || []}
-									placeholder='Select Problems'
-									{...props}
-								/>
-							)}
-						/>
-					</div>
-					<div className='flex-1'>
-						<FormField
-							control={form.control}
-							name='department_uuid'
-							render={(props) => (
-								<CoreForm.ReactSelect
-									label='Department'
-									options={departmentOption || []}
-									placeholder='Select Accessories'
-									{...props}
-								/>
-							)}
-						/>
-					</div>
-				</div>
-			)}
 
 			<div className='flex space-x-4'>
 				<div className='flex-1'>
@@ -314,9 +162,8 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						control={form.control}
 						name='problems_uuid'
 						render={(props) => (
-							<CoreForm.ReactSelect
+							<CoreForm.MultiSelect
 								label='Problems'
-								isMulti
 								options={problemOption || []}
 								placeholder='Select Problems'
 								{...props}
@@ -329,9 +176,8 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						control={form.control}
 						name='accessories'
 						render={(props) => (
-							<CoreForm.ReactSelect
+							<CoreForm.MultiSelect
 								label='Accessories'
-								isMulti
 								options={accessoriesOption}
 								placeholder='Select Accessories'
 								{...props}
@@ -351,7 +197,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				</div>
 			</div>
 
-			{isProductReceived && (
+			{
 				<div className='grid grid-cols-4 gap-4'>
 					<FormField
 						control={form.control}
@@ -402,7 +248,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						)}
 					/>
 				</div>
-			)}
+			}
 
 			<FormField
 				control={form.control}

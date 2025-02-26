@@ -13,9 +13,9 @@ import { useWorkProcesses } from '../../../_config/query';
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
-const EntryTable: React.FC<{ data: IOrderTableData }> = ({ data }) => {
+const EntryTable: React.FC<{ data: IOrderTableData; isLoading: any }> = ({ data, isLoading }) => {
 	const navigate = useNavigate();
-	const { isLoading, url, deleteData, postData, updateData, refetch } = useWorkProcesses<IProcessTableData[]>();
+	const { url, deleteData, postData, updateData, refetch } = useWorkProcesses<IProcessTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Process', url, 'work__order_details'), [url]);
 	const diagnosis_uuid = data?.is_diagnosis_need ? data?.diagnosis?.uuid : 'null';
@@ -64,6 +64,7 @@ const EntryTable: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
 				defaultSorting={[{ id: 'index', desc: false }]}
+				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

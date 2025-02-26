@@ -17,12 +17,24 @@ export const useWorkProblemsByUUID = <T>(uuid: string) =>
 	});
 
 //* Order
-export const useWorkJobs = <T>() =>
+export const useWorkInfo = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.info(),
+		url: '/work/info',
+	});
+
+export const useWorkInfoByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.infoByDetails(uuid),
+		url: `/work/order-details-by-info/${uuid}`,
+		enabled: !!uuid,
+	});
+export const useWorkOrder = <T>() =>
 	useTQuery<T>({
 		queryKey: workQK.job(),
 		url: '/work/order',
 	});
-export const useWorkJobsByUUID = <T>(uuid: string) =>
+export const useWorkOrderByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: workQK.jobByUUID(uuid),
 		url: `/work/order/${uuid}`,

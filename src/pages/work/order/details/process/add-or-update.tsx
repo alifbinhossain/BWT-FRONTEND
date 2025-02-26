@@ -91,7 +91,7 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 				<FormField
 					control={form.control}
 					name='status'
-					render={(props) => <CoreForm.Checkbox label='status' {...props} />}
+					render={(props) => <CoreForm.Checkbox label='Done' {...props} />}
 				/>
 				<FormField
 					control={form.control}
@@ -110,8 +110,7 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 						control={form.control}
 						name='problems_uuid'
 						render={(props) => (
-							<CoreForm.ReactSelect
-								isMulti={true}
+							<CoreForm.MultiSelect
 								label='Problem'
 								placeholder='Select Problems'
 								options={problemOption!}
