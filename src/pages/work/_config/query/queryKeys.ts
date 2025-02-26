@@ -1,13 +1,20 @@
+import { info } from 'console';
+
 export const workQK = {
 	all: () => ['work'],
 
 	//* problem
 	problem: () => [...workQK.all(), 'problem'],
 	problemByUUID: (uuid: string) => [...workQK.problem(), uuid],
+	//*info
+	info: () => [...workQK.all(), 'info'],
+	infoByUUID: (uuid: string) => [...workQK.info(), uuid],
+	infoByDetails: (uuid: string) => [...workQK.info(), 'infoByDetails', uuid],
 	//* order
 	job: () => [...workQK.all(), 'job'],
 	jobByUUID: (uuid: string) => [...workQK.job(), uuid],
 	orderByDetails: (uuid: string) => [...workQK.job(), 'orderByDetails', uuid],
+
 	//* diagnosis
 	diagnosis: () => [...workQK.all(), 'diagnosis'],
 	diagnosisByUUID: (uuid: string) => [...workQK.diagnosis(), uuid],

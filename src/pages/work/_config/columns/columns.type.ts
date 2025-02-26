@@ -32,17 +32,13 @@ export type IDiagnosisTableData = {
 };
 //* Order Columns
 export type IOrderTableData = {
-	is_new_customer: boolean;
-	name: string;
-	phone: string;
-	user_phone: string;
 	id: string;
 	order_id: string;
 	uuid: string;
-	user_uuid: string;
 	user_name: string;
-	designation_uuid: string;
-	department_uuid: string;
+	user_phone: string;
+	is_product_received: boolean;
+	received_date: string;
 	user_id: string;
 	model_uuid: string;
 	model_name: string;
@@ -54,9 +50,9 @@ export type IOrderTableData = {
 	problems_name: string[];
 	problem_statement: string;
 	accessories: string[];
-	is_product_received: boolean;
+	info_uuid: string;
 	is_diagnosis_need: boolean;
-	receive_date: string;
+
 	warehouse_uuid: string;
 	warehouse_name: string;
 	rack_uuid: string;
@@ -68,9 +64,31 @@ export type IOrderTableData = {
 	created_by: string;
 	created_at: string;
 	updated_at: string;
-	diagnosis: IDiagnosisTableData;
-	process: IProcessTableData[];
+	diagnosis?: IDiagnosisTableData;
+	process?: IProcessTableData[];
 	remarks: string;
+};
+//* Info Columns
+export type IInfoTableData = {
+	uuid: string;
+	is_new_customer?: boolean;
+	name: string;
+	phone: string;
+	user_phone: string;
+	user_id: string;
+	id: string;
+	info_id: string;
+	user_uuid: string;
+	user_name: string;
+	designation_uuid: string;
+	department_uuid: string;
+	remarks: string;
+	created_by: string;
+	created_at: string;
+	updated_at: string;
+	is_product_received: boolean;
+	received_date: string;
+	order_entry: IOrderTableData[];
 };
 
 //* Section Columns

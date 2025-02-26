@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { processColumns } from '../../../_config/columns';
-import { IOrderTableData, IProcessTableData } from '../../../_config/columns/columns.type';
-import { useWorkProcesses } from '../../../_config/query';
+import { processColumns } from '../../../../_config/columns';
+import { IOrderTableData, IProcessTableData } from '../../../../_config/columns/columns.type';
+import { useWorkProcesses } from '../../../../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));

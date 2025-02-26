@@ -22,7 +22,7 @@ const FormTextarea: React.FC<FormTextareaProps> = ({
 			)}
 			<FormControl>
 				<Textarea
-					className={cn(className)}
+					className={cn(className, 'min-w-48')}
 					placeholder={placeholder}
 					{...field}
 					value={field.value === null ? '' : field.value}

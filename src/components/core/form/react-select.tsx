@@ -27,6 +27,7 @@ const FormReactSelect: React.FC<FormReactSelectProps> = ({
 			)}
 			<FormControl>
 				<ReactSelect
+					className='min-w-48'
 					isMulti={isMulti}
 					options={options}
 					isDisabled={isDisabled}

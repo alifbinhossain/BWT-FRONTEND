@@ -1,4 +1,4 @@
-
+import { modelColumns } from '@/pages/store/_config/columns';
 import { nullable, z } from 'zod';
 
 import {
@@ -23,31 +23,42 @@ export const ORDER_SCHEMA = z
 	.object({
 		is_new_customer: BOOLEAN_OPTIONAL.default(false),
 		uuid: STRING_OPTIONAL,
+		user_uuid: STRING_NULLABLE,
 		name: STRING_OPTIONAL,
 		phone: STRING_OPTIONAL,
 		business_type: STRING_OPTIONAL,
-		is_diagnosis_need: BOOLEAN_REQUIRED.default(false),
 		designation_uuid: STRING_OPTIONAL,
 		department_uuid: STRING_OPTIONAL,
-		user_uuid: STRING_NULLABLE,
-		model_uuid: STRING_REQUIRED,
-		size_uuid: STRING_REQUIRED,
-		serial_no: STRING_REQUIRED,
-		problems_uuid: STRING_ARRAY,
-		problem_statement: STRING_REQUIRED,
-		accessories: STRING_ARRAY_OPTIONAL,
 		is_product_received: BOOLEAN_REQUIRED,
-		receive_date: STRING_NULLABLE,
-		warehouse_uuid: STRING_NULLABLE,
-		rack_uuid: STRING_NULLABLE,
-		floor_uuid: STRING_NULLABLE,
-		box_uuid: STRING_NULLABLE,
+		received_date: STRING_NULLABLE,
 		remarks: STRING_NULLABLE,
+		order_entry: z.array(
+			z
+				.object({
+					uuid: STRING_OPTIONAL,
+					is_diagnosis_need: BOOLEAN_REQUIRED.default(false),
+					model_uuid: STRING_REQUIRED,
+					model_id: STRING_OPTIONAL,
+					size_uuid: STRING_REQUIRED,
+					quantity: NUMBER_DOUBLE_REQUIRED,
+					serial_no: STRING_REQUIRED,
+					problems_uuid: STRING_ARRAY,
+					problem_statement: STRING_REQUIRED,
+					accessories: STRING_ARRAY_OPTIONAL,
+					warehouse_uuid: STRING_NULLABLE,
+					rack_uuid: STRING_NULLABLE,
+					floor_uuid: STRING_NULLABLE,
+					box_uuid: STRING_NULLABLE,
+					remarks: STRING_NULLABLE,
+				})
+				.superRefine((data, ctx) => {
+					if (data?.problems_uuid.length === 0) {
+						ctx.addIssue(customIssue('Required', 'problems_uuid'));
+					}
+				})
+		),
 	})
 	.superRefine((data, ctx) => {
-		if (data?.problems_uuid.length === 0) {
-			ctx.addIssue(customIssue('Required', 'problems_uuid'));
-		}
 		if (!data.is_new_customer && !data.user_uuid) {
 			ctx.addIssue(customIssue('Required', 'user_uuid'));
 		}
@@ -71,36 +82,45 @@ export const ORDER_SCHEMA = z
 			}
 		}
 		if (data.is_product_received) {
-			if (!data.receive_date) {
+			if (!data.received_date) {
 				ctx.addIssue(customIssue('Required', 'receive_date'));
 			}
-			if (!data.warehouse_uuid) {
-				ctx.addIssue(customIssue('Required', 'warehouse_uuid'));
+			for (const entry of data.order_entry) {
+				if (!entry.warehouse_uuid) {
+					ctx.addIssue(customIssue('Required', 'warehouse_uuid'));
+				}
 			}
 		}
 	});
-export const ORDER_NULL: Partial<IJob> = {
+export const ORDER_NULL: Partial<IOrder> = {
 	is_new_customer: false,
 	uuid: '',
 	user_uuid: null,
-	is_diagnosis_need: false,
+	is_product_received: false,
+	received_date: null,
 	name: '',
 	phone: '',
-	model_uuid: '',
-	size_uuid: '',
-	serial_no: '',
-	problems_uuid: [],
-	problem_statement: '',
-	accessories: [],
-	is_product_received: false,
-	receive_date: '',
-	warehouse_uuid: null,
-	rack_uuid: null,
-	floor_uuid: null,
-	box_uuid: null,
+	order_entry: [
+		{
+			is_diagnosis_need: false,
+			model_uuid: '',
+			size_uuid: '',
+			serial_no: '',
+			quantity: 1,
+			problems_uuid: [],
+			problem_statement: '',
+			accessories: [],
+			warehouse_uuid: null,
+			rack_uuid: null,
+			floor_uuid: null,
+			box_uuid: null,
+			remarks: null,
+		},
+	],
 	remarks: null,
 };
-export type IJob = z.infer<typeof ORDER_SCHEMA>;
+
+export type IOrder = z.infer<typeof ORDER_SCHEMA>;
 
 //* Diagnosis Schema
 export const DIAGNOSIS_SCHEMA = z.object({

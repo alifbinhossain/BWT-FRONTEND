@@ -23,9 +23,17 @@ type FieldNumber = {
 	type: 'number';
 	placeholder?: string;
 };
+type FieldCheckBox = {
+	type: 'checkBox';
+};
 
 type FieldSelect = {
 	type: 'select';
+	placeholder?: string;
+	options: IFormSelectOption[];
+};
+type FieldMultiSelect = {
+	type: 'multiSelect';
 	placeholder?: string;
 	options: IFormSelectOption[];
 };
@@ -43,7 +51,18 @@ export type FieldDef = {
 	className?: string;
 	isLoading?: boolean;
 	hidden?: boolean;
-} & (FieldText | FieldNumber | FieldSelect | FieldReadonly | FieldCustom | FieldJoinInputUnit | FieldTextArea);
+	width?: string;
+} & (
+	| FieldText
+	| FieldNumber
+	| FieldSelect
+	| FieldReadonly
+	| FieldCustom
+	| FieldJoinInputUnit
+	| FieldTextArea
+	| FieldCheckBox
+	| FieldMultiSelect
+);
 
 export interface DynamicFieldsProps {
 	title: string;

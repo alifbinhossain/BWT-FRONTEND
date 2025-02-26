@@ -17,9 +17,9 @@ import {
 } from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
 
-import { useWorkProcessesByUUID } from '../../../_config/query';
-import { IWorkProcess, PROCESS_NULL, PROCESS_SCHEMA } from '../../../_config/schema';
-import { IProcessAddOrUpdateProps } from '../../../_config/types';
+import { useWorkProcessesByUUID } from '../../../../_config/query';
+import { IWorkProcess, PROCESS_NULL, PROCESS_SCHEMA } from '../../../../_config/schema';
+import { IProcessAddOrUpdateProps } from '../../../../_config/types';
 
 const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 	url,

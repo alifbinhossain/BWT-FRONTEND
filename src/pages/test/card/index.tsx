@@ -13,10 +13,6 @@ import { AddCardFormData, ICard } from '../types';
 
 const column = 'sections';
 export const Card = ({
-	section_uuid,
-	remarks,
-	uuid,
-	index,
 	isEditing,
 	setEditing,
 	defaultCard,
@@ -58,7 +54,7 @@ export const Card = ({
 	};
 
 	const handleCancelEdit = () => {
-		setData({ section_uuid, remarks, uuid, index });
+		setData(data);
 		form.reset(data);
 		setEditing(-1);
 	};
@@ -66,22 +62,15 @@ export const Card = ({
 	return (
 		<>
 			<div
-				data-before={uuid || '-1'}
+				data-before={updateData.uuid || '-1'}
 				data-column={column}
 				className='my-0.5 h-0.5 w-full bg-violet-400 opacity-0'
 			/>
 			<m.div
 				layout
-				layoutId={uuid}
+				layoutId={updateData.uuid}
 				draggable='true'
-				onDragStart={(e: any) =>
-					handleDragStart!(e, {
-						section_uuid: data.section_uuid,
-						uuid,
-						index: data.index ?? 0,
-						remarks: data.remarks,
-					})
-				}
+				onDragStart={(e: any) => handleDragStart!(e, data)}
 				className='cursor-grab rounded border border-neutral-700 bg-secondary/10 p-3 active:cursor-grabbing'
 			>
 				{isEditing === data?.index ? (
@@ -176,7 +165,7 @@ export const Card = ({
 					</FormProvider>
 				) : (
 					<div className='flex items-center justify-between'>
-						<div className='text-sm'>#{(index ?? 0) + 1}&emsp;</div>
+						<div className='text-sm'>#{(data.index ?? 0) + 1}&emsp;</div>
 						<br />
 						{fieldDefs
 							.filter((fieldDef: any) => !fieldDef.hidden)
@@ -201,8 +190,8 @@ export const Card = ({
 						<div className='flex gap-2'>
 							<FieldActionButton
 								handleEdit={() => handleEdit()}
-								handleRemove={() => handleDeleteCard(uuid)}
-								index={index!}
+								handleRemove={() => handleDeleteCard(data.uuid!)}
+								index={data.index!}
 							/>
 						</div>
 					</div>

@@ -42,7 +42,7 @@ const FormInput: React.FC<FormInputProps> = ({
 					/>
 				) : type === 'number' ? (
 					<Input
-						className={cn(className)}
+						className={cn(className, 'min-w-28')}
 						placeholder={placeholder}
 						icon={icon}
 						{...field}
@@ -53,7 +53,7 @@ const FormInput: React.FC<FormInputProps> = ({
 					/>
 				) : (
 					<Input
-						className={cn(className)}
+						className={cn(className, 'min-w-48')}
 						placeholder={placeholder}
 						type={type}
 						icon={icon}
