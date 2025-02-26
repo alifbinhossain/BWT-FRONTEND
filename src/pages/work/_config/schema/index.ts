@@ -1,5 +1,4 @@
-import { modelColumns } from '@/pages/store/_config/columns';
-import { nullable, z } from 'zod';
+import { z } from 'zod';
 
 import {
 	BOOLEAN_OPTIONAL,
@@ -83,13 +82,13 @@ export const ORDER_SCHEMA = z
 		}
 		if (data.is_product_received) {
 			if (!data.received_date) {
-				ctx.addIssue(customIssue('Required', 'receive_date'));
+				ctx.addIssue(customIssue('Required', 'received_date'));
 			}
-			for (const entry of data.order_entry) {
+			data?.order_entry.map((entry, index) => {
 				if (!entry.warehouse_uuid) {
-					ctx.addIssue(customIssue('Required', 'warehouse_uuid'));
+					ctx.addIssue(customIssue('Required', `order_entry[${index}].warehouse_uuid`));
 				}
-			}
+			});
 		}
 	});
 export const ORDER_NULL: Partial<IOrder> = {
