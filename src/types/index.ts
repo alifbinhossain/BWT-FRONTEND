@@ -65,8 +65,7 @@ export type ITableFacetedFilter = {
 };
 
 export type ITableAdvanceFilter = {
-	state: boolean | string | undefined;
-	type: string;
+	state: boolean | undefined;
 	options?: IFormSelectOption[];
 	label: string;
 	onStateChange: (type?: string) => void;

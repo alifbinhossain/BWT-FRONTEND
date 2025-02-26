@@ -1,9 +1,10 @@
 import { Column } from '@/pages/test';
 import Diagnosis from '@/pages/work/diagonsis';
+import Info from '@/pages/work/info';
+import InfoEntry from '@/pages/work/info/add-or-update';
+import InfoDetails from '@/pages/work/info/details';
 import Order from '@/pages/work/order';
-import OrderEntry from '@/pages/work/order/add-or-update';
-import InfoDetails from '@/pages/work/order/details';
-import OrderDetails from '@/pages/work/order/details/order-details';
+import OrderDetails from '@/pages/work/order/details/';
 import Problem from '@/pages/work/problem';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
@@ -13,24 +14,24 @@ const workRoutes: IRoute[] = [
 		name: 'Work',
 		children: [
 			{
-				name: 'Order',
-				path: '/work/order',
-				element: <Order />,
-				page_name: 'work__order',
-				actions: ['create', 'read', 'update', 'delete', 'click_trx'],
+				name: 'Info',
+				path: '/work/info',
+				element: <Info />,
+				page_name: 'work__info',
+				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
-				name: 'Order Entry',
+				name: 'Info Entry',
 				path: '/work/order/entry',
-				element: <OrderEntry />,
-				page_name: 'work__order_entry',
+				element: <InfoEntry />,
+				page_name: 'work__info_entry',
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
-				name: 'Order Update',
+				name: 'Info Update',
 				path: '/work/order/:uuid/update',
-				element: <OrderEntry />,
+				element: <InfoEntry />,
 				page_name: 'work__order_update',
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
@@ -42,6 +43,13 @@ const workRoutes: IRoute[] = [
 				page_name: 'work__info_details',
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Order',
+				path: '/work/order',
+				element: <Order />,
+				page_name: 'work__order',
+				actions: ['create', 'read', 'update', 'delete', 'click_trx'],
 			},
 			{
 				name: 'Order Details',
@@ -56,7 +64,7 @@ const workRoutes: IRoute[] = [
 				path: '/work/diagnosis',
 				element: <Diagnosis />,
 				page_name: 'work__diagnosis',
-				actions: ['read', 'update', 'delete', 'click_trx'],
+				actions: ['read', 'update', 'delete'],
 			},
 			{
 				name: 'Transfer Process Section',

@@ -91,6 +91,15 @@ export const orderColumns = ({
 		},
 	},
 	{
+		accessorKey: 'info_id',
+		header: 'Info ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.info_uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+		},
+	},
+	{
 		accessorKey: 'model_name',
 		header: 'Model',
 		enableColumnFilter: false,

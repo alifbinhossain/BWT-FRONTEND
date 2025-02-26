@@ -11,7 +11,7 @@ import { getDateTime } from '@/utils';
 
 import { IInfoTableData } from '../../_config/columns/columns.type';
 import { useWorkInfo, useWorkInfoByUUID } from '../../_config/query';
-import { IOrder, ORDER_NULL, ORDER_SCHEMA } from '../../_config/schema';
+import { IInfo, INFO_NULL, INFO_SCHEMA } from '../../_config/schema';
 import Header from './header';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
 
@@ -27,7 +27,7 @@ const AddOrUpdate = () => {
 
 	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
 
-	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
+	const form = useRHF(INFO_SCHEMA, INFO_NULL);
 	const isProductReceived = form.watch('is_product_received');
 	const isNewCustomer = form.watch('is_new_customer');
 	const isBusinessTypeCompany = form.watch('business_type') === 'company' && isNewCustomer;
@@ -51,7 +51,7 @@ const AddOrUpdate = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
 
-	async function onSubmit(values: IOrder) {
+	async function onSubmit(values: IInfo) {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
@@ -102,7 +102,7 @@ const AddOrUpdate = () => {
 
 			try {
 				await Promise.all([info_promise, ...order_entry_promise])
-					.then(() => form.reset(ORDER_NULL))
+					.then(() => form.reset(INFO_NULL))
 					.then(() => {
 						invalidateTestDetails(); // TODO: Update invalidate query
 						navigate(`/work/info/details/${uuid}`);
@@ -161,7 +161,7 @@ const AddOrUpdate = () => {
 		try {
 			// TODO: Update promises name ⬇️
 			await Promise.all([info_promise, ...order_entry_entries_promise])
-				.then(() => form.reset(ORDER_NULL))
+				.then(() => form.reset(INFO_NULL))
 				.then(() => {
 					invalidateTestDetails(); // TODO: Update invalidate query
 					navigate(`/work/info/details/${info_uuid}`);

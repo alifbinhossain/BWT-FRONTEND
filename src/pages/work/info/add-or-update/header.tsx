@@ -7,10 +7,10 @@ import CoreForm from '@core/form';
 
 import { useOtherDepartment, useOtherDesignation, useOtherUserByQuery } from '@/lib/common-queries/other';
 
-import { IOrder } from '../../_config/schema';
+import { IInfo } from '../../_config/schema';
 
 const Header = () => {
-	const form = useFormContext<IOrder>();
+	const form = useFormContext<IInfo>();
 
 	const { data: userOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 	const isProductReceived = form.watch('is_product_received');

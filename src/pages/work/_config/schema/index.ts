@@ -17,8 +17,48 @@ const customIssue = (message: string, path: string) => ({
 	path: [path],
 });
 
-//* Order Schema
+//*Order Schema
 export const ORDER_SCHEMA = z
+	.object({
+		uuid: STRING_OPTIONAL,
+		is_diagnosis_need: BOOLEAN_REQUIRED.default(false),
+		model_uuid: STRING_REQUIRED,
+		model_id: STRING_OPTIONAL,
+		size_uuid: STRING_REQUIRED,
+		quantity: NUMBER_DOUBLE_REQUIRED,
+		serial_no: STRING_REQUIRED,
+		problems_uuid: STRING_ARRAY,
+		problem_statement: STRING_REQUIRED,
+		accessories: STRING_ARRAY_OPTIONAL,
+		warehouse_uuid: STRING_NULLABLE,
+		rack_uuid: STRING_NULLABLE,
+		floor_uuid: STRING_NULLABLE,
+		box_uuid: STRING_NULLABLE,
+		remarks: STRING_NULLABLE,
+	})
+	.superRefine((data, ctx) => {
+		if (data?.problems_uuid.length === 0) {
+			ctx.addIssue(customIssue('Required', 'problems_uuid'));
+		}
+	});
+export const ORDER_NULL: Partial<IOrder> = {
+	is_diagnosis_need: false,
+	model_uuid: '',
+	size_uuid: '',
+	serial_no: '',
+	quantity: 1,
+	problems_uuid: [],
+	problem_statement: '',
+	accessories: [],
+	warehouse_uuid: null,
+	rack_uuid: null,
+	floor_uuid: null,
+	box_uuid: null,
+	remarks: null,
+};
+export type IOrder = z.infer<typeof ORDER_SCHEMA>;
+//* Info Schema
+export const INFO_SCHEMA = z
 	.object({
 		is_new_customer: BOOLEAN_OPTIONAL.default(false),
 		uuid: STRING_OPTIONAL,
@@ -31,31 +71,7 @@ export const ORDER_SCHEMA = z
 		is_product_received: BOOLEAN_REQUIRED,
 		received_date: STRING_NULLABLE,
 		remarks: STRING_NULLABLE,
-		order_entry: z.array(
-			z
-				.object({
-					uuid: STRING_OPTIONAL,
-					is_diagnosis_need: BOOLEAN_REQUIRED.default(false),
-					model_uuid: STRING_REQUIRED,
-					model_id: STRING_OPTIONAL,
-					size_uuid: STRING_REQUIRED,
-					quantity: NUMBER_DOUBLE_REQUIRED,
-					serial_no: STRING_REQUIRED,
-					problems_uuid: STRING_ARRAY,
-					problem_statement: STRING_REQUIRED,
-					accessories: STRING_ARRAY_OPTIONAL,
-					warehouse_uuid: STRING_NULLABLE,
-					rack_uuid: STRING_NULLABLE,
-					floor_uuid: STRING_NULLABLE,
-					box_uuid: STRING_NULLABLE,
-					remarks: STRING_NULLABLE,
-				})
-				.superRefine((data, ctx) => {
-					if (data?.problems_uuid.length === 0) {
-						ctx.addIssue(customIssue('Required', 'problems_uuid'));
-					}
-				})
-		),
+		order_entry: z.array(ORDER_SCHEMA),
 	})
 	.superRefine((data, ctx) => {
 		if (!data.is_new_customer && !data.user_uuid) {
@@ -91,7 +107,7 @@ export const ORDER_SCHEMA = z
 			});
 		}
 	});
-export const ORDER_NULL: Partial<IOrder> = {
+export const INFO_NULL: Partial<IInfo> = {
 	is_new_customer: false,
 	uuid: '',
 	user_uuid: null,
@@ -99,27 +115,11 @@ export const ORDER_NULL: Partial<IOrder> = {
 	received_date: null,
 	name: '',
 	phone: '',
-	order_entry: [
-		{
-			is_diagnosis_need: false,
-			model_uuid: '',
-			size_uuid: '',
-			serial_no: '',
-			quantity: 1,
-			problems_uuid: [],
-			problem_statement: '',
-			accessories: [],
-			warehouse_uuid: null,
-			rack_uuid: null,
-			floor_uuid: null,
-			box_uuid: null,
-			remarks: null,
-		},
-	],
+	order_entry: [ORDER_NULL as IOrder],
 	remarks: null,
 };
 
-export type IOrder = z.infer<typeof ORDER_SCHEMA>;
+export type IInfo = z.infer<typeof INFO_SCHEMA>;
 
 //* Diagnosis Schema
 export const DIAGNOSIS_SCHEMA = z.object({

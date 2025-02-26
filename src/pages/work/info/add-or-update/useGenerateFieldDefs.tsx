@@ -14,12 +14,12 @@ import {
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
 
-import { IOrder } from '../../_config/schema';
+import { IInfo } from '../../_config/schema';
 
 interface IGenerateFieldDefsProps {
 	copy: (index: any) => void;
 	remove: (index: any) => void;
-	watch?: UseFormWatch<IOrder>;
+	watch?: UseFormWatch<IInfo>;
 	isProductReceived?: boolean;
 }
 

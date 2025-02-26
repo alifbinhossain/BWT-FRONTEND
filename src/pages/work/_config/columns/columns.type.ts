@@ -53,7 +53,6 @@ export type IOrderTableData = {
 	accessories: string[];
 	info_uuid: string;
 	is_diagnosis_need: boolean;
-
 	warehouse_uuid: string;
 	warehouse_name: string;
 	rack_uuid: string;
