@@ -125,14 +125,17 @@ export type IOrder = z.infer<typeof ORDER_SCHEMA>;
 export const DIAGNOSIS_SCHEMA = z.object({
 	problems_uuid: STRING_ARRAY,
 	problem_statement: STRING_OPTIONAL,
+	customer_problem_statement: STRING_OPTIONAL,
 	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
 	proposed_cost: NUMBER_DOUBLE_REQUIRED,
 	is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
 	remarks: STRING_NULLABLE,
+	customer_remarks: STRING_NULLABLE,
 });
 export const DIAGNOSIS_NULL: Partial<IDiagnosis> = {
 	problems_uuid: [],
 	problem_statement: '',
+	customer_problem_statement: undefined,
 	status: 'pending',
 	proposed_cost: 0,
 	is_proceed_to_repair: false,

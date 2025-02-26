@@ -8,7 +8,6 @@ import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
 import { useOtherProblem } from '@/lib/common-queries/other';
-
 import { getDateTime } from '@/utils';
 
 import { IDiagnosisTableData } from '../_config/columns/columns.type';
@@ -105,6 +104,15 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 				<div className='flex-1'>
 					<FormField
 						control={form.control}
+						name='customer_problem_statement'
+						render={(props) => <CoreForm.Textarea label='Customer Problem Statement' {...props} />}
+					/>
+				</div>
+			</div>
+			<div className='flex space-x-4'>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
 						name='status'
 						render={(props) => <CoreForm.ReactSelect options={statusOption!} label='Status' {...props} />}
 					/>
@@ -117,7 +125,7 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 					/>
 				</div>
 			</div>
-			
+
 			<div className='flex'>
 				<FormField
 					control={form.control}
@@ -125,7 +133,12 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 					render={(props) => <CoreForm.Checkbox label='Proceed to Repair' className='h-5' {...props} />}
 				/>
 			</div>
-			
+			<FormField
+				control={form.control}
+				name='customer_remarks'
+				render={(props) => <CoreForm.Textarea label='Customer Remarks' {...props} />}
+			/>
+
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

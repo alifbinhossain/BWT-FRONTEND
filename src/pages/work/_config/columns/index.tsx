@@ -39,6 +39,11 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		},
 	},
 	{
+		accessorKey: 'user_id',
+		header: 'User ID',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'user_name',
 		header: 'Customer',
 		enableColumnFilter: false,
@@ -194,12 +199,27 @@ export const diagnosisColumns = ({
 		enableColumnFilter: false,
 	},
 	{
+		accessorKey: 'info_id',
+		header: 'Info ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.info_uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+		},
+	},
+	{
 		accessorKey: 'order_id',
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.order_uuid;
-			return <LinkOnly uri={`/work/order/details/${uuid}`} title={info.getValue() as string} />;
+			const info_uuid = info.row.original.info_uuid;
+			return (
+				<LinkOnly
+					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+					title={info.getValue() as string}
+				/>
+			);
 		},
 	},
 	{

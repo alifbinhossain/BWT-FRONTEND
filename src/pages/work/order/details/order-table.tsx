@@ -6,7 +6,7 @@ import useAccess from '@/hooks/useAccess';
 import DataTableEntry from '@core/data-table/entry';
 
 import { orderColumns } from '../../_config/columns';
-import { IInfoTableData } from '../../_config/columns/columns.type';
+import { IInfoTableData, IOrderTableData } from '../../_config/columns/columns.type';
 
 const OrderTable: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 	const navigate = useNavigate();
@@ -15,8 +15,8 @@ const OrderTable: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 
 	const actionTrxAccess = pageAccess.includes('click_trx');
 
-	const handleAgainstTrx = (row: Row<IInfoTableData>) => {
-		navigate(`/work/transfer-section/${null}/${row.original.uuid}`);
+	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
+		navigate(`/work/transfer-section/${row.original.info_uuid}/${null}/${row.original.uuid}`);
 	};
 	const columns = orderColumns({ actionTrxAccess, handleAgainstTrx });
 

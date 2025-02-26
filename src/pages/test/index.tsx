@@ -25,7 +25,7 @@ export const Column = () => {
 	const { url: ProcessTransferUrl, updateData, postData, deleteData } = useWorkProcesses();
 	const { user } = useAuth();
 	const navigate = useNavigate();
-	const { diagnosis_uuid, order_uuid } = useParams();
+	const { diagnosis_uuid, order_uuid, info_uuid } = useParams();
 	const { data: sectionOptions } = useOtherSection<IFormSelectOption[]>();
 
 	const { data } = useWorkGetTransferSection<WorkSectionData>(order_uuid!);
@@ -195,7 +195,7 @@ export const Column = () => {
 			try {
 				await Promise.all([...entry_promise]).then(() => {
 					// invalidateTestDetails(); // TODO: Update invalidate query
-					navigate(`/work/order/details/${order_uuid}`);
+					navigate(`/work/info/details/${info_uuid}/order/details/${order_uuid}`);
 				});
 			} catch (err) {
 				console.error(`Error with Promise.all: ${err}`);
@@ -238,7 +238,10 @@ export const Column = () => {
 			onDragLeave={handleDragLeave}
 			className={`flex flex-col transition-colors ${active ? 'bg-secondary/5' : 'bg-neutral-800/0'}`}
 		>
-			<DynamicFieldContainer title={`Transfer Section`} handleAdd={handleAddingClick}>
+			<DynamicFieldContainer
+				title={`Transfer Section -> Info ID: ${data?.info_id} Order ID: ${data?.order_id} Diagnosis ID:${data?.diagnosis_id}`}
+				handleAdd={handleAddingClick}
+			>
 				<Header fliedDefs={fliedDefs} />
 				{cards?.map((c, index) => {
 					const transferData = { section_uuid: c.section_uuid, remarks: c.remarks, uuid: c.uuid, index };

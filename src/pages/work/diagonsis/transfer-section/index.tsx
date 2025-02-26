@@ -18,7 +18,7 @@ const DeleteModal = lazy(() => import('@core/modal/delete'));
 const AddOrUpdate = () => {
 	const { user } = useAuth();
 	const navigate = useNavigate();
-	const { diagnosis_uuid, order_uuid } = useParams();
+	const { info_uuid, diagnosis_uuid, order_uuid } = useParams();
 	const isUpdate = true;
 	const { url: ProcessTransferUrl, updateData, postData, deleteData } = useWorkProcesses();
 
@@ -80,7 +80,7 @@ const AddOrUpdate = () => {
 					.then(() => form.reset(TRANSFER_PROCESS_SECTION_NULL))
 					.then(() => {
 						// invalidateTestDetails(); // TODO: Update invalidate query
-						navigate(`/work/order/details/${order_uuid}`);
+						navigate(`/work/info/details/${info_uuid}/order/details/${order_uuid}`);
 					});
 			} catch (err) {
 				console.error(`Error with Promise.all: ${err}`);
@@ -115,7 +115,7 @@ const AddOrUpdate = () => {
 				.then(() => form.reset(TRANSFER_PROCESS_SECTION_NULL))
 				.then(() => {
 					// invalidateTestDetails(); // TODO: Update invalidate query
-					navigate(`/work/order/details/${order_uuid}`);
+					navigate(`/work/info/details/${info_uuid}/order/details/${order_uuid}`);
 				});
 		} catch (err) {
 			console.error(`Error with Promise.all: ${err}`);

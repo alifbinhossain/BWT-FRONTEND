@@ -60,19 +60,19 @@ const workRoutes: IRoute[] = [
 			},
 			{
 				name: 'Transfer Process Section',
-				path: '/work/transfer-section/:diagnosis_uuid/:order_uuid',
+				path: '/work/transfer-section/:info_uuid/:diagnosis_uuid/:order_uuid',
 				element: <Column />,
 				hidden: true,
 				page_name: 'work_transfer',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
-			{
-				name: 'Test',
-				path: '/work/test',
-				element: <Column />,
-				page_name: 'work__order',
-				actions: ['create', 'read', 'update', 'delete'],
-			},
+			// {
+			// 	name: 'Test',
+			// 	path: '/work/test',
+			// 	element: <Column />,
+			// 	page_name: 'work__order',
+			// 	actions: ['create', 'read', 'update', 'delete'],
+			// },
 			{
 				name: 'Library',
 				children: [

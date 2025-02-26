@@ -110,8 +110,7 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 						control={form.control}
 						name='problems_uuid'
 						render={(props) => (
-							<CoreForm.ReactSelect
-								isMulti={true}
+							<CoreForm.MultiSelect
 								label='Problem'
 								placeholder='Select Problems'
 								options={problemOption!}

@@ -1,3 +1,4 @@
+import { StringOrTemplateHeader } from '@tanstack/react-table';
 import { FieldArrayWithId, UseFormReturn } from 'react-hook-form';
 
 import { IFormSelectOption } from '@core/form/types';
@@ -80,6 +81,9 @@ export interface AddCardFormData {
 	remarks: string | null;
 }
 export interface WorkSectionData {
+	info_id: string;
+	order_id: string;
+	diagnosis_id: string;
 	entry: ICard[];
 }
 export interface DynamicFieldsProps {

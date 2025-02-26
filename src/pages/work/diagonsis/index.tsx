@@ -70,7 +70,7 @@ const Box = () => {
 	};
 	//* handle Transfer
 	const handleAgainstTrx = (row: Row<IDiagnosisTableData>) => {
-		navigate(`/work/transfer-section/${row.original.uuid}/${row.original.order_uuid}`);
+		navigate(`/work/transfer-section/${row.original.info_uuid}/${row.original.uuid}/${row.original.order_uuid}`);
 	};
 
 	//* Table Columns
