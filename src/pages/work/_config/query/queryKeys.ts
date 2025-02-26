@@ -1,4 +1,4 @@
-import { info } from 'console';
+
 
 export const workQK = {
 	all: () => ['work'],
