@@ -1,6 +1,7 @@
 import React from 'react';
 
 import StatusButton from '@/components/buttons/status';
+import { LinkOnly } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
 
@@ -14,6 +15,15 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			{
 				label: 'ID',
 				value: data.order_id,
+			},
+			{
+				label: 'Info ID',
+				value: (
+					<LinkOnly
+						uri={`/work/info/details/${data?.info_uuid}/order/details/${data?.uuid}`}
+						title={data?.info_id as string}
+					/>
+				),
 			},
 			{ label: 'User Name', value: data.user_name },
 			{ label: 'User ID', value: data.user_id },
@@ -108,6 +118,10 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 	};
 	const renderDiagnosisItems = (): ITableListItems => {
 		return [
+			{
+				label: 'Diagnosis ID',
+				value: data?.diagnosis?.diagnosis_id,
+			},
 			{
 				label: 'Problem',
 				value: (

@@ -154,6 +154,13 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						render={(props) => <CoreForm.Input label='Serial Number' {...props} />}
 					/>
 				</div>
+				<div className='flex-1'>
+					<FormField
+						control={form.control}
+						name='quantity'
+						render={(props) => <CoreForm.Input type='number' label='Quantity' {...props} />}
+					/>
+				</div>
 			</div>
 
 			<div className='flex space-x-4'>
