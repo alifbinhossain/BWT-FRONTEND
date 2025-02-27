@@ -2,20 +2,13 @@ import { useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-import { IFormSelectOption } from '@/components/core/form/types';
+// import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import {
-	useOtherBox,
-	useOtherFloor,
-	useOtherModel,
-	useOtherProblem,
-	useOtherRack,
-	useOtherSize,
-	useOtherWarehouse,
-} from '@/lib/common-queries/other';
+import '@/lib/common-queries/other';
+
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -37,26 +30,26 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useWorkOrderByUUID<IOrderTableData>(updatedData?.uuid as string);
 
-	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
-	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
-	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
-	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
-	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
-	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
-	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
+	// const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
+	// const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
+	// const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
+	// const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
+	// const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
+	// const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
+	// const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
 	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
 
-	const accessoriesOption = [
-		{ label: 'Power Cable', value: 'power_cable' },
-		{ label: 'HDMI Cable', value: 'hdmi_cable' },
-		{ label: 'Remote', value: 'remote' },
-		{ label: 'USB Cable', value: 'usb_cable' },
-		{ label: 'Ethernet Cable', value: 'ethernet_cable' },
-		{ label: 'Charger', value: 'charger' },
-		{ label: 'Others', value: 'others' },
-	];
+	// const accessoriesOption = [
+	// 	{ label: 'Power Cable', value: 'power_cable' },
+	// 	{ label: 'HDMI Cable', value: 'hdmi_cable' },
+	// 	{ label: 'Remote', value: 'remote' },
+	// 	{ label: 'USB Cable', value: 'usb_cable' },
+	// 	{ label: 'Ethernet Cable', value: 'ethernet_cable' },
+	// 	{ label: 'Charger', value: 'charger' },
+	// 	{ label: 'Others', value: 'others' },
+	// ];
 	// Reset form values when data is updated
 	useEffect(() => {
 		if (data && isUpdate) {
@@ -110,21 +103,11 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			isSmall={true}
 			onSubmit={onSubmit}
 		>
-			<div className='flex justify-end gap-2'>
+			{/* <div className='flex justify-end gap-2'>
 				<FormField
 					control={form.control}
 					name='is_diagnosis_need'
 					render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
-				/>
-				<FormField
-					control={form.control}
-					name='is_transferred_for_qc'
-					render={(props) => <CoreForm.Checkbox label='Transfer QC' {...props} />}
-				/>
-				<FormField
-					control={form.control}
-					name='is_ready_for_delivery'
-					render={(props) => <CoreForm.Checkbox label='Ready for Delivery' {...props} />}
 				/>
 			</div>
 
@@ -179,10 +162,9 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						control={form.control}
 						name='problems_uuid'
 						render={(props) => (
-							<CoreForm.ReactSelect
-								isMulti
+							<CoreForm.MultiSelect
 								label='Problems'
-								options={problemOption!}
+								options={problemOption || []}
 								placeholder='Select Problems'
 								{...props}
 							/>
@@ -194,8 +176,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						control={form.control}
 						name='accessories'
 						render={(props) => (
-							<CoreForm.ReactSelect
-								isMulti
+							<CoreForm.MultiSelect
 								label='Accessories'
 								options={accessoriesOption}
 								placeholder='Select Accessories'
@@ -267,7 +248,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						)}
 					/>
 				</div>
-			}
+			} */}
 
 			<FormField
 				control={form.control}

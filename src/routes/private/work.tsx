@@ -3,9 +3,11 @@ import Diagnosis from '@/pages/work/diagonsis';
 import Info from '@/pages/work/info';
 import InfoEntry from '@/pages/work/info/add-or-update';
 import InfoDetails from '@/pages/work/info/details';
+import IsReadyForDelivery from '@/pages/work/is-ready-deliver';
 import Order from '@/pages/work/order';
 import OrderDetails from '@/pages/work/order/details/';
 import Problem from '@/pages/work/problem';
+import QC from '@/pages/work/qc';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
 
@@ -64,6 +66,20 @@ const workRoutes: IRoute[] = [
 				path: '/work/diagnosis',
 				element: <Diagnosis />,
 				page_name: 'work__diagnosis',
+				actions: ['read', 'update', 'delete'],
+			},
+			{
+				name: 'QC',
+				path: '/work/qc',
+				element: <QC />,
+				page_name: 'work__qc',
+				actions: ['read', 'update', 'delete'],
+			},
+			{
+				name: 'Ready For Delivery',
+				path: '/work/is_ready_for_delivery',
+				element: <IsReadyForDelivery />,
+				page_name: 'work__is_ready_for_delivery',
 				actions: ['read', 'update', 'delete'],
 			},
 			{

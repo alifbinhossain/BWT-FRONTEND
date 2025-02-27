@@ -22,6 +22,8 @@ export const ORDER_SCHEMA = z
 	.object({
 		uuid: STRING_OPTIONAL,
 		is_diagnosis_need: BOOLEAN_REQUIRED.default(false),
+		is_transferred_for_qc: BOOLEAN_OPTIONAL.default(false),
+		is_ready_for_delivery: BOOLEAN_OPTIONAL.default(false),
 		model_uuid: STRING_REQUIRED,
 		model_id: STRING_OPTIONAL,
 		size_uuid: STRING_REQUIRED,
@@ -43,6 +45,8 @@ export const ORDER_SCHEMA = z
 	});
 export const ORDER_NULL: Partial<IOrder> = {
 	is_diagnosis_need: false,
+	is_transferred_for_qc: false,
+	is_ready_for_delivery: false,
 	model_uuid: '',
 	size_uuid: '',
 	serial_no: '',
@@ -57,7 +61,12 @@ export const ORDER_NULL: Partial<IOrder> = {
 	remarks: null,
 };
 export type IOrder = z.infer<typeof ORDER_SCHEMA>;
+
 //* Info Schema
+const ORDER_SCHEMA_FOR_INFO = (ORDER_SCHEMA as any)._def.schema.omit({
+	is_transferred_for_qc: true,
+	is_ready_for_delivery: true,
+});
 export const INFO_SCHEMA = z
 	.object({
 		is_new_customer: BOOLEAN_OPTIONAL.default(false),
@@ -71,7 +80,7 @@ export const INFO_SCHEMA = z
 		is_product_received: BOOLEAN_REQUIRED,
 		received_date: STRING_NULLABLE,
 		remarks: STRING_NULLABLE,
-		order_entry: z.array(ORDER_SCHEMA),
+		order_entry: z.array(ORDER_SCHEMA_FOR_INFO),
 	})
 	.superRefine((data, ctx) => {
 		if (!data.is_new_customer && !data.user_uuid) {

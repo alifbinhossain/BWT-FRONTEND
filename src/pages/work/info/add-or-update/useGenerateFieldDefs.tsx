@@ -71,7 +71,7 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived }: IGenerateFiel
 			accessorKey: 'accessories',
 			type: 'multiSelect',
 			options: accessoriesOption || [],
-			placeholder: 'Select Size',
+			placeholder: 'Select Accessories',
 		},
 		{
 			header: 'Serial No',

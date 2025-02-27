@@ -34,6 +34,19 @@ export const useWorkOrder = <T>() =>
 		queryKey: workQK.job(),
 		url: '/work/order',
 	});
+//* QC
+export const useWorkQC = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.qc(),
+		url: '/work/order?qc=true',
+	});
+//* Is Delivery Ready
+export const useWorkIsDeliveryReady = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.isDeliveryReady(),
+		url: '/work/order?is_delivered=true',
+	});
+//* Order Details
 export const useWorkOrderByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: workQK.jobByUUID(uuid),
