@@ -1,5 +1,3 @@
-
-
 export const workQK = {
 	all: () => ['work'],
 
@@ -14,7 +12,12 @@ export const workQK = {
 	job: () => [...workQK.all(), 'job'],
 	jobByUUID: (uuid: string) => [...workQK.job(), uuid],
 	orderByDetails: (uuid: string) => [...workQK.job(), 'orderByDetails', uuid],
-
+	//* QC
+	qc: () => [...workQK.all(), 'qc'],
+	qcByUUID: (uuid: string) => [...workQK.qc(), uuid],
+	//* is delivery ready
+	isDeliveryReady: () => [...workQK.all(), 'deliveryReady'],
+	isDeliveryReadyByUUID: (uuid: string) => [...workQK.isDeliveryReady(), uuid],
 	//* diagnosis
 	diagnosis: () => [...workQK.all(), 'diagnosis'],
 	diagnosisByUUID: (uuid: string) => [...workQK.diagnosis(), uuid],
