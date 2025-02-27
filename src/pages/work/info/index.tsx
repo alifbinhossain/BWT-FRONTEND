@@ -21,9 +21,9 @@ const Info = () => {
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Info', url, 'work__info'), [url]);
 
-	const handleCreate = () => navigate('/work/order/entry');
+	const handleCreate = () => navigate('/work/info/entry');
 	const handleUpdate = (row: Row<IInfoTableData>) => {
-		navigate(`/work/order/${row.original.uuid}/update`);
+		navigate(`/work/info/${row.original.uuid}/update`);
 	};
 	//* Delete Modal state
 	//* Single Delete Item
