@@ -22,7 +22,7 @@ const workRoutes: IRoute[] = [
 			},
 			{
 				name: 'Info Entry',
-				path: '/work/order/entry',
+				path: '/work/info/entry',
 				element: <InfoEntry />,
 				page_name: 'work__info_entry',
 				hidden: true,
@@ -30,9 +30,9 @@ const workRoutes: IRoute[] = [
 			},
 			{
 				name: 'Info Update',
-				path: '/work/order/:uuid/update',
+				path: '/work/info/:uuid/update',
 				element: <InfoEntry />,
-				page_name: 'work__order_update',
+				page_name: 'work__info_update',
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
 			},
