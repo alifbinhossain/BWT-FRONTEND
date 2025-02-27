@@ -81,7 +81,8 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 						control={form.control}
 						name='problems_uuid'
 						render={(props) => (
-							<CoreForm.MultiSelect
+							<CoreForm.ReactSelect
+								isMulti
 								label='Problem'
 								placeholder='Select Problems'
 								options={problemOption!}

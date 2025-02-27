@@ -20,7 +20,7 @@ import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkDiagnosis, useWorkIsDeliveryReadyByUUID } from '../_config/query';
+import { useWorkDiagnosis, useWorkOrderByUUID } from '../_config/query';
 import { ORDER_NULL, ORDER_SCHEMA } from '../_config/schema';
 import { IOrderAddOrUpdateProps } from '../_config/types';
 
@@ -35,7 +35,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 }) => {
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
-	const { data } = useWorkIsDeliveryReadyByUUID<IOrderTableData>(updatedData?.uuid as string);
+	const { data } = useWorkOrderByUUID<IOrderTableData>(updatedData?.uuid as string);
 
 	// const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
 	// const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();

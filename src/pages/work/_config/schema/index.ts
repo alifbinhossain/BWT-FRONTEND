@@ -22,6 +22,8 @@ export const ORDER_SCHEMA = z
 	.object({
 		uuid: STRING_OPTIONAL,
 		is_diagnosis_need: BOOLEAN_REQUIRED.default(false),
+		is_transferred_for_qc: BOOLEAN_REQUIRED.default(false),
+		is_ready_for_delivery: BOOLEAN_REQUIRED.default(false),
 		model_uuid: STRING_REQUIRED,
 		model_id: STRING_OPTIONAL,
 		size_uuid: STRING_REQUIRED,
@@ -43,6 +45,8 @@ export const ORDER_SCHEMA = z
 	});
 export const ORDER_NULL: Partial<IOrder> = {
 	is_diagnosis_need: false,
+	is_transferred_for_qc: false,
+	is_ready_for_delivery: false,
 	model_uuid: '',
 	size_uuid: '',
 	serial_no: '',

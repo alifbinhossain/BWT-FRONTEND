@@ -116,6 +116,16 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					name='is_diagnosis_need'
 					render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
 				/>
+				<FormField
+					control={form.control}
+					name='is_transferred_for_qc'
+					render={(props) => <CoreForm.Checkbox label='Transfer QC' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='is_ready_for_delivery'
+					render={(props) => <CoreForm.Checkbox label='Ready for Delivery' {...props} />}
+				/>
 			</div>
 
 			<div className='flex space-x-4'>
@@ -169,9 +179,10 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						control={form.control}
 						name='problems_uuid'
 						render={(props) => (
-							<CoreForm.MultiSelect
+							<CoreForm.ReactSelect
+								isMulti
 								label='Problems'
-								options={problemOption || []}
+								options={problemOption!}
 								placeholder='Select Problems'
 								{...props}
 							/>
@@ -183,7 +194,8 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						control={form.control}
 						name='accessories'
 						render={(props) => (
-							<CoreForm.MultiSelect
+							<CoreForm.ReactSelect
+								isMulti
 								label='Accessories'
 								options={accessoriesOption}
 								placeholder='Select Accessories'

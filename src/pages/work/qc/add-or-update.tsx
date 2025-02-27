@@ -7,20 +7,13 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import {
-	// useOtherBox,
-	// useOtherFloor,
-	// useOtherModel,
-	// useOtherProblem,
-	// useOtherRack,
-	// useOtherSize,
-	// useOtherWarehouse,
-} from '@/lib/common-queries/other';
+import '@/lib/common-queries/other';
+
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkDiagnosis, useWorkQCByUUID } from '../_config/query';
+import { useWorkDiagnosis, useWorkOrderByUUID } from '../_config/query';
 import { ORDER_NULL, ORDER_SCHEMA } from '../_config/schema';
 import { IOrderAddOrUpdateProps } from '../_config/types';
 
@@ -35,7 +28,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 }) => {
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
-	const { data } = useWorkQCByUUID<IOrderTableData>(updatedData?.uuid as string);
+	const { data } = useWorkOrderByUUID<IOrderTableData>(updatedData?.uuid as string);
 
 	// const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
 	// const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
