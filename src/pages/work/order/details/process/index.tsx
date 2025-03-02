@@ -24,7 +24,7 @@ const EntryTable: React.FC<{ data: IOrderTableData; isLoading: any }> = ({ data,
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 
 	const handleCreate = () => {
-		navigate(`/work/transfer-section/${diagnosis_uuid}/${data?.uuid}`);
+		navigate(`/work/transfer-section/${data?.info_uuid}/${data?.diagnosis?.diagnosis_id}/${data?.uuid}`);
 	};
 
 	const [updatedData, setUpdatedData] = useState<IProcessTableData | null>(null);

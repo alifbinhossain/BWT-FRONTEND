@@ -51,7 +51,7 @@ const workRoutes: IRoute[] = [
 				path: '/work/order',
 				element: <Order />,
 				page_name: 'work__order',
-				actions: ['create', 'read', 'update', 'delete', 'click_trx'],
+				actions: ['read', 'update', 'delete', 'click_trx'],
 			},
 			{
 				name: 'Order Details',

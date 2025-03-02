@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 
 interface ISectionContainerProps {
-	title: string;
+	title: string | React.ReactNode;
 	children: React.ReactNode;
 	className?: string;
 	buttons?: React.ReactNode[];

@@ -39,11 +39,6 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		},
 	},
 	{
-		accessorKey: 'user_id',
-		header: 'User ID',
-		enableColumnFilter: false,
-	},
-	{
 		accessorKey: 'user_name',
 		header: 'Customer',
 		enableColumnFilter: false,
@@ -342,24 +337,6 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 				</>
 			);
 		},
-	},
-	{
-		accessorKey: 'status_update_date',
-		header: 'Status Update Date',
-		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
-	},
-	{
-		accessorKey: 'is_transferred_for_qc',
-		header: 'Transfer QC',
-		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
-	},
-	{
-		accessorKey: 'is_ready_for_delivery',
-		header: 'Ready for Delivery',
-		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
 		accessorKey: 'problems_name',
