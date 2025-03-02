@@ -115,7 +115,7 @@ const Order = () => {
 						{...{
 							deleteItems,
 							setDeleteItems,
-							url,
+							url: '/work/order',
 							deleteData,
 						}}
 					/>,

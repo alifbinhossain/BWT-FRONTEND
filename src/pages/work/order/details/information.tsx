@@ -3,13 +3,14 @@ import React from 'react';
 import StatusButton from '@/components/buttons/status';
 import { LinkOnly } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
+import SwitchToggle from '@/components/others/switch-toogle';
 import TableList, { ITableListItems } from '@/components/others/table-list';
 
 import { formatDateTable } from '@/utils/formatDate';
 
 import { IOrderTableData } from '../../_config/columns/columns.type';
 
-const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
+const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ data, updateData }) => {
 	const renderGeneralItems = (): ITableListItems => {
 		return [
 			{
@@ -160,10 +161,40 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			},
 		];
 	};
-
+	const handelQCStatusChange = async () => {
+		await updateData.mutateAsync({
+			url: `/work/order/${data?.uuid}`,
+			updatedData: {
+				is_transferred_for_qc: !data?.is_transferred_for_qc,
+			},
+			isOnCloseNeeded: false,
+		});
+	};
+	const handelDeliveryStatusChange = async () => {
+		await updateData.mutateAsync({
+			url: `/work/order/${data?.uuid}`,
+			updatedData: {
+				is_ready_for_delivery: !data?.is_ready_for_delivery,
+			},
+			isOnCloseNeeded: false,
+		});
+	};
 	return (
 		<>
-			<SectionContainer title={'Customer'}>
+			<SectionContainer
+				title={
+					<div className='flex justify-end gap-2'>
+						<div>Customer</div>
+						<div className='text-base'>QC</div>
+						<SwitchToggle onChange={() => handelQCStatusChange()} checked={data?.is_transferred_for_qc} />
+						<div className='text-base'>Ready for Delivery</div>
+						<SwitchToggle
+							onChange={() => handelDeliveryStatusChange()}
+							checked={data?.is_ready_for_delivery}
+						/>
+					</div>
+				}
+			>
 				<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
 					<TableList title='General' className='flex-1' items={renderGeneralItems()} />
 					<TableList title='Product' className='flex-1' items={renderProductItems()} />
