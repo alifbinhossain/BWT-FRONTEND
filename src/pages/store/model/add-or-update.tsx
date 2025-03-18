@@ -10,7 +10,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherBrand } from '@/lib/common-queries/other';
+import { useOtherBrand, useOtherModel } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -33,6 +33,7 @@ const AddOrUpdate: React.FC<IModelAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useStoreModelsByUUID<IModelTableData>(updatedData?.uuid as string);
 	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
+	const { invalidateQuery: invalidateModel } = useOtherModel<IFormSelectOption[]>();
 
 	const form = useRHF(MODEL_SCHEMA, MODEL_NULL);
 
@@ -40,6 +41,7 @@ const AddOrUpdate: React.FC<IModelAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(MODEL_NULL);
 		setOpen((prev) => !prev);
+		invalidateModel();
 	};
 
 	// Reset form values when data is updated

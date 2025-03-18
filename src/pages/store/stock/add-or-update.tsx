@@ -10,7 +10,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherProduct } from '@/lib/common-queries/other';
+import { useOtherProduct, useOtherStock } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -33,6 +33,7 @@ const AddOrUpdate: React.FC<IStockAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useStoreStocksByUUID<IStockTableData>(updatedData?.uuid as string);
 	const { data: productOptions } = useOtherProduct<IFormSelectOption[]>();
+	const { invalidateQuery: invalidateStock } = useOtherStock<IFormSelectOption[]>();
 
 	const form = useRHF(STOCK_SCHEMA, STOCK_NULL);
 
@@ -40,6 +41,7 @@ const AddOrUpdate: React.FC<IStockAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(STOCK_NULL);
 		setOpen((prev) => !prev);
+		invalidateStock();
 	};
 
 	// Reset form values when data is updated

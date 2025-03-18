@@ -5,10 +5,12 @@ import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
+import { useOtherBrand } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -30,6 +32,7 @@ const AddOrUpdate: React.FC<IBrandAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStoreBrandsByUUID<IBrandTableData>(updatedData?.uuid as string);
+	const { invalidateQuery: invalidateBrand } = useOtherBrand<IFormSelectOption[]>();
 
 	const form = useRHF(BRAND_SCHEMA, BRAND_NULL);
 
@@ -37,6 +40,7 @@ const AddOrUpdate: React.FC<IBrandAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(BRAND_NULL);
 		setOpen((prev) => !prev);
+		invalidateBrand();
 	};
 
 	// Reset form values when data is updated
