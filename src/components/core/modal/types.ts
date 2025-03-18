@@ -3,6 +3,10 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { UseFormReturn } from 'react-hook-form';
 
+
+
+
+
 export interface IDeleteAllModalProps {
 	deleteItems:
 		| {
@@ -32,6 +36,7 @@ export interface IDeleteAllModalProps {
 		},
 		void
 	>;
+
 	onClose?: () => void;
 }
 
@@ -57,6 +62,7 @@ export interface IDeleteModalProps {
 		},
 		void
 	>;
+	needRefresh?: boolean;
 	onClose?: () => void;
 }
 

@@ -85,6 +85,7 @@ const EntryTable: React.FC<{ data: IOrderTableData; isLoading: any }> = ({ data,
 							setDeleteItem,
 							url,
 							deleteData,
+							needRefresh:true,
 						}}
 					/>,
 				])}

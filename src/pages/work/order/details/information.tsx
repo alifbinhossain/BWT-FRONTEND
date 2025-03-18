@@ -3,8 +3,8 @@ import React from 'react';
 import StatusButton from '@/components/buttons/status';
 import { LinkOnly } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
-import SwitchToggle from '@/components/others/switch-toogle';
 import TableList, { ITableListItems } from '@/components/others/table-list';
+import { Switch } from '@/components/ui/switch';
 
 import { formatDateTable } from '@/utils/formatDate';
 
@@ -51,6 +51,10 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				label: 'Size',
 				value: data.size_name,
 			},
+			{
+				label: 'Quantity',
+				value: data.quantity,
+			},
 			{ label: 'Serial', value: data.serial_no },
 		];
 	};
@@ -78,6 +82,24 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				label: 'Received',
 				value: <StatusButton value={data.is_product_received as boolean} />,
 			},
+			{
+				label: 'Diagnosis Need',
+				value: <StatusButton value={data.is_diagnosis_needed as boolean} />,
+			},
+			{
+				label: 'Transfer For QC',
+				value: <Switch checked={data?.is_transferred_for_qc} onCheckedChange={() => handelQCStatusChange()} />,
+			},
+			{
+				label: 'Ready For Delivery',
+				value: (
+					<Switch
+						checked={data?.is_ready_for_delivery}
+						onCheckedChange={() => handelDeliveryStatusChange()}
+					/>
+				),
+			},
+
 			{
 				label: 'Receiving Date',
 				value: formatDateTable(data.received_date),
@@ -181,20 +203,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	};
 	return (
 		<>
-			<SectionContainer
-				title={
-					<div className='flex justify-end gap-2'>
-						<div>Customer</div>
-						<div className='text-base'>QC</div>
-						<SwitchToggle onChange={() => handelQCStatusChange()} checked={data?.is_transferred_for_qc} />
-						<div className='text-base'>Ready for Delivery</div>
-						<SwitchToggle
-							onChange={() => handelDeliveryStatusChange()}
-							checked={data?.is_ready_for_delivery}
-						/>
-					</div>
-				}
-			>
+			<SectionContainer title={'Order Details'}>
 				<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
 					<TableList title='General' className='flex-1' items={renderGeneralItems()} />
 					<TableList title='Product' className='flex-1' items={renderProductItems()} />
