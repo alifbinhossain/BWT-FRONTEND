@@ -10,7 +10,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherWarehouse } from '@/lib/common-queries/other';
+import { useOtherRoom, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -62,6 +62,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useStoreRoomsByUUID<IRoomTableData>(updatedData?.uuid as string);
 	const { data: warehouseOption } = useOtherWarehouse<IFormSelectOption[]>();
+	const { invalidateQuery: invalidateRoom } = useOtherRoom<IFormSelectOption[]>();
 
 	const form = useRHF(ROOM_SCHEMA, ROOM_NULL);
 
@@ -69,6 +70,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(ROOM_NULL);
 		setOpen((prev) => !prev);
+		invalidateRoom();
 	};
 
 	// Reset form values when data is updated

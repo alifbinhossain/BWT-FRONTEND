@@ -5,10 +5,12 @@ import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
+import { useOtherBranch } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -30,6 +32,7 @@ const AddOrUpdate: React.FC<IBranchAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStoreBranchesByUUID<IBranchTableData>(updatedData?.uuid as string);
+	const { invalidateQuery: invalidateBranch } = useOtherBranch<IFormSelectOption[]>();
 
 	const form = useRHF(BRANCH_SCHEMA, BRANCH_NULL);
 
@@ -37,6 +40,7 @@ const AddOrUpdate: React.FC<IBranchAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(BRANCH_NULL);
 		setOpen((prev) => !prev);
+		invalidateBranch();
 	};
 
 	// Reset form values when data is updated

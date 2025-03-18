@@ -5,19 +5,26 @@ import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+
+
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { IFormSelectOption } from '@core/form/types';
 import { AddModal } from '@core/modal';
 
-import { useOtherGroup } from '@/lib/common-queries/other';
+
+
+import { useOtherCategory, useOtherGroup } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
+
+
 
 import { ICategoryTableData } from '../_config/columns/columns.type';
 import { useStoreCategoriesByUUID } from '../_config/query';
 import { CATEGORY_NULL, CATEGORY_SCHEMA } from '../_config/schema';
 import { ICategoryAddOrUpdateProps } from '../_config/types';
+
 
 const AddOrUpdate: React.FC<ICategoryAddOrUpdateProps> = ({
 	url,
@@ -33,6 +40,7 @@ const AddOrUpdate: React.FC<ICategoryAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useStoreCategoriesByUUID<ICategoryTableData>(updatedData?.uuid as string);
 	const { data: groupOptions } = useOtherGroup<IFormSelectOption[]>();
+	const { invalidateQuery: invalidateCategory } = useOtherCategory<IFormSelectOption[]>();
 
 	const form = useRHF(CATEGORY_SCHEMA, CATEGORY_NULL);
 
@@ -40,6 +48,7 @@ const AddOrUpdate: React.FC<ICategoryAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(CATEGORY_NULL);
 		setOpen((prev) => !prev);
+		invalidateCategory();
 	};
 
 	// Reset form values when data is updated

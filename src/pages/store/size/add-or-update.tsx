@@ -5,10 +5,12 @@ import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
+import { useOtherSize } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -30,6 +32,7 @@ const AddOrUpdate: React.FC<ISizeAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStoreSizesByUUID<ISizeTableData>(updatedData?.uuid as string);
+	const { invalidateQuery: invalidateSize } = useOtherSize<IFormSelectOption[]>();
 
 	const form = useRHF(SIZE_SCHEMA, SIZE_NULL);
 
@@ -37,6 +40,7 @@ const AddOrUpdate: React.FC<ISizeAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(SIZE_NULL);
 		setOpen((prev) => !prev);
+		invalidateSize();
 	};
 
 	// Reset form values when data is updated

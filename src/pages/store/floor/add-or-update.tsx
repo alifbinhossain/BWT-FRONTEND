@@ -10,7 +10,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherRack } from '@/lib/common-queries/other';
+import { useOtherFloor, useOtherRack } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -33,6 +33,7 @@ const AddOrUpdate: React.FC<IFloorAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useStoreFloorsByUUID<IFloorTableData>(updatedData?.uuid as string);
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
+	const { invalidateQuery: invalidateFloor } = useOtherFloor<IFormSelectOption[]>();
 
 	const form = useRHF(FLOOR_SCHEMA, FLOOR_NULL);
 
@@ -40,6 +41,7 @@ const AddOrUpdate: React.FC<IFloorAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(FLOOR_NULL);
 		setOpen((prev) => !prev);
+		invalidateFloor();
 	};
 
 	// Reset form values when data is updated

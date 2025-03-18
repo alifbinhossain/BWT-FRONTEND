@@ -7,7 +7,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherFloor } from '@/lib/common-queries/other';
+import { useOtherBox, useOtherFloor } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -30,6 +30,7 @@ const AddOrUpdate: React.FC<IBoxAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useStoreBoxesByUUID<IBoxTableData>(updatedData?.uuid as string);
 	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
+	const { invalidateQuery: invalidateBox } = useOtherBox<IFormSelectOption[]>();
 
 	const form = useRHF(BOX_SCHEMA, BOX_NULL);
 
@@ -37,6 +38,7 @@ const AddOrUpdate: React.FC<IBoxAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(BOX_NULL);
 		setOpen((prev) => !prev);
+		invalidateBox();
 	};
 
 	// Reset form values when data is updated

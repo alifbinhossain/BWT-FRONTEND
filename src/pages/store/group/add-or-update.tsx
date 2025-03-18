@@ -5,10 +5,12 @@ import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
+import { useOtherGroup } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -30,6 +32,7 @@ const AddOrUpdate: React.FC<IGroupAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStoreGroupsByUUID<IGroupTableData>(updatedData?.uuid as string);
+	const { invalidateQuery: invalidateGroup } = useOtherGroup<IFormSelectOption[]>();
 
 	const form = useRHF(GROUP_SCHEMA, GROUP_NULL);
 
@@ -37,6 +40,7 @@ const AddOrUpdate: React.FC<IGroupAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(GROUP_NULL);
 		setOpen((prev) => !prev);
+		invalidateGroup();
 	};
 
 	// Reset form values when data is updated

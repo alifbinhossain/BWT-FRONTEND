@@ -10,7 +10,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherCategory, useOtherModel, useOtherSize } from '@/lib/common-queries/other';
+import { useOtherCategory, useOtherModel, useOtherProduct, useOtherSize } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -35,6 +35,7 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 	const { data: modelOptions } = useOtherModel<IFormSelectOption[]>();
 	const { data: sizeOptions } = useOtherSize<IFormSelectOption[]>();
 	const { data: categoryOptions } = useOtherCategory<IFormSelectOption[]>();
+	const { invalidateQuery: invalidateProduct } = useOtherProduct<IFormSelectOption[]>();
 
 	const typeOptions: IFormSelectOption[] = [
 		{
@@ -53,6 +54,7 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(PRODUCT_NULL);
 		setOpen((prev) => !prev);
+		invalidateProduct();
 	};
 
 	// Reset form values when data is updated
