@@ -25,7 +25,7 @@ export const Column = () => {
 	const { url: ProcessTransferUrl, updateData, postData, deleteData } = useWorkProcesses();
 	const { user } = useAuth();
 	const navigate = useNavigate();
-	const { diagnosis_uuid, order_uuid, info_uuid } = useParams();
+	const { order_uuid, info_uuid } = useParams();
 	const { data: sectionOptions } = useOtherSection<IFormSelectOption[]>();
 
 	const { data } = useWorkGetTransferSection<WorkSectionData>(order_uuid!);
@@ -163,8 +163,7 @@ export const Column = () => {
 				if (!data?.entry.some((el: any) => el.uuid === item.uuid)) {
 					const newData = {
 						...item,
-						diagnosis_uuid: diagnosis_uuid !== 'null' ? diagnosis_uuid : null,
-						order_uuid: diagnosis_uuid === 'null' ? order_uuid : null,
+						order_uuid: order_uuid,
 						index: index + 1,
 						created_at: getDateTime(),
 						created_by: user?.uuid,
@@ -179,8 +178,8 @@ export const Column = () => {
 				} else {
 					const updatedData = {
 						...item,
-						diagnosis_uuid: diagnosis_uuid !== 'null' ? diagnosis_uuid : null,
-						order_uuid: diagnosis_uuid === 'null' ? order_uuid : null,
+
+						order_uuid: order_uuid,
 						index: index + 1,
 						updated_at: getDateTime(),
 					};

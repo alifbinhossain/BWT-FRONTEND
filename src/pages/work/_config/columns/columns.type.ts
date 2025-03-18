@@ -39,6 +39,7 @@ export type IOrderTableData = {
 	user_name: string;
 	user_phone: string;
 	is_product_received: boolean;
+	is_diagnosis_needed: boolean;
 	received_date: string;
 	user_id: string;
 	model_uuid: string;
@@ -64,6 +65,7 @@ export type IOrderTableData = {
 	floor_name: string;
 	box_uuid: string;
 	box_name: string;
+	quantity: number;
 	created_by: string;
 	created_at: string;
 	updated_at: string;
