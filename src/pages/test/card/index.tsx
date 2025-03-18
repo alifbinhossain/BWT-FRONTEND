@@ -158,7 +158,7 @@ export const Card = ({
 									type='submit'
 									className='flex items-center gap-1.5 rounded bg-primary px-3 py-1.5 text-xs text-neutral-50 transition-colors hover:bg-neutral-600'
 								>
-									<span>Save Card</span>
+									<span>Save</span>
 								</button>
 							</div>
 						</m.form>
