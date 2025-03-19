@@ -125,6 +125,9 @@ export const PRODUCT_SCHEMA = z.object({
 	type: z.enum(['service', 'inventory']),
 	service_warranty_days: NUMBER_DOUBLE_REQUIRED,
 	is_maintaining_stock: BOOLEAN_REQUIRED,
+	warehouse_1: NUMBER_DOUBLE_REQUIRED,
+	warehouse_2: NUMBER_DOUBLE_REQUIRED,
+	warehouse_3: NUMBER_DOUBLE_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 
@@ -137,6 +140,9 @@ export const PRODUCT_NULL: Partial<IProduct> = {
 	service_warranty_days: 0,
 	type: 'service',
 	is_maintaining_stock: false,
+	warehouse_1: 0,
+	warehouse_2: 0,
+	warehouse_3: 0,
 	remarks: '',
 };
 
@@ -290,17 +296,17 @@ export const PURCHASE_SCHEMA = z.object({
 		z.object({
 			uuid: STRING_OPTIONAL,
 			purchase_uuid: STRING_OPTIONAL,
-			stock_uuid: STRING_REQUIRED,
-			stock_id: STRING_OPTIONAL,
+			product_uuid: STRING_REQUIRED,
+			product_name: STRING_OPTIONAL,
 			serial_no: STRING_REQUIRED,
 			quantity: NUMBER_DOUBLE_REQUIRED,
 			price_per_unit: NUMBER_DOUBLE_REQUIRED,
 			discount: NUMBER_DOUBLE_REQUIRED.default(0),
 			remarks: STRING_NULLABLE,
 			warehouse_uuid: STRING_REQUIRED,
-			box_uuid: STRING_REQUIRED,
-			rack_uuid: STRING_REQUIRED,
-			floor_uuid: STRING_REQUIRED,
+			box_uuid: STRING_OPTIONAL,
+			rack_uuid: STRING_OPTIONAL,
+			floor_uuid: STRING_OPTIONAL,
 		})
 	),
 });
@@ -315,8 +321,7 @@ export const PURCHASE_NULL: Partial<IPurchase> = {
 		{
 			uuid: '',
 			purchase_uuid: '',
-			stock_uuid: '',
-			stock_id: '',
+			product_uuid: '',
 			serial_no: '',
 			quantity: 0,
 			price_per_unit: 0,
@@ -371,8 +376,7 @@ export type IPurchaseReturn = z.infer<typeof PURCHASE_RETURN_SCHEMA>;
 export const PURCHASE_LOG_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
 	purchase_uuid: STRING_OPTIONAL,
-	stock_uuid: STRING_REQUIRED,
-	stock_id: STRING_OPTIONAL,
+	product_uuid: STRING_REQUIRED,
 	serial_no: STRING_REQUIRED,
 	quantity: NUMBER_DOUBLE_REQUIRED,
 	price_per_unit: NUMBER_DOUBLE_REQUIRED,
@@ -387,8 +391,7 @@ export const PURCHASE_LOG_SCHEMA = z.object({
 export const PURCHASE_LOG_NULL: Partial<IPurchaseLog> = {
 	uuid: '',
 	purchase_uuid: '',
-	stock_uuid: '',
-	stock_id: '',
+	product_uuid: '',
 	serial_no: '',
 	quantity: 0,
 	price_per_unit: 0,

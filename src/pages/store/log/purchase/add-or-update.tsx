@@ -9,7 +9,13 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherBox, useOtherFloor, useOtherRack, useOtherStock, useOtherWarehouse } from '@/lib/common-queries/other';
+import {
+	useOtherBox,
+	useOtherFloor,
+	useOtherProduct,
+	useOtherRack,
+	useOtherWarehouse,
+} from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
 
 import { IPurchaseLogAddOrUpdateProps } from '../../_config/types';
@@ -29,7 +35,7 @@ const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
-	const { data: stockOptions } = useOtherStock<IFormSelectOption[]>();
+	const { data: productOptions } = useOtherProduct<IFormSelectOption[]>();
 
 	const form = useRHF(PURCHASE_LOG_SCHEMA, PURCHASE_LOG_NULL);
 
@@ -70,9 +76,14 @@ const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 		>
 			<FormField
 				control={form.control}
-				name='stock_uuid'
+				name='product_uuid'
 				render={(props) => (
-					<CoreForm.ReactSelect label='Stock' placeholder='Select Stock' options={stockOptions!} {...props} />
+					<CoreForm.ReactSelect
+						label='Product'
+						placeholder='Select Product'
+						options={productOptions!}
+						{...props}
+					/>
 				)}
 			/>
 			<FormField control={form.control} name='serial_no' render={(props) => <CoreForm.Input {...props} />} />

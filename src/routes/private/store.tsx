@@ -27,11 +27,11 @@ const StoreRoutes: IRoute[] = [
 		name: 'Store',
 		children: [
 			{
-				name: 'Stock',
-				path: '/store/stock',
-				element: <Stock />,
-				page_name: 'store__stock',
-				actions: ['create', 'read', 'update', 'delete', 'click_trx'],
+				name: 'Product',
+				path: '/store/product',
+				element: <Product />,
+				page_name: 'store__product',
+				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
 				name: 'Purchase',
@@ -140,13 +140,7 @@ const StoreRoutes: IRoute[] = [
 						page_name: 'store__vendor',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
-					{
-						name: 'Product',
-						path: '/store/product',
-						element: <Product />,
-						page_name: 'store__product',
-						actions: ['create', 'read', 'update', 'delete'],
-					},
+
 					{
 						name: 'Branch',
 						path: '/store/branch',

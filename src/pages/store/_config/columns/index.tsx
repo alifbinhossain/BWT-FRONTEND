@@ -131,6 +131,14 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 //* Product Columns
 export const productColumns = (): ColumnDef<IProductTableData>[] => [
 	{
+		accessorKey: 'is_maintaining_stock',
+		header: 'Maintaining Stock',
+		enableColumnFilter: false,
+		cell: (info) => {
+			return <StatusButton value={info.getValue() as boolean} />;
+		},
+	},
+	{
 		accessorKey: 'name',
 		header: 'Name',
 		enableColumnFilter: false,
@@ -166,13 +174,21 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'is_maintaining_stock',
-		header: 'Maintaining Stock',
+		accessorKey: 'warehouse_1',
+		header: 'Warehouse 1',
 		enableColumnFilter: false,
-		cell: (info) => {
-			return <StatusButton value={info.getValue() as boolean} />;
-		},
 	},
+	{
+		accessorKey: 'warehouse_2',
+		header: 'Warehouse 2',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_3',
+		header: 'Warehouse 3',
+		enableColumnFilter: false,
+	},
+
 ];
 
 //* Purchase Columns
@@ -211,8 +227,8 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 //* Purchase Entry Columns
 export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => [
 	{
-		accessorKey: 'stock_id',
-		header: 'Stock',
+		accessorKey: 'product_name',
+		header: 'Product',
 		enableColumnFilter: false,
 	},
 	{

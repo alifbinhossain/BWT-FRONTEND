@@ -155,6 +155,21 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 					<CoreForm.ReactSelect label='Type' placeholder='Select Type' options={typeOptions!} {...props} />
 				)}
 			/>
+			<FormField
+				control={form.control}
+				name='warehouse_1'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
+			/>
+			<FormField
+				control={form.control}
+				name='warehouse_2'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
+			/>
+			<FormField
+				control={form.control}
+				name='warehouse_3'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
+			/>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

@@ -4,7 +4,13 @@ import FieldActionButton from '@/components/buttons/field-action';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
 
-import { useOtherBox, useOtherFloor, useOtherRack, useOtherStock, useOtherWarehouse } from '@/lib/common-queries/other';
+import {
+	useOtherBox,
+	useOtherFloor,
+	useOtherProduct,
+	useOtherRack,
+	useOtherWarehouse,
+} from '@/lib/common-queries/other';
 
 import { IPurchase } from '../../_config/schema';
 
@@ -15,18 +21,18 @@ interface IGenerateFieldDefsProps {
 }
 
 const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldDef[] => {
-	const { data: stockOptions } = useOtherStock<IFormSelectOption[]>();
+	const { data: productOptions } = useOtherProduct<IFormSelectOption[]>();
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
 	return [
 		{
-			header: 'Stock',
-			accessorKey: 'stock_uuid',
+			header: 'Product',
+			accessorKey: 'product_uuid',
 			type: 'select',
-			placeholder: 'Select Stock',
-			options: stockOptions || [],
+			placeholder: 'Select Product',
+			options: productOptions || [],
 		},
 		{
 			header: 'Serial No',

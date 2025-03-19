@@ -156,7 +156,7 @@ const AddOrUpdate = () => {
 
 	const handleAdd = () => {
 		append({
-			stock_uuid: '',
+			product_uuid: '',
 			serial_no: '',
 			quantity: 0,
 			price_per_unit: 0,
@@ -176,7 +176,7 @@ const AddOrUpdate = () => {
 
 	// Delete Handler
 	const handleRemove = (index: number) => {
-		const stock_id: string = String(form.getValues('purchase_entry')[index].stock_id);
+		const stock_id: string = String(form.getValues('purchase_entry')[index].product_name);
 		if (fields[index].uuid) {
 			setDeleteItem({
 				id: fields[index].uuid,
@@ -192,7 +192,7 @@ const AddOrUpdate = () => {
 		// TODO: Update fields ⬇️
 		const field = form.watch('purchase_entry')[index];
 		append({
-			stock_uuid: field.stock_uuid,
+			product_uuid: field.product_uuid,
 			serial_no: field.serial_no,
 			quantity: field.quantity,
 			price_per_unit: field.price_per_unit,
