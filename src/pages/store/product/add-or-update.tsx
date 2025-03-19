@@ -98,6 +98,7 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 			setOpen={onClose}
 			title={isUpdate ? `Update ${updatedData?.name} Product` : 'Add New Product'}
 			form={form}
+			isSmall={true}
 			onSubmit={onSubmit}
 		>
 			<FormField
@@ -111,65 +112,86 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 					/>
 				)}
 			/>
-			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
-			<FormField
-				control={form.control}
-				name='category_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect
-						label='Category'
-						placeholder='Select Category'
-						options={categoryOptions!}
-						{...props}
-					/>
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='model_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Model' placeholder='Select Model' options={modelOptions!} {...props} />
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='size_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Size' placeholder='Select Size' options={sizeOptions!} {...props} />
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='warranty_days'
-				render={(props) => <CoreForm.Input type='number' {...props} />}
-			/>
-			<FormField
-				control={form.control}
-				name='service_warranty_days'
-				render={(props) => <CoreForm.Input type='number' {...props} />}
-			/>
-			<FormField
-				control={form.control}
-				name='type'
-				render={(props) => (
-					<CoreForm.ReactSelect label='Type' placeholder='Select Type' options={typeOptions!} {...props} />
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='warehouse_1'
-				render={(props) => <CoreForm.Input type='number' {...props} />}
-			/>
-			<FormField
-				control={form.control}
-				name='warehouse_2'
-				render={(props) => <CoreForm.Input type='number' {...props} />}
-			/>
-			<FormField
-				control={form.control}
-				name='warehouse_3'
-				render={(props) => <CoreForm.Input type='number' {...props} />}
-			/>
+			<div className='grid grid-cols-3 gap-4'>
+				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
+				<FormField
+					control={form.control}
+					name='category_uuid'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							label='Category'
+							placeholder='Select Category'
+							options={categoryOptions!}
+							{...props}
+						/>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='type'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							label='Type'
+							placeholder='Select Type'
+							options={typeOptions!}
+							{...props}
+						/>
+					)}
+				/>
+			</div>
+			<div className='grid grid-cols-4 gap-4'>
+				<FormField
+					control={form.control}
+					name='model_uuid'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							label='Model'
+							placeholder='Select Model'
+							options={modelOptions!}
+							{...props}
+						/>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='size_uuid'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							label='Size'
+							placeholder='Select Size'
+							options={sizeOptions!}
+							{...props}
+						/>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='warranty_days'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='service_warranty_days'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+			</div>
+			<div className='grid grid-cols-3 gap-4'>
+				<FormField
+					control={form.control}
+					name='warehouse_1'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_2'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_3'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+			</div>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

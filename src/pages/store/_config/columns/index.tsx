@@ -188,7 +188,6 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 		header: 'Warehouse 3',
 		enableColumnFilter: false,
 	},
-
 ];
 
 //* Purchase Columns
@@ -287,6 +286,11 @@ export const purchaseReturnColumns = (): ColumnDef<IPurchaseReturnTableData>[] =
 	{
 		accessorKey: 'purchase_id',
 		header: 'Purchase ID',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
 		enableColumnFilter: false,
 	},
 ];
