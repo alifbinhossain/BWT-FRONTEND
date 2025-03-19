@@ -30,7 +30,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 	const { data } = useHrUsersByUUID(updatedData?.uuid as string);
 	const { data: departmentData } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: designationData } = useOtherDesignation<IFormSelectOption[]>();
-	
+
 	const typeOptions = [
 		{
 			label: 'Customer',
@@ -39,6 +39,10 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 		{
 			label: 'Employ',
 			value: 'employee',
+		},
+		{
+			label: 'Vendor',
+			value: 'vendor',
 		},
 	];
 	const businessType = [
@@ -131,7 +135,9 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						)}
 					/>
 				)}
-				{(form.watch('user_type') === 'employee' || form.watch('business_type') === 'company') && (
+				{(form.watch('user_type') === 'employee' ||
+					form.watch('business_type') === 'company' ||
+					form.watch('user_type') === 'vendor') && (
 					<FormField
 						control={form.control}
 						name='department_uuid'
@@ -145,7 +151,9 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						)}
 					/>
 				)}
-				{(form.watch('user_type') === 'employee' || form.watch('business_type') === 'company') && (
+				{(form.watch('user_type') === 'employee' ||
+					form.watch('business_type') === 'company' ||
+					form.watch('user_type') === 'vendor') && (
 					<FormField
 						control={form.control}
 						name='designation_uuid'
