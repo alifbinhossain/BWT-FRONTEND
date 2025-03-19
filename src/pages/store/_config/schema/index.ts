@@ -340,6 +340,7 @@ export type IPurchase = z.infer<typeof PURCHASE_SCHEMA>;
 //* Purchase Return Schema
 export const PURCHASE_RETURN_SCHEMA = z.object({
 	purchase_uuid: STRING_REQUIRED,
+	warehouse_uuid: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
 	purchase_return_entry: z.array(
 		z.object({
@@ -356,6 +357,7 @@ export const PURCHASE_RETURN_SCHEMA = z.object({
 
 export const PURCHASE_RETURN_NULL: Partial<IPurchaseReturn> = {
 	purchase_uuid: '',
+	warehouse_uuid: '',
 	remarks: '',
 	purchase_return_entry: [
 		{

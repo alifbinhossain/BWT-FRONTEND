@@ -4,13 +4,14 @@ import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
-import { useOtherPurchase } from '@/lib/common-queries/other';
+import { useOtherPurchase, useOtherWarehouse } from '@/lib/common-queries/other';
 
 import { IPurchaseReturn } from '../../_config/schema';
 
 const Header = () => {
 	const form = useFormContext<IPurchaseReturn>();
 	const { data: purchaseOptions } = useOtherPurchase<IFormSelectOption[]>();
+	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 
 	return (
 		<CoreForm.Section title={`Information`}>
@@ -22,6 +23,18 @@ const Header = () => {
 						label='Purchase'
 						placeholder='Select Purchase'
 						options={purchaseOptions!}
+						{...props}
+					/>
+				)}
+			/>
+			<FormField
+				control={form.control}
+				name='warehouse_uuid'
+				render={(props) => (
+					<CoreForm.ReactSelect
+						label='Warehouse'
+						placeholder='Select Warehouse'
+						options={warehouseOptions!}
 						{...props}
 					/>
 				)}
