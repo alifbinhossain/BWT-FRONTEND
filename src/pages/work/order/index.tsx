@@ -9,7 +9,7 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { orderColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkOrder } from '../_config/query';
+import { useWorkInHandWork} from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -21,8 +21,8 @@ const Order = () => {
 	const pageAccess = useAccess('work__order') as string[];
 
 	const actionTrxAccess = pageAccess.includes('click_trx');
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkOrder<IOrderTableData[]>();
-
+	// const {} = useWorkOrder<IOrderTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkInHandWork<IOrderTableData[]>();
 	const pageInfo = useMemo(() => new PageInfo('Work/Order', url, 'work__order'), [url]);
 
 	// Add/Update Modal state
@@ -93,7 +93,7 @@ const Order = () => {
 				{renderSuspenseModals([
 					<AddOrUpdate
 						{...{
-							url,
+							url: '/work/order',
 							open: isOpenAddModal,
 							setOpen: setIsOpenAddModal,
 							updatedData,
@@ -107,7 +107,7 @@ const Order = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url,
+							url:'/work/order',
 							deleteData,
 						}}
 					/>,
@@ -115,7 +115,7 @@ const Order = () => {
 						{...{
 							deleteItems,
 							setDeleteItems,
-							url,
+							url:'/work/order',
 							deleteData,
 						}}
 					/>,

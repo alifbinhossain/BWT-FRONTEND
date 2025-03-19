@@ -304,9 +304,9 @@ export const PURCHASE_SCHEMA = z.object({
 			discount: NUMBER_DOUBLE_REQUIRED.default(0),
 			remarks: STRING_NULLABLE,
 			warehouse_uuid: STRING_REQUIRED,
-			box_uuid: STRING_OPTIONAL,
-			rack_uuid: STRING_OPTIONAL,
-			floor_uuid: STRING_OPTIONAL,
+			box_uuid: STRING_NULLABLE,
+			rack_uuid: STRING_NULLABLE,
+			floor_uuid: STRING_NULLABLE,
 		})
 	),
 });
@@ -328,9 +328,9 @@ export const PURCHASE_NULL: Partial<IPurchase> = {
 			discount: 0,
 			remarks: '',
 			warehouse_uuid: '',
-			box_uuid: '',
-			rack_uuid: '',
-			floor_uuid: '',
+			box_uuid: null,
+			rack_uuid: null,
+			floor_uuid: null,
 		},
 	],
 };

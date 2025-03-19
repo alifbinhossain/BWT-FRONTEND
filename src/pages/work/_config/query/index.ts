@@ -34,6 +34,11 @@ export const useWorkOrder = <T>() =>
 		queryKey: workQK.job(),
 		url: '/work/order',
 	});
+export const useWorkInHandWork = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.job(),
+		url: '/work/order?work_in_hand=true',
+	});
 //* QC
 export const useWorkQC = <T>() =>
 	useTQuery<T>({

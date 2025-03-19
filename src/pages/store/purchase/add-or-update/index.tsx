@@ -163,9 +163,9 @@ const AddOrUpdate = () => {
 			discount: 0,
 			remarks: '',
 			warehouse_uuid: '',
-			rack_uuid: '',
-			floor_uuid: '',
-			box_uuid: '',
+			rack_uuid: null,
+			floor_uuid: null,
+			box_uuid: null,
 		});
 	};
 
