@@ -1,6 +1,10 @@
 import { lazy } from 'react';
 import { IRoute } from '@/types';
 
+
+
+
+
 const Group = lazy(() => import('@/pages/store/group'));
 const Category = lazy(() => import('@/pages/store/category'));
 const Brand = lazy(() => import('@/pages/store/brand'));
@@ -99,31 +103,10 @@ const StoreRoutes: IRoute[] = [
 				name: 'Library',
 				children: [
 					{
-						name: 'Group',
-						path: '/store/group',
-						element: <Group />,
-						page_name: 'store__group',
-						actions: ['create', 'read', 'update', 'delete'],
-					},
-					{
-						name: 'Category',
-						path: '/store/category',
-						element: <Category />,
-						page_name: 'store__category',
-						actions: ['create', 'read', 'update', 'delete'],
-					},
-					{
-						name: 'Brand',
-						path: '/store/brand',
-						element: <Brand />,
-						page_name: 'store__brand',
-						actions: ['create', 'read', 'update', 'delete'],
-					},
-					{
-						name: 'Model',
-						path: '/store/model',
-						element: <Model />,
-						page_name: 'store__model',
+						name: 'Vendor',
+						path: '/store/vendor',
+						element: <Vendor />,
+						page_name: 'store__vendor',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
@@ -134,27 +117,34 @@ const StoreRoutes: IRoute[] = [
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
-						name: 'Vendor',
-						path: '/store/vendor',
-						element: <Vendor />,
-						page_name: 'store__vendor',
+						name: 'Model',
+						path: '/store/model',
+						element: <Model />,
+						page_name: 'store__model',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Brand',
+						path: '/store/brand',
+						element: <Brand />,
+						page_name: 'store__brand',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Category',
+						path: '/store/category',
+						element: <Category />,
+						page_name: 'store__category',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Group',
+						path: '/store/group',
+						element: <Group />,
+						page_name: 'store__group',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 
-					{
-						name: 'Branch',
-						path: '/store/branch',
-						element: <Branch />,
-						page_name: 'store__branch',
-						actions: ['create', 'read', 'update', 'delete'],
-					},
-					{
-						name: 'Warehouse',
-						path: '/store/warehouse',
-						element: <Warehouse />,
-						page_name: 'store__warehouse',
-						actions: ['create', 'read', 'update', 'delete'],
-					},
 					// {
 					// 	name: 'Room',
 					// 	path: '/store/room',
@@ -163,10 +153,10 @@ const StoreRoutes: IRoute[] = [
 					// 	actions: ['create', 'read', 'update', 'delete'],
 					// },
 					{
-						name: 'Rack',
-						path: '/store/rack',
-						element: <Rack />,
-						page_name: 'store__rack',
+						name: 'Box',
+						path: '/store/box',
+						element: <Box />,
+						page_name: 'store__box',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
@@ -177,10 +167,24 @@ const StoreRoutes: IRoute[] = [
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
-						name: 'Box',
-						path: '/store/box',
-						element: <Box />,
-						page_name: 'store__box',
+						name: 'Rack',
+						path: '/store/rack',
+						element: <Rack />,
+						page_name: 'store__rack',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Warehouse',
+						path: '/store/warehouse',
+						element: <Warehouse />,
+						page_name: 'store__warehouse',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Branch',
+						path: '/store/branch',
+						element: <Branch />,
+						page_name: 'store__branch',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 				],
