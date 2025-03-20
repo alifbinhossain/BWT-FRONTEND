@@ -33,6 +33,20 @@ const AddOrUpdate: React.FC<IWarehouseAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useStoreWarehousesByUUID<IWarehouseTableData>(updatedData?.uuid as string);
 	const { data: branchOption } = useOtherBranch<IFormSelectOption[]>();
+	const assignationOptions = [
+		{
+			label: 'Warehouse 1',
+			value: 'warehouse_1',
+		},
+		{
+			label: 'Warehouse 2',
+			value: 'warehouse_2',
+		},
+		{
+			label: 'Warehouse 3',
+			value: 'warehouse_3',
+		},
+	];
 
 	const form = useRHF(WAREHOUSE_SCHEMA, WAREHOUSE_NULL);
 
@@ -94,6 +108,18 @@ const AddOrUpdate: React.FC<IWarehouseAddOrUpdateProps> = ({
 						label='Branch'
 						placeholder='Select Branch'
 						options={branchOption!}
+						{...props}
+					/>
+				)}
+			/>
+			<FormField
+				control={form.control}
+				name='assigned'
+				render={(props) => (
+					<CoreForm.ReactSelect
+						label='Warehouse'
+						placeholder='Select Warehouse'
+						options={assignationOptions!}
 						{...props}
 					/>
 				)}

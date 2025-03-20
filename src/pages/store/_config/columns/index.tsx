@@ -129,7 +129,13 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 ];
 
 //* Product Columns
-export const productColumns = (): ColumnDef<IProductTableData>[] => [
+export const productColumns = ({
+	actionTrxAccess,
+	handleAgainstTrx,
+}: {
+	actionTrxAccess: boolean;
+	handleAgainstTrx: (row: Row<any>) => void;
+}): ColumnDef<IProductTableData>[] => [
 	{
 		accessorKey: 'is_maintaining_stock',
 		header: 'Maintaining Stock',
@@ -172,6 +178,16 @@ export const productColumns = (): ColumnDef<IProductTableData>[] => [
 		accessorKey: 'type',
 		header: 'Type',
 		enableColumnFilter: false,
+	},
+	{
+		id: 'action_trx',
+		header: 'Internal Transfer',
+		cell: (info) => <Transfer onClick={() => handleAgainstTrx(info.row)} />,
+		size: 40,
+		meta: {
+			hidden: !actionTrxAccess,
+			disableFullFilter: true,
+		},
 	},
 	{
 		accessorKey: 'warehouse_1',
@@ -381,6 +397,11 @@ export const warehouseColumns = (): ColumnDef<IWarehouseTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
+		accessorKey: 'assigned',
+		header: 'Assigned',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'branch_name',
 		header: 'Branch',
 		enableColumnFilter: false,
@@ -395,28 +416,18 @@ export const internalTransferColumns = (): ColumnDef<IInternalTransferTableData>
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'stock_id',
-		header: 'Stock',
+		accessorKey: 'product_name',
+		header: 'Product',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'from_branch_name',
+		accessorKey: 'from_warehouse_name',
 		header: 'From',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'to_branch_name',
+		accessorKey: 'to_warehouse_name',
 		header: 'To',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'room_name',
-		header: 'Room',
 		enableColumnFilter: false,
 	},
 	{

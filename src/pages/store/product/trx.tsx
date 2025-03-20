@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
-import { IInternalTransferTableData } from '@/pages/store/_config/columns/columns.type';
-import { useStoreInternalTransfersByUUID } from '@/pages/store/_config/query';
-import { INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '@/pages/store/_config/schema';
+import { IResponse } from '@/types';
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { z } from 'zod';
+import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
 import { IFormSelectOption } from '@/components/core/form/types';
@@ -11,29 +11,40 @@ import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
 import { useOtherBox, useOtherFloor, useOtherRack, useOtherWarehouse } from '@/lib/common-queries/other';
+import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IInternalTransferAddOrUpdateProps } from '../../_config/types';
+import { IStockActionTrx } from '../_config/columns/columns.type';
+import { INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '../_config/schema';
 
-const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
-	url,
-	open,
-	setOpen,
-	updatedData,
-	setUpdatedData,
-	updateData,
-}) => {
-	const isUpdate = !!updatedData;
+interface ITrxProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: IStockActionTrx | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<IStockActionTrx | null>>;
+	postData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
 
-	const { data } = useStoreInternalTransfersByUUID<IInternalTransferTableData>(updatedData?.uuid as string);
+const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedData, postData }) => {
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
-
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
-	const MAX_QUANTITY = updatedData ? updatedData.from_warehouse + updatedData.quantity : Infinity;
-	const schema = INTERNAL_TRANSFER_SCHEMA.extend({ quantity: z.number().int().positive().max(MAX_QUANTITY) });
 
+	const { user } = useAuth();
+	const MAX_QUANTITY = Infinity;
+	const schema = INTERNAL_TRANSFER_SCHEMA.extend({ quantity: z.number().int().positive().max(MAX_QUANTITY) });
 	const form = useRHF(schema, INTERNAL_TRANSFER_NULL);
 
 	const onClose = () => {
@@ -42,35 +53,24 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 		setOpen((prev) => !prev);
 	};
 
-	// Reset form values when data is updated
-	useEffect(() => {
-		if (data && isUpdate) {
-			form.reset(data);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data, isUpdate]);
-
 	// Submit handler
-	async function onSubmit(values: IInternalTransferTableData) {
-		// UPDATE ITEM
-		updateData.mutateAsync({
-			url: `${url}/${updatedData?.uuid}`,
-			updatedData: {
+	async function onSubmit(values: IStockActionTrx) {
+		// ADD NEW ITEM
+		postData.mutateAsync({
+			url,
+			newData: {
 				...values,
-				updated_at: getDateTime(),
+				product_uuid: updatedData?.uuid,
+				created_at: getDateTime(),
+				created_by: user?.uuid,
+				uuid: nanoid(),
 			},
 			onClose,
 		});
 	}
 
 	return (
-		<AddModal
-			open={open}
-			setOpen={onClose}
-			title={isUpdate ? `Update ${updatedData?.internal_transfer_id} Transfer` : 'Add New Transfer'}
-			form={form}
-			onSubmit={onSubmit}
-		>
+		<AddModal open={open} setOpen={onClose} title={'Transfer Material'} form={form} onSubmit={onSubmit}>
 			<FormField
 				control={form.control}
 				name='from_warehouse_uuid'
@@ -126,4 +126,4 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 	);
 };
 
-export default AddOrUpdate;
+export default Trx;

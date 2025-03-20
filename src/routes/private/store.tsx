@@ -1,10 +1,6 @@
 import { lazy } from 'react';
 import { IRoute } from '@/types';
 
-
-
-
-
 const Group = lazy(() => import('@/pages/store/group'));
 const Category = lazy(() => import('@/pages/store/category'));
 const Brand = lazy(() => import('@/pages/store/brand'));
@@ -35,7 +31,7 @@ const StoreRoutes: IRoute[] = [
 				path: '/store/product',
 				element: <Product />,
 				page_name: 'store__product',
-				actions: ['create', 'read', 'update', 'delete'],
+				actions: ['create', 'read', 'update', 'delete', 'click_trx'],
 			},
 			{
 				name: 'Purchase',

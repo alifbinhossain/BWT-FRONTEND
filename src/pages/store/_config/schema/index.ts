@@ -170,26 +170,21 @@ export type IStock = z.infer<typeof STOCK_SCHEMA>;
 //* Internal Transfer Schema
 export const INTERNAL_TRANSFER_SCHEMA = z.object({
 	stock_uuid: STRING_OPTIONAL,
-	from_branch_uuid: STRING_REQUIRED,
-	to_branch_uuid: STRING_REQUIRED,
-	warehouse_uuid: STRING_REQUIRED,
-	rack_uuid: STRING_REQUIRED,
-	floor_uuid: STRING_REQUIRED,
-	box_uuid: STRING_REQUIRED,
-	quantity: NUMBER_DOUBLE_REQUIRED,
+	from_warehouse_uuid: STRING_REQUIRED,
+	to_warehouse_uuid: STRING_REQUIRED,
+	rack_uuid: STRING_NULLABLE,
+	floor_uuid: STRING_NULLABLE,
+	box_uuid: STRING_NULLABLE,
 	remarks: STRING_NULLABLE,
 });
 
 export const INTERNAL_TRANSFER_NULL: Partial<IInternalTransfer> = {
 	stock_uuid: '',
-	from_branch_uuid: '',
-	to_branch_uuid: '',
-	warehouse_uuid: '',
-
-	rack_uuid: '',
-	floor_uuid: '',
-	box_uuid: '',
-	quantity: 0,
+	from_warehouse_uuid: '',
+	to_warehouse_uuid: '',
+	rack_uuid: null,
+	floor_uuid: null,
+	box_uuid: null,
 	remarks: null,
 };
 
@@ -213,12 +208,14 @@ export type IBranch = z.infer<typeof BRANCH_SCHEMA>;
 //* Warehouse Schema
 export const WAREHOUSE_SCHEMA = z.object({
 	name: STRING_REQUIRED,
+	assigned: z.enum(['warehouse_1', 'warehouse_2', 'warehouse_3']),
 	branch_uuid: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 
 export const WAREHOUSE_NULL: Partial<IWarehouse> = {
 	name: '',
+	assigned: 'warehouse_1',
 	branch_uuid: '',
 	remarks: null,
 };

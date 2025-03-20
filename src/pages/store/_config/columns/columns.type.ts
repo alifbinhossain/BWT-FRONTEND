@@ -64,6 +64,7 @@ export type IProductTableData = {
 	size_uuid: string;
 	name: string;
 	warranty_days: number;
+	from_warehouse: number;
 	service_warranty_days: number;
 	is_maintaining_stock: boolean;
 	created_at: string;
@@ -167,6 +168,7 @@ export interface IInternalTransferTableData {
 	rack_uuid: string;
 	floor_uuid: string;
 	box_uuid: string;
+	from_warehouse: number;
 	quantity: number;
 	remarks: string;
 	created_at: string;
