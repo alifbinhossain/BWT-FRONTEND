@@ -175,6 +175,7 @@ export const INTERNAL_TRANSFER_SCHEMA = z.object({
 	rack_uuid: STRING_NULLABLE,
 	floor_uuid: STRING_NULLABLE,
 	box_uuid: STRING_NULLABLE,
+	quantity: NUMBER_DOUBLE_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 
@@ -185,6 +186,7 @@ export const INTERNAL_TRANSFER_NULL: Partial<IInternalTransfer> = {
 	rack_uuid: null,
 	floor_uuid: null,
 	box_uuid: null,
+	quantity: 0,
 	remarks: null,
 };
 

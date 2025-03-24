@@ -51,6 +51,13 @@ export const useWorkIsDeliveryReady = <T>() =>
 		queryKey: workQK.isDeliveryReady(),
 		url: '/work/order?is_delivered=true',
 	});
+//* Order By Customer UUID
+export const useWorkOrderByCustomerUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.orderByCustomerUUID(uuid),
+		url: `/work/order?customer_uuid=${uuid}`,
+		enabled: !!uuid,
+	});
 //* Order Details
 export const useWorkOrderByUUID = <T>(uuid: string) =>
 	useTQuery<T>({

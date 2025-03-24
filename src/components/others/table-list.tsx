@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 export type ITableListItems = {
 	label: string;
 	value: string | React.ReactNode;
+	hidden?: boolean;
 }[];
 
 interface ITableListProps {
@@ -24,12 +25,14 @@ const TableList = ({ items, title, className }: ITableListProps) => {
 			<div className='overflow-x-auto'>
 				<Table>
 					<TableBody>
-						{items.map((item) => (
-							<TableRow key={item.label} className='h-10 cursor-pointer border-b last:border-b-0'>
-								<TableCell className='w-1/2 font-semibold'>{item.label}</TableCell>
-								<TableCell className='w-1/2'>{item.value || '--'}</TableCell>
-							</TableRow>
-						))}
+						{items.map((item) =>
+							item.hidden ? null : (
+								<TableRow key={item.label} className='h-10 cursor-pointer border-b last:border-b-0'>
+									<TableCell className='w-1/2 font-semibold'>{item.label}</TableCell>
+									<TableCell className='w-1/2'>{item.value || '--'}</TableCell>
+								</TableRow>
+							)
+						)}
 					</TableBody>
 				</Table>
 			</div>
