@@ -1,9 +1,7 @@
-import { ColumnDef, Row } from '@tanstack/react-table';
+import { ColumnDef } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
-import Transfer from '@/components/buttons/transfer';
 import { LinkOnly } from '@/components/others/link';
-import DateTime from '@/components/ui/date-time';
 
 import { IChallanEntryTableData, IChallanTableData, ICourierTableData, IVehicleTableData } from './columns.type';
 
@@ -35,6 +33,12 @@ export const courierColumns = (): ColumnDef<ICourierTableData>[] => [
 ];
 //* Challan Columns
 export const challanColumns = (): ColumnDef<IChallanTableData>[] => [
+	{
+		accessorKey: 'is_delivery_complete',
+		header: 'Delivery Complete',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
 	{
 		accessorKey: 'challan_no',
 		header: 'Challan No',
