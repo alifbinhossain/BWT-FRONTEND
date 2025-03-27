@@ -1,14 +1,10 @@
 import { useEffect } from 'react';
-import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
-import { IFormSelectOption } from '@core/form/types';
 import { AddModal } from '@core/modal';
 
-import { useOtherDepartment, useOtherDesignation } from '@/lib/common-queries/other';
-import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { useHrUsersByUUID } from './_config/query';
@@ -55,7 +51,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 				},
 				onClose,
 			});
-		} 
+		}
 	}
 
 	return (

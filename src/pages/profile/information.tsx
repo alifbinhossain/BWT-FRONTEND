@@ -1,4 +1,5 @@
 import React, { lazy, useState } from 'react';
+import useAccess from '@/hooks/useAccess';
 
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
@@ -21,7 +22,9 @@ const Information: React.FC<{ data: IUserTableData; updateData: any; postData: a
 	// Add state for AddOrUpdate modal
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 	const [updatedData, setUpdatedData] = useState<IUserTableData | null>(null);
-
+	const pageAccess = useAccess('profile') as string[];
+	const updateAccess = pageAccess.includes('update');
+	const resetAccess = pageAccess.includes('reset_password');
 	const handleEdit = () => {
 		setUpdatedData(data); // Pass current data to modal
 		setIsOpenAddModal(true);
@@ -73,8 +76,22 @@ const Information: React.FC<{ data: IUserTableData; updateData: any; postData: a
 				value: formatDateTable(data.updated_at),
 			},
 			{ label: 'Remarks', value: data.remarks },
-			{ label: 'Edit', value: <Button onClick={handleEdit}>Edit</Button> },
-			{ label: 'Reset Password', value: <Button onClick={handleResetPassword}>Reset Password</Button> },
+			{
+				label: 'Edit',
+				value: (
+					<Button disabled={!updateAccess} onClick={handleEdit}>
+						Edit
+					</Button>
+				),
+			},
+			{
+				label: 'Reset Password',
+				value: (
+					<Button onClick={handleResetPassword} disabled={!resetAccess}>
+						Reset Password
+					</Button>
+				),
+			},
 		];
 	};
 
