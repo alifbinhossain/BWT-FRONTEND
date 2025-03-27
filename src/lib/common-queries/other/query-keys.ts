@@ -53,6 +53,14 @@ const otherQK = {
 	//* User
 	user: () => [...otherQK.all(), 'user'],
 	userByQuery: (query: string) => [...otherQK.all(), 'byUserQuery', query],
+
+	//* Vehicle
+	vehicle: () => [...otherQK.all(), 'vehicle'],
+	//*courier
+	courier: () => [...otherQK.all(), 'courier'],
+
+	//* Order
+	order: () => [...otherQK.all(), 'order'],
 };
 
 export default otherQK;

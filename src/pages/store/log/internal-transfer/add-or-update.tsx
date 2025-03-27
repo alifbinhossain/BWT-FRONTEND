@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { IInternalTransferTableData } from '@/pages/store/_config/columns/columns.type';
 import { useStoreInternalTransfersByUUID } from '@/pages/store/_config/query';
 import { INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '@/pages/store/_config/schema';
+import { z } from 'zod';
 import useRHF from '@/hooks/useRHF';
 
 import { IFormSelectOption } from '@/components/core/form/types';
@@ -9,13 +10,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import {
-	useOtherBox,
-	useOtherBranch,
-	useOtherFloor,
-	useOtherRack,
-	useOtherWarehouse,
-} from '@/lib/common-queries/other';
+import { useOtherBox, useOtherFloor, useOtherRack, useOtherWarehouse } from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
 
 import { IInternalTransferAddOrUpdateProps } from '../../_config/types';
@@ -36,9 +31,10 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
-	const { data: branchOptions } = useOtherBranch<IFormSelectOption[]>();
+	const MAX_QUANTITY = updatedData ? updatedData.from_warehouse + updatedData.quantity : Infinity;
+	const schema = INTERNAL_TRANSFER_SCHEMA.extend({ quantity: z.number().int().positive().max(MAX_QUANTITY) });
 
-	const form = useRHF(INTERNAL_TRANSFER_SCHEMA, INTERNAL_TRANSFER_NULL);
+	const form = useRHF(schema, INTERNAL_TRANSFER_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -77,29 +73,22 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 		>
 			<FormField
 				control={form.control}
-				name='from_branch_uuid'
+				name='from_warehouse_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
 						label='From'
-						placeholder='Select Branch'
-						options={branchOptions!}
+						placeholder='Select Warehouse'
+						options={warehouseOptions!}
 						{...props}
 					/>
 				)}
 			/>
 			<FormField
 				control={form.control}
-				name='to_branch_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect label='To' placeholder='Select Branch' options={branchOptions!} {...props} />
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='warehouse_uuid'
+				name='to_warehouse_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
-						label='Warehouse'
+						label='To'
 						placeholder='Select Warehouse'
 						options={warehouseOptions!}
 						{...props}

@@ -1,9 +1,6 @@
 import useTQuery from '@/hooks/useTQuery';
 
-
-
 import otherQK from './query-keys';
-
 
 //* GET OTHER HR
 export const useOtherHR = <T>() =>
@@ -146,4 +143,23 @@ export const useOtherUserByQuery = <T>(query: string) =>
 	useTQuery<T>({
 		queryKey: otherQK.userByQuery(query),
 		url: `/other/user/value/label${query}`,
+	});
+//* GET OTHER VEHICLE
+export const useOtherVehicle = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.vehicle(),
+		url: `/other/vehicle/value/label`,
+	});
+//* GET OTHER COURIER
+export const useOtherCourier = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.courier(),
+		url: `/other/courier/value/label`,
+	});
+
+//* GET OTHER ORDER
+export const useOtherOrder = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.order(),
+		url: `/other/order/value/label`,
 	});

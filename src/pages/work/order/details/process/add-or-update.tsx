@@ -93,16 +93,6 @@ const AddOrUpdate: React.FC<IProcessAddOrUpdateProps> = ({
 					name='status'
 					render={(props) => <CoreForm.Checkbox label='Done' {...props} />}
 				/>
-				<FormField
-					control={form.control}
-					name='is_transferred_for_qc'
-					render={(props) => <CoreForm.Checkbox label='Transfer Qc' {...props} />}
-				/>
-				<FormField
-					control={form.control}
-					name='is_ready_for_delivery'
-					render={(props) => <CoreForm.Checkbox label='Ready To Delivery' {...props} />}
-				/>
 			</div>
 			<div className='flex space-x-4'>
 				<div className='flex-1'>

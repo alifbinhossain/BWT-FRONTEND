@@ -63,7 +63,14 @@ export type IProductTableData = {
 	model_uuid: string;
 	size_uuid: string;
 	name: string;
+	warehouse_1: number;
+	warehouse_2: number;
+	warehouse_3: number;
+	warehouse_1_uuid: string;
+	warehouse_2_uuid: string;
+	warehouse_3_uuid: string;
 	warranty_days: number;
+	from_warehouse: number;
 	service_warranty_days: number;
 	is_maintaining_stock: boolean;
 	created_at: string;
@@ -167,18 +174,38 @@ export interface IInternalTransferTableData {
 	rack_uuid: string;
 	floor_uuid: string;
 	box_uuid: string;
+	from_warehouse: number;
 	quantity: number;
 	remarks: string;
 	created_at: string;
 	created_by: string;
 	updated_at: string;
 }
+//* Transfer
+export type ITransferTableData = {
+	uuid: string;
+	id: string;
+	warehouse_uuid: string;
+	warehouse_name: string;
+	product_name: string;
+	product_uuid: string;
+	order_id: string;
+	order_uuid: string;
+	info_uuid: string;
+	quantity: number;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
 
 //* Internal Transfer Action
 
 export type IStockActionTrx = {
 	uuid: string;
 	name: string;
+	max_quantity?: number;
+	warehouse_uuid?: string;
+	product_uuid?: string;
 };
 //* Branch
 export type IBranchTableData = {

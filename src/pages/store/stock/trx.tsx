@@ -77,11 +77,11 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 		<AddModal open={open} setOpen={onClose} title={'Transfer Material'} form={form} onSubmit={onSubmit}>
 			<FormField
 				control={form.control}
-				name='from_branch_uuid'
+				name='from_warehouse_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
 						label='From'
-						placeholder='Select Branch'
+						placeholder='Select Warehouse'
 						options={branchOptions!}
 						{...props}
 					/>
@@ -89,21 +89,9 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 			/>
 			<FormField
 				control={form.control}
-				name='to_branch_uuid'
+				name='to_warehouse_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect label='To' placeholder='Select Branch' options={branchOptions!} {...props} />
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='warehouse_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect
-						label='Warehouse'
-						placeholder='Select Warehouse'
-						options={warehouseOptions!}
-						{...props}
-					/>
 				)}
 			/>
 			<FormField
