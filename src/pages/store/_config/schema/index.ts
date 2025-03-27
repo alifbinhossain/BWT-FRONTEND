@@ -428,3 +428,17 @@ export const PURCHASE_RETURN_LOG_NULL: Partial<IPurchaseReturnLog> = {
 };
 
 export type IPurchaseReturnLog = z.infer<typeof PURCHASE_RETURN_LOG_SCHEMA>;
+//* Transfer Schema
+export const TRANSFER_SCHEMA = z.object({
+	order_uuid: STRING_REQUIRED,
+	quantity: NUMBER_DOUBLE_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const TRANSFER_NULL: Partial<ITransfer> = {
+	order_uuid: '',
+	quantity: 0,
+	remarks: null,
+};
+
+export type ITransfer = z.infer<typeof TRANSFER_SCHEMA>;

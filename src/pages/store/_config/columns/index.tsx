@@ -23,6 +23,7 @@ import {
 	IRoomTableData,
 	ISizeTableData,
 	IStockTableData,
+	ITransferTableData,
 	IVendorTableData,
 	IWarehouseTableData,
 } from './columns.type';
@@ -131,10 +132,18 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 //* Product Columns
 export const productColumns = ({
 	actionTrxAccess,
+	actionOrderAgainstTrxAccess,
 	handleAgainstTrx,
+	handleOrderAgainstWarehouse1Trx,
+	handleOrderAgainstWarehouse2Trx,
+	handleOrderAgainstWarehouse3Trx,
 }: {
 	actionTrxAccess: boolean;
+	actionOrderAgainstTrxAccess: boolean;
 	handleAgainstTrx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse1Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse2Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse3Trx: (row: Row<any>) => void;
 }): ColumnDef<IProductTableData>[] => [
 	{
 		accessorKey: 'is_maintaining_stock',
@@ -195,14 +204,44 @@ export const productColumns = ({
 		enableColumnFilter: false,
 	},
 	{
+		id: 'action_trx',
+		header: 'Warehouse 1 Transfer Against Order',
+		cell: (info) => <Transfer onClick={() => handleOrderAgainstWarehouse1Trx(info.row)} />,
+		size: 40,
+		meta: {
+			hidden: !actionOrderAgainstTrxAccess,
+			disableFullFilter: true,
+		},
+	},
+	{
 		accessorKey: 'warehouse_2',
 		header: 'Warehouse 2',
 		enableColumnFilter: false,
 	},
 	{
+		id: 'action_trx',
+		header: 'Warehouse 2 Transfer Against Order',
+		cell: (info) => <Transfer onClick={() => handleOrderAgainstWarehouse2Trx(info.row)} />,
+		size: 40,
+		meta: {
+			hidden: !actionOrderAgainstTrxAccess,
+			disableFullFilter: true,
+		},
+	},
+	{
 		accessorKey: 'warehouse_3',
 		header: 'Warehouse 3',
 		enableColumnFilter: false,
+	},
+	{
+		id: 'action_trx',
+		header: 'Warehouse 3 Transfer Against Order',
+		cell: (info) => <Transfer onClick={() => handleOrderAgainstWarehouse3Trx(info.row)} />,
+		size: 40,
+		meta: {
+			hidden: !actionOrderAgainstTrxAccess,
+			disableFullFilter: true,
+		},
 	},
 ];
 
@@ -451,7 +490,48 @@ export const internalTransferColumns = (): ColumnDef<IInternalTransferTableData>
 		enableColumnFilter: false,
 	},
 ];
-
+//* Transfer Columns
+export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
+	{
+		accessorKey: 'order_id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.order_uuid;
+			const info_uuid = info.row.original.info_uuid;
+			return (
+				<LinkOnly
+					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+					title={info.getValue() as string}
+				/>
+			);
+		},
+	},
+	{
+		accessorKey: 'info_id',
+		header: 'Info ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.info_uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+		},
+	},
+	{
+		accessorKey: 'product_name',
+		header: 'Product',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'Quantity',
+		enableColumnFilter: false,
+	},
+];
 //* Room Columns
 export const roomColumns = (): ColumnDef<IRoomTableData>[] => [
 	{

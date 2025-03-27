@@ -31,7 +31,7 @@ const StoreRoutes: IRoute[] = [
 				path: '/store/product',
 				element: <Product />,
 				page_name: 'store__product',
-				actions: ['create', 'read', 'update', 'delete', 'click_trx'],
+				actions: ['create', 'read', 'update', 'delete', 'click_trx', 'click_order_trx'],
 			},
 			{
 				name: 'Purchase',
@@ -196,6 +196,8 @@ const StoreRoutes: IRoute[] = [
 					'delete',
 					'click_internal_transfer_update',
 					'click_internal_transfer_delete',
+					'click_order_transfer_update',
+					'click_order_transfer_delete',
 				],
 			},
 		],

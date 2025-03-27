@@ -156,3 +156,10 @@ export const useOtherCourier = <T>() =>
 		queryKey: otherQK.courier(),
 		url: `/other/courier/value/label`,
 	});
+
+//* GET OTHER ORDER
+export const useOtherOrder = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.order(),
+		url: `/other/order/value/label`,
+	});

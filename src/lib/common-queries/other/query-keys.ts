@@ -58,6 +58,9 @@ const otherQK = {
 	vehicle: () => [...otherQK.all(), 'vehicle'],
 	//*courier
 	courier: () => [...otherQK.all(), 'courier'],
+
+	//* Order
+	order: () => [...otherQK.all(), 'order'],
 };
 
 export default otherQK;

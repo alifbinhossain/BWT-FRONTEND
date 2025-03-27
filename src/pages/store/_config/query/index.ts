@@ -1,9 +1,6 @@
 import useTQuery from '@/hooks/useTQuery';
 
-
-
 import { storeQK } from './queryKeys';
-
 
 // * Group
 export const useStoreGroups = <T>() =>
@@ -228,7 +225,6 @@ export const useStorePurchaseEntryByUUID = <T>(uuid: string) =>
 		queryKey: storeQK.purchaseEntryByUUID(uuid),
 		url: `/store/purchase-entry/${uuid}`,
 		enabled: !!uuid,
-		
 	});
 //* Purchase Return
 export const useStorePurchaseReturn = <T>() =>
@@ -267,5 +263,19 @@ export const useStoreInternalTransfersByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: storeQK.internalTransferByUUID(uuid),
 		url: `/store/internal-transfer/${uuid}`,
+		enabled: !!uuid,
+	});
+
+//* Order Transfer
+export const useStoreOrderTransfers = <T>() =>
+	useTQuery<T>({
+		queryKey: storeQK.orderTransfer(),
+		url: '/store/product-transfer',
+	});
+
+export const useStoreOrderTransfersByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: storeQK.orderTransferByUUID(uuid),
+		url: `/store/product-transfer/${uuid}`,
 		enabled: !!uuid,
 	});
