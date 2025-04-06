@@ -11,6 +11,7 @@ import useRHF from '@/hooks/useRHF';
 import { Checkbox } from '@/components/ui/checkbox';
 import DebouncedInput from '@/components/ui/debounce-input';
 import { FormField } from '@/components/ui/form';
+import ReactSelect from '@/components/ui/react-select';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
@@ -19,12 +20,14 @@ import { cn } from '@/lib/utils';
 import { flattenRoutes, getDateTime } from '@/utils';
 
 import { IPageAssign } from '../_config/columns/columns.type';
-import { useHrCanAccess } from '../_config/query';
-import { IPageAssignProps } from '../_config/types';
+import { useHrCanAccess, useHrUsersWithAccess } from '../_config/query';
+import { IPageAssignProps, usersWithAccess } from '../_config/types';
 
 const PageAssign: React.FC<IPageAssignProps> = ({ url, open, setOpen, updatedData, setUpdatedData, updateData }) => {
 	const { data } = useHrCanAccess<any>(updatedData?.uuid as string);
+	const { data: allUsers } = useHrUsersWithAccess<any>();
 
+	const [user, setUser] = useState<usersWithAccess>();
 	const [searchPageName, setSearchPageName] = useState('');
 	const [selectPageName, setSelectPageName] = useState<string>('all');
 	const [filteredRoutes, setFilteredRoutes] = useState<IRoute[]>(allFlatRoutes);
@@ -114,6 +117,49 @@ const PageAssign: React.FC<IPageAssignProps> = ({ url, open, setOpen, updatedDat
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
 
+	// * Reset access from selected user access
+	useEffect(() => {
+		if (!user || user?.['can_access'] === null) {
+			form.reset(PAGE_ASSIGN_NULL);
+			return;
+		}
+
+		const result: { [key: string]: boolean } = {};
+
+		const val = JSON.parse(user.can_access as string);
+		Object.entries(val).forEach(([k, v]: any) => {
+			v.forEach((item: any) => {
+				const obj_key = k + '___' + item;
+				result[obj_key] = true;
+			});
+		});
+
+		const filterRoutes = allFlatRoutes?.filter((item) => item.actions !== undefined);
+
+		const PAGE_ACTIONS = filterRoutes?.reduce(
+			(
+				acc: {
+					[key: string]: boolean;
+				},
+				{ page_name, actions }
+			) => {
+				actions?.forEach((action) => {
+					const key = page_name + '___' + action;
+
+					acc[key] = result?.[key] === true ? true : false;
+				});
+				return acc;
+			},
+			{}
+		);
+
+		Object.entries(PAGE_ACTIONS)?.forEach(([key, value]) => {
+			form.setValue(key, value, { shouldDirty: true });
+		});
+
+		// form.reset(PAGE_ACTIONS);
+	}, [user]);
+
 	const onClose = () => {
 		setUpdatedData?.(null);
 		form.reset(PAGE_ASSIGN_NULL);
@@ -153,17 +199,27 @@ const PageAssign: React.FC<IPageAssignProps> = ({ url, open, setOpen, updatedDat
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<DebouncedInput
-				icon={<Search className='size-4 text-secondary/50' />}
-				width='mb-4'
-				placeholder='Search Page Name...'
-				value={searchPageName ?? ''}
-				onChange={(val) => {
-					setSelectPageName('all');
-					setSearchPageName(val as string);
-				}}
-			/>
-
+			<div className='flex gap-8'>
+				<DebouncedInput
+					icon={<Search className='size-4 text-secondary/50' />}
+					width='mb-4'
+					placeholder='Search Page Name...'
+					value={searchPageName ?? ''}
+					onChange={(val) => {
+						setSelectPageName('all');
+						setSearchPageName(val as string);
+					}}
+				/>
+				<ReactSelect
+					className='min-w-64'
+					placeholder='Select users access'
+					options={allUsers}
+					value={allUsers?.filter((item: any) => item.value == user?.value)}
+					onChange={(e) => {
+						setUser(e as usersWithAccess);
+					}}
+				/>
+			</div>
 			<Tabs value={selectPageName} className='w-full'>
 				<TabsList className='flex w-full justify-start bg-base-200'>
 					<TabsTrigger type={'button'} value={'all'} onClick={() => setSelectPageName('all')}>

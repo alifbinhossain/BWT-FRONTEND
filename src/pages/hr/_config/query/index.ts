@@ -53,3 +53,9 @@ export const useHrDepartmentsByUUID = <T>(uuid: string) =>
 		url: `/hr/department/${uuid}`,
 		enabled: !!uuid,
 	});
+
+export const useHrUsersWithAccess = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.userWithAccess(),
+		url: '/other/hr/users-can-access/value/label',
+	});
