@@ -12,20 +12,6 @@ const DeliveryRoutes: IRoute[] = [
 		name: 'Delivery',
 		children: [
 			{
-				name: 'Vehicle',
-				path: '/delivery/vehicle',
-				element: <Vehicle />,
-				page_name: 'delivery__vehicle',
-				actions: ['create', 'read', 'update', 'delete'],
-			},
-			{
-				name: 'Courier',
-				path: '/delivery/courier',
-				element: <Courier />,
-				page_name: 'delivery__courier',
-				actions: ['create', 'read', 'update', 'delete'],
-			},
-			{
 				name: 'Challan',
 				path: '/delivery/challan',
 				element: <Challan />,
@@ -55,6 +41,25 @@ const DeliveryRoutes: IRoute[] = [
 				page_name: 'delivery__challan_details',
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Library',
+				children: [
+					{
+						name: 'Vehicle',
+						path: '/delivery/vehicle',
+						element: <Vehicle />,
+						page_name: 'delivery__vehicle',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Courier',
+						path: '/delivery/courier',
+						element: <Courier />,
+						page_name: 'delivery__courier',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+				],
 			},
 		],
 	},
