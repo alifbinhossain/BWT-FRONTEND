@@ -10,6 +10,7 @@ export const workQK = {
 	info: () => [...workQK.all(), 'info'],
 	infoByUUID: (uuid: string) => [...workQK.info(), uuid],
 	infoByDetails: (uuid: string) => [...workQK.info(), 'infoByDetails', uuid],
+	infoOrderByDetails: (uuid: string) => [...workQK.info(), 'infoOrderByDetails', uuid],
 	//* order
 	job: () => [...workQK.all(), 'job'],
 	jobByUUID: (uuid: string) => [...workQK.job(), uuid],

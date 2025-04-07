@@ -22,6 +22,7 @@ export interface IDataTableEntryProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	toolbarOptions?: 'none' | IToolbarOptions[];
+	defaultVisibleColumns?: any;
 }
 
 interface TDefaultColumn<TData, TValue> {

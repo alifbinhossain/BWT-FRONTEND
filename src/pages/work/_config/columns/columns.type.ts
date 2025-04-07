@@ -40,6 +40,7 @@ export type IOrderTableData = {
 	user_phone: string;
 	is_product_received: boolean;
 	is_diagnosis_needed: boolean;
+	is_delivery_complete?: boolean;
 	received_date: string;
 	user_id: string;
 	model_uuid: string;
@@ -112,6 +113,7 @@ export type IProcessTableData = {
 	process_id: string;
 	uuid: string;
 	section_uuid: string;
+	section_name: string;
 	order_uuid: string;
 	diagnosis_uuid: string;
 	engineer_uuid: string;

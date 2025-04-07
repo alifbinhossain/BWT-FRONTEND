@@ -9,6 +9,7 @@ import OrderDetails from '@/pages/work/order/details/';
 import Problem from '@/pages/work/problem';
 import QC from '@/pages/work/qc';
 import Section from '@/pages/work/section';
+
 import { IRoute } from '@/types';
 
 const workRoutes: IRoute[] = [
@@ -22,6 +23,7 @@ const workRoutes: IRoute[] = [
 				page_name: 'work__info',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
+
 			{
 				name: 'Info Entry',
 				path: '/work/info/entry',
@@ -46,6 +48,7 @@ const workRoutes: IRoute[] = [
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
 			},
+
 			{
 				name: 'Order',
 				path: '/work/order',

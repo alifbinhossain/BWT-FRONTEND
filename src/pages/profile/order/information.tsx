@@ -6,7 +6,7 @@ import TableList, { ITableListItems } from '@/components/others/table-list';
 
 import { formatDateTable } from '@/utils/formatDate';
 
-import { IInfoTableData } from '../../_config/columns/columns.type';
+import { IInfoTableData } from '../config/columns/columns.type';
 
 const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 	const renderGeneralItems = (): ITableListItems => {
@@ -47,7 +47,7 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 
 	return (
 		<>
-			<SectionContainer title={'Customer Information'}>
+			<SectionContainer title={'Basic Information'}>
 				<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
 					<TableList title='General' className='flex-1' items={renderGeneralItems()} />
 					<TableList title='Other' className='flex-1' items={renderOtherItems()} />

@@ -7,9 +7,9 @@ import { AddModal } from '@core/modal';
 
 import { getDateTime } from '@/utils';
 
-import { useHrUsersByUUID } from './_config/query';
-import { IUser, USER_NULL, USER_SCHEMA } from './_config/schema';
-import { IUserAddOrUpdateProps } from './_config/types';
+import { useHrUsersByUUID } from './config/query';
+import { IUser, USER_NULL, USER_SCHEMA } from './config/schema';
+import { IUserAddOrUpdateProps } from './config/types';
 
 const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 	url,

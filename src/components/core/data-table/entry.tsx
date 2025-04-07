@@ -7,11 +7,13 @@ const DataTableEntry = <TData, TValue>({
 	columns,
 	data,
 	toolbarOptions,
+	defaultVisibleColumns,
 }: IDataTableEntryProps<TData, TValue>) => {
 	return (
 		<TableProvider
 			title={title}
 			columns={columns}
+			defaultVisibleColumns={defaultVisibleColumns}
 			data={data}
 			enableRowSelection={false}
 			toolbarOptions={toolbarOptions}
