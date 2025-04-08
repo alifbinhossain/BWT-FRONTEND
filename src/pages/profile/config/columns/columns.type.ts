@@ -1,3 +1,5 @@
+import { IOrderTableData } from '@/pages/work/_config/columns/columns.type';
+
 //* Department
 export type IDepartmentTableData = {
 	uuid: string;
@@ -45,4 +47,26 @@ export type IResetPassword = {
 export type IPageAssign = {
 	uuid: string;
 	name: string;
+};
+//* Info Columns
+export type IInfoTableData = {
+	uuid: string;
+	is_new_customer?: boolean;
+	name: string;
+	phone: string;
+	user_phone: string;
+	user_id: string;
+	id: string;
+	info_id: string;
+	user_uuid: string;
+	user_name: string;
+	designation_uuid: string;
+	department_uuid: string;
+	remarks: string;
+	created_by: string;
+	created_at: string;
+	updated_at: string;
+	is_product_received: boolean;
+	received_date: string;
+	order_entry: IOrderTableData[];
 };

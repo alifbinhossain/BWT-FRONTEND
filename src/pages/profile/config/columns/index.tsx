@@ -1,10 +1,14 @@
+import { IProcessTableData } from '@/pages/work/_config/columns/columns.type';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
+import StatusButton from '@/components/buttons/status';
+import { LinkOnly } from '@/components/others/link';
+import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-import { IDepartmentTableData, IDesignationTableData, IUserTableData } from './columns.type';
+import { IDepartmentTableData, IDesignationTableData, IInfoTableData, IUserTableData } from './columns.type';
 
 // Department Columns
 export const departmentColumns = (): ColumnDef<IDepartmentTableData>[] => [
@@ -136,3 +140,57 @@ export function userColumns({
 		},
 	];
 }
+//* Info Columns
+export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
+	{
+		accessorKey: 'info_id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.uuid;
+			return <LinkOnly uri={`/work/order/${uuid}`} title={info.getValue() as string} />;
+		},
+	},
+	{
+		accessorKey: 'user_name',
+		header: 'Customer',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'is_product_received',
+		header: 'Product Received',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'received_date',
+		header: 'Receive Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+];
+//*Process Columns
+export const processColumns = (): ColumnDef<IProcessTableData>[] => [
+	{
+		accessorKey: 'section_name',
+		header: 'Section',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'status',
+		header: 'Process Status',
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<>
+					<StatusButton value={info.getValue() as boolean} />
+					{info.row.original.status_update_date ? (
+						<DateTime date={new Date(info.row.original.status_update_date)} isTime={false} />
+					) : (
+						''
+					)}
+				</>
+			);
+		},
+	},
+];

@@ -53,3 +53,11 @@ export const useHrDepartmentsByUUID = <T>(uuid: string) =>
 		url: `/hr/department/${uuid}`,
 		enabled: !!uuid,
 	});
+
+//* Order Info By Customer
+export const useWorkOrderInfoByCustomer = <T>(customer_uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.orderInfoByCustomer(customer_uuid),
+		url: `/work/info?customer_uuid=${customer_uuid}`,
+		enabled: !!customer_uuid,
+	});

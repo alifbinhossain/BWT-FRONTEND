@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { formatDateTable } from '@/utils/formatDate';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { IResetPassword, IUserTableData } from './_config/columns/columns.type'; // TODO: update data type
+import { IResetPassword, IUserTableData } from './config/columns/columns.type'; // TODO: update data type
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const ResetPassword = lazy(() => import('../hr/user/reset-password'));

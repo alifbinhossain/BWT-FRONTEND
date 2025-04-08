@@ -16,4 +16,7 @@ export const hrQK = {
 	user: ({ start_date, end_date, status }: IParams) => [...hrQK.userDefault(), start_date, end_date, status],
 	userByUUID: (uuid: string) => [...hrQK.userDefault(), uuid],
 	userCanAccess: (uuid: string) => [...hrQK.userDefault(), 'can-access', uuid],
+
+	//* order info
+	orderInfoByCustomer: (uuid: string) => [...hrQK.all(), 'order-info', 'customer', uuid],
 };
