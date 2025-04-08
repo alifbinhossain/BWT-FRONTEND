@@ -1,13 +1,9 @@
 import React from 'react';
-import { processColumns } from '@/pages/profile/config/columns';
 import { IOrderTableData } from '@/pages/work/_config/columns/columns.type';
 
 import StatusButton from '@/components/buttons/status';
-import DataTableEntry from '@/components/core/data-table/entry';
-import { LinkOnly } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
-import { Switch } from '@/components/ui/switch';
 
 import { formatDateTable } from '@/utils/formatDate';
 

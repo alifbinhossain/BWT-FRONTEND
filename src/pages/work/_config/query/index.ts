@@ -32,7 +32,7 @@ export const useWorkInfoByUUID = <T>(uuid: string) =>
 export const useWorkInfoOrderByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: workQK.infoOrderByDetails(uuid),
-		url: `/work/order-details-by-info/${uuid}?process=true&diagnosis=true`,
+		url: `/public/work/order-details-by-info/${uuid}?process=true&diagnosis=true`,
 		enabled: !!uuid,
 	});
 export const useWorkOrder = <T>() =>
