@@ -20,6 +20,7 @@ const Header = () => {
 				name='purchase_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
+						menuPortalTarget={document.body}
 						label='Purchase'
 						placeholder='Select Purchase'
 						options={purchaseOptions!}
@@ -32,6 +33,7 @@ const Header = () => {
 				name='warehouse_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
+						menuPortalTarget={document.body}
 						label='Warehouse'
 						placeholder='Select Warehouse'
 						options={warehouseOptions!}

@@ -79,7 +79,7 @@ const Information: React.FC<{ data: IUserTableData; updateData: any; postData: a
 			{
 				label: 'Edit',
 				value: (
-					<Button disabled={!updateAccess} onClick={handleEdit}>
+					<Button onClick={handleEdit}>
 						Edit
 					</Button>
 				),
@@ -87,7 +87,7 @@ const Information: React.FC<{ data: IUserTableData; updateData: any; postData: a
 			{
 				label: 'Reset Password',
 				value: (
-					<Button onClick={handleResetPassword} disabled={!resetAccess}>
+					<Button onClick={handleResetPassword} >
 						Reset Password
 					</Button>
 				),

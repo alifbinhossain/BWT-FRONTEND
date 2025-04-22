@@ -123,9 +123,9 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
 																<CoreForm.ReactSelect
+																	menuPortalTarget={document.body}
 																	options={fieldDef.options}
 																	placeholder={fieldDef.placeholder}
-																	menuPortalTarget={document.body}
 																	disableLabel
 																	{...props}
 																/>

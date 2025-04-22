@@ -9,7 +9,6 @@ import OrderDetails from '@/pages/work/order/details/';
 import Problem from '@/pages/work/problem';
 import QC from '@/pages/work/qc';
 import Section from '@/pages/work/section';
-
 import { IRoute } from '@/types';
 
 const workRoutes: IRoute[] = [
@@ -76,14 +75,14 @@ const workRoutes: IRoute[] = [
 				path: '/work/qc',
 				element: <QC />,
 				page_name: 'work__qc',
-				actions: ['read', 'update', 'delete'],
+				actions: ['read', 'update'],
 			},
 			{
 				name: 'Ready For Delivery',
 				path: '/work/is_ready_for_delivery',
 				element: <IsReadyForDelivery />,
 				page_name: 'work__is_ready_for_delivery',
-				actions: ['read', 'update', 'delete'],
+				actions: ['read', 'update'],
 			},
 			{
 				name: 'Transfer Process Section',

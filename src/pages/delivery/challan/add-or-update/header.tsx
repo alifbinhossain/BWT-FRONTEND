@@ -46,6 +46,7 @@ const Header = () => {
 				name='customer_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
+						menuPortalTarget={document.body}
 						label='Customer'
 						placeholder='Select Customer'
 						options={customerOption!}
@@ -57,7 +58,13 @@ const Header = () => {
 				control={form.control}
 				name='challan_type'
 				render={(props) => (
-					<CoreForm.ReactSelect label='Type' placeholder='Select type' options={typeOption!} {...props} />
+					<CoreForm.ReactSelect
+						menuPortalTarget={document.body}
+						label='Type'
+						placeholder='Select type'
+						options={typeOption!}
+						{...props}
+					/>
 				)}
 			/>
 			{(form.watch('challan_type') === 'employee_delivery' ||
@@ -67,6 +74,7 @@ const Header = () => {
 					name='employee_uuid'
 					render={(props) => (
 						<CoreForm.ReactSelect
+							menuPortalTarget={document.body}
 							label='Employee'
 							placeholder='Select Employee'
 							options={employeeOption!}
@@ -81,6 +89,7 @@ const Header = () => {
 					name='vehicle_uuid'
 					render={(props) => (
 						<CoreForm.ReactSelect
+							menuPortalTarget={document.body}
 							label='Vehicle'
 							placeholder='Select Vehicle'
 							options={vehicleOption!}
@@ -95,6 +104,7 @@ const Header = () => {
 					name='courier_uuid'
 					render={(props) => (
 						<CoreForm.ReactSelect
+							menuPortalTarget={document.body}
 							label='Courier'
 							placeholder='Select Courier'
 							options={courierOption!}

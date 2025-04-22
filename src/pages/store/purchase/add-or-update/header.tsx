@@ -21,6 +21,7 @@ const Header = () => {
 				name='vendor_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
+						menuPortalTarget={document.body}
 						label='Vendor'
 						placeholder='Select Vendor'
 						options={vendorOptions!}
@@ -35,6 +36,7 @@ const Header = () => {
 					<CoreForm.ReactSelect
 						label='Branch'
 						placeholder='Select Branch'
+						menuPortalTarget={document.body}
 						options={branchOptions!}
 						{...props}
 					/>

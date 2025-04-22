@@ -9,13 +9,8 @@ import { formatDateTable } from '@/utils/formatDate';
 import { IChallanTableData } from '../../_config/columns/columns.type'; // TODO: update data type
 
 const Information: React.FC<{ data: IChallanTableData }> = ({ data }) => {
-	const renderItems = (): ITableListItems => {
+	const renderItemsLeft = (): ITableListItems => {
 		return [
-			{
-				label: 'Delivery Complete',
-				value: <StatusButton value={data.is_delivery_complete as boolean} />,
-			},
-
 			{
 				label: 'ID',
 				value: data.challan_no,
@@ -23,6 +18,23 @@ const Information: React.FC<{ data: IChallanTableData }> = ({ data }) => {
 			{
 				label: 'Customer',
 				value: data.customer_name,
+			},
+			{
+				label: 'Created At',
+				value: formatDateTable(data.created_at),
+			},
+			{
+				label: 'Updated At',
+				value: formatDateTable(data.updated_at),
+			},
+			{ label: 'Remarks', value: data.remarks },
+		];
+	};
+	const renderItemsRight = (): ITableListItems => {
+		return [
+			{
+				label: 'Delivery Complete',
+				value: <StatusButton value={data.is_delivery_complete as boolean} />,
 			},
 			{
 				label: 'Challan Type',
@@ -48,21 +60,15 @@ const Information: React.FC<{ data: IChallanTableData }> = ({ data }) => {
 				value: data.courier_branch,
 				hidden: data?.challan_type !== 'courier_delivery',
 			},
-			{
-				label: 'Created At',
-				value: formatDateTable(data.created_at),
-			},
-			{
-				label: 'Updated At',
-				value: formatDateTable(data.updated_at),
-			},
-			{ label: 'Remarks', value: data.remarks },
 		];
 	};
 
 	return (
 		<SectionContainer title={'Information'}>
-			<TableList items={renderItems()} />
+			<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
+				<TableList className='w-full md:w-1/2' items={renderItemsLeft()} />
+				<TableList className='w-full md:w-1/2' items={renderItemsRight()} />
+			</div>
 		</SectionContainer>
 	);
 };

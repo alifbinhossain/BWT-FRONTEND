@@ -49,8 +49,8 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 		<>
 			<SectionContainer title={'Customer Information'}>
 				<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
-					<TableList title='General' className='flex-1' items={renderGeneralItems()} />
-					<TableList title='Other' className='flex-1' items={renderOtherItems()} />
+					<TableList title='General' className='w-full md:w-1/2' items={renderGeneralItems()} />
+					<TableList title='Other' className='w-full md:w-1/2' items={renderOtherItems()} />
 				</div>
 			</SectionContainer>
 		</>

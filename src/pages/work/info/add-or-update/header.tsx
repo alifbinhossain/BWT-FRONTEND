@@ -78,6 +78,7 @@ const Header = () => {
 					name='user_uuid'
 					render={(props) => (
 						<CoreForm.ReactSelect
+							menuPortalTarget={document.body}
 							label='Customer'
 							options={userOption || []}
 							placeholder='Select Customer'
@@ -107,6 +108,7 @@ const Header = () => {
 							name='business_type'
 							render={(props) => (
 								<CoreForm.ReactSelect
+									menuPortalTarget={document.body}
 									label='Business Type'
 									options={businessTypeOptions || []}
 									placeholder='Select Business Type'
@@ -126,6 +128,7 @@ const Header = () => {
 							name='designation_uuid'
 							render={(props) => (
 								<CoreForm.ReactSelect
+									menuPortalTarget={document.body}
 									label='Designation'
 									options={designationOption || []}
 									placeholder='Select Problems'
@@ -140,6 +143,7 @@ const Header = () => {
 							name='department_uuid'
 							render={(props) => (
 								<CoreForm.ReactSelect
+									menuPortalTarget={document.body}
 									label='Department'
 									options={departmentOption || []}
 									placeholder='Select Accessories'

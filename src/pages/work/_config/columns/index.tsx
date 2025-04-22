@@ -4,6 +4,7 @@ import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { LinkOnly } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
+import { Switch } from '@/components/ui/switch';
 
 import {
 	IDiagnosisTableData,
@@ -166,6 +167,253 @@ export const orderColumns = ({
 		meta: {
 			hidden: !actionTrxAccess,
 			disableFullFilter: true,
+		},
+	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'rack_name',
+		header: 'Rack',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'floor_name',
+		header: 'Floor',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'box_name',
+		header: 'Box',
+		enableColumnFilter: false,
+	},
+];
+export const QCColumns = ({
+	handelDeliveryStatusChange,
+}: {
+	handelDeliveryStatusChange?: (row: Row<any>) => void;
+} = {}): ColumnDef<IOrderTableData>[] => [
+	{
+		accessorKey: 'is_diagnosis_need',
+		header: 'Diagnosis Need',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'is_ready_for_delivery',
+		header: 'Ready For Delivery',
+		enableColumnFilter: false,
+		cell: (info) => (
+			<Switch
+				checked={info.getValue() as boolean}
+				onCheckedChange={() => handelDeliveryStatusChange?.(info.row)}
+			/>
+		),
+	},
+	{
+		accessorKey: 'order_id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.uuid;
+			const info_uuid = info.row.original.info_uuid;
+			return (
+				<LinkOnly
+					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+					title={info.getValue() as string}
+				/>
+			);
+		},
+	},
+	{
+		accessorKey: 'info_id',
+		header: 'Info ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.info_uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+		},
+	},
+	{
+		accessorKey: 'model_name',
+		header: 'Model',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'size_name',
+		header: 'Size',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'serial_no',
+		header: 'Serial No',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'Quantity',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'problems_name',
+		header: 'Problem',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.row.original.problems_name as string[];
+			return (
+				<div className='flex flex-wrap gap-1'>
+					{value?.map((item, index) => (
+						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+							{item.replace(/_/g, ' ')}
+						</span>
+					))}
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'problem_statement',
+		header: 'Problem Statement',
+		enableColumnFilter: false,
+	},
+	{
+		accessorFn: (row) => {
+			return row.accessories
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Accessories',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.row.original.accessories as string[];
+			return (
+				<div className='flex flex-wrap gap-1'>
+					{value?.map((item, index) => (
+						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+							{item.replace(/_/g, ' ')}
+						</span>
+					))}
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'rack_name',
+		header: 'Rack',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'floor_name',
+		header: 'Floor',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'box_name',
+		header: 'Box',
+		enableColumnFilter: false,
+	},
+];
+export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
+	{
+		accessorKey: 'is_diagnosis_need',
+		header: 'Diagnosis Need',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'order_id',
+		header: 'ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.uuid;
+			const info_uuid = info.row.original.info_uuid;
+			return (
+				<LinkOnly
+					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+					title={info.getValue() as string}
+				/>
+			);
+		},
+	},
+	{
+		accessorKey: 'info_id',
+		header: 'Info ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.info_uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+		},
+	},
+	{
+		accessorKey: 'model_name',
+		header: 'Model',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'size_name',
+		header: 'Size',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'serial_no',
+		header: 'Serial No',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'Quantity',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'problems_name',
+		header: 'Problem',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.row.original.problems_name as string[];
+			return (
+				<div className='flex flex-wrap gap-1'>
+					{value?.map((item, index) => (
+						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+							{item.replace(/_/g, ' ')}
+						</span>
+					))}
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'problem_statement',
+		header: 'Problem Statement',
+		enableColumnFilter: false,
+	},
+	{
+		accessorFn: (row) => {
+			return row.accessories
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Accessories',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.row.original.accessories as string[];
+			return (
+				<div className='flex flex-wrap gap-1'>
+					{value?.map((item, index) => (
+						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+							{item.replace(/_/g, ' ')}
+						</span>
+					))}
+				</div>
+			);
 		},
 	},
 	{

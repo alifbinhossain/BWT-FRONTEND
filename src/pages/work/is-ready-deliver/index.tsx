@@ -1,13 +1,11 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
-import { useNavigate } from 'react-router-dom';
-import useAccess from '@/hooks/useAccess';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { orderColumns } from '../_config/columns';
+import { ReadyDeliveryColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkIsDeliveryReady } from '../_config/query';
 
@@ -16,11 +14,6 @@ const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Order = () => {
-	const navigate = useNavigate();
-
-	const pageAccess = useAccess('work__order') as string[];
-
-	const actionTrxAccess = pageAccess.includes('click_trx');
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useWorkIsDeliveryReady<IOrderTableData[]>();
 
@@ -73,10 +66,7 @@ const Order = () => {
 
 	// Table Columns
 
-	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
-		navigate(`/work/transfer-section/${row.original.info_uuid}/${null}/${row.original.uuid}`);
-	};
-	const columns = orderColumns({ actionTrxAccess, handleAgainstTrx });
+	const columns = ReadyDeliveryColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
