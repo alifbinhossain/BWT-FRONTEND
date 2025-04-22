@@ -139,7 +139,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
-	const renderDiagnosisItems = (): ITableListItems => {
+	const renderDiagnosisItemsLeft = (): ITableListItems => {
 		return [
 			{
 				label: 'Diagnosis ID',
@@ -158,17 +158,13 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				),
 			},
 			{
-				label: 'Internal Problem Statement',
-				value: data.diagnosis?.problem_statement,
-			},
-			{
 				label: 'Customer Problem Statement',
 				value: data.diagnosis?.customer_problem_statement,
 			},
-			{
-				label: 'Proposed Cost',
-				value: data.diagnosis?.proposed_cost,
-			},
+		];
+	};
+	const renderDiagnosisItemsRight = (): ITableListItems => {
+		return [
 			{
 				label: 'Customer FeedBack',
 				value: data.diagnosis?.customer_remarks,
@@ -204,17 +200,20 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	return (
 		<>
 			<SectionContainer title={'Order Details'}>
-				<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
-					<TableList title='General' className='flex-1' items={renderGeneralItems()} />
-					<TableList title='Product' className='flex-1' items={renderProductItems()} />
-					<TableList title='Problem' className='flex-1' items={renderProblemItems()} />
-					<TableList title='Status' className='flex-1' items={renderStatusItems()} />
-					<TableList title='Location' className='flex-1' items={renderLocationItems()} />
+				<div className='flex w-full flex-row overflow-x-scroll gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
+					<TableList title='General' className='w-full md:w-1/2' items={renderGeneralItems()} />
+					<TableList title='Product' className='w-full md:w-1/2' items={renderProductItems()} />
+					<TableList title='Problem' className='w-full md:w-1/2' items={renderProblemItems()} />
+					<TableList title='Status' className='w-full md:w-1/2' items={renderStatusItems()} />
+					<TableList title='Location' className='w-full md:w-1/2' items={renderLocationItems()} />
 				</div>
 			</SectionContainer>
 			{data?.is_diagnosis_need && (
 				<SectionContainer title={'Diagnosis'}>
-					<TableList items={renderDiagnosisItems()} />
+					<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
+						<TableList className='w-full over md:w-1/2' items={renderDiagnosisItemsLeft()} />
+						<TableList className='w-full md:w-1/2' items={renderDiagnosisItemsRight()} />
+					</div>
 				</SectionContainer>
 			)}
 		</>

@@ -64,6 +64,12 @@ export function userColumns({
 			cell: (info) => <span className='capitalize'>{info.getValue<string>()}</span>,
 		},
 		{
+			accessorKey: 'business_type',
+			header: 'Business Type',
+			enableColumnFilter: false,
+			cell: (info) => <span className='capitalize'>{info.getValue<string>()}</span>,
+		},
+		{
 			accessorKey: 'name',
 			header: 'Name',
 			enableColumnFilter: false,

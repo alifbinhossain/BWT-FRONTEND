@@ -9,12 +9,6 @@ import { AddModal } from '@core/modal';
 
 import '@/lib/common-queries/other'; // useOtherBox,
 
-// useOtherFloor,
-// useOtherModel,
-// useOtherProblem,
-// useOtherRack,
-// useOtherSize,
-// useOtherWarehouse,
 
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
