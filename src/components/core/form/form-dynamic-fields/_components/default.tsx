@@ -16,7 +16,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 	form,
 }) => {
 	return (
-		<div className='rounded-b-md border border-t-0'>
+		<div className='rounded-b-md border border-t-0 overflow-scroll'>
 			<Table className='table overflow-x-auto'>
 				<TableHeader>
 					<TableRow className='h-8 divide-x-[1px]'>
