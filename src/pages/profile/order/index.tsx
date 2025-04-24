@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import { IInfoTableData } from '../config/columns/columns.type';
 import Information from './information';
-import Order from './orders';
+import OrderCard from './order-card';
 
 const DetailsPage = () => {
 	const { uuid } = useParams();
@@ -18,12 +18,18 @@ const DetailsPage = () => {
 	if (isLoading) return <div>Loading...</div>;
 
 	return (
-		<div className='m-2 space-y-8'>
-			<div className='m-2'>
-				<Information data={(data || []) as IInfoTableData} />
-			</div>
+		<div className='relative space-y-8 p-8'>
+			<div className='flex flex-col gap-6 lg:flex-row'>
+				<div className='left-0 top-0 h-fit w-full flex-shrink-0 lg:sticky lg:w-80'>
+					<Information data={(data || []) as IInfoTableData} />
+				</div>
 
-			{data?.order_entry.map((item) => <Order data={(item || []) as IOrderTableData} />)}
+				<div className='flex-grow'>
+					<div className='grid grid-cols-1 gap-5 xl:grid-cols-2'>
+						{data?.order_entry.map((item) => <OrderCard data={(item || []) as IOrderTableData} />)}
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 };

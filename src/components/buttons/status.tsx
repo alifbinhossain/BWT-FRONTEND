@@ -16,10 +16,10 @@ const StatusButton: React.FC<StatusButtonProps> = ({ value = 0, buttonProps }) =
 			<Button
 				className='size-6 rounded-full'
 				size={'icon'}
-				variant={value=== true ? 'accent' : 'destructive'}
+				variant={value === true ? 'accent' : 'destructive'}
 				{...buttonProps}
 			>
-				{value=== true ? <Check className='size-4' /> : <X className='size-4' />}
+				{value === true ? <Check className='size-4' /> : <X className='size-4' />}
 			</Button>
 		);
 	}
