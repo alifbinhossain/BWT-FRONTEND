@@ -48,7 +48,7 @@ const AddModal2: React.FC<IAddModalProps> = ({
 							animate={{ opacity: 1, scale: 1 }}
 							exit={{ opacity: 0, scale: 0.95 }}
 							className={cn(
-								'relative w-full rounded-lg bg-background p-6 shadow-lg',
+								'relative w-full max-w-lg rounded-lg bg-background p-6 shadow-lg',
 								isSmall && 'sm:max-w-5xl',
 								className
 							)}
