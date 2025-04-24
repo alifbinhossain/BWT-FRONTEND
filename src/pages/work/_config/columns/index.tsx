@@ -7,12 +7,14 @@ import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
 import {
+	IAccessoriesTableData,
 	IDiagnosisTableData,
 	IInfoTableData,
 	IOrderTableData,
 	IProblemsTableData,
 	IProcessTableData,
 	ISectionTableData,
+	IZoneTableData,
 } from './columns.type';
 
 //* Problems Columns
@@ -611,6 +613,37 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 	{
 		accessorKey: 'engineer_name',
 		header: 'Engineer',
+		enableColumnFilter: false,
+	},
+];
+export const zoneColumns = (): ColumnDef<IZoneTableData>[] => [
+	{
+		accessorKey: 'division',
+		header: 'Division',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'latitude',
+		header: 'latitude',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'longitude',
+		header: 'longitude',
+		enableColumnFilter: false,
+	},
+];
+
+//* Accessories Columns
+export const accessoriesColumns = (): ColumnDef<IAccessoriesTableData>[] => [
+	{
+		accessorKey: 'name',
+		header: 'Name',
 		enableColumnFilter: false,
 	},
 ];

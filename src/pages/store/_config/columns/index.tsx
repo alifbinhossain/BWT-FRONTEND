@@ -202,45 +202,48 @@ export const productColumns = ({
 		accessorKey: 'warehouse_1',
 		header: 'Warehouse 1',
 		enableColumnFilter: false,
-	},
-	{
-		id: 'action_trx',
-		header: 'Warehouse 1 Transfer Against Order',
-		cell: (info) => <Transfer onClick={() => handleOrderAgainstWarehouse1Trx(info.row)} />,
-		size: 40,
-		meta: {
-			hidden: !actionOrderAgainstTrxAccess,
-			disableFullFilter: true,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse1Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_2',
 		header: 'Warehouse 2',
 		enableColumnFilter: false,
-	},
-	{
-		id: 'action_trx',
-		header: 'Warehouse 2 Transfer Against Order',
-		cell: (info) => <Transfer onClick={() => handleOrderAgainstWarehouse2Trx(info.row)} />,
-		size: 40,
-		meta: {
-			hidden: !actionOrderAgainstTrxAccess,
-			disableFullFilter: true,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse2Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_3',
 		header: 'Warehouse 3',
 		enableColumnFilter: false,
-	},
-	{
-		id: 'action_trx',
-		header: 'Warehouse 3 Transfer Against Order',
-		cell: (info) => <Transfer onClick={() => handleOrderAgainstWarehouse3Trx(info.row)} />,
-		size: 40,
-		meta: {
-			hidden: !actionOrderAgainstTrxAccess,
-			disableFullFilter: true,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse3Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
 		},
 	},
 ];

@@ -120,3 +120,27 @@ export const useWorkGetTransferSection = <T>(order_uuid: string) =>
 		queryKey: workQK.transferSection(order_uuid),
 		url: `/work/process?order_uuid=${order_uuid}&entry=true`,
 	});
+//* Zone
+export const useWorkZone = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.zone(),
+		url: '/work/zone',
+	});
+export const useWorkZoneByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.zoneByUUID(uuid),
+		url: `/work/zone/${uuid}`,
+		enabled: !!uuid,
+	});
+//* Accoriessies 
+export const useWorkAccessories = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.accessories(),
+		url: '/work/accessories',
+	});
+export const useWorkAccessoriesByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.accessoriesByUUID(uuid),
+		url: `/work/accessories/${uuid}`,
+		enabled: !!uuid,
+	});

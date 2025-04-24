@@ -61,6 +61,10 @@ const otherQK = {
 
 	//* Order
 	order: () => [...otherQK.all(), 'order'],
+	//* Accessories
+	accessories: () => [...otherQK.all(), 'accessories'],
+	//* Zone
+	zone: () => [...otherQK.all(), 'zone'],
 };
 
 export default otherQK;

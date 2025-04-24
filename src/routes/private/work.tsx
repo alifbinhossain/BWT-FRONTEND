@@ -1,4 +1,6 @@
 import { Column } from '@/pages/test';
+import Accessories from '@/pages/work/accessories';
+import Zone from '@/pages/work/delivery-zone';
 import Diagnosis from '@/pages/work/diagonsis';
 import Info from '@/pages/work/info';
 import InfoEntry from '@/pages/work/info/add-or-update';
@@ -114,6 +116,20 @@ const workRoutes: IRoute[] = [
 						path: '/work/section',
 						element: <Section />,
 						page_name: 'work__section',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Zone',
+						path: '/work/zone',
+						element: <Zone />,
+						page_name: 'work__zone',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Accessories',
+						path: '/work/accessory',
+						element: <Accessories />,
+						page_name: 'work__accessory',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 				],

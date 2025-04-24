@@ -34,4 +34,10 @@ export const workQK = {
 
 	//*transfer-section
 	transferSection: (order_uuid: string) => [...workQK.all(), 'transferSection', order_uuid],
+	//*Zone
+	zone: () => [...workQK.all(), 'zone'],
+	zoneByUUID: (uuid: string) => [...workQK.zone(), uuid],
+	//* Accessories
+	accessories: () => [...workQK.all(), 'accessories'],
+	accessoriesByUUID: (uuid: string) => [...workQK.accessories(), uuid],
 };
