@@ -163,3 +163,16 @@ export const useOtherOrder = <T>() =>
 		queryKey: otherQK.order(),
 		url: `/other/order/value/label`,
 	});
+//* GET OTHER Accessories
+export const useOtherAccessories = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.accessories(),
+		url: `/other/accessory/value/label`,
+	});
+
+//* GET OTHER ZONE
+export const useOtherZone = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.zone(),
+		url: `/other/zone/value/label`,
+	});

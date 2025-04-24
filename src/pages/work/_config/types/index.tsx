@@ -164,3 +164,65 @@ export interface ISectionAddOrUpdateProps {
 		any
 	>;
 }
+
+//* Zone
+export interface IZoneAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: any | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+
+//*Accessories
+export interface IAccessoriesAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: any | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}

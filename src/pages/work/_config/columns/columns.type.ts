@@ -134,3 +134,23 @@ export type IProcessTableData = {
 	created_at: string;
 	updated_at: string;
 };
+
+//*Zone
+export type IZoneTableData = {
+	uuid: string;
+	id: number;
+	division: string;
+	latitude: string;
+	longitude: string;
+	name: string;
+	remarks: string;
+	created_by: string;
+	created_at: string;
+	updated_at: string;
+};
+
+//* Accessories
+export type IAccessoriesTableData = {
+	uuid: string;
+	name: string;
+};

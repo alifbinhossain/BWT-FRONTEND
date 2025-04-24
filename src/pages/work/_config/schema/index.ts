@@ -229,3 +229,33 @@ export const TRANSFER_PROCESS_SECTION_NULL: Partial<IWorkTransfer> = {
 	],
 };
 export type IWorkTransfer = z.infer<typeof TRANSFER_PROCESS_SECTION_SCHEMA>;
+
+//* Zone Schema
+export const ZONE_SCHEMA = z.object({
+	name: STRING_OPTIONAL,
+	division: STRING_REQUIRED,
+	latitude: STRING_REQUIRED,
+	longitude: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+export const ZONE_NULL: Partial<IWorkZone> = {
+	name: '',
+	division: '',
+	latitude: '',
+	longitude: '',
+	remarks: null,
+};
+export type IWorkZone = z.infer<typeof ZONE_SCHEMA>;
+
+//* Accessories Schema
+export const ACCESSORIES_SCHEMA = z.object({
+	uuid: STRING_OPTIONAL,
+	name: STRING_OPTIONAL,
+	remarks: STRING_NULLABLE,
+});
+export const ACCESSORIES_NULL: Partial<IAccessories> = {
+	uuid: '',
+	name: '',
+	remarks: null,
+};
+export type IAccessories = z.infer<typeof ACCESSORIES_SCHEMA>;
