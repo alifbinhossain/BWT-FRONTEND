@@ -131,7 +131,7 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			{/* Main Content */}
 			<div className='p-4'>
 				{/* General & Product Info */}
-				<div className='mb-3 grid grid-cols-4 gap-x-6 gap-y-2 text-xs'>
+				<div className='mb-3 grid grid-cols-2 gap-x-6 gap-y-2 text-xs md:grid-cols-4'>
 					{items.map((item, index) => (
 						<Item key={index} label={item.label} value={item.value} />
 					))}
@@ -168,7 +168,7 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				{processStatus && (
 					<div className='mb-3'>
 						<h4 className='mb-2 text-xs font-medium text-slate-600'>Repair Status</h4>
-						<div className='grid grid-cols-3 gap-x-4 gap-y-2 text-xs'>
+						<div className='grid grid-cols-2 gap-x-4 gap-y-2 text-xs md:grid-cols-3'>
 							{processStatus.map((item, index) => (
 								<StatusLabel key={index} text={item.label} value={item.value} />
 							))}
@@ -178,7 +178,7 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 
 				<div className='mb-3'>
 					<h4 className='mb-2 text-xs font-medium text-slate-600'>Status</h4>
-					<div className='grid grid-cols-3 gap-x-4 gap-y-2 text-xs'>
+					<div className='grid grid-cols-2 gap-x-4 gap-y-2 text-xs md:grid-cols-3'>
 						{statusItems.map((item, index) => (
 							<StatusLabel key={index} text={item.label} value={item.value} />
 						))}
