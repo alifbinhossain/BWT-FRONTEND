@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 
 import { IAddModalProps } from './types';
 
-const AddModal2: React.FC<IAddModalProps> = ({
+const AddModal: React.FC<IAddModalProps> = ({
 	form,
 	onSubmit,
 	open,
@@ -85,4 +85,4 @@ const AddModal2: React.FC<IAddModalProps> = ({
 	);
 };
 
-export default AddModal2;
+export default AddModal;
