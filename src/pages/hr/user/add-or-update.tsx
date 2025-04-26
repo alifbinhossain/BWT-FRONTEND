@@ -47,12 +47,16 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 	];
 	const businessType = [
 		{
-			label: 'Company',
-			value: 'company',
+			label: 'User',
+			value: 'user',
 		},
 		{
-			label: 'Individual',
-			value: 'individual',
+			label: 'TV Company',
+			value: 'tv_company',
+		},
+		{
+			label: 'Corporate',
+			value: 'corporate',
 		},
 	];
 
@@ -136,7 +140,8 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 					/>
 				)}
 				{(form.watch('user_type') === 'employee' ||
-					form.watch('business_type') === 'company' ||
+					form.watch('business_type') === 'tv_company' ||
+					form.watch('business_type') === 'corporate' ||
 					form.watch('user_type') === 'vendor') && (
 					<FormField
 						control={form.control}
@@ -152,7 +157,8 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 					/>
 				)}
 				{(form.watch('user_type') === 'employee' ||
-					form.watch('business_type') === 'company' ||
+					form.watch('business_type') === 'tv_company' ||
+					form.watch('business_type') === 'corporate' ||
 					form.watch('user_type') === 'vendor') && (
 					<FormField
 						control={form.control}

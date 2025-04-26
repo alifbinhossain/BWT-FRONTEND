@@ -5,7 +5,7 @@ import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
-import { useOtherDepartment, useOtherDesignation, useOtherUserByQuery } from '@/lib/common-queries/other';
+import { useOtherDepartment, useOtherDesignation, useOtherUserByQuery, useOtherZone } from '@/lib/common-queries/other';
 
 import { IInfo } from '../../_config/schema';
 
@@ -15,13 +15,26 @@ const Header = () => {
 	const { data: userOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 	const isProductReceived = form.watch('is_product_received');
 	const isNewCustomer = form.watch('is_new_customer');
-	const isBusinessTypeCompany = form.watch('business_type') === 'company' && isNewCustomer;
+	const isBusinessTypeCompany =
+		(form.watch('business_type') === 'tv_company' || form.watch('business_type') === 'corporate') && isNewCustomer;
 	const businessTypeOptions = [
-		{ label: 'Individual', value: 'individual' },
-		{ label: 'Company', value: 'company' },
+		{
+			label: 'User',
+			value: 'user',
+		},
+		{
+			label: 'TV Company',
+			value: 'tv_company',
+		},
+		{
+			label: 'Corporate',
+			value: 'corporate',
+		},
 	];
+
 	const { data: departmentOption } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: designationOption } = useOtherDesignation<IFormSelectOption[]>();
+	const { data: zoneOption } = useOtherZone<IFormSelectOption[]>();
 
 	useEffect(() => {
 		if (isNewCustomer) {
@@ -154,6 +167,20 @@ const Header = () => {
 					</div>
 				</div>
 			)}
+			<FormField
+				control={form.control}
+				name='zone_uuid'
+				render={(props) => (
+					<CoreForm.ReactSelect
+						menuPortalTarget={document.body}
+						label='Zone'
+						options={zoneOption || []}
+						placeholder='Select Zone'
+						{...props}
+					/>
+				)}
+			/>
+			<FormField control={form.control} name='location' render={(props) => <CoreForm.Textarea {...props} />} />
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</CoreForm.Section>
 	);

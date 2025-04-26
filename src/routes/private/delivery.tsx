@@ -16,7 +16,7 @@ const DeliveryRoutes: IRoute[] = [
 				path: '/delivery/challan',
 				element: <Challan />,
 				page_name: 'delivery__challan',
-				actions: ['create', 'read', 'update', 'delete'],
+				actions: ['create', 'read', 'update', 'delete', 'click_delivery_complete'],
 			},
 			{
 				name: 'Challan Add',

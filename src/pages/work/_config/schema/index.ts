@@ -78,6 +78,8 @@ export const INFO_SCHEMA = z
 		designation_uuid: STRING_OPTIONAL,
 		department_uuid: STRING_OPTIONAL,
 		is_product_received: BOOLEAN_REQUIRED,
+		location: STRING_REQUIRED,
+		zone_uuid: STRING_REQUIRED,
 		received_date: STRING_NULLABLE,
 		remarks: STRING_NULLABLE,
 		order_entry: z.array(ORDER_SCHEMA_FOR_INFO),

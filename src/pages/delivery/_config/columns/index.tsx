@@ -2,6 +2,7 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import { LinkOnly } from '@/components/others/link';
+import { Switch } from '@/components/ui/switch';
 
 import { IChallanEntryTableData, IChallanTableData, ICourierTableData, IVehicleTableData } from './columns.type';
 
@@ -32,12 +33,21 @@ export const courierColumns = (): ColumnDef<ICourierTableData>[] => [
 	},
 ];
 //* Challan Columns
-export const challanColumns = (): ColumnDef<IChallanTableData>[] => [
+export const challanColumns = (
+	handelDeliveryStatusChange?: (row: any) => void,
+	haveDeliveryAccess?: boolean
+): ColumnDef<IChallanTableData>[] => [
 	{
 		accessorKey: 'is_delivery_complete',
 		header: 'Delivery Complete',
 		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+		cell: (info) => (
+			<Switch
+				checked={info.getValue() as boolean}
+				onCheckedChange={() => handelDeliveryStatusChange?.(info.row)}
+				disabled={!haveDeliveryAccess}
+			/>
+		),
 	},
 	{
 		accessorKey: 'challan_no',

@@ -41,7 +41,7 @@ export const USER_SCHEMA = (isUpdate: boolean) => {
 		name: STRING_REQUIRED,
 		email: FORTUNE_ZIP_EMAIL_PATTERN,
 		user_type: z.enum(['employee', 'customer', 'vendor']),
-		business_type: STRING_OPTIONAL,
+		business_type: z.enum(['user', 'tv_company', 'corporate']).optional(),
 		department_uuid: STRING_NULLABLE,
 		designation_uuid: STRING_NULLABLE,
 		ext: STRING_NULLABLE,
@@ -78,7 +78,7 @@ export const USER_SCHEMA = (isUpdate: boolean) => {
 							path: ['business_type'],
 						});
 					}
-					if (data?.business_type === 'company') {
+					if (data?.business_type === 'tv_company' || data?.business_type === 'corporate') {
 						if (!data.department_uuid)
 							ctx.addIssue({
 								code: z.ZodIssueCode.custom,
@@ -131,6 +131,7 @@ export const USER_NULL: Partial<IUser> = {
 	email: '',
 	department_uuid: null,
 	user_type: 'employee',
+	business_type: 'user',
 	designation_uuid: null,
 	ext: null,
 	phone: '',

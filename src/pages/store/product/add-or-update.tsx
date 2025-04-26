@@ -191,6 +191,51 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 					name='warehouse_3'
 					render={(props) => <CoreForm.Input type='number' {...props} />}
 				/>
+				<FormField
+					control={form.control}
+					name='warehouse_4'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_5'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_6'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_7'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_8'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_9'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_10'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_11'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='warehouse_12'
+					render={(props) => <CoreForm.Input type='number' {...props} />}
+				/>
 			</div>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>

@@ -127,7 +127,7 @@ export const orderColumns = ({
 				<div className='flex flex-wrap gap-1'>
 					{value?.map((item, index) => (
 						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
+							{item?.replace(/_/g, ' ')}
 						</span>
 					))}
 				</div>
@@ -141,7 +141,7 @@ export const orderColumns = ({
 	},
 	{
 		accessorFn: (row) => {
-			return row.accessories
+			return row.accessories_name
 				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
@@ -149,12 +149,12 @@ export const orderColumns = ({
 		header: 'Accessories',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const value = info.row.original.accessories as string[];
+			const value = info.row.original.accessories_name as string[];
 			return (
 				<div className='flex flex-wrap gap-1'>
 					{value?.map((item, index) => (
 						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
+							{item?.replace(/_/g, ' ')}
 						</span>
 					))}
 				</div>
@@ -324,12 +324,6 @@ export const QCColumns = ({
 	},
 ];
 export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
-	{
-		accessorKey: 'is_diagnosis_need',
-		header: 'Diagnosis Need',
-		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
-	},
 	{
 		accessorKey: 'order_id',
 		header: 'ID',

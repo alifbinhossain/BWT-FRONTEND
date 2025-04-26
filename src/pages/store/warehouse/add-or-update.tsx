@@ -46,6 +46,46 @@ const AddOrUpdate: React.FC<IWarehouseAddOrUpdateProps> = ({
 			label: 'Warehouse 3',
 			value: 'warehouse_3',
 		},
+		{
+			label: 'Warehouse 4',
+			value: 'warehouse_4',
+		},
+		{
+			label: 'Warehouse 5',
+			value: 'warehouse_5',
+		},
+		{
+			label: 'Warehouse 6',
+			value: 'warehouse_6',
+		},
+		{
+			label: 'Warehouse 7',
+			value: 'warehouse_7',
+		},
+		{
+			label: 'Warehouse 8',
+			value: 'warehouse_8',
+		},
+		{
+			label: 'Warehouse 9',
+			value: 'warehouse_9',
+		},
+		{
+			label: 'Warehouse 10',
+			value: 'warehouse_10',
+		},
+		{
+			label: 'Warehouse 11',
+			value: 'warehouse_11',
+		},
+		{
+			label: 'Warehouse 12',
+			value: 'warehouse_12',
+		},
+		{
+			label: 'Warehouse 13',
+			value: 'warehouse_13',
+		},
 	];
 
 	const form = useRHF(WAREHOUSE_SCHEMA, WAREHOUSE_NULL);

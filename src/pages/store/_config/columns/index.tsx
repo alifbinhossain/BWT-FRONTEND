@@ -2,6 +2,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
+import { IFormSelectOption } from '@/components/core/form/types';
 import { LinkOnly } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
@@ -133,17 +134,37 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 export const productColumns = ({
 	actionTrxAccess,
 	actionOrderAgainstTrxAccess,
+	warehouse,
 	handleAgainstTrx,
 	handleOrderAgainstWarehouse1Trx,
 	handleOrderAgainstWarehouse2Trx,
 	handleOrderAgainstWarehouse3Trx,
+	handleOrderAgainstWarehouse4Trx,
+	handleOrderAgainstWarehouse5Trx,
+	handleOrderAgainstWarehouse6Trx,
+	handleOrderAgainstWarehouse7Trx,
+	handleOrderAgainstWarehouse8Trx,
+	handleOrderAgainstWarehouse9Trx,
+	handleOrderAgainstWarehouse10Trx,
+	handleOrderAgainstWarehouse11Trx,
+	handleOrderAgainstWarehouse12Trx,
 }: {
 	actionTrxAccess: boolean;
 	actionOrderAgainstTrxAccess: boolean;
+	warehouse: { label: string; value: string; assigned: string }[] | undefined;
 	handleAgainstTrx: (row: Row<any>) => void;
 	handleOrderAgainstWarehouse1Trx: (row: Row<any>) => void;
 	handleOrderAgainstWarehouse2Trx: (row: Row<any>) => void;
 	handleOrderAgainstWarehouse3Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse4Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse5Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse6Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse7Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse8Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse9Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse10Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse11Trx: (row: Row<any>) => void;
+	handleOrderAgainstWarehouse12Trx: (row: Row<any>) => void;
 }): ColumnDef<IProductTableData>[] => [
 	{
 		accessorKey: 'is_maintaining_stock',
@@ -200,7 +221,7 @@ export const productColumns = ({
 	},
 	{
 		accessorKey: 'warehouse_1',
-		header: 'Warehouse 1',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_1')?.label}`,
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
@@ -216,7 +237,7 @@ export const productColumns = ({
 	},
 	{
 		accessorKey: 'warehouse_2',
-		header: 'Warehouse 2',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_2')?.label}`,
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
@@ -232,7 +253,7 @@ export const productColumns = ({
 	},
 	{
 		accessorKey: 'warehouse_3',
-		header: 'Warehouse 3',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_3')?.label}`,
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
@@ -240,6 +261,150 @@ export const productColumns = ({
 					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse3Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_4',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_4')?.label}`,
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse4Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_5',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_5')?.label}`,
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse5Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_6',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_6')?.label}`,
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse6Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_7',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_7')?.label}`,
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse7Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_8',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_8')?.label}`,
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse8Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_9',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_9')?.label}`,
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse9Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_10',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_10')?.label}`,
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse10Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_11',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_11')?.label}`,
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse11Trx(info.row)}
+						disabled={!actionOrderAgainstTrxAccess}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'warehouse_12',
+		header: `${warehouse?.find((item) => item.assigned === 'warehouse_12')?.label}`,
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<span>{info.getValue() as string}</span>
+					<Transfer
+						onClick={() => handleOrderAgainstWarehouse12Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
 				</div>

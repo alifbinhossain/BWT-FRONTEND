@@ -4,8 +4,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { IFormSelectOption } from '@/components/core/form/types';
 import CoreForm from '@core/form';
 
+import { useOtherUserByQuery } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -24,6 +26,7 @@ const AddOrUpdate = () => {
 	const isUpdate: boolean = !!uuid;
 
 	const { url: infoUrl, updateData, postData, deleteData } = useWorkInfo();
+	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 
 	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
 
@@ -104,7 +107,7 @@ const AddOrUpdate = () => {
 				await Promise.all([info_promise, ...order_entry_promise])
 					.then(() => form.reset(INFO_NULL))
 					.then(() => {
-						invalidateTestDetails(); // TODO: Update invalidate query
+						invalidateCustomer();
 						navigate(`/work/info/details/${uuid}`);
 					});
 			} catch (err) {
@@ -163,7 +166,7 @@ const AddOrUpdate = () => {
 			await Promise.all([info_promise, ...order_entry_entries_promise])
 				.then(() => form.reset(INFO_NULL))
 				.then(() => {
-					invalidateTestDetails(); // TODO: Update invalidate query
+					invalidateCustomer();
 					navigate(`/work/info/details/${info_uuid}`);
 				});
 		} catch (err) {

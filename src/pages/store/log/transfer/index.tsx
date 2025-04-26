@@ -27,7 +27,7 @@ const Transfer = () => {
 		setUpdatedData({
 			uuid: row.original.uuid,
 			name: row.original.order_id,
-			max_quantity: row.original.quantity,
+			max_quantity: row.original.max_quantity,
 			product_uuid: row.original.product_uuid,
 			warehouse_uuid: row.original.warehouse_uuid,
 		});

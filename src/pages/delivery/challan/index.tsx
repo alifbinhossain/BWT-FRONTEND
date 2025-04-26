@@ -2,8 +2,9 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
+import useAccess from '@/hooks/useAccess';
 
-import { PageInfo } from '@/utils';
+import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { challanColumns } from '../_config/columns';
@@ -16,9 +17,11 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Challan = () => {
 	const navigate = useNavigate();
-	const { data, isLoading, url, deleteData, refetch } = useDeliveryChallan<IChallanTableData[]>();
+	const { data, isLoading, url, updateData, deleteData, refetch } = useDeliveryChallan<IChallanTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Delivery/Challan', url, 'delivery__challan'), [url]);
+	const pageAccess = useAccess('delivery__challan') as string[];
+	const haveDeliveryAccess = pageAccess.includes('click_delivery_complete');
 
 	const handleCreate = () => navigate('/delivery/challan/add');
 	const handleUpdate = (row: Row<IChallanTableData>) => {
@@ -55,9 +58,18 @@ const Challan = () => {
 			}))
 		);
 	};
+	const handleDeliveryComplete = async (row: Row<IChallanTableData>) => {
+		const is_delivery_complete = !row?.original?.is_delivery_complete;
+		const updated_at = getDateTime();
+
+		await updateData.mutateAsync({
+			url: `/delivery/challan/${row?.original?.uuid}`,
+			updatedData: { is_delivery_complete, updated_at },
+		});
+	};
 
 	// Table Columns
-	const columns = challanColumns();
+	const columns = challanColumns(handleDeliveryComplete, haveDeliveryAccess);
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 			<TableProvider

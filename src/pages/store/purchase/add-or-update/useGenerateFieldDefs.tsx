@@ -10,6 +10,7 @@ import {
 	useOtherProduct,
 	useOtherRack,
 	useOtherWarehouse,
+	useOtherWarehouseByQuery,
 } from '@/lib/common-queries/other';
 
 import { IPurchase } from '../../_config/schema';
@@ -20,9 +21,11 @@ interface IGenerateFieldDefsProps {
 	watch?: UseFormWatch<IPurchase>;
 }
 
-const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ copy, remove, watch }: IGenerateFieldDefsProps): FieldDef[] => {
 	const { data: productOptions } = useOtherProduct<IFormSelectOption[]>();
-	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
+	const { data: warehouseOptions } = useOtherWarehouseByQuery<IFormSelectOption[]>(
+		`branch_uuid=${watch && watch('branch_uuid')}`
+	);
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();

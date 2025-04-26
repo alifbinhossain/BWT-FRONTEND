@@ -5,6 +5,7 @@ import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
 
 import {
+	useOtherAccessories,
 	useOtherBox,
 	useOtherFloor,
 	useOtherModel,
@@ -31,15 +32,7 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived }: IGenerateFiel
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
 	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
 	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
-	const accessoriesOption = [
-		{ label: 'Power Cable', value: 'power_cable' },
-		{ label: 'HDMI Cable', value: 'hdmi_cable' },
-		{ label: 'Remote', value: 'remote' },
-		{ label: 'USB Cable', value: 'usb_cable' },
-		{ label: 'Ethernet Cable', value: 'ethernet_cable' },
-		{ label: 'Charger', value: 'charger' },
-		{ label: 'Others', value: 'others' },
-	];
+	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
 
 	return [
 		{

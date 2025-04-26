@@ -142,7 +142,6 @@ const AddOrUpdate = () => {
 		);
 
 		try {
-		
 			await Promise.all([purchase_promise, ...purchase_entry_entries_promise])
 				.then(() => form.reset(PURCHASE_NULL))
 				.then(() => {

@@ -10,6 +10,14 @@ import { formatDateTable } from '@/utils/formatDate';
 import { IInfoTableData } from '../config/columns/columns.type';
 
 const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
+	let currentStatus = '';
+	if (!data?.order_entry.some((item) => !item.is_delivery_complete)) {
+		currentStatus = 'Delivered';
+	} else if (data?.is_product_received) {
+		currentStatus = 'Product Received';
+	} else {
+		currentStatus = 'Order Received';
+	}
 	return (
 		<Card className='w-full overflow-hidden border-slate-200 shadow-sm'>
 			<div className='bg-gradient-to-r from-slate-800 to-slate-700 p-4 text-white'>
@@ -17,7 +25,7 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 					<h3 className='font-medium capitalize'>
 						{data.user_name} - {data.info_id}
 					</h3>
-					<Badge variant={'accent'}>Received</Badge>
+					<Badge variant={'accent'}>{currentStatus}</Badge>
 				</div>
 			</div>
 

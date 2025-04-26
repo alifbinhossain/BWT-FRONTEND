@@ -48,7 +48,7 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 
 		{
 			label: 'Accessories Given',
-			value: data.accessories?.join(', ').replace(/_/g, ' '),
+			value: data.accessories_name?.join(', ').replace(/_/g, ' '),
 		},
 
 		{
@@ -117,6 +117,23 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			value: Boolean(item.status),
 		}));
 
+	let currentStatus = '';
+	if (data?.is_delivery_complete) {
+		currentStatus = 'Delivered';
+	} else if (data?.is_ready_for_delivery) {
+		currentStatus = 'Ready to Deliver';
+	} else if (data?.is_transferred_for_qc) {
+		currentStatus = 'Quality Inspection';
+	} else if (data?.diagnosis?.is_proceed_to_repair || !data?.is_diagnosis_need) {
+		currentStatus = 'Repairing';
+	} else if (data?.is_diagnosis_need && data?.is_product_received) {
+		currentStatus = 'Diagnosed';
+	} else if (data?.is_product_received) {
+		currentStatus = 'Product Received';
+	} else {
+		currentStatus = 'Order Received';
+	}
+
 	return (
 		<Card className='w-full overflow-hidden border shadow-sm'>
 			{/* Header - Redesigned */}
@@ -124,7 +141,7 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				<div className='flex items-center justify-between'>
 					<h3 className='font-medium text-primary'>{data.order_id}</h3>
 
-					<Badge variant={'accent'}>Received</Badge>
+					<Badge variant={'accent'}>{currentStatus}</Badge>
 				</div>
 			</div>
 

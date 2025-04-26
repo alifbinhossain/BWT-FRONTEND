@@ -108,9 +108,9 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				label: 'Accessories',
 				value: (
 					<div className='flex flex-wrap gap-1'>
-						{(data.accessories as string[])?.map((item, index) => (
+						{(data.accessories_name as string[])?.map((item, index) => (
 							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-								{item.replace(/_/g, ' ')}
+								{item?.replace(/_/g, ' ')}
 							</span>
 						))}
 					</div>
@@ -200,7 +200,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	return (
 		<>
 			<SectionContainer title={'Order Details'}>
-				<div className='flex w-full flex-row overflow-x-scroll gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
+				<div className='flex w-full flex-row gap-y-4 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
 					<TableList title='General' className='w-full md:w-1/2' items={renderGeneralItems()} />
 					<TableList title='Product' className='w-full md:w-1/2' items={renderProductItems()} />
 					<TableList title='Problem' className='w-full md:w-1/2' items={renderProblemItems()} />
@@ -211,7 +211,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{data?.is_diagnosis_need && (
 				<SectionContainer title={'Diagnosis'}>
 					<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
-						<TableList className='w-full over md:w-1/2' items={renderDiagnosisItemsLeft()} />
+						<TableList className='over w-full md:w-1/2' items={renderDiagnosisItemsLeft()} />
 						<TableList className='w-full md:w-1/2' items={renderDiagnosisItemsRight()} />
 					</div>
 				</SectionContainer>

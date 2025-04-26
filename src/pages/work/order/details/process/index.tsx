@@ -13,11 +13,11 @@ import { useWorkProcesses } from '../../../_config/query';
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
-const EntryTable: React.FC<{ data: IOrderTableData; isLoading: any }> = ({ data, isLoading }) => {
+const EntryTable: React.FC<{ data?: IOrderTableData; isLoading?: any }> = ({ data, isLoading }) => {
 	const navigate = useNavigate();
 	const { url, deleteData, postData, updateData, refetch } = useWorkProcesses<IProcessTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Work/Process', url, 'work__order_details'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Work/Process', url, 'work__process'), [url]);
 	const diagnosis_uuid = data?.is_diagnosis_need ? data?.diagnosis?.uuid : 'null';
 
 	// Add/Update Modal state
@@ -85,7 +85,7 @@ const EntryTable: React.FC<{ data: IOrderTableData; isLoading: any }> = ({ data,
 							setDeleteItem,
 							url,
 							deleteData,
-							needRefresh:true,
+							needRefresh: true,
 						}}
 					/>,
 				])}
