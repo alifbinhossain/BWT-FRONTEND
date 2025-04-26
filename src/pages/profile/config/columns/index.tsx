@@ -148,7 +148,7 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkOnly uri={`/work/order/${uuid}`} title={info.getValue() as string} />;
+			return <LinkOnly uri={`/order/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{

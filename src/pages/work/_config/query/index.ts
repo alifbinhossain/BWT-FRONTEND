@@ -132,15 +132,15 @@ export const useWorkZoneByUUID = <T>(uuid: string) =>
 		url: `/work/zone/${uuid}`,
 		enabled: !!uuid,
 	});
-//* Accoriessies 
+//* Accoriessies
 export const useWorkAccessories = <T>() =>
 	useTQuery<T>({
 		queryKey: workQK.accessories(),
-		url: '/work/accessories',
+		url: '/work/accessory',
 	});
 export const useWorkAccessoriesByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: workQK.accessoriesByUUID(uuid),
-		url: `/work/accessories/${uuid}`,
+		url: `/work/accessory/${uuid}`,
 		enabled: !!uuid,
 	});

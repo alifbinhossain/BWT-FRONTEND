@@ -128,6 +128,15 @@ export const PRODUCT_SCHEMA = z.object({
 	warehouse_1: NUMBER_DOUBLE_REQUIRED,
 	warehouse_2: NUMBER_DOUBLE_REQUIRED,
 	warehouse_3: NUMBER_DOUBLE_REQUIRED,
+	warehouse_4: NUMBER_DOUBLE_REQUIRED,
+	warehouse_5: NUMBER_DOUBLE_REQUIRED,
+	warehouse_6: NUMBER_DOUBLE_REQUIRED,
+	warehouse_7: NUMBER_DOUBLE_REQUIRED,
+	warehouse_8: NUMBER_DOUBLE_REQUIRED,
+	warehouse_9: NUMBER_DOUBLE_REQUIRED,
+	warehouse_10: NUMBER_DOUBLE_REQUIRED,
+	warehouse_11: NUMBER_DOUBLE_REQUIRED,
+	warehouse_12: NUMBER_DOUBLE_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 
@@ -143,6 +152,15 @@ export const PRODUCT_NULL: Partial<IProduct> = {
 	warehouse_1: 0,
 	warehouse_2: 0,
 	warehouse_3: 0,
+	warehouse_4: 0,
+	warehouse_5: 0,
+	warehouse_6: 0,
+	warehouse_7: 0,
+	warehouse_8: 0,
+	warehouse_9: 0,
+	warehouse_10: 0,
+	warehouse_11: 0,
+	warehouse_12: 0,
 	remarks: '',
 };
 
@@ -210,7 +228,20 @@ export type IBranch = z.infer<typeof BRANCH_SCHEMA>;
 //* Warehouse Schema
 export const WAREHOUSE_SCHEMA = z.object({
 	name: STRING_REQUIRED,
-	assigned: z.enum(['warehouse_1', 'warehouse_2', 'warehouse_3']),
+	assigned: z.enum([
+		'warehouse_1',
+		'warehouse_2',
+		'warehouse_3',
+		'warehouse_4',
+		'warehouse_5',
+		'warehouse_6',
+		'warehouse_7',
+		'warehouse_8',
+		'warehouse_9',
+		'warehouse_10',
+		'warehouse_11',
+		'warehouse_12',
+	]),
 	branch_uuid: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
 });

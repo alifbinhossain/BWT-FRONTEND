@@ -3,6 +3,9 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import useAccess from '@/hooks/useAccess';
 
+import { IFormSelectOption } from '@/components/core/form/types';
+
+import { useOtherWarehouse } from '@/lib/common-queries/other';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
@@ -18,7 +21,7 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Product = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreProducts<IProductTableData[]>();
-
+	const { data: warehouse } = useOtherWarehouse<{ label: string; value: string; assigned: string }[]>();
 	const pageInfo = useMemo(() => new PageInfo('Store/Product', url, 'store__product'), [url]);
 	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
 	const actionTrxAccess = pageAccess.includes('click_trx');
@@ -84,31 +87,41 @@ const Product = () => {
 		null
 	);
 
-	const handleOrderAgainstWarehouse1Trx = (row: Row<IProductTableData>) => {
+	const handleOrderAgainstWarehouseTrx = (
+		row: Row<IProductTableData>,
+		warehouseKey:
+			| 'warehouse_1'
+			| 'warehouse_2'
+			| 'warehouse_3'
+			| 'warehouse_4'
+			| 'warehouse_5'
+			| 'warehouse_5'
+			| 'warehouse_6'
+			| 'warehouse_7'
+			| 'warehouse_8'
+			| 'warehouse_9'
+			| 'warehouse_10'
+			| 'warehouse_11'
+			| 'warehouse_12',
+		warehouseUuidKey:
+			| 'warehouse_1_uuid'
+			| 'warehouse_2_uuid'
+			| 'warehouse_3_uuid'
+			| 'warehouse_4_uuid'
+			| 'warehouse_5_uuid'
+			| 'warehouse_6_uuid'
+			| 'warehouse_7_uuid'
+			| 'warehouse_8_uuid'
+			| 'warehouse_9_uuid'
+			| 'warehouse_10_uuid'
+			| 'warehouse_11_uuid'
+			| 'warehouse_12_uuid'
+	) => {
 		setUpdateActionOrderAgainstTrxData({
 			uuid: row.original.uuid,
 			name: row.original.name,
-			max_quantity: row.original.warehouse_1,
-			warehouse_uuid: row.original.warehouse_1_uuid,
-		});
-		
-		setIsOpenActionOrderAgainstTrxModal(true);
-	};
-	const handleOrderAgainstWarehouse2Trx = (row: Row<IProductTableData>) => {
-		setUpdateActionOrderAgainstTrxData({
-			uuid: row.original.uuid,
-			name: row.original.name,
-			max_quantity: row.original.warehouse_2,
-			warehouse_uuid: row.original.warehouse_2_uuid,
-		});
-		setIsOpenActionOrderAgainstTrxModal(true);
-	};
-	const handleOrderAgainstWarehouse3Trx = (row: Row<IProductTableData>) => {
-		setUpdateActionOrderAgainstTrxData({
-			uuid: row.original.uuid,
-			name: row.original.name,
-			max_quantity: row.original.warehouse_3,
-			warehouse_uuid: row.original.warehouse_3_uuid,
+			max_quantity: row.original[warehouseKey],
+			warehouse_uuid: row.original[warehouseUuidKey],
 		});
 		setIsOpenActionOrderAgainstTrxModal(true);
 	};
@@ -117,10 +130,32 @@ const Product = () => {
 	const columns = productColumns({
 		actionTrxAccess,
 		actionOrderAgainstTrxAccess,
+		warehouse,
 		handleAgainstTrx,
-		handleOrderAgainstWarehouse1Trx,
-		handleOrderAgainstWarehouse2Trx,
-		handleOrderAgainstWarehouse3Trx,
+		handleOrderAgainstWarehouse1Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_1', 'warehouse_1_uuid'),
+		handleOrderAgainstWarehouse2Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_2', 'warehouse_2_uuid'),
+		handleOrderAgainstWarehouse3Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_3', 'warehouse_3_uuid'),
+		handleOrderAgainstWarehouse4Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_4', 'warehouse_4_uuid'),
+		handleOrderAgainstWarehouse5Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_5', 'warehouse_5_uuid'),
+		handleOrderAgainstWarehouse6Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_6', 'warehouse_6_uuid'),
+		handleOrderAgainstWarehouse7Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_7', 'warehouse_7_uuid'),
+		handleOrderAgainstWarehouse8Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_8', 'warehouse_8_uuid'),
+		handleOrderAgainstWarehouse9Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_9', 'warehouse_9_uuid'),
+		handleOrderAgainstWarehouse10Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_10', 'warehouse_10_uuid'),
+		handleOrderAgainstWarehouse11Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_11', 'warehouse_11_uuid'),
+		handleOrderAgainstWarehouse12Trx: (row) =>
+			handleOrderAgainstWarehouseTrx(row, 'warehouse_12', 'warehouse_12_uuid'),
 	});
 
 	return (

@@ -19,6 +19,7 @@ export type IDiagnosisTableData = {
 	engineer_uuid: string;
 	problems_uuid: string[];
 	problems_name: string[];
+
 	problem_statement: string;
 	customer_problem_statement: string;
 	status: 'pending' | 'rejected' | 'accepted' | 'not_repairable';
@@ -53,6 +54,7 @@ export type IOrderTableData = {
 	problems_name: string[];
 	problem_statement: string;
 	accessories: string[];
+	accessories_name: string[];
 	info_uuid: string;
 	info_id: string;
 	is_transferred_for_qc: boolean;
@@ -86,6 +88,8 @@ export type IInfoTableData = {
 	info_id: string;
 	user_uuid: string;
 	user_name: string;
+	zone_name: string;
+	location: string;
 	designation_uuid: string;
 	department_uuid: string;
 	remarks: string;

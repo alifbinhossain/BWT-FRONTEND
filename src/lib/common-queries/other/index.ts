@@ -91,6 +91,11 @@ export const useOtherWarehouse = <T>() =>
 		queryKey: otherQK.warehouse(),
 		url: `/other/warehouse/value/label`,
 	});
+export const useOtherWarehouseByQuery = <T>(query: string) =>
+	useTQuery<T>({
+		queryKey: otherQK.warehouseByQuery(query),
+		url: `/other/warehouse/value/label?${query}`,
+	});
 
 //* GET OTHER ROOM
 export const useOtherRoom = <T>() =>

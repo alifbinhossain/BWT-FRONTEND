@@ -8,6 +8,7 @@ import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
 import {
+	useOtherAccessories,
 	useOtherBox,
 	useOtherFloor,
 	useOtherModel,
@@ -47,16 +48,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
-
-	const accessoriesOption = [
-		{ label: 'Power Cable', value: 'power_cable' },
-		{ label: 'HDMI Cable', value: 'hdmi_cable' },
-		{ label: 'Remote', value: 'remote' },
-		{ label: 'USB Cable', value: 'usb_cable' },
-		{ label: 'Ethernet Cable', value: 'ethernet_cable' },
-		{ label: 'Charger', value: 'charger' },
-		{ label: 'Others', value: 'others' },
-	];
+	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
 	// Reset form values when data is updated
 	useEffect(() => {
 		if (data && isUpdate) {
@@ -197,7 +189,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 							<CoreForm.ReactSelect
 								isMulti
 								label='Accessories'
-								options={accessoriesOption}
+								options={accessoriesOption || []}
 								placeholder='Select Accessories'
 								{...props}
 							/>

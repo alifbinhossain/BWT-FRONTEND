@@ -12,7 +12,7 @@ import { useWorkAccessories } from '../_config/query';
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
-const Group = () => {
+const Accessories = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useWorkAccessories<IAccessoriesTableData[]>();
 
@@ -89,4 +89,4 @@ const Group = () => {
 	);
 };
 
-export default Group;
+export default Accessories;

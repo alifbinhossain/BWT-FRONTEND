@@ -77,6 +77,7 @@ export interface FormReactSelectProps {
 export interface IFormSelectOption {
 	label: string;
 	value: string | number;
+	
 }
 
 export interface FormMultiSelectProps {

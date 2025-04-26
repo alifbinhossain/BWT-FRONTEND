@@ -1,3 +1,5 @@
+import { useOtherWarehouseByQuery } from '.';
+
 const otherQK = {
 	all: () => ['other'],
 
@@ -35,6 +37,7 @@ const otherQK = {
 	purchase: () => [...otherQK.all(), 'purchase'],
 	//* Warehouse
 	warehouse: () => [...otherQK.all(), 'warehouse'],
+	warehouseByQuery: (query: string) => [...otherQK.all(), 'warehouse', query],
 
 	//* Room
 	room: () => [...otherQK.all(), 'room'],

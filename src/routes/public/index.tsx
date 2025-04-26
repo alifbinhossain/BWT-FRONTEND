@@ -21,7 +21,7 @@ const publicRoutes = [
 	},
 	{
 		name: 'Info Details',
-		path: '/work/order/:uuid',
+		path: '/order/:uuid',
 		element: <OrderInfoDetails />,
 		page_name: 'work__order_info_details',
 		hidden: true,

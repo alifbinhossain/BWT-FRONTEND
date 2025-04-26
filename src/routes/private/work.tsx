@@ -8,6 +8,7 @@ import InfoDetails from '@/pages/work/info/details';
 import IsReadyForDelivery from '@/pages/work/is-ready-deliver';
 import Order from '@/pages/work/order';
 import OrderDetails from '@/pages/work/order/details/';
+import Process from '@/pages/work/order/details/process';
 import Problem from '@/pages/work/problem';
 import QC from '@/pages/work/qc';
 import Section from '@/pages/work/section';
@@ -78,6 +79,14 @@ const workRoutes: IRoute[] = [
 				element: <QC />,
 				page_name: 'work__qc',
 				actions: ['read', 'update'],
+			},
+			{
+				name: 'Process',
+				path: '/work/process',
+				element: <Process />,
+				hidden: true,
+				page_name: 'work__process',
+				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
 				name: 'Ready For Delivery',
