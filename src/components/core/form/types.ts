@@ -1,18 +1,11 @@
-;
 //
 import React from 'react';
 import { CheckboxProps } from '@radix-ui/react-checkbox';
 import { ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStateReturn } from 'react-hook-form';
 
-
-
 import { CalendarProps } from '@/components/ui/calendar';
 import { InputProps } from '@/components/ui/input';
 import { TextareaProps } from '@/components/ui/textarea';
-
-
-
-
 
 // * form-textarea
 export interface FormTextareaProps extends TextareaProps {
@@ -27,7 +20,7 @@ export interface FormTextareaProps extends TextareaProps {
 
 // * form-select
 export interface IFormSelectOption {
-	label: string|number;
+	label: string | number;
 	value: string | number;
 }
 
@@ -54,7 +47,7 @@ export interface IFormSectionProps {
 
 // * form-react-select
 export interface IFormSelectOption {
-	label: string;
+	label: string | number;
 	value: string | number;
 }
 
@@ -75,9 +68,8 @@ export interface FormReactSelectProps {
 
 // * form-multi-select
 export interface IFormSelectOption {
-	label: string;
+	label: string | number;
 	value: string | number;
-	
 }
 
 export interface FormMultiSelectProps {
