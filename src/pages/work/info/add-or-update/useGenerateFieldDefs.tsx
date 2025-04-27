@@ -65,6 +65,7 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 						name={`order_entry.${index}.brand_uuid`}
 						render={(props) => (
 							<CoreForm.ReactSelect
+								disableLabel={true}
 								menuPortalTarget={document.body}
 								label='Brand'
 								options={brandOptions || []}
