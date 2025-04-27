@@ -31,6 +31,7 @@ const User = () => {
 	const statusAccess = pageAccess.includes('click_status');
 	const resetPasswordAccess = pageAccess.includes('click_reset_password');
 	const pageAssignAccess = pageAccess.includes('click_page_assign');
+	const ratingChangeAccess = pageAccess.includes('click_rating_change');
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -112,15 +113,36 @@ const User = () => {
 			updatedData: { status, updated_at },
 		});
 	};
+	const handlePriceRating = async (row: Row<IUserTableData>, value: number) => {
+		const price = value;
+		const updated_at = getDateTime();
+
+		await updateData.mutateAsync({
+			url: `/hr/user/rating-price/${row?.original?.uuid}`,
+			updatedData: { price, updated_at },
+		});
+	};
+	const handleRating = async (row: Row<IUserTableData>, value: number) => {
+		const rating = value;
+		const updated_at = getDateTime();
+
+		await updateData.mutateAsync({
+			url: `/hr/user/rating-price/${row?.original?.uuid}`,
+			updatedData: { rating, updated_at },
+		});
+	};
 
 	// Table Columns
 	const columns = userColumns({
 		statusAccess,
 		handleStatus,
+		ratingChangeAccess,
 		resetPasswordAccess,
 		handleResetPassword,
 		pageAssignAccess,
 		handlePageAssign,
+		handlePriceRating,
+		handleRating,
 	});
 
 	return (
