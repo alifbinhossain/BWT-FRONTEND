@@ -80,6 +80,7 @@ const AddOrUpdate = () => {
 					const newData = {
 						...item,
 						info_uuid: uuid,
+
 						created_at: getDateTime(),
 						created_by: user?.uuid,
 						uuid: nanoid(),
@@ -93,6 +94,7 @@ const AddOrUpdate = () => {
 				} else {
 					const updatedData = {
 						...item,
+
 						updated_at: getDateTime(),
 					};
 					return updateData.mutateAsync({
@@ -209,6 +211,7 @@ const AddOrUpdate = () => {
 			remove(index);
 		}
 	};
+	console.log(form.formState.errors);
 
 	// Copy Handler
 	const handleCopy = (index: number) => {
@@ -216,7 +219,6 @@ const AddOrUpdate = () => {
 		append({
 			is_diagnosis_need: field.is_diagnosis_need,
 			model_uuid: field.model_uuid,
-			size_uuid: field.size_uuid,
 			serial_no: field.serial_no,
 			quantity: field.quantity,
 			problems_uuid: field.problems_uuid,
@@ -245,6 +247,7 @@ const AddOrUpdate = () => {
 					copy: handleCopy,
 					remove: handleRemove,
 					watch: form.watch,
+					form: form,
 					isProductReceived: isProductReceived,
 				})}
 				handleAdd={handleAdd}

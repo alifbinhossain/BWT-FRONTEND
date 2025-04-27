@@ -4,7 +4,7 @@ import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
-import { PageInfo } from '@/utils';
+import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { orderColumns } from '../_config/columns';
@@ -21,6 +21,7 @@ const Order = () => {
 	const pageAccess = useAccess('work__order') as string[];
 
 	const actionTrxAccess = pageAccess.includes('click_trx');
+	const actionProceedToRepair = pageAccess.includes('click_proceed_to_repair');
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkOrder<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Order', url, 'work__order'), [url]);
@@ -69,13 +70,22 @@ const Order = () => {
 			}))
 		);
 	};
+	const handleProceedToRepair = async (row: Row<IOrderTableData>) => {
+		const is_proceed_to_repair = !row?.original?.is_delivery_complete;
+		const updated_at = getDateTime();
+
+		await updateData.mutateAsync({
+			url: `/work/order/${row?.original?.uuid}`,
+			updatedData: { is_proceed_to_repair, updated_at },
+		});
+	};
 
 	// Table Columns
 
 	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
 		navigate(`/work/transfer-section/${row.original.info_uuid}/${null}/${row.original.uuid}`);
 	};
-	const columns = orderColumns({ actionTrxAccess, handleAgainstTrx });
+	const columns = orderColumns({ actionTrxAccess, actionProceedToRepair, handleAgainstTrx, handleProceedToRepair });
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

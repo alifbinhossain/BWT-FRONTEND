@@ -34,17 +34,6 @@ const useGenerateFieldDefs = ({ entry, remove, watch, add }: IGenerateFieldDefsP
 				return <span>{orderId}</span>;
 			},
 		},
-
-		{
-			header: 'Size',
-			accessorKey: 'size_name',
-			type: 'custom',
-			component: (index: number) => {
-				const orderId = watch ? String(watch(`${entry}.${index}.size_name` as any)) : '';
-
-				return <span>{orderId}</span>;
-			},
-		},
 		{
 			header: 'Quantity',
 			accessorKey: 'quantity',
