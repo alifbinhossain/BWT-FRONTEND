@@ -22,6 +22,7 @@ const HrRoutes: IRoute[] = [
 					'click_status',
 					'click_reset_password',
 					'click_page_assign',
+					'click_rating_change',
 				],
 			},
 

@@ -1,11 +1,16 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 
+
+
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
 import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
 
+
+
 import { IDepartmentTableData, IDesignationTableData, IUserTableData } from './columns.type';
+
 
 // Department Columns
 export const departmentColumns = (): ColumnDef<IDepartmentTableData>[] => [
@@ -32,16 +37,22 @@ export function userColumns({
 	pageAssignAccess,
 	resetPasswordAccess,
 	statusAccess,
+	ratingChangeAccess,
 	handleStatus,
 	handleResetPassword,
 	handlePageAssign,
+	handlePriceRating,
+	handleRating,
 }: {
 	statusAccess: boolean;
 	resetPasswordAccess: boolean;
 	pageAssignAccess: boolean;
+	ratingChangeAccess: boolean;
 	handleStatus: (row: Row<any>) => void;
 	handleResetPassword: (row: Row<any>) => void;
 	handlePageAssign: (row: Row<any>) => void;
+	handlePriceRating: (row: Row<any>, value: number) => void;
+	handleRating: (row: Row<any>, value: number) => void;
 }): ColumnDef<IUserTableData>[] {
 	const rating = [
 		{
@@ -97,7 +108,13 @@ export function userColumns({
 			header: 'Rating',
 			enableColumnFilter: false,
 			cell: (info) => (
-				<ReactSelect value={rating?.find((item) => item.value === info.getValue())} options={rating} />
+				<ReactSelect
+					value={rating?.find((item) => item.value === info.getValue())}
+					options={rating}
+					isClearable={false}
+					onChange={(value: any) => handleRating(info.row, value.value as number)}
+					isDisabled={!ratingChangeAccess}
+				/>
 			),
 		},
 		{
@@ -105,7 +122,13 @@ export function userColumns({
 			header: 'Price Rating',
 			enableColumnFilter: false,
 			cell: (info) => (
-				<ReactSelect value={rating?.find((item) => item.value === info.getValue())} options={rating} />
+				<ReactSelect
+					value={rating?.find((item) => item.value === info.getValue())}
+					options={rating}
+					isClearable={false}
+					onChange={(value: any) => handlePriceRating(info.row, value.value as number)}
+					isDisabled={!ratingChangeAccess}
+				/>
 			),
 		},
 		{
