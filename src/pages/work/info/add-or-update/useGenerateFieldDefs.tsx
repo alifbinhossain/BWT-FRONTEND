@@ -1,17 +1,23 @@
+import { useState } from 'react';
+import { set } from 'lodash';
 import { UseFormWatch } from 'react-hook-form';
 
 import FieldActionButton from '@/components/buttons/field-action';
+import { FormField } from '@/components/ui/form';
+import ReactSelect from '@/components/ui/react-select';
+import CoreForm from '@core/form';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
 
 import {
 	useOtherAccessories,
 	useOtherBox,
+	useOtherBrand,
 	useOtherFloor,
 	useOtherModel,
+	useOtherModelByQuery,
 	useOtherProblem,
 	useOtherRack,
-	useOtherSize,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
 
@@ -22,17 +28,19 @@ interface IGenerateFieldDefsProps {
 	remove: (index: any) => void;
 	watch?: UseFormWatch<IInfo>;
 	isProductReceived?: boolean;
+	form: any;
 }
 
-const useGenerateFieldDefs = ({ copy, remove, isProductReceived }: IGenerateFieldDefsProps): FieldDef[] => {
-	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
-	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
+const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenerateFieldDefsProps): FieldDef[] => {
+	const [brand, setBrand] = useState([]);
+	const { data: modelOption } = useOtherModelByQuery<IFormSelectOption[]>(`is_brand=false&brand_uuid=${brand}`);
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
 	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
 	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
 	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
+	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
 
 	return [
 		{
@@ -41,18 +49,47 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived }: IGenerateFiel
 			type: 'checkBox',
 		},
 		{
-			header: 'Model',
-			accessorKey: 'model_uuid',
-			type: 'select',
-			options: modelOption || [],
-			placeholder: 'Select Model',
+			header: 'Proceed to Repair',
+			accessorKey: 'is_proceed_to_repair',
+			type: 'checkBox',
 		},
 		{
-			header: 'Size',
-			accessorKey: 'size_uuid',
-			type: 'select',
-			options: sizeOption || [],
-			placeholder: 'Select Size',
+			header: 'Brand',
+			accessorKey: 'brand_uuid',
+			type: 'custom',
+			component: (index: number) => {
+				setBrand(form.watch(`order_entry.${index}.brand_uuid`));
+				return (
+					<FormField
+						control={form.control}
+						name={`order_entry.${index}.brand_uuid`}
+						render={(props) => (
+							<CoreForm.ReactSelect
+								disableLabel={true}
+								menuPortalTarget={document.body}
+								label='Brand'
+								options={brandOptions || []}
+								placeholder='Select Brand'
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
+		},
+		// {
+		// 	header: 'Model',
+		// 	accessorKey: 'model_uuid',
+		// 	type: 'select',
+		// 	options: modelOption || [],
+		// 	placeholder: 'Select Model',
+		// },
+		{
+			header: 'Model',
+			accessorKey: 'model_uuid',
+			type: 'select-create',
+			placeholder: 'Select Model',
+			options: modelOption || [],
 		},
 		{
 			header: 'Quantity',
@@ -65,11 +102,13 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived }: IGenerateFiel
 			type: 'multiSelect',
 			options: accessoriesOption || [],
 			placeholder: 'Select Accessories',
+			hidden: !isProductReceived,
 		},
 		{
 			header: 'Serial No',
 			accessorKey: 'serial_no',
 			type: 'textarea',
+			hidden: !isProductReceived,
 		},
 		{
 			header: 'Problems',

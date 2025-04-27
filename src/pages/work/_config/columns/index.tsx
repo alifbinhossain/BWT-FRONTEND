@@ -62,16 +62,32 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 //* Order Columns
 export const orderColumns = ({
 	actionTrxAccess,
+	actionProceedToRepair,
 	handleAgainstTrx,
+	handleProceedToRepair,
 }: {
 	actionTrxAccess?: boolean;
+	actionProceedToRepair?: boolean;
 	handleAgainstTrx?: (row: Row<any>) => void;
+	handleProceedToRepair?: (row: Row<any>) => void;
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_diagnosis_need',
 		header: 'Diagnosis Need',
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'is_proceed_to_repair',
+		header: 'Proceed to Repair',
+		enableColumnFilter: false,
+		cell: (info) => (
+			<Switch checked={info.getValue() as boolean} onCheckedChange={() => handleProceedToRepair?.(info.row)} />
+		),
+		meta: {
+			hidden: !actionProceedToRepair,
+			disableFullFilter: true,
+		},
 	},
 	{
 		accessorKey: 'order_id',
@@ -100,11 +116,6 @@ export const orderColumns = ({
 	{
 		accessorKey: 'model_name',
 		header: 'Model',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'size_name',
-		header: 'Size',
 		enableColumnFilter: false,
 	},
 	{
@@ -244,11 +255,6 @@ export const QCColumns = ({
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'size_name',
-		header: 'Size',
-		enableColumnFilter: false,
-	},
-	{
 		accessorKey: 'serial_no',
 		header: 'Serial No',
 		enableColumnFilter: false,
@@ -351,11 +357,6 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'model_name',
 		header: 'Model',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'size_name',
-		header: 'Size',
 		enableColumnFilter: false,
 	},
 	{

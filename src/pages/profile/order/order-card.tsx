@@ -124,7 +124,7 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 		currentStatus = 'Ready to Deliver';
 	} else if (data?.is_transferred_for_qc) {
 		currentStatus = 'Quality Inspection';
-	} else if (data?.diagnosis?.is_proceed_to_repair || !data?.is_diagnosis_need) {
+	} else if (data?.diagnosis?.is_proceed_to_repair) {
 		currentStatus = 'Repairing';
 	} else if (data?.is_diagnosis_need && data?.is_product_received) {
 		currentStatus = 'Diagnosed';

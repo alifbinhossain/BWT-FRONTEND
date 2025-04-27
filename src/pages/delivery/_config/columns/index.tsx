@@ -122,11 +122,6 @@ export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'size_name',
-		header: 'Size',
-		enableColumnFilter: false,
-	},
-	{
 		accessorKey: 'serial_no',
 		header: 'Serial No',
 		enableColumnFilter: false,

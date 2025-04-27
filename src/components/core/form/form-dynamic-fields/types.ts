@@ -32,6 +32,11 @@ type FieldSelect = {
 	placeholder?: string;
 	options: IFormSelectOption[];
 };
+type FieldSelectCreate = {
+	type: 'select-create';
+	placeholder?: string;
+	options: IFormSelectOption[];
+};
 type FieldMultiSelect = {
 	type: 'multiSelect';
 	placeholder?: string;
@@ -62,6 +67,7 @@ export type FieldDef = {
 	| FieldTextArea
 	| FieldCheckBox
 	| FieldMultiSelect
+	| FieldSelectCreate
 );
 
 export interface DynamicFieldsProps {

@@ -15,6 +15,7 @@ const Header = () => {
 	const { data: userOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 	const isProductReceived = form.watch('is_product_received');
 	const isNewCustomer = form.watch('is_new_customer');
+	const isUser = form.watch('business_type') === 'user';
 	const isBusinessTypeCompany =
 		(form.watch('business_type') === 'tv_company' || form.watch('business_type') === 'corporate') && isNewCustomer;
 	const businessTypeOptions = [
@@ -29,6 +30,33 @@ const Header = () => {
 		{
 			label: 'Corporate',
 			value: 'corporate',
+		},
+	];
+
+	const platformTypeOptions = [
+		{
+			label: "What's App",
+			value: 'whatsapp',
+		},
+		{
+			label: 'YouTube',
+			value: 'youtube',
+		},
+		{
+			label: 'Facebook',
+			value: 'facebook',
+		},
+		{
+			label: 'Instagram',
+			value: 'instagram',
+		},
+		{
+			label: 'Person',
+			value: 'person',
+		},
+		{
+			label: 'None',
+			value: 'none',
 		},
 	];
 
@@ -130,6 +158,25 @@ const Header = () => {
 							)}
 						/>
 					</div>
+					{isUser && (
+						<div>
+							{
+								<FormField
+									control={form.control}
+									name='where_they_find_us'
+									render={(props) => (
+										<CoreForm.ReactSelect
+											menuPortalTarget={document.body}
+											label='Where They Find Us'
+											options={platformTypeOptions || []}
+											placeholder='Select Platform'
+											{...props}
+										/>
+									)}
+								/>
+							}
+						</div>
+					)}
 				</div>
 			)}
 

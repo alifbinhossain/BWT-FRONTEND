@@ -2,6 +2,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
+import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
 
 import { IDepartmentTableData, IDesignationTableData, IUserTableData } from './columns.type';
@@ -42,6 +43,28 @@ export function userColumns({
 	handleResetPassword: (row: Row<any>) => void;
 	handlePageAssign: (row: Row<any>) => void;
 }): ColumnDef<IUserTableData>[] {
+	const rating = [
+		{
+			value: 1,
+			label: 1,
+		},
+		{
+			value: 2,
+			label: 2,
+		},
+		{
+			value: 3,
+			label: 3,
+		},
+		{
+			value: 4,
+			label: 4,
+		},
+		{
+			value: 5,
+			label: 5,
+		},
+	];
 	return [
 		{
 			accessorKey: 'status',
@@ -70,6 +93,22 @@ export function userColumns({
 			cell: (info) => <span className='capitalize'>{info.getValue<string>()}</span>,
 		},
 		{
+			accessorKey: 'rating',
+			header: 'Rating',
+			enableColumnFilter: false,
+			cell: (info) => (
+				<ReactSelect value={rating?.find((item) => item.value === info.getValue())} options={rating} />
+			),
+		},
+		{
+			accessorKey: 'price',
+			header: 'Price Rating',
+			enableColumnFilter: false,
+			cell: (info) => (
+				<ReactSelect value={rating?.find((item) => item.value === info.getValue())} options={rating} />
+			),
+		},
+		{
 			accessorKey: 'name',
 			header: 'Name',
 			enableColumnFilter: false,
@@ -84,6 +123,12 @@ export function userColumns({
 		{
 			accessorKey: 'email',
 			header: 'Email',
+			enableColumnFilter: false,
+			cell: (info) => info.getValue(),
+		},
+		{
+			accessorKey: 'where_they_find_us',
+			header: 'How They Find Us',
 			enableColumnFilter: false,
 			cell: (info) => info.getValue(),
 		},

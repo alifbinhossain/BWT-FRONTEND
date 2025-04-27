@@ -48,10 +48,6 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{ label: 'Brand', value: data.brand_name },
 			{ label: 'Model', value: data.model_name },
 			{
-				label: 'Size',
-				value: data.size_name,
-			},
-			{
 				label: 'Quantity',
 				value: data.quantity,
 			},

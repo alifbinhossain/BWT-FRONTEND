@@ -34,6 +34,12 @@ export const useOtherBrand = <T>() =>
 		queryKey: otherQK.brand(),
 		url: `/other/brand/value/label`,
 	});
+//* GET OTHER MODEL
+export const useOtherModelByQuery = <T>(query: string) =>
+	useTQuery<T>({
+		queryKey: otherQK.modelByQuery(query),
+		url: `/other/model/value/label?${query}`,
+	});
 
 //* GET OTHER MODEL
 export const useOtherModel = <T>() =>

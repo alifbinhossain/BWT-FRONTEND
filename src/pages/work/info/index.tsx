@@ -25,6 +25,7 @@ const Info = () => {
 	const handleUpdate = (row: Row<IInfoTableData>) => {
 		navigate(`/work/info/${row.original.uuid}/update`);
 	};
+
 	//* Delete Modal state
 	//* Single Delete Item
 	const [deleteItem, setDeleteItem] = useState<{

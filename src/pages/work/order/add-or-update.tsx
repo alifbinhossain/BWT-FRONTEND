@@ -10,11 +10,12 @@ import { AddModal } from '@core/modal';
 import {
 	useOtherAccessories,
 	useOtherBox,
+	useOtherBrand,
 	useOtherFloor,
 	useOtherModel,
+	useOtherModelByQuery,
 	useOtherProblem,
 	useOtherRack,
-	useOtherSize,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
@@ -37,17 +38,18 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
 	const { data } = useWorkOrderByUUID<IOrderTableData>(updatedData?.uuid as string);
-
-	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
-	const { data: sizeOption } = useOtherSize<IFormSelectOption[]>();
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
 	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
 	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
+	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
 	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
+	const { data: modelOption, invalidateQuery: invalidateModel } = useOtherModelByQuery<IFormSelectOption[]>(
+		`is_brand=false&brand_uuid=${form.watch('brand_uuid')}`
+	);
 	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
 	// Reset form values when data is updated
 	useEffect(() => {
@@ -61,6 +63,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 		setUpdatedData?.(null);
 		form.reset(ORDER_NULL);
 		invalidateDiagnosis();
+		invalidateModel();
 		setOpen(false);
 	};
 
@@ -92,7 +95,6 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			});
 		}
 	}
-
 	return (
 		<AddModal
 			open={open}
@@ -110,6 +112,11 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				/>
 				<FormField
 					control={form.control}
+					name='is_proceed_to_repair'
+					render={(props) => <CoreForm.Checkbox label='Proceed to Repair' {...props} />}
+				/>
+				<FormField
+					control={form.control}
 					name='is_transferred_for_qc'
 					render={(props) => <CoreForm.Checkbox label='Transfer QC' {...props} />}
 				/>
@@ -122,11 +129,25 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 
 			<div className='flex space-x-4'>
 				<div className='flex-1'>
+					<div className='flex-1'>
+						<FormField
+							control={form.control}
+							name='brand_uuid'
+							render={(props) => (
+								<CoreForm.ReactSelect
+									label='Brand'
+									options={brandOptions || []}
+									placeholder='Select Brand'
+									{...props}
+								/>
+							)}
+						/>
+					</div>
 					<FormField
 						control={form.control}
 						name='model_uuid'
 						render={(props) => (
-							<CoreForm.ReactSelect
+							<CoreForm.ReactSelectCreate
 								label='Model'
 								options={modelOption || []}
 								placeholder='Select Model'
@@ -135,20 +156,14 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						)}
 					/>
 				</div>
-				<div className='flex-1'>
+				{/* <div className='flex-1'>
 					<FormField
 						control={form.control}
-						name='size_uuid'
-						render={(props) => (
-							<CoreForm.ReactSelect
-								label='Size'
-								options={sizeOption || []}
-								placeholder='Select Size'
-								{...props}
-							/>
-						)}
+						name='model_uuid'
+						render={(props) => <CoreForm.Input label='Serial Number' {...props} />}
 					/>
-				</div>
+				</div> */}
+
 				<div className='flex-1'>
 					<FormField
 						control={form.control}

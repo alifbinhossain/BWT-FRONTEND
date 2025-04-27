@@ -16,6 +16,7 @@ const otherQK = {
 	brand: () => [...otherQK.all(), 'brand'],
 	//* Model
 	model: () => [...otherQK.all(), 'model'],
+	modelByQuery: (query: string) => [...otherQK.all(), 'model', query],
 	//* Size
 	size: () => [...otherQK.all(), 'size'],
 	//* Category

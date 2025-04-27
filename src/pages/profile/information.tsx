@@ -22,9 +22,6 @@ const Information: React.FC<{ data: IUserTableData; updateData: any; postData: a
 	// Add state for AddOrUpdate modal
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 	const [updatedData, setUpdatedData] = useState<IUserTableData | null>(null);
-	const pageAccess = useAccess('profile') as string[];
-	const updateAccess = pageAccess.includes('update');
-	const resetAccess = pageAccess.includes('reset_password');
 	const handleEdit = () => {
 		setUpdatedData(data); // Pass current data to modal
 		setIsOpenAddModal(true);

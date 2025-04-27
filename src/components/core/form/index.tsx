@@ -7,6 +7,7 @@ import FormJoinInputSelect from './join-input-select';
 import FormJoinInputUnit from './join-input-unit';
 import FormMultiSelect from './multi-select';
 import FormReactSelect from './react-select';
+import FormReactSelectCreate from './react-select-create';
 import FormSection from './section';
 import FormSelect from './select';
 import FormSubmit from './submit';
@@ -26,6 +27,7 @@ const Form = {
 	JoinInputSelect: FormJoinInputSelect,
 	DynamicFields: FormDynamicFields,
 	AddEditWrapper: FormAddEditWrapper,
+	ReactSelectCreate: FormReactSelectCreate,
 };
 
 export default Form;

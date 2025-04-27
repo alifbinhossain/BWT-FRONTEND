@@ -24,11 +24,12 @@ export const ORDER_SCHEMA = z
 		is_diagnosis_need: BOOLEAN_REQUIRED.default(false),
 		is_transferred_for_qc: BOOLEAN_OPTIONAL.default(false),
 		is_ready_for_delivery: BOOLEAN_OPTIONAL.default(false),
+		is_proceed_to_repair: BOOLEAN_REQUIRED.default(false),
+		brand_uuid: STRING_REQUIRED,
 		model_uuid: STRING_REQUIRED,
 		model_id: STRING_OPTIONAL,
-		size_uuid: STRING_REQUIRED,
 		quantity: NUMBER_DOUBLE_REQUIRED,
-		serial_no: STRING_REQUIRED,
+		serial_no: STRING_OPTIONAL,
 		problems_uuid: STRING_ARRAY,
 		problem_statement: STRING_REQUIRED,
 		accessories: STRING_ARRAY_OPTIONAL,
@@ -47,8 +48,9 @@ export const ORDER_NULL: Partial<IOrder> = {
 	is_diagnosis_need: false,
 	is_transferred_for_qc: false,
 	is_ready_for_delivery: false,
+	is_proceed_to_repair: false,
+	brand_uuid: '',
 	model_uuid: '',
-	size_uuid: '',
 	serial_no: '',
 	quantity: 1,
 	problems_uuid: [],
@@ -75,6 +77,7 @@ export const INFO_SCHEMA = z
 		name: STRING_OPTIONAL,
 		phone: STRING_OPTIONAL,
 		business_type: STRING_OPTIONAL,
+		where_they_find_us: z.enum(['whatsapp', 'instagram', 'facebook', 'youtube', 'person', 'none']).optional(),
 		designation_uuid: STRING_OPTIONAL,
 		department_uuid: STRING_OPTIONAL,
 		is_product_received: BOOLEAN_REQUIRED,
@@ -115,6 +118,9 @@ export const INFO_SCHEMA = z
 				if (!entry.warehouse_uuid) {
 					ctx.addIssue(customIssue('Required', `order_entry[${index}].warehouse_uuid`));
 				}
+				if (!entry.serial_no) {
+					ctx.addIssue(customIssue('Required', `order_entry[${index}].serial_no`));
+				}
 			});
 		}
 	});
@@ -124,6 +130,7 @@ export const INFO_NULL: Partial<IInfo> = {
 	user_uuid: null,
 	is_product_received: false,
 	received_date: null,
+	where_they_find_us: 'none',
 	name: '',
 	phone: '',
 	order_entry: [ORDER_NULL as IOrder],
@@ -236,15 +243,15 @@ export type IWorkTransfer = z.infer<typeof TRANSFER_PROCESS_SECTION_SCHEMA>;
 export const ZONE_SCHEMA = z.object({
 	name: STRING_OPTIONAL,
 	division: STRING_REQUIRED,
-	latitude: STRING_REQUIRED,
-	longitude: STRING_REQUIRED,
+	latitude: STRING_OPTIONAL,
+	longitude: STRING_OPTIONAL,
 	remarks: STRING_NULLABLE,
 });
 export const ZONE_NULL: Partial<IWorkZone> = {
 	name: '',
 	division: '',
-	latitude: '',
-	longitude: '',
+	latitude: undefined,
+	longitude: undefined,
 	remarks: null,
 };
 export type IWorkZone = z.infer<typeof ZONE_SCHEMA>;

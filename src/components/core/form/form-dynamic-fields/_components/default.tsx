@@ -16,7 +16,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 	form,
 }) => {
 	return (
-		<div className='rounded-b-md border border-t-0 overflow-scroll'>
+		<div className='overflow-scroll rounded-b-md border border-t-0'>
 			<Table className='table overflow-x-auto'>
 				<TableHeader>
 					<TableRow className='h-8 divide-x-[1px]'>
@@ -123,6 +123,22 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
 																<CoreForm.ReactSelect
+																	menuPortalTarget={document.body}
+																	options={fieldDef.options}
+																	placeholder={fieldDef.placeholder}
+																	disableLabel
+																	{...props}
+																/>
+															)}
+														/>
+													)}
+
+													{fieldDef.type === 'select-create' && (
+														<FormField
+															control={form.control}
+															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															render={(props) => (
+																<CoreForm.ReactSelectCreate
 																	menuPortalTarget={document.body}
 																	options={fieldDef.options}
 																	placeholder={fieldDef.placeholder}
