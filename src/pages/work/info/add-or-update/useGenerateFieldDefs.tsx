@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { set } from 'lodash';
 import { UseFormWatch } from 'react-hook-form';
 
 import FieldActionButton from '@/components/buttons/field-action';
 import { FormField } from '@/components/ui/form';
-import ReactSelect from '@/components/ui/react-select';
 import CoreForm from '@core/form';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
@@ -14,7 +12,6 @@ import {
 	useOtherBox,
 	useOtherBrand,
 	useOtherFloor,
-	useOtherModel,
 	useOtherModelByQuery,
 	useOtherProblem,
 	useOtherRack,
@@ -44,6 +41,14 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 
 	return [
 		{
+			header: 'Actions',
+			accessorKey: 'actions',
+			type: 'custom',
+			component: (index: number) => {
+				return <FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />;
+			},
+		},
+		{
 			header: 'Diagnosis',
 			accessorKey: 'is_diagnosis_need',
 			type: 'checkBox',
@@ -65,7 +70,6 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 						name={`order_entry.${index}.brand_uuid`}
 						render={(props) => (
 							<CoreForm.ReactSelect
-								disableLabel={true}
 								menuPortalTarget={document.body}
 								label='Brand'
 								options={brandOptions || []}
@@ -158,14 +162,6 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 			header: 'Remarks',
 			accessorKey: 'remarks',
 			type: 'textarea',
-		},
-		{
-			header: 'Actions',
-			accessorKey: 'actions',
-			type: 'custom',
-			component: (index: number) => {
-				return <FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />;
-			},
 		},
 	];
 };

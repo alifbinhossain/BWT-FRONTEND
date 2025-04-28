@@ -239,7 +239,22 @@ const AddOrUpdate = () => {
 			onSubmit={onSubmit}
 		>
 			<Header />
+			{/* <CoreForm.DynamicFields
+				title='Entry'
+				form={form}
+				fieldName='order_entry'
+				fieldDefs={useGenerateFieldDefs({
+					copy: handleCopy,
+					remove: handleRemove,
+					watch: form.watch,
+					form: form,
+					isProductReceived: isProductReceived,
+				})}
+				handleAdd={handleAdd}
+				fields={fields}
+			/> */}
 			<CoreForm.DynamicFields
+				viewAs='kanban'
 				title='Entry'
 				form={form}
 				fieldName='order_entry'
