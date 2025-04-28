@@ -5,6 +5,7 @@ import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
 import { IFormSelectOption } from '@/components/core/form/types';
+import ReactSelect from '@/components/ui/react-select';
 import CoreForm from '@core/form';
 
 import { useOtherUserByQuery } from '@/lib/common-queries/other';
@@ -16,6 +17,7 @@ import { useWorkInfo, useWorkInfoByUUID } from '../../_config/query';
 import { IInfo, INFO_NULL, INFO_SCHEMA } from '../../_config/schema';
 import Header from './header';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
+import useGenerateFieldDefsV2 from './useGenerateFieldDefsV2';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
@@ -211,7 +213,6 @@ const AddOrUpdate = () => {
 			remove(index);
 		}
 	};
-	console.log(form.formState.errors);
 
 	// Copy Handler
 	const handleCopy = (index: number) => {
@@ -231,44 +232,64 @@ const AddOrUpdate = () => {
 			remarks: field.remarks,
 		});
 	};
-
+	//!Remove it when Version confirm
+	const [version, setVersion] = useState(2);
+	const fieldDefs = useGenerateFieldDefs({
+		copy: handleCopy,
+		remove: handleRemove,
+		watch: form.watch,
+		form: form,
+		isProductReceived: isProductReceived,
+	});
+	const fieldDefsV2 = useGenerateFieldDefsV2({
+		copy: handleCopy,
+		remove: handleRemove,
+		watch: form.watch,
+		form: form,
+		isProductReceived: isProductReceived,
+	});
 	return (
 		<CoreForm.AddEditWrapper
 			title={isUpdate ? 'Edit Order Entry' : ' Add Order Entry'}
 			form={form}
 			onSubmit={onSubmit}
 		>
+			<div className='flex gap-2'>
+				<ReactSelect
+					name='version'
+					options={[
+						{ label: 'Version 1', value: 1 },
+						{ label: 'Version 2', value: 2 },
+					]}
+					value={[
+						{ label: 'Version 1', value: 1 },
+						{ label: 'Version 2', value: 2 },
+					].find((item) => item.value === version)}
+					onChange={(e: any) => setVersion(Number(e?.value))}
+				/>
+			</div>
 			<Header />
-			{/* <CoreForm.DynamicFields
-				title='Entry'
-				form={form}
-				fieldName='order_entry'
-				fieldDefs={useGenerateFieldDefs({
-					copy: handleCopy,
-					remove: handleRemove,
-					watch: form.watch,
-					form: form,
-					isProductReceived: isProductReceived,
-				})}
-				handleAdd={handleAdd}
-				fields={fields}
-			/> */}
-			<CoreForm.DynamicFields
-				viewAs='kanban'
-				title='Entry'
-				form={form}
-				fieldName='order_entry'
-				fieldDefs={useGenerateFieldDefs({
-					copy: handleCopy,
-					remove: handleRemove,
-					watch: form.watch,
-					form: form,
-					isProductReceived: isProductReceived,
-				})}
-				handleAdd={handleAdd}
-				fields={fields}
-			/>
-
+			{version === 1 && (
+				<CoreForm.DynamicFields
+					title='Entry'
+					form={form}
+					fieldName='order_entry'
+					fieldDefs={fieldDefsV2}
+					handleAdd={handleAdd}
+					fields={fields}
+				/>
+			)}
+			{version === 2 && (
+				<CoreForm.DynamicFields
+					viewAs='kanban'
+					title='Entry'
+					form={form}
+					fieldName='order_entry'
+					fieldDefs={fieldDefs}
+					handleAdd={handleAdd}
+					fields={fields}
+				/>
+			)}
 			<Suspense fallback={null}>
 				<DeleteModal
 					{...{
