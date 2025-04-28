@@ -49,14 +49,25 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 			},
 		},
 		{
-			header: 'Diagnosis',
-			accessorKey: 'is_diagnosis_need',
-			type: 'checkBox',
-		},
-		{
 			header: 'Proceed to Repair',
 			accessorKey: 'is_proceed_to_repair',
-			type: 'checkBox',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<div className='flex gap-2'>
+						<FormField
+							control={form.control}
+							name={`order_entry.${index}.is_diagnosis_need`}
+							render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
+						/>
+						<FormField
+							control={form.control}
+							name={`order_entry.${index}.is_proceed_to_repair`}
+							render={(props) => <CoreForm.Checkbox label='Proceed to Repair' {...props} />}
+						/>
+					</div>
+				);
+			},
 		},
 		{
 			header: 'Brand',
