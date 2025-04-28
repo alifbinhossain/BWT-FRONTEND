@@ -266,6 +266,7 @@ const AddOrUpdate = () => {
 						{ label: 'Version 2', value: 2 },
 					].find((item) => item.value === version)}
 					onChange={(e: any) => setVersion(Number(e?.value))}
+					isClearable={false}
 				/>
 			</div>
 			<Header />
