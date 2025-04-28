@@ -78,5 +78,5 @@ export interface DynamicFieldsProps {
 	extraHeader?: React.ReactNode;
 	handleAdd?: () => void;
 	fields: FieldArrayWithId<any>[];
-	viewAs?: 'default' | 'spreadsheet';
+	viewAs?: 'default' | 'spreadsheet' | 'kanban';
 }
