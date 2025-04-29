@@ -161,10 +161,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						)}
 					/>
 				)}
-				{(form.watch('user_type') === 'employee' ||
-					form.watch('business_type') === 'tv_company' ||
-					form.watch('business_type') === 'corporate' ||
-					form.watch('user_type') === 'vendor') && (
+				{ (
 					<FormField
 						control={form.control}
 						name='department_uuid'
@@ -178,10 +175,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						)}
 					/>
 				)}
-				{(form.watch('user_type') === 'employee' ||
-					form.watch('business_type') === 'tv_company' ||
-					form.watch('business_type') === 'corporate' ||
-					form.watch('user_type') === 'vendor') && (
+				{ (
 					<FormField
 						control={form.control}
 						name='designation_uuid'
