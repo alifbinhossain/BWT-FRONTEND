@@ -47,6 +47,11 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
+		accessorKey: 'user_phone',
+		header: 'Phone Number',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'is_product_received',
 		header: 'Product Received',
 		enableColumnFilter: false,
@@ -128,6 +133,11 @@ export const orderColumns = ({
 		},
 	},
 	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'model_name',
 		header: 'Model',
 		enableColumnFilter: false,
@@ -173,7 +183,9 @@ export const orderColumns = ({
 	{
 		id: 'action_trx',
 		header: 'Section Transfer',
-		cell: (info) => <Transfer onClick={() => handleAgainstTrx?.(info.row)} />,
+		cell: (info) => (
+			<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
+		),
 		size: 40,
 		meta: {
 			hidden: !actionTrxAccess,
@@ -209,14 +221,15 @@ export const QCColumns = ({
 	haveDeliveryAccess?: boolean;
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
-		accessorKey: 'is_diagnosis_need',
-		header: 'Diagnosis Need',
-		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
-	},
-	{
 		accessorKey: 'is_ready_for_delivery',
-		header: 'Ready For Delivery',
+		header: () => (
+			<div className='flex items-center gap-2'>
+				<span>
+					Ready For <br />
+					Delivery
+				</span>
+			</div>
+		),
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -249,6 +262,11 @@ export const QCColumns = ({
 			const uuid = info.row.original.info_uuid;
 			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
+	},
+	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
 	},
 	{
 		accessorKey: 'model_name',
@@ -325,14 +343,15 @@ export const RepairingColumns = ({
 	haveQCAccess?: boolean;
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
-		accessorKey: 'is_diagnosis_need',
-		header: 'Diagnosis Need',
-		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
-	},
-	{
 		accessorKey: 'is_transferred_for_qc',
-		header: 'Transferred For QC',
+		header: () => (
+			<div className='flex items-center gap-2'>
+				<span>
+					Transfer For <br />
+					QC
+				</span>
+			</div>
+		),
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -344,7 +363,14 @@ export const RepairingColumns = ({
 	},
 	{
 		accessorKey: 'is_ready_for_delivery',
-		header: 'Ready For Delivery',
+		header: () => (
+			<div className='flex items-center gap-2'>
+				<span>
+					Ready For <br />
+					Delivery
+				</span>
+			</div>
+		),
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -377,6 +403,11 @@ export const RepairingColumns = ({
 			const uuid = info.row.original.info_uuid;
 			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
+	},
+	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
 	},
 	{
 		accessorKey: 'model_name',
@@ -467,6 +498,11 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		},
 	},
 	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'model_name',
 		header: 'Model',
 		enableColumnFilter: false,
@@ -542,15 +578,7 @@ export const diagnosisColumns = ({
 		header: 'Diagnosis ID',
 		enableColumnFilter: false,
 	},
-	{
-		accessorKey: 'info_id',
-		header: 'Info ID',
-		enableColumnFilter: false,
-		cell: (info) => {
-			const uuid = info.row.original.info_uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
-		},
-	},
+
 	{
 		accessorKey: 'order_id',
 		header: 'Order ID',
@@ -564,6 +592,15 @@ export const diagnosisColumns = ({
 					title={info.getValue() as string}
 				/>
 			);
+		},
+	},
+	{
+		accessorKey: 'info_id',
+		header: 'Info ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.info_uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{
@@ -661,11 +698,11 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 		header: 'Section',
 		enableColumnFilter: false,
 	},
-	{
-		accessorKey: 'process_id',
-		header: 'Process ID',
-		enableColumnFilter: false,
-	},
+	// {
+	// 	accessorKey: 'process_id',
+	// 	header: 'Process ID',
+	// 	enableColumnFilter: false,
+	// },
 	{
 		accessorKey: 'status',
 		header: 'Process Status',
@@ -696,7 +733,7 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 	},
 	{
 		accessorKey: 'problem_statement',
-		header: 'Process Problem Statement',
+		header: 'Problem Statement',
 		enableColumnFilter: false,
 	},
 	{
@@ -715,6 +752,7 @@ export const zoneColumns = (): ColumnDef<IZoneTableData>[] => [
 		accessorKey: 'name',
 		header: 'Name',
 		enableColumnFilter: false,
+		size: 350,
 	},
 	{
 		accessorKey: 'latitude',

@@ -177,14 +177,14 @@ export type ISection = z.infer<typeof SECTION_SCHEMA>;
 //* Problem Schema
 export const PROBLEM_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
-	name: STRING_OPTIONAL,
-	category: STRING_OPTIONAL,
+	name: STRING_REQUIRED,
+	category: z.enum(['customer', 'employee']),
 	remarks: STRING_NULLABLE,
 });
 export const PROBLEM_NULL: Partial<IProblem> = {
 	uuid: '',
 	name: '',
-	category: '',
+	category: 'customer',
 	remarks: null,
 };
 export type IProblem = z.infer<typeof PROBLEM_SCHEMA>;

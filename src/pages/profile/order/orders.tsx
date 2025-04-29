@@ -8,7 +8,6 @@ import TableList, { ITableListItems } from '@/components/others/table-list';
 import { formatDateTable } from '@/utils/formatDate';
 
 const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
-	const proceedToRepair = data?.is_diagnosis_need ? (data?.diagnosis?.is_proceed_to_repair ? true : false) : true;
 	const renderGeneralItems = (): ITableListItems => {
 		return [
 			{
@@ -74,7 +73,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 			},
 			{
 				label: 'Proceed to Repair',
-				value: <StatusButton value={proceedToRepair as boolean} />,
+				value: <StatusButton value={data?.is_proceed_to_repair as boolean} />,
 			},
 			{
 				label: 'Transfer For QC',
