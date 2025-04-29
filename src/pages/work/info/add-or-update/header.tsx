@@ -66,13 +66,7 @@ const Header = () => {
 
 	useEffect(() => {
 		if (isNewCustomer) {
-			if (!isBusinessTypeCompany) {
-				form.resetField('user_uuid');
-				form.resetField('department_uuid');
-				form.resetField('designation_uuid');
-			} else {
-				form.resetField('user_uuid');
-			}
+			form.resetField('user_uuid');
 		} else {
 			form.resetField('name');
 			form.resetField('phone');
@@ -180,8 +174,8 @@ const Header = () => {
 				</div>
 			)}
 
-			{ (
-				<div>
+			{
+				(isNewCustomer ) && <div>
 					<div>
 						<FormField
 							control={form.control}
@@ -213,7 +207,7 @@ const Header = () => {
 						/>
 					</div>
 				</div>
-			)}
+			}
 			<FormField
 				control={form.control}
 				name='zone_uuid'

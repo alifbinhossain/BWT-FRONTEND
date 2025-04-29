@@ -1,4 +1,5 @@
 import React from 'react';
+import useAccess from '@/hooks/useAccess';
 
 import StatusButton from '@/components/buttons/status';
 import { LinkOnly } from '@/components/others/link';
@@ -11,6 +12,9 @@ import { formatDateTable } from '@/utils/formatDate';
 import { IOrderTableData } from '../../_config/columns/columns.type';
 
 const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ data, updateData }) => {
+	const pageAccess = useAccess('work__order_details') as string[];
+	const haveDeliveryAccess = pageAccess?.includes('click_transfer_delivery');
+	const haveQCAccess = pageAccess?.includes('click_transfer_qc');
 	const renderGeneralItems = (): ITableListItems => {
 		return [
 			{
@@ -83,8 +87,18 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: <StatusButton value={data.is_diagnosis_needed as boolean} />,
 			},
 			{
+				label: 'Proceed to Repair',
+				value: <StatusButton value={data.is_proceed_to_repair as boolean} />,
+			},
+			{
 				label: 'Transfer For QC',
-				value: <Switch checked={data?.is_transferred_for_qc} onCheckedChange={() => handelQCStatusChange()} />,
+				value: (
+					<Switch
+						checked={data?.is_transferred_for_qc}
+						onCheckedChange={() => handelQCStatusChange()}
+						disabled={!haveQCAccess}
+					/>
+				),
 			},
 			{
 				label: 'Ready For Delivery',
@@ -92,6 +106,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 					<Switch
 						checked={data?.is_ready_for_delivery}
 						onCheckedChange={() => handelDeliveryStatusChange()}
+						disabled={!haveDeliveryAccess}
 					/>
 				),
 			},

@@ -51,6 +51,12 @@ export const useWorkQC = <T>() =>
 		queryKey: workQK.qc(),
 		url: '/work/order?qc=true',
 	});
+//* Repairing
+export const useWorkRepairing = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.repairing(),
+		url: '/work/order?is_repair=true',
+	});
 //* Is Delivery Ready
 export const useWorkIsDeliveryReady = <T>() =>
 	useTQuery<T>({

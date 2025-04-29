@@ -9,7 +9,7 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { orderColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkOrder } from '../_config/query';
+import { useWorkDiagnosis, useWorkOrder, useWorkRepairing } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -19,6 +19,9 @@ const Order = () => {
 	const navigate = useNavigate();
 
 	const pageAccess = useAccess('work__order') as string[];
+
+	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis();
+	const { invalidateQuery: invalidateRepairing } = useWorkRepairing();
 
 	const actionTrxAccess = pageAccess.includes('click_trx');
 	const actionProceedToRepair = pageAccess.includes('click_proceed_to_repair');
@@ -71,13 +74,15 @@ const Order = () => {
 		);
 	};
 	const handleProceedToRepair = async (row: Row<IOrderTableData>) => {
-		const is_proceed_to_repair = !row?.original?.is_delivery_complete;
+		const is_proceed_to_repair = !row?.original?.is_proceed_to_repair;
 		const updated_at = getDateTime();
 
 		await updateData.mutateAsync({
 			url: `/work/order/${row?.original?.uuid}`,
 			updatedData: { is_proceed_to_repair, updated_at },
 		});
+		invalidateDiagnosis();
+		invalidateRepairing();
 	};
 
 	// Table Columns

@@ -11,6 +11,7 @@ import OrderDetails from '@/pages/work/order/details/';
 import Process from '@/pages/work/order/details/process';
 import Problem from '@/pages/work/problem';
 import QC from '@/pages/work/qc';
+import Repairing from '@/pages/work/repairing  ';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
 
@@ -64,7 +65,7 @@ const workRoutes: IRoute[] = [
 				element: <OrderDetails />,
 				page_name: 'work__order_details',
 				hidden: true,
-				actions: ['create', 'read', 'update', 'delete'],
+				actions: ['create', 'read', 'update', 'delete', 'click_transfer_qc', 'click_transfer_delivery'],
 			},
 			{
 				name: 'Diagnosis',
@@ -74,11 +75,18 @@ const workRoutes: IRoute[] = [
 				actions: ['read', 'update', 'delete', 'click_trx'],
 			},
 			{
+				name: 'Repairing',
+				path: '/work/repairing',
+				element: <Repairing />,
+				page_name: 'work__repairing',
+				actions: ['read', 'update', 'click_transfer_qc', 'click_transfer_delivery'],
+			},
+			{
 				name: 'QC',
 				path: '/work/qc',
 				element: <QC />,
 				page_name: 'work__qc',
-				actions: ['read', 'update'],
+				actions: ['read', 'update', 'click_transfer_delivery'],
 			},
 			{
 				name: 'Process',

@@ -19,6 +19,9 @@ export const workQK = {
 	//* QC
 	qc: () => [...workQK.all(), 'qc'],
 	qcByUUID: (uuid: string) => [...workQK.qc(), uuid],
+	//*repairing
+	repairing: () => [...workQK.all(), 'repairing'],
+	repairingByUUID: (uuid: string) => [...workQK.repairing(), uuid],
 	//* is delivery ready
 	isDeliveryReady: () => [...workQK.all(), 'deliveryReady'],
 	isDeliveryReadyByUUID: (uuid: string) => [...workQK.isDeliveryReady(), uuid],
