@@ -180,7 +180,7 @@ const Header = () => {
 				</div>
 			)}
 
-			{isBusinessTypeCompany && (
+			{ (
 				<div>
 					<div>
 						<FormField
@@ -191,7 +191,7 @@ const Header = () => {
 									menuPortalTarget={document.body}
 									label='Designation'
 									options={designationOption || []}
-									placeholder='Select Problems'
+									placeholder='Select Designation'
 									{...props}
 								/>
 							)}
@@ -206,7 +206,7 @@ const Header = () => {
 									menuPortalTarget={document.body}
 									label='Department'
 									options={departmentOption || []}
-									placeholder='Select Accessories'
+									placeholder='Select Department'
 									{...props}
 								/>
 							)}
