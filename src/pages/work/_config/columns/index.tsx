@@ -162,7 +162,7 @@ export const orderColumns = ({
 	{
 		accessorFn: (row) => {
 			return row.accessories_name
-				.map((item) => item)
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -284,7 +284,7 @@ export const QCColumns = ({
 	{
 		accessorFn: (row) => {
 			return row.accessories_name
-				.map((item) => item)
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -412,7 +412,7 @@ export const RepairingColumns = ({
 	{
 		accessorFn: (row) => {
 			return row.accessories_name
-				.map((item) => item)
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -484,7 +484,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorFn: (row) => {
 			return row.problems_name
-				.map((item) => item)
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -500,7 +500,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorFn: (row) => {
 			return row.accessories_name
-				.map((item) => item)
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -569,7 +569,7 @@ export const diagnosisColumns = ({
 	{
 		accessorFn: (row) => {
 			return row.problems_name
-				.map((item) => item)
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
@@ -686,7 +686,7 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 	{
 		accessorFn: (row) => {
 			return row.problems_name
-				.map((item) => item)
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
