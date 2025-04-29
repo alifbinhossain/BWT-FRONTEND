@@ -142,8 +142,8 @@ export type IInfo = z.infer<typeof INFO_SCHEMA>;
 //* Diagnosis Schema
 export const DIAGNOSIS_SCHEMA = z.object({
 	problems_uuid: STRING_ARRAY,
-	problem_statement: STRING_OPTIONAL,
-	customer_problem_statement: STRING_OPTIONAL,
+	problem_statement: STRING_NULLABLE,
+	customer_problem_statement: STRING_NULLABLE,
 	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
 	proposed_cost: NUMBER_DOUBLE_REQUIRED,
 	is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
@@ -152,8 +152,8 @@ export const DIAGNOSIS_SCHEMA = z.object({
 });
 export const DIAGNOSIS_NULL: Partial<IDiagnosis> = {
 	problems_uuid: [],
-	problem_statement: '',
-	customer_problem_statement: undefined,
+	problem_statement: null,
+	customer_problem_statement: null,
 	status: 'pending',
 	proposed_cost: 0,
 	is_proceed_to_repair: false,
@@ -177,14 +177,14 @@ export type ISection = z.infer<typeof SECTION_SCHEMA>;
 //* Problem Schema
 export const PROBLEM_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
-	name: STRING_OPTIONAL,
-	category: STRING_OPTIONAL,
+	name: STRING_REQUIRED,
+	category: z.enum(['customer', 'employee']),
 	remarks: STRING_NULLABLE,
 });
 export const PROBLEM_NULL: Partial<IProblem> = {
 	uuid: '',
 	name: '',
-	category: '',
+	category: 'customer',
 	remarks: null,
 };
 export type IProblem = z.infer<typeof PROBLEM_SCHEMA>;

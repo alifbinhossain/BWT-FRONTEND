@@ -63,12 +63,12 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 
 	const statusItems = [
 		{
-			label: 'Diagnosed',
+			label: 'Diagnosing',
 			value: Boolean(data.is_diagnosis_need),
 		},
 		{
 			label: 'Repairing',
-			value: Boolean(data.diagnosis?.is_proceed_to_repair),
+			value: Boolean(data.is_proceed_to_repair),
 		},
 		{
 			label: 'Quality Inspection',
@@ -124,10 +124,10 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 		currentStatus = 'Ready to Deliver';
 	} else if (data?.is_transferred_for_qc) {
 		currentStatus = 'Quality Inspection';
-	} else if (data?.diagnosis?.is_proceed_to_repair) {
+	} else if (data?.is_proceed_to_repair) {
 		currentStatus = 'Repairing';
 	} else if (data?.is_diagnosis_need && data?.is_product_received) {
-		currentStatus = 'Diagnosed';
+		currentStatus = 'Diagnosing';
 	} else if (data?.is_product_received) {
 		currentStatus = 'Product Received';
 	} else {

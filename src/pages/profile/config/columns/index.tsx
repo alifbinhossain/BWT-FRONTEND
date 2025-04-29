@@ -152,11 +152,6 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		},
 	},
 	{
-		accessorKey: 'user_name',
-		header: 'Customer',
-		enableColumnFilter: false,
-	},
-	{
 		accessorKey: 'is_product_received',
 		header: 'Product Received',
 		enableColumnFilter: false,

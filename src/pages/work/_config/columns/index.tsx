@@ -34,7 +34,7 @@ export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
 export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 	{
 		accessorKey: 'info_id',
-		header: 'ID',
+		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
@@ -44,6 +44,11 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 	{
 		accessorKey: 'user_name',
 		header: 'Customer',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'user_phone',
+		header: 'Phone Number',
 		enableColumnFilter: false,
 	},
 	{
@@ -73,13 +78,27 @@ export const orderColumns = ({
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_diagnosis_need',
-		header: 'Diagnosis Need',
+		header: () => (
+			<div className='flex items-center gap-2'>
+				<span>
+					Diagnosis <br />
+					Need
+				</span>
+			</div>
+		),
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
-		header: 'Proceed to Repair',
+		header: () => (
+			<div className='flex items-center gap-2'>
+				<span>
+					Proceed to <br />
+					Repair
+				</span>
+			</div>
+		),
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch checked={info.getValue() as boolean} onCheckedChange={() => handleProceedToRepair?.(info.row)} />
@@ -91,7 +110,7 @@ export const orderColumns = ({
 	},
 	{
 		accessorKey: 'order_id',
-		header: 'ID',
+		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
@@ -114,6 +133,11 @@ export const orderColumns = ({
 		},
 	},
 	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'model_name',
 		header: 'Model',
 		enableColumnFilter: false,
@@ -122,6 +146,7 @@ export const orderColumns = ({
 		accessorKey: 'serial_no',
 		header: 'Serial No',
 		enableColumnFilter: false,
+		size: 30,
 	},
 	{
 		accessorKey: 'quantity',
@@ -129,21 +154,15 @@ export const orderColumns = ({
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'problems_name',
+		accessorFn: (row) => {
+			return row.problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => {
-			const value = info.row.original.problems_name as string[];
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item?.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			);
-		},
+		cell: (info) => info.getValue() as string,
 	},
 	{
 		accessorKey: 'problem_statement',
@@ -153,29 +172,20 @@ export const orderColumns = ({
 	{
 		accessorFn: (row) => {
 			return row.accessories_name
-				.map((item) => item)
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
 		header: 'Accessories',
 		enableColumnFilter: false,
-		cell: (info) => {
-			const value = info.row.original.accessories_name as string[];
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item?.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			);
-		},
+		cell: (info) => info.getValue() as string,
 	},
 	{
 		id: 'action_trx',
 		header: 'Section Transfer',
-		cell: (info) => <Transfer onClick={() => handleAgainstTrx?.(info.row)} />,
+		cell: (info) => (
+			<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
+		),
 		size: 40,
 		meta: {
 			hidden: !actionTrxAccess,
@@ -211,14 +221,15 @@ export const QCColumns = ({
 	haveDeliveryAccess?: boolean;
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
-		accessorKey: 'is_diagnosis_need',
-		header: 'Diagnosis Need',
-		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
-	},
-	{
 		accessorKey: 'is_ready_for_delivery',
-		header: 'Ready For Delivery',
+		header: () => (
+			<div className='flex items-center gap-2'>
+				<span>
+					Ready For <br />
+					Delivery
+				</span>
+			</div>
+		),
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -230,7 +241,7 @@ export const QCColumns = ({
 	},
 	{
 		accessorKey: 'order_id',
-		header: 'ID',
+		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
@@ -253,6 +264,11 @@ export const QCColumns = ({
 		},
 	},
 	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'model_name',
 		header: 'Model',
 		enableColumnFilter: false,
@@ -268,21 +284,15 @@ export const QCColumns = ({
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'problems_name',
+		accessorFn: (row) => {
+			return row.problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => {
-			const value = info.row.original.problems_name as string[];
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			);
-		},
+		cell: (info) => info.getValue() as string,
 	},
 	{
 		accessorKey: 'problem_statement',
@@ -291,25 +301,14 @@ export const QCColumns = ({
 	},
 	{
 		accessorFn: (row) => {
-			return row.accessories
-				.map((item) => item)
+			return row.accessories_name
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
 		header: 'Accessories',
 		enableColumnFilter: false,
-		cell: (info) => {
-			const value = info.row.original.accessories as string[];
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			);
-		},
+		cell: (info) => info.getValue() as string,
 	},
 	{
 		accessorKey: 'warehouse_name',
@@ -344,14 +343,15 @@ export const RepairingColumns = ({
 	haveQCAccess?: boolean;
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
-		accessorKey: 'is_diagnosis_need',
-		header: 'Diagnosis Need',
-		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
-	},
-	{
 		accessorKey: 'is_transferred_for_qc',
-		header: 'Transferred For QC',
+		header: () => (
+			<div className='flex items-center gap-2'>
+				<span>
+					Transfer For <br />
+					QC
+				</span>
+			</div>
+		),
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -363,7 +363,14 @@ export const RepairingColumns = ({
 	},
 	{
 		accessorKey: 'is_ready_for_delivery',
-		header: 'Ready For Delivery',
+		header: () => (
+			<div className='flex items-center gap-2'>
+				<span>
+					Ready For <br />
+					Delivery
+				</span>
+			</div>
+		),
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -375,7 +382,7 @@ export const RepairingColumns = ({
 	},
 	{
 		accessorKey: 'order_id',
-		header: 'ID',
+		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
@@ -398,6 +405,11 @@ export const RepairingColumns = ({
 		},
 	},
 	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'model_name',
 		header: 'Model',
 		enableColumnFilter: false,
@@ -413,21 +425,15 @@ export const RepairingColumns = ({
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'problems_name',
+		accessorFn: (row) => {
+			return row.problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => {
-			const value = info.row.original.problems_name as string[];
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			);
-		},
+		cell: (info) => info.getValue() as string,
 	},
 	{
 		accessorKey: 'problem_statement',
@@ -436,25 +442,14 @@ export const RepairingColumns = ({
 	},
 	{
 		accessorFn: (row) => {
-			return row.accessories
-				.map((item) => item)
+			return row.accessories_name
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
 		header: 'Accessories',
 		enableColumnFilter: false,
-		cell: (info) => {
-			const value = info.row.original.accessories as string[];
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			);
-		},
+		cell: (info) => info.getValue() as string,
 	},
 	{
 		accessorKey: 'warehouse_name',
@@ -480,7 +475,7 @@ export const RepairingColumns = ({
 export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'order_id',
-		header: 'ID',
+		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
@@ -503,6 +498,11 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		},
 	},
 	{
+		accessorKey: 'brand_name',
+		header: 'Brand',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'model_name',
 		header: 'Model',
 		enableColumnFilter: false,
@@ -518,21 +518,15 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'problems_name',
+		accessorFn: (row) => {
+			return row.problems_name
+				?.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => {
-			const value = info.row.original.problems_name as string[];
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			);
-		},
+		cell: (info) => info.getValue() as string,
 	},
 	{
 		accessorKey: 'problem_statement',
@@ -541,25 +535,14 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 	},
 	{
 		accessorFn: (row) => {
-			return row.accessories
-				.map((item) => item)
+			return row.accessories_name
+				?.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
 		header: 'Accessories',
 		enableColumnFilter: false,
-		cell: (info) => {
-			const value = info.row.original.accessories as string[];
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			);
-		},
+		cell: (info) => info.getValue() as string,
 	},
 	{
 		accessorKey: 'warehouse_name',
@@ -595,15 +578,7 @@ export const diagnosisColumns = ({
 		header: 'Diagnosis ID',
 		enableColumnFilter: false,
 	},
-	{
-		accessorKey: 'info_id',
-		header: 'Info ID',
-		enableColumnFilter: false,
-		cell: (info) => {
-			const uuid = info.row.original.info_uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
-		},
-	},
+
 	{
 		accessorKey: 'order_id',
 		header: 'Order ID',
@@ -620,31 +595,34 @@ export const diagnosisColumns = ({
 		},
 	},
 	{
-		accessorKey: 'problems_name',
-		header: 'Diagnosis Problem',
+		accessorKey: 'info_id',
+		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const value = info.row.original.problems_name as string[];
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => (
-						<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-							{item.replace(/_/g, ' ')}
-						</span>
-					))}
-				</div>
-			);
+			const uuid = info.row.original.info_uuid;
+			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{
+		accessorFn: (row) => {
+			return row.problems_name
+				?.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Problem',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue() as string,
+	},
+	{
 		accessorKey: 'problem_statement',
-		header: 'Diagnosis Problem Statement',
+		header: 'Problem Statement',
 		enableColumnFilter: false,
 	},
 
 	{
 		accessorKey: 'status',
-		header: 'Diagnosis Status',
+		header: 'Status',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const status = info.getValue() as string;
@@ -656,14 +634,18 @@ export const diagnosisColumns = ({
 					pending: 'bg-warning',
 				}[status.toLowerCase()] || '';
 
-			return <span className={`rounded px-2 py-1 capitalize text-white ${bgColorClass}`}>{status}</span>;
+			return (
+				<div>
+					<span className={`rounded px-2 py-1 capitalize text-white ${bgColorClass}`}>{status}</span>
+					<DateTime
+						date={
+							info.row.original.status_update_date ? new Date(info.row.original.status_update_date) : null
+						}
+						isTime={false}
+					/>
+				</div>
+			);
 		},
-	},
-	{
-		accessorKey: 'status_update_date',
-		header: 'Diagnosis Status Date',
-		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
 		accessorKey: 'proposed_cost',
@@ -672,7 +654,14 @@ export const diagnosisColumns = ({
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
-		header: 'Proceed to Repair',
+		header: () => (
+			<div className='flex items-center gap-2'>
+				<span>
+					Proceed to <br />
+					Repair
+				</span>
+			</div>
+		),
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
@@ -709,11 +698,11 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 		header: 'Section',
 		enableColumnFilter: false,
 	},
-	{
-		accessorKey: 'process_id',
-		header: 'Process ID',
-		enableColumnFilter: false,
-	},
+	// {
+	// 	accessorKey: 'process_id',
+	// 	header: 'Process ID',
+	// 	enableColumnFilter: false,
+	// },
 	{
 		accessorKey: 'status',
 		header: 'Process Status',
@@ -732,25 +721,19 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 		},
 	},
 	{
-		accessorKey: 'problems_name',
-		header: 'Process Problem',
-		enableColumnFilter: false,
-		cell: (info) => {
-			const value = info.row.original.problems_name as string[];
-			if (value?.length === 0) {
-				return <></>;
-			}
-			return (
-				<div className='flex flex-wrap gap-1'>
-					{value?.map((item, index) => <span key={index}>{item?.replace(/_/g, ' ')}</span>)}
-					<br />
-				</div>
-			);
+		accessorFn: (row) => {
+			return row.problems_name
+				?.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
 		},
+		header: 'Problem',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue() as string,
 	},
 	{
 		accessorKey: 'problem_statement',
-		header: 'Process Problem Statement',
+		header: 'Problem Statement',
 		enableColumnFilter: false,
 	},
 	{
@@ -769,6 +752,7 @@ export const zoneColumns = (): ColumnDef<IZoneTableData>[] => [
 		accessorKey: 'name',
 		header: 'Name',
 		enableColumnFilter: false,
+		size: 350,
 	},
 	{
 		accessorKey: 'latitude',

@@ -5,7 +5,7 @@ const Body = ({ value, className = '' }: { value: string; className?: string }) 
 };
 
 interface IDateTimeProps {
-	date: Date;
+	date: Date | null | undefined;
 	isDate?: boolean;
 	isTime?: boolean;
 }
