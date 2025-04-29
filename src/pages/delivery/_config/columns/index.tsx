@@ -69,11 +69,6 @@ export const challanColumns = (
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'customer_name',
-		header: 'Customer',
-		enableColumnFilter: false,
-	},
-	{
 		accessorKey: 'employee_name',
 		header: 'Employee',
 		enableColumnFilter: false,
@@ -86,6 +81,11 @@ export const challanColumns = (
 	{
 		accessorKey: 'courier_name',
 		header: 'Courier',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'courier_branch',
+		header: 'Courier Branch',
 		enableColumnFilter: false,
 	},
 ];

@@ -36,6 +36,7 @@ export type IDiagnosisTableData = {
 export type IOrderTableData = {
 	id: string;
 	order_id: string;
+	is_proceed_to_repair: boolean;
 	uuid: string;
 	user_name: string;
 	user_phone: string;

@@ -6,18 +6,20 @@ import useAccess from '@/hooks/useAccess';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { QCColumns } from '../_config/columns';
+import { RepairingColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkQC } from '../_config/query';
+import { useWorkRepairing } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 
 const Order = () => {
-	const { data, isLoading, url, postData, updateData, refetch } = useWorkQC<IOrderTableData[]>();
+	const { data, isLoading, url, postData, updateData, refetch } = useWorkRepairing<IOrderTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Work/QC', url, 'work__qc'), [url]);
-	const pageAccess = useAccess('work__qc') as string[];
+	const pageInfo = useMemo(() => new PageInfo('Work/Repairing', url, 'work__repairing'), [url]);
+	const pageAccess = useAccess('work__repairing') as string[];
 	const haveDeliveryAccess = pageAccess?.includes('click_transfer_delivery');
+	const haveQCAccess = pageAccess?.includes('click_transfer_qc');
+
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
 
@@ -43,7 +45,22 @@ const Order = () => {
 			isOnCloseNeeded: false,
 		});
 	};
-	const columns = QCColumns({ handelDeliveryStatusChange, haveDeliveryAccess });
+
+	const handelQCStatusChange = async (row: Row<IOrderTableData>) => {
+		await updateData.mutateAsync({
+			url: `/work/order/${row.original.uuid}`,
+			updatedData: {
+				is_transferred_for_qc: !row.original.is_transferred_for_qc,
+			},
+			isOnCloseNeeded: false,
+		});
+	};
+	const columns = RepairingColumns({
+		handelDeliveryStatusChange,
+		haveDeliveryAccess,
+		handelQCStatusChange,
+		haveQCAccess,
+	});
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
