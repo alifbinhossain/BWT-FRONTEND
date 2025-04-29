@@ -96,11 +96,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					name='is_ready_for_delivery'
 					render={(props) => <CoreForm.Checkbox label='Ready for Delivery' {...props} />}
 				/>
-				<FormField
-					control={form.control}
-					name='is_transferred_for_qc'
-					render={(props) => <CoreForm.Checkbox label='Transfer QC' {...props} />}
-				/>
+			
 			</div>
 
 			<FormField

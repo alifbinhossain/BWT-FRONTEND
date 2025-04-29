@@ -15,7 +15,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
-const Box = () => {
+const Diagnosis = () => {
 	const navigate = useNavigate();
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useWorkDiagnosis<IDiagnosisTableData[]>();
@@ -87,6 +87,7 @@ const Box = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
+				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
 				handleDeleteAll={handleDeleteAll}
 			>
 				{renderSuspenseModals([
@@ -124,4 +125,4 @@ const Box = () => {
 	);
 };
 
-export default Box;
+export default Diagnosis;

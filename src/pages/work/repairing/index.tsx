@@ -72,6 +72,7 @@ const Order = () => {
 				handleCreate={handleCreate}
 				handleUpdate={handleUpdate}
 				handleRefetch={refetch}
+				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
