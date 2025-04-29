@@ -118,7 +118,7 @@ export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 	},
 	{
 		accessorKey: 'brand_name',
-		header: 'Model',
+		header: 'Brand',
 		enableColumnFilter: false,
 	},
 	{
