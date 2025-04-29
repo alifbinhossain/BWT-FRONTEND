@@ -228,7 +228,7 @@ export const QCColumns = ({
 	},
 	{
 		accessorKey: 'order_id',
-		header: 'ID',
+		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
@@ -356,7 +356,7 @@ export const RepairingColumns = ({
 	},
 	{
 		accessorKey: 'order_id',
-		header: 'ID',
+		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
@@ -444,7 +444,7 @@ export const RepairingColumns = ({
 export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'order_id',
-		header: 'ID',
+		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
