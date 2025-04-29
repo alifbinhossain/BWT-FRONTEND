@@ -11,7 +11,7 @@ import OrderDetails from '@/pages/work/order/details/';
 import Process from '@/pages/work/order/details/process';
 import Problem from '@/pages/work/problem';
 import QC from '@/pages/work/qc';
-import Repairing from '@/pages/work/repairing  ';
+import Repairing from '@/pages/work/repairing';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
 
