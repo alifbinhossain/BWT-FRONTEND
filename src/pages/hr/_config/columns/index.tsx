@@ -1,16 +1,11 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 
-
-
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
 import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
 
-
-
 import { IDepartmentTableData, IDesignationTableData, IUserTableData } from './columns.type';
-
 
 // Department Columns
 export const departmentColumns = (): ColumnDef<IDepartmentTableData>[] => [

@@ -1,7 +1,7 @@
 import { isArray } from 'lodash';
-import Creatable, { useCreatable } from 'react-select/creatable';
 
 import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import ReactSelectCreatable from '@/components/ui/react-select/react-select-creatable';
 
 import { FormReactSelectProps, IFormSelectOption } from './types';
 
@@ -26,14 +26,13 @@ const FormReactSelectCreate: React.FC<FormReactSelectProps> = ({
 				</FormLabel>
 			)}
 			<FormControl>
-				<Creatable
+				<ReactSelectCreatable
 					className='min-w-48'
 					isMulti={isMulti}
 					options={options}
 					isDisabled={isDisabled}
 					placeholder={placeholder}
 					menuPortalTarget={menuPortalTarget}
-					
 					value={
 						isMulti
 							? isArray(field.value)
