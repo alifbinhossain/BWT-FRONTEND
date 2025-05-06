@@ -254,21 +254,7 @@ const AddOrUpdate = () => {
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<div className='flex gap-2'>
-				<ReactSelect
-					name='version'
-					options={[
-						{ label: 'Version 1', value: 1 },
-						{ label: 'Version 2', value: 2 },
-					]}
-					value={[
-						{ label: 'Version 1', value: 1 },
-						{ label: 'Version 2', value: 2 },
-					].find((item) => item.value === version)}
-					onChange={(e: any) => setVersion(Number(e?.value))}
-					isClearable={false}
-				/>
-			</div>
+			
 			<Header />
 			{version === 1 && (
 				<CoreForm.DynamicFields

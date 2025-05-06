@@ -3,6 +3,9 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import useAccess from '@/hooks/useAccess';
 
+import { ToolbarComponent } from '@/components/core/data-table/_components/toolbar';
+import ReactSelect from '@/components/ui/react-select';
+
 import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
@@ -20,10 +23,17 @@ const User = () => {
 	const [status, setStatus] = useState<boolean | undefined>(undefined);
 	const handleChangeStatus = () => setStatus(!status);
 	const handleClearStatus = () => setStatus(undefined);
+	const [type, setType] = useState('employee');
+	let query;
+	if (type && status !== undefined) {
+		query = `status=${status}&user_type=${type}`;
+	} else if (type) {
+		query = `user_type=${type}`;
+	} else if (status !== undefined) {
+		query = `status=${status}`;
+	}
 
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrUsers<IUserTableData[]>({
-		status,
-	});
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrUsers<IUserTableData[]>(query);
 
 	const pageInfo = useMemo(() => new PageInfo('Admin/User', url, 'admin__user'), [url]);
 
@@ -32,6 +42,20 @@ const User = () => {
 	const resetPasswordAccess = pageAccess.includes('click_reset_password');
 	const pageAssignAccess = pageAccess.includes('click_page_assign');
 	const ratingChangeAccess = pageAccess.includes('click_rating_change');
+	const typeOptions = [
+		{
+			label: 'Customer',
+			value: 'customer',
+		},
+		{
+			label: 'Employ',
+			value: 'employee',
+		},
+		{
+			label: 'Vendor',
+			value: 'vendor',
+		},
+	];
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -165,6 +189,24 @@ const User = () => {
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
 				handleDeleteAll={handleDeleteAll}
+				otherToolBarComponents={
+					<ToolbarComponent
+						option='other'
+						render={() => (
+							<ReactSelect
+								options={typeOptions || []}
+								value={typeOptions?.find((option) => option.value === type)}
+								menuPortalTarget={document.body}
+								styles={{
+									menuPortal: (base) => ({ ...base, zIndex: 999 }),
+								}}
+								onChange={(e: any) => {
+									setType(e?.value);
+								}}
+							/>
+						)}
+					/>
+				}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

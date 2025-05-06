@@ -13,7 +13,7 @@ export const hrQK = {
 
 	//* user
 	userDefault: () => [...hrQK.all(), 'user'],
-	user: ({ start_date, end_date, status }: IParams) => [...hrQK.userDefault(), start_date, end_date, status],
+	user: (query: string) => [...hrQK.userDefault(), 'users', query],
 	userByUUID: (uuid: string) => [...hrQK.userDefault(), uuid],
 	userCanAccess: (uuid: string) => [...hrQK.userDefault(), 'can-access', uuid],
 	userWithAccess: () => [...hrQK.userDefault(), 'users-with-access'],
