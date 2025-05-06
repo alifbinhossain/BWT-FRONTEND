@@ -106,6 +106,10 @@ export function userColumns({
 				<ReactSelect
 					value={rating?.find((item) => item.value === info.getValue())}
 					options={rating}
+					menuPortalTarget={document.body}
+					styles={{
+						menuPortal: (base) => ({ ...base, zIndex: 999 }),
+					}}
 					isClearable={false}
 					onChange={(value: any) => handleRating(info.row, value.value as number)}
 					isDisabled={!ratingChangeAccess}
@@ -121,6 +125,10 @@ export function userColumns({
 					value={rating?.find((item) => item.value === info.getValue())}
 					options={rating}
 					isClearable={false}
+					menuPortalTarget={document.body}
+					styles={{
+						menuPortal: (base) => ({ ...base, zIndex: 999 }),
+					}}
 					onChange={(value: any) => handlePriceRating(info.row, value.value as number)}
 					isDisabled={!ratingChangeAccess}
 				/>
