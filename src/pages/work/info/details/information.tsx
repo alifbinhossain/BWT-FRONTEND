@@ -12,30 +12,20 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 	const renderGeneralItems = (): ITableListItems => {
 		return [
 			{
-				label: 'ID',
+				label: 'Info ID',
 				value: data.info_id,
 			},
-			{ label: 'User Name', value: data.user_name },
-			{ label: 'User ID', value: data.user_id },
+			{ label: 'User', value: data.user_name + ' (' + data.user_id + ')' },
 			{
-				label: 'Phone No',
+				label: 'Phone',
 				value: data?.user_phone,
 			},
-			{ label: 'Zone', value: data.zone_name },
-			{ label: 'Location', value: data.location },
+			{ label: 'Location', value: data.location + ' (' + data.zone_name + ')' },
 			{ label: 'Remarks', value: data.remarks },
 		];
 	};
 	const renderOtherItems = (): ITableListItems => {
 		return [
-			{
-				label: 'Created At',
-				value: formatDateTable(data.created_at),
-			},
-			{
-				label: 'Updated At',
-				value: formatDateTable(data.updated_at),
-			},
 			{
 				label: 'Received',
 				value: <StatusButton value={data.is_product_received as boolean} />,
@@ -43,6 +33,14 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 			{
 				label: 'Receiving Date',
 				value: formatDateTable(data.received_date),
+			},
+			{
+				label: 'Created At',
+				value: formatDateTable(data.created_at),
+			},
+			{
+				label: 'Updated At',
+				value: formatDateTable(data.updated_at),
 			},
 		];
 	};

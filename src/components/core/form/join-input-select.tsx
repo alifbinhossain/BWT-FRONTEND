@@ -24,7 +24,7 @@ const FormJoinInputSelect: React.FC<FormJoinInputSelectProps> = ({
 	const { register, getValues, setValue } = useFormContext();
 
 	return (
-		<FormItem className='space-y-1.5'>
+		<FormItem className='w-full space-y-1.5'>
 			<FormLabel className='flex items-center justify-between capitalize'>
 				<span>
 					{label || field.name.replace('_', ' ')}{' '}

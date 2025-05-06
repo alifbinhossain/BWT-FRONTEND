@@ -226,3 +226,17 @@ export interface IAccessoriesAddOrUpdateProps {
 		any
 	>;
 }
+
+//* Product
+export type TProductProps = {
+	brand_name: string;
+	model_name: string;
+	serial_no?: string;
+};
+export type TLocationProps = {
+	branch_name: string;
+	warehouse_name: string;
+	rack_name?: string;
+	floor_name?: string;
+	box_name?: string;
+};

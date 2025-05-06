@@ -61,6 +61,7 @@ export type IOrderTableData = {
 	is_transferred_for_qc: boolean;
 	is_ready_for_delivery: boolean;
 	is_diagnosis_need: boolean;
+	branch_name: string;
 	warehouse_uuid: string;
 	warehouse_name: string;
 	rack_uuid: string;

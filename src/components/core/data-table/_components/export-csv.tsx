@@ -12,22 +12,23 @@ import { TTableExportCSV } from '../types';
 const TableExportCSV = ({ start_date, end_date }: TTableExportCSV) => {
 	const { table, title, isEntry } = useTable();
 
+	const excludedColumns = new Set(['action', 'actions', 'resetPass']);
+	const csvHeaders: any[] = [];
+	const csvHeadersId: any[] = [];
+
+	table.getAllLeafColumns().forEach(({ id, getIsVisible, columnDef }) => {
+		if (getIsVisible() && !excludedColumns.has(id)) {
+			csvHeaders.push(getFlatHeader(columnDef.header));
+			csvHeadersId.push(id);
+		}
+	});
 	const filteredRows = table._getFilteredRowModel?.().rows || [];
 
-	const filteredCsvColumn = table
-		.getAllLeafColumns()
-		.filter(({ getIsVisible, id }) => id !== 'row-selection' && id !== 'actions' && getIsVisible());
-
-	const { csvHeaders, csvHeadersId } = filteredCsvColumn.reduce(
-		(acc, column: any) => {
-			acc.csvHeaders.push(getFlatHeader(column.columnDef.header) as never);
-			acc.csvHeadersId.push(column.id as never);
-			return acc;
-		},
-		{ csvHeaders: [], csvHeadersId: [] }
-	);
-
-	const csvData = [csvHeaders, ...filteredRows.map((row) => csvHeadersId.map((column) => row.original[column]))];
+	// * Generate the CSV data
+	const csvData = [
+		csvHeaders, // * Header row
+		...filteredRows.map((row) => csvHeadersId.map((id) => row.getValue(id))), // * Data rows
+	];
 
 	const startTime = format(start_date as Date, 'dd-MM-yyyy');
 	const endTime = format(end_date as Date, 'dd-MM-yyyy');

@@ -6,6 +6,8 @@ import { LinkOnly } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
+import { Location, Product } from '../utils/component';
+import { LocationName, ProductName } from '../utils/function';
 import {
 	IAccessoriesTableData,
 	IDiagnosisTableData,
@@ -65,40 +67,39 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 	},
 ];
 //* Order Columns
+type IOrderColumns = {
+	actionTrxAccess?: boolean;
+	actionProceedToRepair?: boolean;
+	handleAgainstTrx?: (row: Row<any>) => void;
+	handleProceedToRepair?: (row: Row<any>) => void;
+};
 export const orderColumns = ({
 	actionTrxAccess,
 	actionProceedToRepair,
 	handleAgainstTrx,
 	handleProceedToRepair,
-}: {
-	actionTrxAccess?: boolean;
-	actionProceedToRepair?: boolean;
-	handleAgainstTrx?: (row: Row<any>) => void;
-	handleProceedToRepair?: (row: Row<any>) => void;
-} = {}): ColumnDef<IOrderTableData>[] => [
+}: IOrderColumns = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_diagnosis_need',
 		header: () => (
-			<div className='flex items-center gap-2'>
-				<span>
-					Diagnosis <br />
-					Need
-				</span>
-			</div>
+			<>
+				Diagnosis <br />
+				Need
+			</>
 		),
+		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
 		header: () => (
-			<div className='flex items-center gap-2'>
-				<span>
-					Proceed to <br />
-					Repair
-				</span>
-			</div>
+			<>
+				Proceed to <br />
+				Repair
+			</>
 		),
+		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch checked={info.getValue() as boolean} onCheckedChange={() => handleProceedToRepair?.(info.row)} />
@@ -133,24 +134,19 @@ export const orderColumns = ({
 		},
 	},
 	{
-		accessorKey: 'brand_name',
-		header: 'Brand',
+		accessorFn: (row) => ProductName(row),
+		id: 'product',
+		header: 'Product',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'model_name',
-		header: 'Model',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'serial_no',
-		header: 'Serial No',
-		enableColumnFilter: false,
-		size: 30,
+		cell: (info) => {
+			const { brand_name, model_name, serial_no } = info.row.original;
+			return <Product brand_name={brand_name} model_name={model_name} serial_no={serial_no} />;
+		},
 	},
 	{
 		accessorKey: 'quantity',
-		header: 'Quantity',
+		header: 'QTY',
+		size: 40,
 		enableColumnFilter: false,
 	},
 	{
@@ -166,7 +162,12 @@ export const orderColumns = ({
 	},
 	{
 		accessorKey: 'problem_statement',
-		header: 'Problem Statement',
+		header: () => (
+			<>
+				Problem <br />
+				Statement
+			</>
+		),
 		enableColumnFilter: false,
 	},
 	{
@@ -182,7 +183,12 @@ export const orderColumns = ({
 	},
 	{
 		id: 'action_trx',
-		header: 'Section Transfer',
+		header: () => (
+			<>
+				Section <br />
+				Transfer
+			</>
+		),
 		cell: (info) => (
 			<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
 		),
@@ -193,24 +199,23 @@ export const orderColumns = ({
 		},
 	},
 	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
+		accessorFn: (row) => LocationName(row),
+		id: 'location',
+		header: 'Location',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'rack_name',
-		header: 'Rack',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'floor_name',
-		header: 'Floor',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'box_name',
-		header: 'Box',
-		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { branch_name, warehouse_name, rack_name, floor_name, box_name } = info.row.original;
+			return (
+				<Location
+					branch_name={branch_name}
+					warehouse_name={warehouse_name}
+					rack_name={rack_name}
+					floor_name={floor_name}
+					box_name={box_name}
+				/>
+			);
+		},
 	},
 ];
 export const QCColumns = ({
@@ -223,7 +228,7 @@ export const QCColumns = ({
 	{
 		accessorKey: 'is_ready_for_delivery',
 		header: () => (
-			<div className='flex items-center gap-2'>
+			<div className='flex items-center gap-1'>
 				<span>
 					Ready For <br />
 					Delivery
@@ -264,23 +269,19 @@ export const QCColumns = ({
 		},
 	},
 	{
-		accessorKey: 'brand_name',
-		header: 'Brand',
+		accessorFn: (row) => ProductName(row),
+		id: 'product',
+		header: 'Product',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'model_name',
-		header: 'Model',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'serial_no',
-		header: 'Serial No',
-		enableColumnFilter: false,
+		cell: (info) => {
+			const { brand_name, model_name, serial_no } = info.row.original;
+			return <Product brand_name={brand_name} model_name={model_name} serial_no={serial_no} />;
+		},
 	},
 	{
 		accessorKey: 'quantity',
-		header: 'Quantity',
+		header: 'QTY',
+		size: 40,
 		enableColumnFilter: false,
 	},
 	{
@@ -311,24 +312,23 @@ export const QCColumns = ({
 		cell: (info) => info.getValue() as string,
 	},
 	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
+		accessorFn: (row) => LocationName(row),
+		id: 'location',
+		header: 'Location',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'rack_name',
-		header: 'Rack',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'floor_name',
-		header: 'Floor',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'box_name',
-		header: 'Box',
-		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { branch_name, warehouse_name, rack_name, floor_name, box_name } = info.row.original;
+			return (
+				<Location
+					branch_name={branch_name}
+					warehouse_name={warehouse_name}
+					rack_name={rack_name}
+					floor_name={floor_name}
+					box_name={box_name}
+				/>
+			);
+		},
 	},
 ];
 export const RepairingColumns = ({
@@ -345,7 +345,7 @@ export const RepairingColumns = ({
 	{
 		accessorKey: 'is_transferred_for_qc',
 		header: () => (
-			<div className='flex items-center gap-2'>
+			<div className='flex items-center gap-1'>
 				<span>
 					Transfer For <br />
 					QC
@@ -364,7 +364,7 @@ export const RepairingColumns = ({
 	{
 		accessorKey: 'is_ready_for_delivery',
 		header: () => (
-			<div className='flex items-center gap-2'>
+			<div className='flex items-center gap-1'>
 				<span>
 					Ready For <br />
 					Delivery
@@ -405,23 +405,19 @@ export const RepairingColumns = ({
 		},
 	},
 	{
-		accessorKey: 'brand_name',
-		header: 'Brand',
+		accessorFn: (row) => ProductName(row),
+		id: 'product',
+		header: 'Product',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'model_name',
-		header: 'Model',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'serial_no',
-		header: 'Serial No',
-		enableColumnFilter: false,
+		cell: (info) => {
+			const { brand_name, model_name, serial_no } = info.row.original;
+			return <Product brand_name={brand_name} model_name={model_name} serial_no={serial_no} />;
+		},
 	},
 	{
 		accessorKey: 'quantity',
-		header: 'Quantity',
+		header: 'QTY',
+		size: 40,
 		enableColumnFilter: false,
 	},
 	{
@@ -452,24 +448,23 @@ export const RepairingColumns = ({
 		cell: (info) => info.getValue() as string,
 	},
 	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
+		accessorFn: (row) => LocationName(row),
+		id: 'location',
+		header: 'Location',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'rack_name',
-		header: 'Rack',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'floor_name',
-		header: 'Floor',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'box_name',
-		header: 'Box',
-		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { branch_name, warehouse_name, rack_name, floor_name, box_name } = info.row.original;
+			return (
+				<Location
+					branch_name={branch_name}
+					warehouse_name={warehouse_name}
+					rack_name={rack_name}
+					floor_name={floor_name}
+					box_name={box_name}
+				/>
+			);
+		},
 	},
 ];
 export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
@@ -498,23 +493,19 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		},
 	},
 	{
-		accessorKey: 'brand_name',
-		header: 'Brand',
+		accessorFn: (row) => ProductName(row),
+		id: 'product',
+		header: 'Product',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'model_name',
-		header: 'Model',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'serial_no',
-		header: 'Serial No',
-		enableColumnFilter: false,
+		cell: (info) => {
+			const { brand_name, model_name, serial_no } = info.row.original;
+			return <Product brand_name={brand_name} model_name={model_name} serial_no={serial_no} />;
+		},
 	},
 	{
 		accessorKey: 'quantity',
-		header: 'Quantity',
+		header: 'QTY',
+		size: 40,
 		enableColumnFilter: false,
 	},
 	{
@@ -545,24 +536,23 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		cell: (info) => info.getValue() as string,
 	},
 	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
+		accessorFn: (row) => LocationName(row),
+		id: 'location',
+		header: 'Location',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'rack_name',
-		header: 'Rack',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'floor_name',
-		header: 'Floor',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'box_name',
-		header: 'Box',
-		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { branch_name, warehouse_name, rack_name, floor_name, box_name } = info.row.original;
+			return (
+				<Location
+					branch_name={branch_name}
+					warehouse_name={warehouse_name}
+					rack_name={rack_name}
+					floor_name={floor_name}
+					box_name={box_name}
+				/>
+			);
+		},
 	},
 ];
 //* Diagnosis Columns
@@ -655,7 +645,7 @@ export const diagnosisColumns = ({
 	{
 		accessorKey: 'is_proceed_to_repair',
 		header: () => (
-			<div className='flex items-center gap-2'>
+			<div className='flex items-center gap-1'>
 				<span>
 					Proceed to <br />
 					Repair
