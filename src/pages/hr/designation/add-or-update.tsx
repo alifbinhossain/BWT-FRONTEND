@@ -26,7 +26,7 @@ const AddOrUpdate: React.FC<IDesignationAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useHrDesignationByUUID(updatedData?.uuid as string);
-	const { invalidateQuery: invalidateUserQuery } = useHrUsers({});
+	const { invalidateQuery: invalidateUserQuery } = useHrUsers();
 
 	const form = useRHF(DESIGNATION_SCHEMA, DESIGNATION_NULL);
 

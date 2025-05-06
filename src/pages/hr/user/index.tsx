@@ -23,11 +23,11 @@ const User = () => {
 	const [status, setStatus] = useState<boolean | undefined>(undefined);
 	const handleChangeStatus = () => setStatus(!status);
 	const handleClearStatus = () => setStatus(undefined);
-
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrUsers<IUserTableData[]>({
-		status,
-	});
 	const [type, setType] = useState('employee');
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrUsers<IUserTableData[]>(
+		`?status&user_type=${type}`
+	);
+
 	const pageInfo = useMemo(() => new PageInfo('Admin/User', url, 'admin__user'), [url]);
 
 	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
