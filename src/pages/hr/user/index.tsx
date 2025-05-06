@@ -190,6 +190,9 @@ const User = () => {
 								options={typeOptions || []}
 								value={typeOptions?.find((option) => option.value === type)}
 								menuPortalTarget={document.body}
+								styles={{
+									menuPortal: (base) => ({ ...base, zIndex: 999 }),
+								}}
 								onChange={(e: any) => {
 									setType(e?.value);
 								}}
