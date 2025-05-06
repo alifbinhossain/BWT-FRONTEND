@@ -7,9 +7,9 @@ import { hrQK } from './queryKeys';
 
 // * User
 
-export const useHrUsers = <T>(query: string) =>
+export const useHrUsers = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.user(query),
+		queryKey: hrQK.user(query||''),
 		url: `/hr/user?${query}`,
 	});
 
