@@ -24,9 +24,16 @@ const User = () => {
 	const handleChangeStatus = () => setStatus(!status);
 	const handleClearStatus = () => setStatus(undefined);
 	const [type, setType] = useState('employee');
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrUsers<IUserTableData[]>(
-		`?status&user_type=${type}`
-	);
+	let query;
+	if (type && status !== undefined) {
+		query = `status=${status}&user_type=${type}`;
+	} else if (type) {
+		query = `user_type=${type}`;
+	} else if (status !== undefined) {
+		query = `status=${status}`;
+	}
+
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrUsers<IUserTableData[]>(query);
 
 	const pageInfo = useMemo(() => new PageInfo('Admin/User', url, 'admin__user'), [url]);
 

@@ -12,7 +12,6 @@ import {
 	useOtherBox,
 	useOtherBrand,
 	useOtherFloor,
-
 	useOtherModelByQuery,
 	useOtherProblem,
 	useOtherRack,
