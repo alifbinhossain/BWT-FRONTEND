@@ -38,7 +38,7 @@ export const useWorkInfoOrderByUUID = <T>(uuid: string) =>
 export const useWorkOrder = <T>() =>
 	useTQuery<T>({
 		queryKey: workQK.job(),
-		url: '/work/order',
+		url: '/work/order?is_order=true',
 	});
 export const useWorkInHandWork = <T>() =>
 	useTQuery<T>({

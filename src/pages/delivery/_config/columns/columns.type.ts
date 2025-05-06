@@ -19,6 +19,10 @@ export type ICourierTableData = {
 export type IChallanEntryTableData = {
 	uuid: string;
 	challan_uuid: string;
+	description: string;
+	model_name: string;
+	brand_name: string;
+	serial_no: string;
 	order_uuid: string;
 	info_uuid: string;
 	remarks: string;
@@ -26,6 +30,9 @@ export type IChallanEntryTableData = {
 //* Challan
 export type IChallanTableData = {
 	challan_no: string;
+	location: string;
+	zone_name: string;
+	
 	id: string;
 	uuid: string;
 	challan_type: string;

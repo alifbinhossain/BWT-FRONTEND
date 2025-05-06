@@ -1,7 +1,9 @@
+import { Product } from '@/pages/work/_config/utils/component';
+import { ProductName } from '@/pages/work/_config/utils/function';
 import { ColumnDef } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
-import { LinkOnly } from '@/components/others/link';
+import { LinkWithCopy } from '@/components/others/link';
 import { Switch } from '@/components/ui/switch';
 
 import { IChallanEntryTableData, IChallanTableData, ICourierTableData, IVehicleTableData } from './columns.type';
@@ -55,7 +57,9 @@ export const challanColumns = (
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkOnly uri={`/delivery/challan/details/${uuid}`} title={info.getValue() as string} />;
+			return (
+				<LinkWithCopy id={uuid} uri={`/delivery/challan/details/${uuid}`} title={info.getValue() as string} />
+			);
 		},
 	},
 	{
@@ -100,7 +104,8 @@ export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 			const uuid = info.row.original.order_uuid;
 			const info_uuid = info.row.original.info_uuid;
 			return (
-				<LinkOnly
+				<LinkWithCopy
+					id={uuid}
 					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
 					title={info.getValue() as string}
 				/>
@@ -113,23 +118,18 @@ export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.info_uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{
-		accessorKey: 'brand_name',
-		header: 'Brand',
+		accessorFn: (row) => ProductName(row),
+		id: 'product',
+		header: 'Product',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'model_name',
-		header: 'Model',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'serial_no',
-		header: 'Serial No',
-		enableColumnFilter: false,
+		cell: (info) => {
+			const { brand_name, model_name, serial_no } = info.row.original;
+			return <Product brand_name={brand_name} model_name={model_name} serial_no={serial_no} />;
+		},
 	},
 	{
 		accessorKey: 'quantity',

@@ -16,7 +16,7 @@ const KanbanDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs' 
 }) => {
 	return (
 		<div className='p-4'>
-			<div className='grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4'>
+			<div className='grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-3'>
 				{fields.length === 0 && <p className='text-destructive'>No fields added yet</p>}
 				{fields.length > 0 &&
 					fields.map((field, fieldIndex) => (

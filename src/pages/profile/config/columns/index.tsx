@@ -4,7 +4,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
 import StatusButton from '@/components/buttons/status';
-import { LinkOnly } from '@/components/others/link';
+import {LinkWithCopy } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
@@ -148,7 +148,7 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkOnly uri={`/order/${uuid}`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/order/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{

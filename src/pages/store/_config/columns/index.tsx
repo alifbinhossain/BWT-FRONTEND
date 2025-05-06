@@ -1,9 +1,11 @@
+import { Location } from '@/pages/work/_config/utils/component';
+import { LocationName } from '@/pages/work/_config/utils/function';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { IFormSelectOption } from '@/components/core/form/types';
-import { LinkOnly } from '@/components/others/link';
+import {  LinkWithCopy } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
 import {
@@ -421,7 +423,7 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkOnly uri={`/store/purchase/${uuid}/details`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/store/purchase/${uuid}/details`} title={info.getValue() as string} />;
 		},
 	},
 	{
@@ -474,24 +476,23 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
+		accessorFn: (row) => LocationName(row),
+		id: 'location',
+		header: 'Location',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'rack_name',
-		header: 'Rack',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'floor_name',
-		header: 'Floor',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'box_name',
-		header: 'Box',
-		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { branch_name, warehouse_name, rack_name, floor_name, box_name } = info.row.original;
+			return (
+				<Location
+					branch_name={branch_name}
+					warehouse_name={warehouse_name}
+					rack_name={rack_name}
+					floor_name={floor_name}
+					box_name={box_name}
+				/>
+			);
+		},
 	},
 ];
 
@@ -503,7 +504,7 @@ export const purchaseReturnColumns = (): ColumnDef<IPurchaseReturnTableData>[] =
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkOnly uri={`/store/purchase-return/${uuid}/details`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid}  uri={`/store/purchase-return/${uuid}/details`} title={info.getValue() as string} />;
 		},
 	},
 	{
@@ -628,29 +629,48 @@ export const internalTransferColumns = (): ColumnDef<IInternalTransferTableData>
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'from_warehouse_name',
-		header: 'From',
+		accessorFn: (row) =>
+			LocationName({
+				branch_name: row.from_branch_name,
+				warehouse_name: row.from_warehouse_name,
+				rack_name: row.rack_name,
+				floor_name: row.floor_name,
+				box_name: row.box_name,
+			}),
+		id: 'from_location',
+		header: 'From Location',
 		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { from_branch_name, from_warehouse_name } = info.row.original;
+			return <Location branch_name={from_branch_name} warehouse_name={from_warehouse_name} />;
+		},
 	},
 	{
-		accessorKey: 'to_warehouse_name',
-		header: 'To',
+		accessorFn: (row) =>
+			LocationName({
+				branch_name: row.to_branch_name,
+				warehouse_name: row.to_warehouse_name,
+				rack_name: row.rack_name,
+				floor_name: row.floor_name,
+				box_name: row.box_name,
+			}),
+		id: 'to_location',
+		header: 'To Location',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'rack_name',
-		header: 'Rack',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'floor_name',
-		header: 'Floor',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'box_name',
-		header: 'Box',
-		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { to_branch_name, to_warehouse_name, rack_name, floor_name, box_name } = info.row.original;
+			return (
+				<Location
+					branch_name={to_branch_name}
+					warehouse_name={to_warehouse_name}
+					rack_name={rack_name}
+					floor_name={floor_name}
+					box_name={box_name}
+				/>
+			);
+		},
 	},
 	{
 		accessorKey: 'quantity',
@@ -668,7 +688,7 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 			const uuid = info.row.original.order_uuid;
 			const info_uuid = info.row.original.info_uuid;
 			return (
-				<LinkOnly
+				<LinkWithCopy id={uuid} 
 					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
 					title={info.getValue() as string}
 				/>
@@ -681,7 +701,7 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.info_uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid}  uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{

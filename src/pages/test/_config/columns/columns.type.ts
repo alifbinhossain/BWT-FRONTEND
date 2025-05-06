@@ -95,6 +95,11 @@ export type IPurchaseEntryTableData = {
 	discount: number;
 	created_at: string;
 	updated_at: string;
+	branch_name: string;
+	warehouse_name: string;
+	floor_name: string;
+	rack_name: string;
+	box_name: string;
 	remarks: string;
 };
 //* Purchase Details

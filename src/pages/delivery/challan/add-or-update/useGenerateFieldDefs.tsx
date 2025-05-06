@@ -1,3 +1,4 @@
+import { Product } from '@/pages/work/_config/utils/component';
 import { UseFormWatch } from 'react-hook-form';
 
 import FieldActionButton from '@/components/buttons/field-action';
@@ -25,23 +26,15 @@ const useGenerateFieldDefs = ({ entry, remove, watch, add }: IGenerateFieldDefsP
 			},
 		},
 		{
-			header: 'Brand',
-			accessorKey: 'brand_name',
+			header: 'Product',
+			accessorKey: 'product',
 			type: 'custom',
 			component: (index: number) => {
-				const orderId = watch ? String(watch(`${entry}.${index}.brand_name` as any)) : '';
-
-				return <span>{orderId}</span>;
-			},
-		},
-		{
-			header: 'Model',
-			accessorKey: 'model_name',
-			type: 'custom',
-			component: (index: number) => {
-				const orderId = watch ? String(watch(`${entry}.${index}.model_name` as any)) : '';
-
-				return <span>{orderId}</span>;
+				const fields = watch
+					? watch(`${entry}.${index}` as any)
+					: { brand_name: '', model_name: '', serial_no: '' };
+				const { brand_name, model_name, serial_no } = fields;
+				return <Product brand_name={brand_name} model_name={model_name} serial_no={serial_no} />;
 			},
 		},
 		{
@@ -54,16 +47,7 @@ const useGenerateFieldDefs = ({ entry, remove, watch, add }: IGenerateFieldDefsP
 				return <span>{orderId}</span>;
 			},
 		},
-		{
-			header: 'Serial No',
-			accessorKey: 'serial_no',
-			type: 'custom',
-			component: (index: number) => {
-				const orderId = watch ? String(watch(`${entry}.${index}.serial_no` as any)) : '';
 
-				return <span>{orderId}</span>;
-			},
-		},
 		{
 			header: 'Accessories',
 			accessorKey: 'accessories',

@@ -5,6 +5,7 @@ import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
 import { IFormSelectOption } from '@/components/core/form/types';
+import { ShowLocalToast } from '@/components/others/toast';
 import ReactSelect from '@/components/ui/react-select';
 import CoreForm from '@core/form';
 
@@ -60,6 +61,14 @@ const AddOrUpdate = () => {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
+
+		if (isProductReceived && values.order_entry.length === 0) {
+			ShowLocalToast({
+				type: 'error',
+				message: 'Please add at least one order entry',
+			});
+			return;
+		}
 		if (isUpdate) {
 			const infoData = {
 				...values,
@@ -254,11 +263,27 @@ const AddOrUpdate = () => {
 			form={form}
 			onSubmit={onSubmit}
 		>
-			
 			<Header />
 			{version === 1 && (
 				<CoreForm.DynamicFields
-					title='Entry'
+					title={
+						<div className='flex gap-2'>
+							<h1 className='flex-1'>Order Entry</h1>
+							<ReactSelect
+								name='version'
+								options={[
+									{ label: 'Version 1', value: 1 },
+									{ label: 'Version 2', value: 2 },
+								]}
+								value={[
+									{ label: 'Version 1', value: 1 },
+									{ label: 'Version 2', value: 2 },
+								].find((item) => item.value === version)}
+								onChange={(e: any) => setVersion(Number(e?.value))}
+								isClearable={false}
+							/>
+						</div>
+					}
 					form={form}
 					fieldName='order_entry'
 					fieldDefs={fieldDefsV2}
@@ -269,7 +294,24 @@ const AddOrUpdate = () => {
 			{version === 2 && (
 				<CoreForm.DynamicFields
 					viewAs='kanban'
-					title='Entry'
+					title={
+						<div className='flex gap-2'>
+							<h1 className='flex-1'>Order Entry</h1>
+							<ReactSelect
+								name='version'
+								options={[
+									{ label: 'Version 1', value: 1 },
+									{ label: 'Version 2', value: 2 },
+								]}
+								value={[
+									{ label: 'Version 1', value: 1 },
+									{ label: 'Version 2', value: 2 },
+								].find((item) => item.value === version)}
+								onChange={(e: any) => setVersion(Number(e?.value))}
+								isClearable={false}
+							/>
+						</div>
+					}
 					form={form}
 					fieldName='order_entry'
 					fieldDefs={fieldDefs}

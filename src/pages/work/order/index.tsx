@@ -9,7 +9,7 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { orderColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkDiagnosis, useWorkOrder, useWorkRepairing } from '../_config/query';
+import { useWorkDiagnosis, useWorkInHandWork, useWorkRepairing } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -25,7 +25,7 @@ const Order = () => {
 
 	const actionTrxAccess = pageAccess.includes('click_trx');
 	const actionProceedToRepair = pageAccess.includes('click_proceed_to_repair');
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkOrder<IOrderTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkInHandWork<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Order', url, 'work__order'), [url]);
 

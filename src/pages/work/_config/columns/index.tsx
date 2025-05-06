@@ -2,7 +2,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
-import { LinkOnly } from '@/components/others/link';
+import {LinkWithCopy } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
@@ -40,7 +40,7 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{
@@ -73,6 +73,138 @@ type IOrderColumns = {
 	handleAgainstTrx?: (row: Row<any>) => void;
 	handleProceedToRepair?: (row: Row<any>) => void;
 };
+export const orderColumnsForDetails = ({
+	actionTrxAccess,
+	actionProceedToRepair,
+	handleAgainstTrx,
+	handleProceedToRepair,
+}: IOrderColumns = {}): ColumnDef<IOrderTableData>[] => [
+	{
+		accessorKey: 'is_diagnosis_need',
+		header: () => (
+			<>
+				Diagnosis <br />
+				Need
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'is_proceed_to_repair',
+		header: () => (
+			<>
+				Proceed to <br />
+				Repair
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'order_id',
+		header: 'Order ID',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const uuid = info.row.original.uuid;
+			const info_uuid = info.row.original.info_uuid;
+			return (
+				<LinkWithCopy
+					id={uuid}
+					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+					title={info.getValue() as string}
+				/>
+			);
+		},
+	},
+	{
+		accessorFn: (row) => ProductName(row),
+		id: 'product',
+		header: 'Product',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const { brand_name, model_name, serial_no } = info.row.original;
+			return <Product brand_name={brand_name} model_name={model_name} serial_no={serial_no} />;
+		},
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'QTY',
+		size: 40,
+		enableColumnFilter: false,
+	},
+	{
+		accessorFn: (row) => {
+			return row.problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Problem',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue() as string,
+	},
+	{
+		accessorKey: 'problem_statement',
+		header: () => (
+			<>
+				Problem <br />
+				Statement
+			</>
+		),
+		enableColumnFilter: false,
+	},
+	{
+		accessorFn: (row) => {
+			return row.accessories_name
+				?.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Accessories',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue() as string,
+	},
+	{
+		id: 'action_trx',
+		header: () => (
+			<>
+				Section <br />
+				Transfer
+			</>
+		),
+		cell: (info) => (
+			<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
+		),
+		size: 40,
+		meta: {
+			hidden: !actionTrxAccess,
+			disableFullFilter: true,
+		},
+	},
+	{
+		accessorFn: (row) => LocationName(row),
+		id: 'location',
+		header: 'Location',
+		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { branch_name, warehouse_name, rack_name, floor_name, box_name } = info.row.original;
+			console.log(info.row.original);
+			return (
+				<Location
+					branch_name={branch_name}
+					warehouse_name={warehouse_name}
+					rack_name={rack_name}
+					floor_name={floor_name}
+					box_name={box_name}
+				/>
+			);
+		},
+	},
+];
 export const orderColumns = ({
 	actionTrxAccess,
 	actionProceedToRepair,
@@ -117,7 +249,8 @@ export const orderColumns = ({
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
 			return (
-				<LinkOnly
+				<LinkWithCopy
+					id={uuid}
 					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
 					title={info.getValue() as string}
 				/>
@@ -130,7 +263,7 @@ export const orderColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.info_uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{
@@ -252,7 +385,8 @@ export const QCColumns = ({
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
 			return (
-				<LinkOnly
+				<LinkWithCopy
+					id={uuid}
 					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
 					title={info.getValue() as string}
 				/>
@@ -265,7 +399,7 @@ export const QCColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.info_uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{
@@ -388,7 +522,8 @@ export const RepairingColumns = ({
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
 			return (
-				<LinkOnly
+				<LinkWithCopy
+					id={uuid}
 					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
 					title={info.getValue() as string}
 				/>
@@ -401,7 +536,7 @@ export const RepairingColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.info_uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{
@@ -476,7 +611,8 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
 			return (
-				<LinkOnly
+				<LinkWithCopy
+					id={uuid}
 					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
 					title={info.getValue() as string}
 				/>
@@ -489,7 +625,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.info_uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{
@@ -577,7 +713,8 @@ export const diagnosisColumns = ({
 			const uuid = info.row.original.order_uuid;
 			const info_uuid = info.row.original.info_uuid;
 			return (
-				<LinkOnly
+				<LinkWithCopy
+					id={uuid}
 					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
 					title={info.getValue() as string}
 				/>
@@ -590,7 +727,7 @@ export const diagnosisColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.info_uuid;
-			return <LinkOnly uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
 		},
 	},
 	{

@@ -1,8 +1,10 @@
+import { Location } from '@/pages/work/_config/utils/component';
+import { LocationName } from '@/pages/work/_config/utils/function';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
-import { LinkOnly } from '@/components/others/link';
+import { LinkWithCopy } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
 import {
@@ -183,7 +185,7 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkOnly uri={`/store/purchase/${uuid}/details`} title={info.getValue() as string} />;
+			return <LinkWithCopy id={uuid} uri={`/store/purchase/${uuid}/details`} title={info.getValue() as string} />;
 		},
 	},
 	{
@@ -236,24 +238,23 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
+		accessorFn: (row) => LocationName(row),
+		id: 'location',
+		header: 'Location',
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'rack_name',
-		header: 'Rack',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'floor_name',
-		header: 'Floor',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'box_name',
-		header: 'Box',
-		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { branch_name, warehouse_name, rack_name, floor_name, box_name } = info.row.original;
+			return (
+				<Location
+					branch_name={branch_name}
+					warehouse_name={warehouse_name}
+					rack_name={rack_name}
+					floor_name={floor_name}
+					box_name={box_name}
+				/>
+			);
+		},
 	},
 ];
 
@@ -265,7 +266,13 @@ export const purchaseReturnColumns = (): ColumnDef<IPurchaseReturnTableData>[] =
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkOnly uri={`/store/purchase-return/${uuid}/details`} title={info.getValue() as string} />;
+			return (
+				<LinkWithCopy
+					id={uuid}
+					uri={`/store/purchase-return/${uuid}/details`}
+					title={info.getValue() as string}
+				/>
+			);
 		},
 	},
 	{
