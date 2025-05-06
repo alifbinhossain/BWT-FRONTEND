@@ -4,8 +4,6 @@ import { format } from 'date-fns';
 import { customTable, DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
 import { DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
 
-import { formatDateTable } from '@/utils/formatDate';
-
 import pdfMake from '..';
 import { getPageFooter } from './utils';
 
