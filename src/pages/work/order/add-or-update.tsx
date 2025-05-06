@@ -12,7 +12,7 @@ import {
 	useOtherBox,
 	useOtherBrand,
 	useOtherFloor,
-	useOtherModel,
+
 	useOtherModelByQuery,
 	useOtherProblem,
 	useOtherRack,
@@ -156,13 +156,6 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						)}
 					/>
 				</div>
-				{/* <div className='flex-1'>
-					<FormField
-						control={form.control}
-						name='model_uuid'
-						render={(props) => <CoreForm.Input label='Serial Number' {...props} />}
-					/>
-				</div> */}
 
 				<div className='flex-1'>
 					<FormField

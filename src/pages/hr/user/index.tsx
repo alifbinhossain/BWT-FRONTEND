@@ -3,6 +3,9 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import useAccess from '@/hooks/useAccess';
 
+import { ToolbarComponent } from '@/components/core/data-table/_components/toolbar';
+import ReactSelect from '@/components/ui/react-select';
+
 import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
@@ -24,7 +27,7 @@ const User = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrUsers<IUserTableData[]>({
 		status,
 	});
-
+	const [type, setType] = useState('employee');
 	const pageInfo = useMemo(() => new PageInfo('Admin/User', url, 'admin__user'), [url]);
 
 	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
@@ -32,6 +35,20 @@ const User = () => {
 	const resetPasswordAccess = pageAccess.includes('click_reset_password');
 	const pageAssignAccess = pageAccess.includes('click_page_assign');
 	const ratingChangeAccess = pageAccess.includes('click_rating_change');
+	const typeOptions = [
+		{
+			label: 'Customer',
+			value: 'customer',
+		},
+		{
+			label: 'Employ',
+			value: 'employee',
+		},
+		{
+			label: 'Vendor',
+			value: 'vendor',
+		},
+	];
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -165,6 +182,21 @@ const User = () => {
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
 				handleDeleteAll={handleDeleteAll}
+				otherToolBarComponents={
+					<ToolbarComponent
+						option='other'
+						render={() => (
+							<ReactSelect
+								options={typeOptions || []}
+								value={typeOptions?.find((option) => option.value === type)}
+								menuPortalTarget={document.body}
+								onChange={(e: any) => {
+									setType(e?.value);
+								}}
+							/>
+						)}
+					/>
+				}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

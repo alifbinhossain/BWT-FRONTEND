@@ -82,7 +82,8 @@ export type IToolbarOptions =
 	| 'export-csv'
 	| 'export-pdf'
 	| 'refresh'
-	| 'new-entry';
+	| 'new-entry'
+	| 'other';
 
 export type IDeleteModal = {
 	id: string;
