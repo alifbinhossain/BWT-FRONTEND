@@ -33,7 +33,7 @@ interface ToolbarComponentProps {
  * @param option - The toolbar option to check
  * @param render - Function to render the toolbar item
  */
-const ToolbarComponent: React.FC<ToolbarComponentProps> = React.memo(({ option, render }) => {
+export const ToolbarComponent: React.FC<ToolbarComponentProps> = React.memo(({ option, render }) => {
 	const { toolbarOptions } = useTable();
 
 	if (toolbarOptions?.includes(option) || toolbarOptions?.includes('all')) {
@@ -66,6 +66,7 @@ export function TableToolbar() {
 		onClear,
 		isClear,
 		initialDateRange,
+		otherToolBarComponents,
 	} = useTable();
 
 	const column = table.getColumn('created_at');
@@ -132,6 +133,7 @@ export function TableToolbar() {
 						) : null
 					}
 				/>
+				{otherToolBarComponents}
 				{isFiltered && (
 					<Button
 						aria-label='Reset filters'
@@ -165,6 +167,7 @@ export function TableToolbar() {
 			endDate,
 			onClear,
 			isClear,
+			otherToolBarComponents,
 		]
 	);
 
