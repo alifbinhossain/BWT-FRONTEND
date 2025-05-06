@@ -1,4 +1,9 @@
+import { Clipboard } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+import { cn } from '@/lib/utils';
+
+import { ShowLocalToast } from './toast';
 
 interface ILinkOnlyProps {
 	uri: string;
@@ -13,47 +18,53 @@ export const LinkOnly = ({ uri, title }: ILinkOnlyProps) => {
 	);
 };
 
-// import { Clipboard } from 'lucide-react';
-// import { Link } from 'react-router-dom';
+const CopyButton = ({ id, className }: { id: string; className?: string }) => {
+	const handleOnClick = () => {
+		navigator.clipboard.writeText(id);
 
-// import { cn } from '@/lib/utils';
+		ShowLocalToast({
+			type: 'create',
+			message: `${id} copied`,
+		});
+	};
 
-// import { ShowLocalToast } from './toast';
+	return (
+		<div onClick={() => handleOnClick()} aria-label='Copy ID to clipboard'>
+			<Clipboard className={cn('h-4 w-4 transition-transform duration-200 hover:scale-110', className)} />
+		</div>
+	);
+};
 
-// const CopyButton = ({ id, className }) => {
-// 	const handleOnClick = () => {
-// 		navigator.clipboard.writeText(id);
+interface BaseBodyProps {
+	value: string;
+	to: string;
+	showCopyButton?: boolean;
+}
 
-// 		ShowLocalToast({
-// 			type: 'create',
-// 			message: `${id} copied`,
-// 		});
-// 	};
+const BaseBody = ({ value, to, showCopyButton = true }: BaseBodyProps) => {
+	if (!value) return '--';
+	return (
+		<button className='hover:text-info hover:decoration-info flex items-center gap-2 text-left font-semibold underline underline-offset-2 transition-colors duration-300'>
+			{showCopyButton && <CopyButton id={value} />}
+			<Link target='_blank' to={to}>
+				{value}
+			</Link>
+		</button>
+	);
+};
 
-// 	return (
-// 		<div type='button' onClick={() => handleOnClick()} aria-label='Copy ID to clipboard'>
-// 			<Clipboard className={cn('h-4 w-4 transition-transform duration-200 hover:scale-110', className)} />
-// 		</div>
-// 	);
-// };
+interface LinkWithCopyProps {
+	title?: string;
+	id: string;
+	uri?: string;
+}
 
-// const BaseBody = ({ value, to, showCopyButton = true }) => {
-// 	if (!value) return '--';
-// 	return (
-// 		<button className='hover:text-info hover:decoration-info flex items-center gap-2 text-left font-semibold underline underline-offset-2 transition-colors duration-300'>
-// 			{showCopyButton && <CopyButton id={value} />}
+export const LinkWithCopy = ({ title = '', id, uri = '' }: LinkWithCopyProps) => {
+	const value = title ? title : id;
+	const to = `${uri}`;
 
-// 			<Link to={to}>{value}</Link>
-// 		</button>
-// 	);
-// };
-
-// const LinkWithCopy = ({ title = '', id, uri = '' }) => {
-// 	const value = title ? title : id;
-// 	const to = `${uri}/${id}`;
-
-// 	return <BaseBody value={value} to={to} />;
-// };
+	return <BaseBody value={value} to={to} />;
+};
 
 // const LinkOnly = ({ title = '', id, uri = '' }) => {
 // 	const value = title ? title : id;

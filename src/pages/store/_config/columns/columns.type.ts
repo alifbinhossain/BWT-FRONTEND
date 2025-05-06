@@ -118,6 +118,11 @@ export type IPurchaseEntryTableData = {
 	quantity: number;
 	price_per_unit: number;
 	discount: number;
+	branch_name: string;
+	warehouse_name: string;
+	rack_name: string;
+	floor_name: string;
+	box_name: string;
 	created_at: string;
 	updated_at: string;
 	remarks: string;
@@ -195,6 +200,13 @@ export interface IInternalTransferTableData {
 	from_warehouse: number;
 	quantity: number;
 	remarks: string;
+	from_branch_name: string;
+	from_warehouse_name: string;
+	to_warehouse_name: string;
+	to_branch_name: string;
+	rack_name: string;
+	floor_name: string;
+	box_name: string;
 	created_at: string;
 	created_by: string;
 	updated_at: string;

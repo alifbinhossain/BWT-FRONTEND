@@ -5,7 +5,7 @@ import useAccess from '@/hooks/useAccess';
 
 import DataTableEntry from '@core/data-table/entry';
 
-import { orderColumns } from '../../_config/columns';
+import { orderColumnsForDetails } from '../../_config/columns';
 import { IInfoTableData, IOrderTableData } from '../../_config/columns/columns.type';
 
 const OrderTable: React.FC<{ data: IInfoTableData }> = ({ data }) => {
@@ -18,9 +18,16 @@ const OrderTable: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
 		navigate(`/work/transfer-section/${row.original.info_uuid}/${null}/${row.original.uuid}`);
 	};
-	const columns = orderColumns({ actionTrxAccess, handleAgainstTrx });
+	const columns = orderColumnsForDetails({ actionTrxAccess, handleAgainstTrx });
 
-	return <DataTableEntry title='Order' columns={columns} data={data?.order_entry || []} />;
+	return (
+		<DataTableEntry
+			title='Order'
+			columns={columns}
+			data={data?.order_entry || []}
+			defaultVisibleColumns={{ created_at: false, updated_at: false, created_by_name: false }}
+		/>
+	);
 };
 
 export default OrderTable;
