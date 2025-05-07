@@ -423,7 +423,13 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <CustomLink id={uuid} uri={`/store/purchase/${uuid}/details`} title={info.getValue() as string} />;
+			return (
+				<CustomLink
+					url={`/store/purchase/${uuid}/details`}
+					label={info.getValue() as string}
+					openInNewTab={true}
+				/>
+			);
 		},
 	},
 	{

@@ -35,50 +35,6 @@ const CopyButton = ({ id, className }: { id: string; className?: string }) => {
 	);
 };
 
-// interface BaseBodyProps {
-// 	value: string;
-// 	to: string;
-// 	showCopyButton?: boolean;
-// }
-
-// const BaseBody = ({ value, to, showCopyButton = true }: BaseBodyProps) => {
-// 	if (!value) return '--';
-// 	return (
-// 		<button className='hover:text-info hover:decoration-info flex items-center gap-2 text-left font-semibold underline underline-offset-2 transition-colors duration-300'>
-// 			{showCopyButton && <CopyButton id={value} />}
-// 			<Link target='_blank' to={to}>
-// 				{value}
-// 			</Link>
-// 		</button>
-// 	);
-// };
-
-// interface LinkWithCopyProps {
-// 	title?: string;
-// 	id: string;
-// 	uri?: string;
-// }
-
-// export const LinkWithCopy = ({ title = '', id, uri = '' }: LinkWithCopyProps) => {
-// 	const value = title ? title : id;
-// 	const to = `${uri}`;
-
-// 	return <BaseBody value={value} to={to} />;
-// };
-
-// const LinkOnly = ({ title = '', id, uri = '' }) => {
-// 	const value = title ? title : id;
-// 	const to = `${uri}/${id}`;
-
-// 	return <BaseBody value={value} to={to} showCopyButton={false} />;
-// };
-
-// const LinkCopyOnly = ({ id }) => (
-// 	<button className='flex items-center gap-2 text-left font-semibold'>
-// 		<CopyButton id={id} />
-// 		<span>{id}</span>
-// 	</button>
-// );
 
 export const CustomLink = ({ label ='', url = '', showCopyButton = true, openInNewTab = false, className = '' }) => {
 	if (!label) return '--';
@@ -110,4 +66,4 @@ export const CustomLink = ({ label ='', url = '', showCopyButton = true, openInN
 	);
 };
 
-// export { LinkCopyOnly, LinkOnly, LinkWithCopy, CustomLink };
+
