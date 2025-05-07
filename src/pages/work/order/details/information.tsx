@@ -2,7 +2,7 @@ import React from 'react';
 import useAccess from '@/hooks/useAccess';
 
 import StatusButton from '@/components/buttons/status';
-import { LinkWithCopy } from '@/components/others/link';
+import { CustomLink } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
 import { Switch } from '@/components/ui/switch';
@@ -24,10 +24,10 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{
 				label: 'Info ID',
 				value: (
-					<LinkWithCopy
-						id={data?.info_uuid}
-						uri={`/work/info/details/${data?.info_uuid}/order/details/${data?.uuid}`}
-						title={data?.info_id as string}
+					<CustomLink
+						url={`/work/info/details/${data?.info_uuid}/order/details/${data?.uuid}`}
+						label={data?.info_id as string}
+						openInNewTab={true}
 					/>
 				),
 			},

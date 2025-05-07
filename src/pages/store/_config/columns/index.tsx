@@ -5,7 +5,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { IFormSelectOption } from '@/components/core/form/types';
-import {  LinkWithCopy } from '@/components/others/link';
+import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
 import {
@@ -423,7 +423,13 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkWithCopy id={uuid} uri={`/store/purchase/${uuid}/details`} title={info.getValue() as string} />;
+			return (
+				<CustomLink
+					url={`/store/purchase/${uuid}/details`}
+					label={info.getValue() as string}
+					openInNewTab={true}
+				/>
+			);
 		},
 	},
 	{
@@ -504,7 +510,13 @@ export const purchaseReturnColumns = (): ColumnDef<IPurchaseReturnTableData>[] =
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkWithCopy id={uuid}  uri={`/store/purchase-return/${uuid}/details`} title={info.getValue() as string} />;
+			return (
+				<CustomLink
+					url={`/store/purchase-return/${uuid}/details`}
+					label={info.getValue() as string}
+					openInNewTab={true}
+				/>
+			);
 		},
 	},
 	{
@@ -688,9 +700,10 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 			const uuid = info.row.original.order_uuid;
 			const info_uuid = info.row.original.info_uuid;
 			return (
-				<LinkWithCopy id={uuid} 
-					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-					title={info.getValue() as string}
+				<CustomLink
+					url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+					label={info.getValue() as string}
+					openInNewTab={true}
 				/>
 			);
 		},
@@ -701,7 +714,9 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.info_uuid;
-			return <LinkWithCopy id={uuid}  uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return (
+				<CustomLink url={`/work/info/details/${uuid}`} label={info.getValue() as string} openInNewTab={true} />
+			);
 		},
 	},
 	{

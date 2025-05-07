@@ -4,7 +4,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
-import { LinkWithCopy } from '@/components/others/link';
+import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 
 import {
@@ -185,7 +185,13 @@ export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
-			return <LinkWithCopy id={uuid} uri={`/store/purchase/${uuid}/details`} title={info.getValue() as string} />;
+			return (
+				<CustomLink
+					url={`/store/purchase/${uuid}/details`}
+					label={info.getValue() as string}
+					openInNewTab={true}
+				/>
+			);
 		},
 	},
 	{
@@ -267,10 +273,10 @@ export const purchaseReturnColumns = (): ColumnDef<IPurchaseReturnTableData>[] =
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
 			return (
-				<LinkWithCopy
-					id={uuid}
-					uri={`/store/purchase-return/${uuid}/details`}
-					title={info.getValue() as string}
+				<CustomLink
+					url={`/store/purchase-return/${uuid}/details`}
+					label={info.getValue() as string}
+					openInNewTab={true}
 				/>
 			);
 		},

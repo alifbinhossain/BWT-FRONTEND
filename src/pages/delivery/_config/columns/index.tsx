@@ -3,7 +3,7 @@ import { ProductName } from '@/pages/work/_config/utils/function';
 import { ColumnDef } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
-import { LinkWithCopy } from '@/components/others/link';
+import { CustomLink } from '@/components/others/link';
 import { Switch } from '@/components/ui/switch';
 
 import { IChallanEntryTableData, IChallanTableData, ICourierTableData, IVehicleTableData } from './columns.type';
@@ -58,7 +58,11 @@ export const challanColumns = (
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
 			return (
-				<LinkWithCopy id={uuid} uri={`/delivery/challan/details/${uuid}`} title={info.getValue() as string} />
+				<CustomLink
+					url={`/delivery/challan/details/${uuid}`}
+					label={info.getValue() as string}
+					openInNewTab={true}
+				/>
 			);
 		},
 	},
@@ -104,10 +108,10 @@ export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 			const uuid = info.row.original.order_uuid;
 			const info_uuid = info.row.original.info_uuid;
 			return (
-				<LinkWithCopy
-					id={uuid}
-					uri={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-					title={info.getValue() as string}
+				<CustomLink
+					url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+					label={info.getValue() as string}
+					openInNewTab={true}
 				/>
 			);
 		},
@@ -118,7 +122,9 @@ export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.info_uuid;
-			return <LinkWithCopy id={uuid} uri={`/work/info/details/${uuid}`} title={info.getValue() as string} />;
+			return (
+				<CustomLink url={`/work/info/details/${uuid}`} label={info.getValue() as string} openInNewTab={true} />
+			);
 		},
 	},
 	{
