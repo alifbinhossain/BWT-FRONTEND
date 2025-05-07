@@ -13,7 +13,7 @@ import { useWorkDiagnosis, useWorkInHandWork, useWorkRepairing } from '../_confi
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
+
 
 const Order = () => {
 	const navigate = useNavigate();

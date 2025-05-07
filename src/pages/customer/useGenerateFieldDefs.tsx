@@ -1,0 +1,79 @@
+import { useState } from 'react';
+import { UseFormWatch } from 'react-hook-form';
+
+import FieldActionButton from '@/components/buttons/field-action';
+import { FormField } from '@/components/ui/form';
+import CoreForm from '@core/form';
+import { FieldDef } from '@core/form/form-dynamic-fields/types';
+import { IFormSelectOption } from '@core/form/types';
+
+import { useOtherBrand, useOtherModelByQuery } from '@/lib/common-queries/other';
+
+import { IInfo } from './_config/schema';
+
+interface IGenerateFieldDefsProps {
+	copy: (index: any) => void;
+	remove: (index: any) => void;
+	watch?: UseFormWatch<IInfo>;
+	isProductReceived?: boolean;
+	form: any;
+}
+
+const useGenerateFieldDefs = ({ copy, remove,form }: IGenerateFieldDefsProps): FieldDef[] => {
+	const [brand, setBrand] = useState([]);
+	const { data: modelOption } = useOtherModelByQuery<IFormSelectOption[]>(`is_brand=false&brand_uuid=${brand}`);
+	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
+
+	return [
+		{
+			header: 'Actions',
+			accessorKey: 'actions',
+			type: 'custom',
+			component: (index: number) => {
+				return <FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />;
+			},
+		},
+		{
+			header: 'Brand',
+			accessorKey: 'brand_uuid',
+			type: 'custom',
+			component: (index: number) => {
+				setBrand(form.watch(`order_entry.${index}.brand_uuid`));
+				return (
+					<FormField
+						control={form.control}
+						name={`order_entry.${index}.brand_uuid`}
+						render={(props) => (
+							<CoreForm.ReactSelect
+								menuPortalTarget={document.body}
+								label='Brand'
+								options={brandOptions || []}
+								placeholder='Select Brand'
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
+		},
+		{
+			header: 'Model',
+			accessorKey: 'model_uuid',
+			type: 'select-create',
+			placeholder: 'Select Model',
+			options: modelOption || [],
+		},
+		{
+			header: 'Problem Statement',
+			accessorKey: 'problem_statement',
+			type: 'textarea',
+		},
+		{
+			header: 'Remarks',
+			accessorKey: 'remarks',
+			type: 'textarea',
+		},
+	];
+};
+
+export default useGenerateFieldDefs;

@@ -2,22 +2,23 @@ import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
+import '../columns/columns.type';
+
 import {
-	IDepartmentTableData,
-	IDesignationTableData,
-	IEmployeeTableData,
-	IPageAssign,
-	IResetPassword,
-	IUserTableData,
+	IDiagnosisTableData,
+	IOrderTableData,
+	IProblemsTableData,
+	IProcessTableData,
+	ISectionTableData,
 } from '../columns/columns.type';
 
-//* user
+//* Problems
 
-export interface IUserAddOrUpdateProps {
+export interface IProblemAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IUserTableData | null;
+	updatedData?: IProblemsTableData | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
@@ -42,13 +43,103 @@ export interface IUserAddOrUpdateProps {
 		any
 	>;
 }
-//* Employee
-
-export interface IEmployeeAddOrUpdateProps {
+//* Jobs
+export interface IOrderAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IEmployeeTableData | null;
+	updatedData?: IOrderTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+//* Diagnosis
+export interface IDiagnosisAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: IDiagnosisTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+//* Process
+
+export interface IProcessAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: IProcessTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+//*Sections
+export interface ISectionAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: ISectionTableData | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
@@ -74,49 +165,12 @@ export interface IEmployeeAddOrUpdateProps {
 	>;
 }
 
-export interface IPageAssignProps {
+//* Zone
+export interface IZoneAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IPageAssign | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IPageAssign | null>>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-export interface IResetPasswordProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IResetPassword | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IResetPassword | null>>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-//* department
-export interface IDepartmentAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IDepartmentTableData | null;
+	updatedData?: any | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
@@ -142,12 +196,12 @@ export interface IDepartmentAddOrUpdateProps {
 	>;
 }
 
-//* designation
-export interface IDesignationAddOrUpdateProps {
+//*Accessories
+export interface IAccessoriesAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IDesignationTableData | null;
+	updatedData?: any | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
@@ -173,4 +227,16 @@ export interface IDesignationAddOrUpdateProps {
 	>;
 }
 
-export type usersWithAccess = { value: string; label: string; can_access: string };
+//* Product
+export type TProductProps = {
+	brand_name: string;
+	model_name: string;
+	serial_no?: string;
+};
+export type TLocationProps = {
+	branch_name: string;
+	warehouse_name: string;
+	rack_name?: string;
+	floor_name?: string;
+	box_name?: string;
+};
