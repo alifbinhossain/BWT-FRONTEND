@@ -10,7 +10,7 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"prettier:write": "prettier . --write",
-		"deploy": "git pull && npm run build"
+		"deploy": "git pull && npm i && npm run build "
 	},
 	"dependencies": {
 		"@handsontable/react": "^14.6.1",
