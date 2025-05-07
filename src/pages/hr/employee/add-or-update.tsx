@@ -12,10 +12,10 @@ import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { useHrUsersByUUID } from '../_config/query';
-import { IUser, USER_NULL, USER_SCHEMA } from '../_config/schema';
-import { IUserAddOrUpdateProps } from '../_config/types';
+import { EMPLOYEE_NULL, EMPLOYEE_SCHEMA, IEmployee } from '../_config/schema';
+import { IEmployeeAddOrUpdateProps } from '../_config/types';
 
-const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
@@ -31,62 +31,11 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 	const { data: departmentData } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: designationData } = useOtherDesignation<IFormSelectOption[]>();
 
-	const typeOptions = [
-		{
-			label: 'Customer',
-			value: 'customer',
-		},
-		{
-			label: 'Employ',
-			value: 'employee',
-		},
-		{
-			label: 'Vendor',
-			value: 'vendor',
-		},
-	];
-	const ratingOption = [
-		{
-			label: 1,
-			value: 1,
-		},
-		{
-			label: 2,
-			value: 2,
-		},
-		{
-			label: 3,
-			value: 3,
-		},
-		{
-			label: 4,
-			value: 4,
-		},
-		{
-			label: 5,
-			value: 5,
-		},
-	];
-	const businessType = [
-		{
-			label: 'User',
-			value: 'user',
-		},
-		{
-			label: 'TV Company',
-			value: 'tv_company',
-		},
-		{
-			label: 'Corporate',
-			value: 'corporate',
-		},
-	];
-
-	const form = useRHF(USER_SCHEMA(isUpdate) as any, USER_NULL);
+	const form = useRHF(EMPLOYEE_SCHEMA(isUpdate) as any, EMPLOYEE_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(USER_NULL);
+		form.reset(EMPLOYEE_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -97,16 +46,16 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
-	console.log(form.formState.errors)
 
 	// Submit handler
-	async function onSubmit(values: IUser) {
+	async function onSubmit(values: IEmployee) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			await updateData.mutateAsync({
 				url: `${url}/${updatedData?.uuid}`,
 				updatedData: {
 					...values,
+					user_type: 'employee',
 					updated_at: getDateTime(),
 				},
 				onClose,
@@ -117,6 +66,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 				url,
 				newData: {
 					...values,
+					user_type: 'employee',
 					created_at: getDateTime(),
 					created_by: user?.uuid,
 					uuid: nanoid(),
@@ -131,38 +81,12 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 			isSmall
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? 'Update User' : 'Add User'}
+			title={isUpdate ? 'Update Employ' : 'Add Employ'}
 			form={form}
 			onSubmit={onSubmit}
 		>
 			<div className='grid grid-cols-3 gap-4'>
-				<FormField
-					control={form.control}
-					name='user_type'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							label='User Type'
-							placeholder='Select Type'
-							options={typeOptions!}
-							{...props}
-						/>
-					)}
-				/>
-				{form.watch('user_type') === 'customer' && (
-					<FormField
-						control={form.control}
-						name='business_type'
-						render={(props) => (
-							<CoreForm.ReactSelect
-								label='Business Type'
-								placeholder='Select Business Type'
-								options={businessType!}
-								{...props}
-							/>
-						)}
-					/>
-				)}
-				{ (
+				{
 					<FormField
 						control={form.control}
 						name='department_uuid'
@@ -175,8 +99,8 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 							/>
 						)}
 					/>
-				)}
-				{ (
+				}
+				{
 					<FormField
 						control={form.control}
 						name='designation_uuid'
@@ -189,31 +113,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 							/>
 						)}
 					/>
-				)}
-				<FormField
-					control={form.control}
-					name='rating'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							label='Rating'
-							placeholder='Select Rating'
-							options={ratingOption!}
-							{...props}
-						/>
-					)}
-				/>{' '}
-				<FormField
-					control={form.control}
-					name='price'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							label='Price Rating'
-							placeholder='Price Rating'
-							options={ratingOption!}
-							{...props}
-						/>
-					)}
-				/>
+				}
 			</div>
 			<div className='grid grid-cols-2 gap-4'>
 				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />

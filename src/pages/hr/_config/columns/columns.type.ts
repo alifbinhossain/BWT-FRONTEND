@@ -46,3 +46,20 @@ export type IPageAssign = {
 	uuid: string;
 	name: string;
 };
+
+//* Employee
+export type IEmployeeTableData = {
+	uuid: string;
+	name: string;
+	email: string;
+	designation_uuid: string;
+	designation: string;
+	department_uuid: string;
+	department: string;
+	ext: string;
+	phone: string;
+	created_at: string;
+	updated_at: any;
+	status: string;
+	remarks: string;
+};

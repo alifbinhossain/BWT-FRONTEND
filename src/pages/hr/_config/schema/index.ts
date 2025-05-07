@@ -41,13 +41,13 @@ export const USER_SCHEMA = (isUpdate: boolean) => {
 		name: STRING_REQUIRED,
 		email: FORTUNE_ZIP_EMAIL_PATTERN,
 		user_type: z.enum(['employee', 'customer', 'vendor']),
-		business_type: z.enum(['user', 'tv_company', 'corporate']).optional(),
+		business_type: z.enum(['user', 'tv_company', 'corporate']).nullable(),
 		price: z.number().min(1).max(5).optional(),
 		rating: z.number().min(1).max(5).optional(),
 		department_uuid: STRING_NULLABLE,
 		designation_uuid: STRING_NULLABLE,
 		ext: STRING_NULLABLE,
-		phone: PHONE_NUMBER_REQUIRED,
+		phone: STRING_REQUIRED.min(11).max(15),
 		remarks: STRING_NULLABLE,
 	});
 
@@ -143,6 +143,52 @@ export const USER_NULL: Partial<IUser> = {
 };
 
 export type IUser = z.infer<ReturnType<typeof USER_SCHEMA>>;
+//* User Schema
+export const EMPLOYEE_SCHEMA = (isUpdate: boolean) => {
+	const baseSchema = z.object({
+		name: STRING_REQUIRED,
+		email: FORTUNE_ZIP_EMAIL_PATTERN,
+		department_uuid: STRING_NULLABLE,
+		designation_uuid: STRING_NULLABLE,
+		ext: STRING_NULLABLE,
+		phone: STRING_REQUIRED.min(11).max(15),
+		remarks: STRING_NULLABLE,
+	});
+
+	if (isUpdate) {
+		return baseSchema.extend({
+			pass: STRING_OPTIONAL,
+			repeatPass: STRING_OPTIONAL,
+		});
+	}
+
+	return baseSchema
+		.extend({
+			pass: PASSWORD,
+			repeatPass: PASSWORD,
+		})
+		.superRefine((data, ctx) => {
+			if (data.pass !== data.repeatPass) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Passwords do not match',
+					path: ['repeatPass'],
+				});
+			}
+		});
+};
+
+export const EMPLOYEE_NULL: Partial<IEmployee> = {
+	name: '',
+	email: '',
+	department_uuid: null,
+	designation_uuid: null,
+	ext: null,
+	phone: '',
+	remarks: null,
+};
+
+export type IEmployee = z.infer<ReturnType<typeof EMPLOYEE_SCHEMA>>;
 
 //* Reset Password Schema
 export const RESET_PASSWORD_SCHEMA = z

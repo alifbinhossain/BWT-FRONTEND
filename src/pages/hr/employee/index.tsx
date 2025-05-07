@@ -9,8 +9,8 @@ import ReactSelect from '@/components/ui/react-select';
 import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { userColumns } from '../_config/columns';
-import { IPageAssign, IResetPassword, IUserTableData } from '../_config/columns/columns.type';
+import { employeeColumns } from '../_config/columns';
+import { IEmployeeTableData, IPageAssign, IResetPassword } from '../_config/columns/columns.type';
 import { useHrUsers } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
@@ -24,24 +24,16 @@ const User = () => {
 	const handleChangeStatus = () => setStatus(!status);
 	const handleClearStatus = () => setStatus(undefined);
 	const [type, setType] = useState('employee');
-	let query;
-	if (type && status !== undefined) {
-		query = `status=${status}&user_type=${type}`;
-	} else if (type) {
-		query = `user_type=${type}`;
-	} else if (status !== undefined) {
-		query = `status=${status}`;
-	}
+	const query = `status=${status}&user_type=employee`;
 
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrUsers<IUserTableData[]>(query);
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrUsers<IEmployeeTableData[]>(query);
 
-	const pageInfo = useMemo(() => new PageInfo('Admin/User', url, 'admin__user'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Admin/Employee', url, 'admin__employee'), [url]);
 
 	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
 	const statusAccess = pageAccess.includes('click_status');
 	const resetPasswordAccess = pageAccess.includes('click_reset_password');
 	const pageAssignAccess = pageAccess.includes('click_page_assign');
-	const ratingChangeAccess = pageAccess.includes('click_rating_change');
 	const typeOptions = [
 		{
 			label: 'Customer',
@@ -64,8 +56,8 @@ const User = () => {
 		setIsOpenAddModal(true);
 	};
 
-	const [updatedData, setUpdatedData] = useState<IUserTableData | null>(null);
-	const handleUpdate = (row: Row<IUserTableData>) => {
+	const [updatedData, setUpdatedData] = useState<IEmployeeTableData | null>(null);
+	const handleUpdate = (row: Row<IEmployeeTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
@@ -78,7 +70,7 @@ const User = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<IUserTableData>) => {
+	const handleDelete = (row: Row<IEmployeeTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
 			name: row?.original?.name,
@@ -89,7 +81,7 @@ const User = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IUserTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IEmployeeTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
@@ -106,7 +98,7 @@ const User = () => {
 	const [updateResetPasswordData, setUpdateResetPasswordData] = useState<IResetPassword | null>(null);
 
 	// Reset Password Handler
-	const handleResetPassword = (row: Row<IUserTableData>) => {
+	const handleResetPassword = (row: Row<IEmployeeTableData>) => {
 		setUpdateResetPasswordData({
 			uuid: row.original.uuid,
 			name: row.original.name,
@@ -119,7 +111,7 @@ const User = () => {
 	const [updatePageAssignData, setUpdatePageAssignData] = useState<IPageAssign | null>(null);
 
 	// Page Assign Handler
-	const handlePageAssign = (row: Row<IUserTableData>) => {
+	const handlePageAssign = (row: Row<IEmployeeTableData>) => {
 		setUpdatePageAssignData({
 			uuid: row.original.uuid,
 			name: row.original.name,
@@ -128,7 +120,7 @@ const User = () => {
 	};
 
 	// Status Handler
-	const handleStatus = async (row: Row<IUserTableData>) => {
+	const handleStatus = async (row: Row<IEmployeeTableData>) => {
 		const status = Number(row?.original?.status) === 1 ? 0 : 1;
 		const updated_at = getDateTime();
 
@@ -137,36 +129,14 @@ const User = () => {
 			updatedData: { status, updated_at },
 		});
 	};
-	const handlePriceRating = async (row: Row<IUserTableData>, value: number) => {
-		const price = value;
-		const updated_at = getDateTime();
-
-		await updateData.mutateAsync({
-			url: `/hr/user/rating-price/${row?.original?.uuid}`,
-			updatedData: { price, updated_at },
-		});
-	};
-	const handleRating = async (row: Row<IUserTableData>, value: number) => {
-		const rating = value;
-		const updated_at = getDateTime();
-
-		await updateData.mutateAsync({
-			url: `/hr/user/rating-price/${row?.original?.uuid}`,
-			updatedData: { rating, updated_at },
-		});
-	};
-
 	// Table Columns
-	const columns = userColumns({
+	const columns = employeeColumns({
 		statusAccess,
 		handleStatus,
-		ratingChangeAccess,
 		resetPasswordAccess,
 		handleResetPassword,
 		pageAssignAccess,
 		handlePageAssign,
-		handlePriceRating,
-		handleRating,
 	});
 
 	return (
@@ -189,24 +159,6 @@ const User = () => {
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
 				handleDeleteAll={handleDeleteAll}
-				otherToolBarComponents={
-					<ToolbarComponent
-						option='other'
-						render={() => (
-							<ReactSelect
-								options={typeOptions || []}
-								value={typeOptions?.find((option) => option.value === type)}
-								menuPortalTarget={document.body}
-								styles={{
-									menuPortal: (base) => ({ ...base, zIndex: 999 }),
-								}}
-								onChange={(e: any) => {
-									setType(e?.value);
-								}}
-							/>
-						)}
-					/>
-				}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
@@ -233,7 +185,7 @@ const User = () => {
 						{...{
 							deleteItems,
 							setDeleteItems,
-							url,
+							url: '/hr/user',
 							deleteData,
 						}}
 					/>,
