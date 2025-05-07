@@ -240,3 +240,8 @@ export type TLocationProps = {
 	floor_name?: string;
 	box_name?: string;
 };
+
+export type TProblemProps = {
+	problems_name: string;
+	problem_statement?: string;
+};

@@ -3,6 +3,7 @@ import { useCopyToClipboard } from '@uidotdev/usehooks';
 import { Clipboard } from 'lucide-react';
 
 import { Button } from '../ui/button';
+import { ShowLocalToast } from './toast';
 
 const CopyClipboard: React.FC<{
 	text: string;
@@ -11,13 +12,13 @@ const CopyClipboard: React.FC<{
 
 	const handleCopy = (text: string) => () => {
 		copy(text);
+		ShowLocalToast({
+			type: 'create',
+			message: `${text} copied`,
+		});
 	};
 
-	return (
-		<Button variant={'ghost'} size={'icon'} onClick={handleCopy(text)}>
-			<Clipboard className='size-4' />
-		</Button>
-	);
+	return <Clipboard size={14} onClick={handleCopy(text)} />;
 };
 
 export default CopyClipboard;

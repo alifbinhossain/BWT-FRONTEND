@@ -1,9 +1,8 @@
-import { Clipboard } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { cn } from '@/lib/utils';
 
-import { ShowLocalToast } from './toast';
+import CopyClipboard from './copy-clipboard';
 
 interface ILinkOnlyProps {
 	uri: string;
@@ -18,51 +17,12 @@ export const LinkOnly = ({ uri, title }: ILinkOnlyProps) => {
 	);
 };
 
-const CopyButton = ({ id, className }: { id: string; className?: string }) => {
-	const handleOnClick = () => {
-		if (navigator.clipboard && navigator.clipboard.writeText) {
-			navigator.clipboard
-				.writeText(id)
-				.then(() => {
-					ShowLocalToast({
-						type: 'create',
-						message: `${id} copied`,
-					});
-				})
-				.catch((err) => {
-					console.error('Failed to copy text: ', err);
-					ShowLocalToast({
-						type: 'error',
-						message: 'Failed to copy text',
-					});
-				});
-		} else {
-			console.error('Clipboard API is not supported in this browser.');
-			ShowLocalToast({
-				type: 'error',
-				message: 'Clipboard API is not supported in this browser.',
-			});
-		}
-	};
-
-	return (
-		<div onClick={() => handleOnClick()} aria-label='Copy ID to clipboard'>
-			<Clipboard className={cn('h-4 w-4 transition-transform duration-200 hover:scale-110', className)} />
-		</div>
-	);
-};
-
 export const CustomLink = ({ label = '', url = '', showCopyButton = true, openInNewTab = false, className = '' }) => {
 	if (!label) return '--';
 
 	return (
 		<div className={cn('flex items-center gap-2', className)}>
-			{showCopyButton && (
-				<CopyButton
-					id={label}
-					className='hover:text-info hover:decoration-info transition-colors duration-300'
-				/>
-			)}
+			{showCopyButton && <CopyClipboard text={label} />}
 
 			{url === null ? (
 				<span>{label}</span>

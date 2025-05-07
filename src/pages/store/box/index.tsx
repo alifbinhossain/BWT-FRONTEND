@@ -47,21 +47,7 @@ const Box = () => {
 		});
 	};
 
-	//* Delete All Item
-	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
-
-	//* Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IBoxTableData>[]) => {
-		const selectedRows = rows.map((row) => row.original);
-
-		setDeleteItems(
-			selectedRows.map((row) => ({
-				id: row.uuid,
-				name: row.name,
-				checked: true,
-			}))
-		);
-	};
+	
 
 	//* Table Columns
 	const columns = boxColumns();

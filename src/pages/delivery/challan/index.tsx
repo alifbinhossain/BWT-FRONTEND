@@ -13,7 +13,6 @@ import { type1FacetedFilters } from '../_config/columns/facetedFilters'; // TODO
 import { useDeliveryChallan } from '../_config/query';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Challan = () => {
 	const navigate = useNavigate();
@@ -43,21 +42,6 @@ const Challan = () => {
 		});
 	};
 
-	// Delete All Item
-	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
-
-	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IChallanTableData>[]) => {
-		const selectedRows = rows.map((row) => row.original);
-
-		setDeleteItems(
-			selectedRows.map((row) => ({
-				id: row.uuid,
-				name: row.id,
-				checked: true,
-			}))
-		);
-	};
 	const handleDeliveryComplete = async (row: Row<IChallanTableData>) => {
 		const is_delivery_complete = !row?.original?.is_delivery_complete;
 		const updated_at = getDateTime();
@@ -81,7 +65,6 @@ const Challan = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
-				handleDeleteAll={handleDeleteAll}
 				// TODO: Update facetedFilters (OPTIONAL)
 				facetedFilters={type1FacetedFilters}
 			>
@@ -90,14 +73,6 @@ const Challan = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url,
-							deleteData,
-						}}
-					/>,
-					<DeleteAllModal
-						{...{
-							deleteItems,
-							setDeleteItems,
 							url,
 							deleteData,
 						}}

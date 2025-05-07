@@ -13,7 +13,6 @@ import { useWorkDiagnosis } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Diagnosis = () => {
 	const navigate = useNavigate();
@@ -53,21 +52,6 @@ const Diagnosis = () => {
 		});
 	};
 
-	//* Delete All Item
-	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
-
-	//* Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IDiagnosisTableData>[]) => {
-		const selectedRows = rows.map((row) => row.original);
-
-		setDeleteItems(
-			selectedRows.map((row) => ({
-				id: row.uuid,
-				name: row.order_id,
-				checked: true,
-			}))
-		);
-	};
 	//* handle Transfer
 	const handleAgainstTrx = (row: Row<IDiagnosisTableData>) => {
 		navigate(`/work/transfer-section/${row.original.info_uuid}/${row.original.uuid}/${row.original.order_uuid}`);
@@ -88,7 +72,6 @@ const Diagnosis = () => {
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
 				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
-				handleDeleteAll={handleDeleteAll}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
@@ -111,14 +94,7 @@ const Diagnosis = () => {
 							deleteData,
 						}}
 					/>,
-					<DeleteAllModal
-						{...{
-							deleteItems,
-							setDeleteItems,
-							url,
-							deleteData,
-						}}
-					/>,
+					
 				])}
 			</TableProvider>
 		</PageProvider>

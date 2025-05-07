@@ -16,6 +16,7 @@ export type IDiagnosisTableData = {
 	order_uuid: string;
 	info_uuid: string;
 	order_id: string;
+	user_name: string;
 	engineer_uuid: string;
 	problems_uuid: string[];
 	problems_name: string[];

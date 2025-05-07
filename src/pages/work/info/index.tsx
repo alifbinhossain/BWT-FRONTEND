@@ -3,8 +3,6 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 
-// import useAccess from '@/hooks/useAccess';
-
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
@@ -13,7 +11,6 @@ import { IInfoTableData } from '../_config/columns/columns.type';
 import { useWorkInfo } from '../_config/query';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Info = () => {
 	const navigate = useNavigate();
@@ -41,22 +38,6 @@ const Info = () => {
 		});
 	};
 
-	//* Delete All Item
-	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
-
-	//* Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IInfoTableData>[]) => {
-		const selectedRows = rows.map((row) => row.original);
-
-		setDeleteItems(
-			selectedRows.map((row) => ({
-				id: row.uuid,
-				name: row.info_id,
-				checked: true,
-			}))
-		);
-	};
-
 	//* Table Columns
 	const columns = infoColumns();
 
@@ -71,7 +52,6 @@ const Info = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
-				handleDeleteAll={handleDeleteAll}
 				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
@@ -79,14 +59,6 @@ const Info = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url,
-							deleteData,
-						}}
-					/>,
-					<DeleteAllModal
-						{...{
-							deleteItems,
-							setDeleteItems,
 							url,
 							deleteData,
 						}}

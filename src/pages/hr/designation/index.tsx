@@ -11,7 +11,6 @@ import { useHrDesignations } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Designation = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
@@ -48,22 +47,6 @@ const Designation = () => {
 		});
 	};
 
-	// Delete All Item
-	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
-
-	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IDesignationTableData>[]) => {
-		const selectedRows = rows.map((row) => row.original);
-
-		setDeleteItems(
-			selectedRows.map((row) => ({
-				id: row.uuid,
-				name: row.designation,
-				checked: true,
-			}))
-		);
-	};
-
 	// Table Columns
 	const columns = designationColumns();
 
@@ -78,7 +61,6 @@ const Designation = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
-				handleDeleteAll={handleDeleteAll}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
@@ -97,14 +79,6 @@ const Designation = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url,
-							deleteData,
-						}}
-					/>,
-					<DeleteAllModal
-						{...{
-							deleteItems,
-							setDeleteItems,
 							url,
 							deleteData,
 						}}

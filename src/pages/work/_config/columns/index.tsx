@@ -1,4 +1,5 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
+import { MessageSquareMore, Pin, User } from 'lucide-react';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
@@ -6,7 +7,7 @@ import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-import { Location, Product } from '../utils/component';
+import { Location, Problem, Product } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
 import {
 	IAccessoriesTableData,
@@ -39,7 +40,7 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const uuid = info.row.original.uuid;
+			const { uuid } = info.row.original;
 			return (
 				<CustomLink url={`/work/info/details/${uuid}`} label={info.getValue() as string} openInNewTab={true} />
 			);
@@ -146,17 +147,12 @@ export const orderColumnsForDetails = ({
 		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue() as string,
-	},
-	{
-		accessorKey: 'problem_statement',
-		header: () => (
-			<>
-				Problem <br />
-				Statement
-			</>
-		),
-		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
 	},
 	{
 		accessorFn: (row) => {
@@ -264,9 +260,19 @@ export const orderColumns = ({
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const uuid = info.row.original.info_uuid;
+			const { info_uuid, user_name } = info.row.original;
 			return (
-				<CustomLink url={`/work/info/details/${uuid}`} label={info.getValue() as string} openInNewTab={true} />
+				<div className='flex flex-col gap-2'>
+					<CustomLink
+						url={`/work/info/details/${info_uuid}`}
+						label={info.getValue() as string}
+						openInNewTab={true}
+					/>
+					<div className='flex gap-2'>
+						<User size={14} />
+						{user_name}
+					</div>
+				</div>
 			);
 		},
 	},
@@ -274,6 +280,7 @@ export const orderColumns = ({
 		accessorFn: (row) => ProductName(row),
 		id: 'product',
 		header: 'Product',
+		size: 170,
 		enableColumnFilter: false,
 		cell: (info) => {
 			const { brand_name, model_name, serial_no } = info.row.original;
@@ -295,17 +302,12 @@ export const orderColumns = ({
 		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue() as string,
-	},
-	{
-		accessorKey: 'problem_statement',
-		header: () => (
-			<>
-				Problem <br />
-				Statement
-			</>
-		),
-		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
 	},
 	{
 		accessorFn: (row) => {
@@ -402,9 +404,19 @@ export const QCColumns = ({
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const uuid = info.row.original.info_uuid;
+			const { info_uuid, user_name } = info.row.original;
 			return (
-				<CustomLink url={`/work/info/details/${uuid}`} label={info.getValue() as string} openInNewTab={true} />
+				<div className='flex flex-col gap-2'>
+					<CustomLink
+						url={`/work/info/details/${info_uuid}`}
+						label={info.getValue() as string}
+						openInNewTab={true}
+					/>
+					<div className='flex gap-2'>
+						<User size={14} />
+						{user_name}
+					</div>
+				</div>
 			);
 		},
 	},
@@ -433,12 +445,12 @@ export const QCColumns = ({
 		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue() as string,
-	},
-	{
-		accessorKey: 'problem_statement',
-		header: 'Problem Statement',
-		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
 	},
 	{
 		accessorFn: (row) => {
@@ -541,9 +553,19 @@ export const RepairingColumns = ({
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const uuid = info.row.original.info_uuid;
+			const { info_uuid, user_name } = info.row.original;
 			return (
-				<CustomLink url={`/work/info/details/${uuid}`} label={info.getValue() as string} openInNewTab={true} />
+				<div className='flex flex-col gap-2'>
+					<CustomLink
+						url={`/work/info/details/${info_uuid}`}
+						label={info.getValue() as string}
+						openInNewTab={true}
+					/>
+					<div className='flex gap-2'>
+						<User size={14} />
+						{user_name}
+					</div>
+				</div>
 			);
 		},
 	},
@@ -572,12 +594,12 @@ export const RepairingColumns = ({
 		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue() as string,
-	},
-	{
-		accessorKey: 'problem_statement',
-		header: 'Problem Statement',
-		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
 	},
 	{
 		accessorFn: (row) => {
@@ -632,9 +654,19 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const uuid = info.row.original.info_uuid;
+			const { info_uuid, user_name } = info.row.original;
 			return (
-				<CustomLink url={`/work/info/details/${uuid}`} label={info.getValue() as string} openInNewTab={true} />
+				<div className='flex flex-col gap-2'>
+					<CustomLink
+						url={`/work/info/details/${info_uuid}`}
+						label={info.getValue() as string}
+						openInNewTab={true}
+					/>
+					<div className='flex gap-2'>
+						<User size={14} />
+						{user_name}
+					</div>
+				</div>
 			);
 		},
 	},
@@ -657,18 +689,18 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorFn: (row) => {
 			return row.problems_name
-				?.map((item) => item)
+				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue() as string,
-	},
-	{
-		accessorKey: 'problem_statement',
-		header: 'Problem Statement',
-		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
 	},
 	{
 		accessorFn: (row) => {
@@ -736,29 +768,38 @@ export const diagnosisColumns = ({
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const uuid = info.row.original.info_uuid;
+			const { info_uuid, user_name } = info.row.original;
 			return (
-				<CustomLink url={`/work/info/details/${uuid}`} label={info.getValue() as string} openInNewTab={true} />
+				<div className='flex flex-col gap-2'>
+					<CustomLink
+						url={`/work/info/details/${info_uuid}`}
+						label={info.getValue() as string}
+						openInNewTab={true}
+					/>
+					<div className='flex gap-2'>
+						<User size={14} />
+						{user_name}
+					</div>
+				</div>
 			);
 		},
 	},
 	{
 		accessorFn: (row) => {
 			return row.problems_name
-				?.map((item) => item)
+				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue() as string,
-	},
-	{
-		accessorKey: 'problem_statement',
-		header: 'Problem Statement',
-		enableColumnFilter: false,
-	},
+		size: 180,
+		cell: (info) => {
+			const { problem_statement } = info.row.original;
 
+			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
+	},
 	{
 		accessorKey: 'status',
 		header: 'Status',
@@ -862,18 +903,18 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 	{
 		accessorFn: (row) => {
 			return row.problems_name
-				?.map((item) => item)
+				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
 		header: 'Problem',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue() as string,
-	},
-	{
-		accessorKey: 'problem_statement',
-		header: 'Problem Statement',
-		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
 	},
 	{
 		accessorKey: 'engineer_name',
