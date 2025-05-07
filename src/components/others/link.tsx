@@ -20,12 +20,29 @@ export const LinkOnly = ({ uri, title }: ILinkOnlyProps) => {
 
 const CopyButton = ({ id, className }: { id: string; className?: string }) => {
 	const handleOnClick = () => {
-		navigator.clipboard.writeText(id);
-
-		ShowLocalToast({
-			type: 'create',
-			message: `${id} copied`,
-		});
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			navigator.clipboard
+				.writeText(id)
+				.then(() => {
+					ShowLocalToast({
+						type: 'create',
+						message: `${id} copied`,
+					});
+				})
+				.catch((err) => {
+					console.error('Failed to copy text: ', err);
+					ShowLocalToast({
+						type: 'error',
+						message: 'Failed to copy text',
+					});
+				});
+		} else {
+			console.error('Clipboard API is not supported in this browser.');
+			ShowLocalToast({
+				type: 'error',
+				message: 'Clipboard API is not supported in this browser.',
+			});
+		}
 	};
 
 	return (
@@ -35,8 +52,7 @@ const CopyButton = ({ id, className }: { id: string; className?: string }) => {
 	);
 };
 
-
-export const CustomLink = ({ label ='', url = '', showCopyButton = true, openInNewTab = false, className = '' }) => {
+export const CustomLink = ({ label = '', url = '', showCopyButton = true, openInNewTab = false, className = '' }) => {
 	if (!label) return '--';
 
 	return (
@@ -65,5 +81,3 @@ export const CustomLink = ({ label ='', url = '', showCopyButton = true, openInN
 		</div>
 	);
 };
-
-
