@@ -47,8 +47,6 @@ const Box = () => {
 		});
 	};
 
-	
-
 	//* Table Columns
 	const columns = boxColumns();
 
@@ -63,7 +61,6 @@ const Box = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
-				handleDeleteAll={handleDeleteAll}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
@@ -82,14 +79,6 @@ const Box = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url,
-							deleteData,
-						}}
-					/>,
-					<DeleteAllModal
-						{...{
-							deleteItems,
-							setDeleteItems,
 							url,
 							deleteData,
 						}}
