@@ -13,7 +13,7 @@ const Layout = () => {
 				<main className='flex size-full flex-1 flex-col overflow-hidden'>
 					<Navbar />
 					<div className='flex size-full flex-1 flex-col overflow-hidden'>
-						<div className='size-full flex-1 overflow-auto px-4 py-6 lg:px-8'>
+						<div className='size-full flex-1 overflow-auto px-1 py-2.5 lg:px-4'>
 							<Suspense fallback='loading...'>
 								<Outlet />
 							</Suspense>
