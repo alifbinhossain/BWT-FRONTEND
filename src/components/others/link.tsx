@@ -35,36 +35,36 @@ const CopyButton = ({ id, className }: { id: string; className?: string }) => {
 	);
 };
 
-interface BaseBodyProps {
-	value: string;
-	to: string;
-	showCopyButton?: boolean;
-}
+// interface BaseBodyProps {
+// 	value: string;
+// 	to: string;
+// 	showCopyButton?: boolean;
+// }
 
-const BaseBody = ({ value, to, showCopyButton = true }: BaseBodyProps) => {
-	if (!value) return '--';
-	return (
-		<button className='hover:text-info hover:decoration-info flex items-center gap-2 text-left font-semibold underline underline-offset-2 transition-colors duration-300'>
-			{showCopyButton && <CopyButton id={value} />}
-			<Link target='_blank' to={to}>
-				{value}
-			</Link>
-		</button>
-	);
-};
+// const BaseBody = ({ value, to, showCopyButton = true }: BaseBodyProps) => {
+// 	if (!value) return '--';
+// 	return (
+// 		<button className='hover:text-info hover:decoration-info flex items-center gap-2 text-left font-semibold underline underline-offset-2 transition-colors duration-300'>
+// 			{showCopyButton && <CopyButton id={value} />}
+// 			<Link target='_blank' to={to}>
+// 				{value}
+// 			</Link>
+// 		</button>
+// 	);
+// };
 
-interface LinkWithCopyProps {
-	title?: string;
-	id: string;
-	uri?: string;
-}
+// interface LinkWithCopyProps {
+// 	title?: string;
+// 	id: string;
+// 	uri?: string;
+// }
 
-export const LinkWithCopy = ({ title = '', id, uri = '' }: LinkWithCopyProps) => {
-	const value = title ? title : id;
-	const to = `${uri}`;
+// export const LinkWithCopy = ({ title = '', id, uri = '' }: LinkWithCopyProps) => {
+// 	const value = title ? title : id;
+// 	const to = `${uri}`;
 
-	return <BaseBody value={value} to={to} />;
-};
+// 	return <BaseBody value={value} to={to} />;
+// };
 
 // const LinkOnly = ({ title = '', id, uri = '' }) => {
 // 	const value = title ? title : id;
@@ -80,34 +80,34 @@ export const LinkWithCopy = ({ title = '', id, uri = '' }: LinkWithCopyProps) =>
 // 	</button>
 // );
 
-// const CustomLink = ({ label = null, url = null, showCopyButton = true, openInNewTab = false, className = '' }) => {
-// 	if (!label) return '--';
+export const CustomLink = ({ label ='', url = '', showCopyButton = true, openInNewTab = false, className = '' }) => {
+	if (!label) return '--';
 
-// 	return (
-// 		<div className={cn('flex items-center gap-2', className)}>
-// 			{showCopyButton && (
-// 				<CopyButton
-// 					id={label}
-// 					className='hover:text-info hover:decoration-info transition-colors duration-300'
-// 				/>
-// 			)}
+	return (
+		<div className={cn('flex items-center gap-2', className)}>
+			{showCopyButton && (
+				<CopyButton
+					id={label}
+					className='hover:text-info hover:decoration-info transition-colors duration-300'
+				/>
+			)}
 
-// 			{url === null ? (
-// 				<span>{label}</span>
-// 			) : (
-// 				<Link
-// 					to={url}
-// 					className={cn(
-// 						'hover:text-info hover:decoration-info font-semibold underline underline-offset-2 transition-colors duration-300',
-// 						url !== null ? 'cursor-pointer' : 'pointer-events-none cursor-not-allowed'
-// 					)}
-// 					target={openInNewTab ? '_blank' : '_self'}
-// 				>
-// 					{label}
-// 				</Link>
-// 			)}
-// 		</div>
-// 	);
-// };
+			{url === null ? (
+				<span>{label}</span>
+			) : (
+				<Link
+					to={url}
+					className={cn(
+						'hover:text-info hover:decoration-info font-semibold underline underline-offset-2 transition-colors duration-300',
+						url !== null ? 'cursor-pointer' : 'pointer-events-none cursor-not-allowed'
+					)}
+					target={openInNewTab ? '_blank' : '_self'}
+				>
+					{label}
+				</Link>
+			)}
+		</div>
+	);
+};
 
 // export { LinkCopyOnly, LinkOnly, LinkWithCopy, CustomLink };
