@@ -236,7 +236,7 @@ const AddOrUpdate = () => {
 				fields={newFields}
 			/>
 
-			<Header />
+			<Header challan_uuid={uuid || ''} />
 			<CoreForm.DynamicFields
 				title='Challan Entry'
 				form={form}

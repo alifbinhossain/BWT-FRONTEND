@@ -60,6 +60,10 @@ const Information: React.FC<{ data: IChallanTableData }> = ({ data }) => {
 				value: data.courier_branch,
 				hidden: data?.challan_type !== 'courier_delivery',
 			},
+			{
+				label: 'Payment Method',
+				value: data.payment_method,
+			},
 		];
 	};
 

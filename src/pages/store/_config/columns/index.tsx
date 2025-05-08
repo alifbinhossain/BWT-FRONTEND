@@ -170,7 +170,12 @@ export const productColumns = ({
 }): ColumnDef<IProductTableData>[] => [
 	{
 		accessorKey: 'is_maintaining_stock',
-		header: 'Maintaining Stock',
+		header: () => (
+			<>
+				Marinating <br />
+				Stock
+			</>
+		),
 		enableColumnFilter: false,
 		cell: (info) => {
 			return <StatusButton value={info.getValue() as boolean} />;
@@ -480,9 +485,7 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 		accessorFn: (row) => row.price_per_unit * row.quantity,
 		header: 'Total(No Discount)',
 		enableColumnFilter: false,
-		cell: (info) => (
-			<span>{info.row.original.price_per_unit * info.row.original.quantity}</span>
-		),
+		cell: (info) => <span>{info.row.original.price_per_unit * info.row.original.quantity}</span>,
 	},
 	{
 		accessorKey: 'discount',

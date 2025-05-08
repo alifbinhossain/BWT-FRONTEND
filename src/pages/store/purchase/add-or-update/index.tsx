@@ -211,7 +211,16 @@ const AddOrUpdate = () => {
 			box_uuid: field.box_uuid,
 		});
 	};
+	const total = form.getValues()?.purchase_entry.reduce(
+		(acc, curr) => {
+			acc.total_price += curr.price_per_unit * curr.quantity;
 
+			return acc;
+		},
+		{
+			total_price: 0,
+		}
+	);
 	return (
 		<CoreForm.AddEditWrapper
 			title={isUpdate ? 'Edit Purchase Entry' : ' Add Purchase Entry'}
@@ -227,10 +236,20 @@ const AddOrUpdate = () => {
 					copy: handleCopy,
 					remove: handleRemove,
 					watch: form.watch,
+					form,
 				})}
 				handleAdd={handleAdd}
 				fields={fields}
-			/>
+			>
+				<tr>
+					<td className='border-t text-right font-semibold' colSpan={4}>
+						Grand Total:
+					</td>
+
+					<td className='border-t px-3 py-2'>{total.total_price}</td>
+					<td className='border-t px-3 py-2'></td>
+				</tr>
+			</CoreForm.DynamicFields>
 
 			<Suspense fallback={null}>
 				<DeleteModal

@@ -108,7 +108,7 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 												{
-													text: '',
+													text: data?.payment_method,
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],

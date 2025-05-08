@@ -35,6 +35,7 @@ export const useDeliveryChallan = <T>() =>
 		queryKey: deliveryQK.challan(),
 		url: '/delivery/challan',
 	});
+	
 
 export const useDeliveryChallanByUUID = <T>(uuid: string) =>
 	useTQuery<T>({

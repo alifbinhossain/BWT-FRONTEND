@@ -53,7 +53,7 @@ const useGenerateFieldDefs = ({ entry, remove, watch, add }: IGenerateFieldDefsP
 			accessorKey: 'accessories',
 			type: 'custom',
 			component: (index: number) => {
-				const accessories = watch ? watch(`${entry}.${index}.accessories` as any) : [];
+				const accessories = watch ? watch(`${entry}.${index}.accessories_name` as any) : [];
 
 				return (
 					<div className='flex flex-wrap gap-1'>

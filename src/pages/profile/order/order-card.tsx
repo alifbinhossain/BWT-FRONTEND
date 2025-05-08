@@ -182,11 +182,11 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				<Separator className='my-3' />
 
 				{/* Status Section */}
-				{processStatus && (
+				{processStatus !== 0 && (
 					<div className='mb-3'>
 						<h4 className='mb-2 text-xs font-medium text-slate-600'>Repair Status</h4>
 						<div className='grid grid-cols-2 gap-x-4 gap-y-2 text-xs md:grid-cols-3'>
-							{processStatus.map((item, index) => (
+							{processStatus?.map((item, index) => (
 								<StatusLabel key={index} text={item.label} value={item.value} />
 							))}
 						</div>
