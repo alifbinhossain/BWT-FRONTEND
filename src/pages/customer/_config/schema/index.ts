@@ -4,6 +4,7 @@ import {
 	BOOLEAN_OPTIONAL,
 	BOOLEAN_REQUIRED,
 	NUMBER_DOUBLE_REQUIRED,
+	PHONE_NUMBER_REQUIRED,
 	STRING_ARRAY,
 	STRING_ARRAY_OPTIONAL,
 	STRING_NULLABLE,
@@ -71,8 +72,8 @@ const ORDER_SCHEMA_FOR_INFO = (ORDER_SCHEMA as any)._def.schema.omit({
 });
 export const INFO_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
-	name: STRING_OPTIONAL,
-	phone: STRING_REQUIRED,
+	name: STRING_REQUIRED,
+	phone: PHONE_NUMBER_REQUIRED,
 	where_they_find_us: z.enum(['whatsapp', 'instagram', 'facebook', 'youtube', 'person', 'none']).optional(),
 	location: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,

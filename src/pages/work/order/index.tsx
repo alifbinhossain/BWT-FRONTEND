@@ -14,7 +14,6 @@ import { useWorkDiagnosis, useWorkInHandWork, useWorkRepairing } from '../_confi
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
-
 const Order = () => {
 	const navigate = useNavigate();
 
@@ -25,6 +24,7 @@ const Order = () => {
 
 	const actionTrxAccess = pageAccess.includes('click_trx');
 	const actionProceedToRepair = pageAccess.includes('click_proceed_to_repair');
+	const actionDiagnosisNeed = pageAccess.includes('click_diagnosis_need');
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkInHandWork<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Order', url, 'work__order'), [url]);
@@ -69,12 +69,30 @@ const Order = () => {
 		invalidateDiagnosis();
 		invalidateRepairing();
 	};
+	const handelDiagnosisStatusChange = async (row: Row<IOrderTableData>) => {
+		const is_diagnosis_need = !row?.original?.is_diagnosis_need;
+		const updated_at = getDateTime();
+
+		await updateData.mutateAsync({
+			url: `/work/order/${row?.original?.uuid}`,
+			updatedData: { is_diagnosis_need, updated_at },
+		});
+		invalidateDiagnosis();
+		invalidateRepairing();
+	};
 
 	// Table Columns
 	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
 		navigate(`/work/transfer-section/${row.original.info_uuid}/${null}/${row.original.uuid}`);
 	};
-	const columns = orderColumns({ actionTrxAccess, actionProceedToRepair, handleAgainstTrx, handleProceedToRepair });
+	const columns = orderColumns({
+		actionTrxAccess,
+		actionProceedToRepair,
+		handleAgainstTrx,
+		handleProceedToRepair,
+		actionDiagnosisNeed,
+		handelDiagnosisStatusChange,
+	});
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -92,7 +110,7 @@ const Order = () => {
 				{renderSuspenseModals([
 					<AddOrUpdate
 						{...{
-							url,
+							url: '/work/order',
 							open: isOpenAddModal,
 							setOpen: setIsOpenAddModal,
 							updatedData,
@@ -106,7 +124,7 @@ const Order = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url,
+							url: '/work/order',
 							deleteData,
 						}}
 					/>,

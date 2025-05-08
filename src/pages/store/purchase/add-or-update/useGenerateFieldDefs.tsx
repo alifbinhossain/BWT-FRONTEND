@@ -1,6 +1,8 @@
 import { UseFormWatch } from 'react-hook-form';
 
 import FieldActionButton from '@/components/buttons/field-action';
+import { FormField } from '@/components/ui/form';
+import CoreForm from '@core/form';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
 
@@ -19,9 +21,10 @@ interface IGenerateFieldDefsProps {
 	copy: (index: any) => void;
 	remove: (index: any) => void;
 	watch?: UseFormWatch<IPurchase>;
+	form: any;
 }
 
-const useGenerateFieldDefs = ({ copy, remove, watch }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsProps): FieldDef[] => {
 	const { data: productOptions } = useOtherProduct<IFormSelectOption[]>();
 	const { data: warehouseOptions } = useOtherWarehouseByQuery<IFormSelectOption[]>(
 		`branch_uuid=${watch && watch('branch_uuid')}`
@@ -48,9 +51,22 @@ const useGenerateFieldDefs = ({ copy, remove, watch }: IGenerateFieldDefsProps):
 			type: 'number',
 		},
 		{
-			header: 'Price Per Unit',
+			header: 'Price/Unit',
 			accessorKey: 'price_per_unit',
 			type: 'number',
+		},
+		{
+			header: 'Total',
+			accessorKey: 'total',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<span>
+						{(watch?.(`purchase_entry.${index}.price_per_unit`) ?? 0) *
+							(watch?.(`purchase_entry.${index}.quantity`) ?? 0)}
+					</span>
+				);
+			},
 		},
 		{
 			header: 'Discount',
@@ -58,33 +74,95 @@ const useGenerateFieldDefs = ({ copy, remove, watch }: IGenerateFieldDefsProps):
 			type: 'number',
 		},
 		{
-			header: 'Warehouse',
-			accessorKey: 'warehouse_uuid',
-			type: 'select',
-			placeholder: 'Select Warehouse',
-			options: warehouseOptions || [],
+			header: 'Location',
+			accessorKey: 'location',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<div className='flex flex-col gap-2'>
+						<FormField
+							control={form.control}
+							name='warehouse_uuid'
+							render={(props) => (
+								<CoreForm.ReactSelect
+									label='warehouse_uuid'
+									disableLabel={true}
+									placeholder='Select Warehouse'
+									options={warehouseOptions!}
+									{...props}
+								/>
+							)}
+						/>
+						{form.watch(`warehouse_uuid`) && (
+							<FormField
+								control={form.control}
+								name='rack_uuid'
+								render={(props) => (
+									<CoreForm.ReactSelect
+										label='rack_uuid'
+										disableLabel={true}
+										placeholder='Select Rack'
+										options={RackOptions!}
+										{...props}
+									/>
+								)}
+							/>
+						)}
+						{form.watch(`rack_uuid`) && (
+							<FormField
+								control={form.control}
+								name='floor_uuid'
+								render={(props) => (
+									<CoreForm.ReactSelect
+										label='floor_uuid'
+										disableLabel={true}
+										placeholder='Select Floor'
+										options={FloorOptions!}
+										{...props}
+									/>
+								)}
+							/>
+						)}
+						{form.watch(`floor_uuid`) && (
+							<FormField
+								control={form.control}
+								name='box_uuid'
+								render={(props) => (
+									<CoreForm.ReactSelect
+										label='box_uuid'
+										disableLabel={true}
+										placeholder='Select Box'
+										options={BoxOptions!}
+										{...props}
+									/>
+								)}
+							/>
+						)}
+					</div>
+				);
+			},
 		},
-		{
-			header: 'Rack',
-			accessorKey: 'rack_uuid',
-			type: 'select',
-			placeholder: 'Select Rack',
-			options: RackOptions || [],
-		},
-		{
-			header: 'Floor',
-			accessorKey: 'floor_uuid',
-			type: 'select',
-			placeholder: 'Select Floor',
-			options: FloorOptions || [],
-		},
-		{
-			header: 'Box',
-			accessorKey: 'box_uuid',
-			type: 'select',
-			placeholder: 'Select Box',
-			options: BoxOptions || [],
-		},
+		// {
+		// 	header: 'Rack',
+		// 	accessorKey: 'rack_uuid',
+		// 	type: 'select',
+		// 	placeholder: 'Select Rack',
+		// 	options: RackOptions || [],
+		// },
+		// {
+		// 	header: 'Floor',
+		// 	accessorKey: 'floor_uuid',
+		// 	type: 'select',
+		// 	placeholder: 'Select Floor',
+		// 	options: FloorOptions || [],
+		// },
+		// {
+		// 	header: 'Box',
+		// 	accessorKey: 'box_uuid',
+		// 	type: 'select',
+		// 	placeholder: 'Select Box',
+		// 	options: BoxOptions || [],
+		// },
 		{
 			header: 'Remarks',
 			accessorKey: 'remarks',

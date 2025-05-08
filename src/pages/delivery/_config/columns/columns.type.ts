@@ -34,6 +34,7 @@ export type IChallanTableData = {
 	location: string;
 	zone_name: string;
 	phone_no: string;
+	payment_method: 'cash';
 	order_created_by_name: string;
 	customer_phone: string;
 	id: string;

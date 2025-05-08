@@ -8,12 +8,16 @@ import { useOtherCourier, useOtherUserByQuery, useOtherVehicle } from '@/lib/com
 
 import { IChallan } from '../../_config/schema';
 
-const Header = () => {
+const Header = ({ challan_uuid }: { challan_uuid: string }) => {
 	const form = useFormContext<IChallan>();
-	const { data: customerOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
+	const query = challan_uuid
+		? `?challan_uuid=${challan_uuid}`
+		: `?type=customer&is_ready_for_delivery=true&is_delivery_complete=false`;
+	const { data: customerOption } = useOtherUserByQuery<IFormSelectOption[]>(query);
 	const { data: vehicleOption } = useOtherVehicle<IFormSelectOption[]>();
 	const { data: employeeOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=employee&designation=delivery');
 	const { data: courierOption } = useOtherCourier<IFormSelectOption[]>();
+	const paymentMethodOptions = [{ value: 'cash', label: 'Cash' }];
 	const typeOption = [
 		{ label: 'Customer Pickup', value: 'customer_pickup' },
 		{ label: 'Employee Delivery', value: 'employee_delivery' },
@@ -50,10 +54,24 @@ const Header = () => {
 						label='Customer'
 						placeholder='Select Customer'
 						options={customerOption!}
+						isDisabled={challan_uuid ? true : false}
 						{...props}
 					/>
 				)}
 			/>
+			<FormField
+				control={form.control}
+				name='payment_method'
+				render={(props) => (
+					<CoreForm.ReactSelect
+						menuPortalTarget={document.body}
+						label='Type'
+						placeholder='Select payment method'
+						options={paymentMethodOptions!}
+						{...props}
+					/>
+				)}
+			/>{' '}
 			<FormField
 				control={form.control}
 				name='challan_type'

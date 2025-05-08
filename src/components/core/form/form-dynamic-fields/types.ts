@@ -81,4 +81,5 @@ export interface DynamicFieldsProps {
 	viewAs?: 'default' | 'spreadsheet' | 'kanban';
 	containerClassName?: string;
 	className?: string;
+	children?: React.ReactNode;
 }

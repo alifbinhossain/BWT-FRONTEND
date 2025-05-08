@@ -57,7 +57,7 @@ const workRoutes: IRoute[] = [
 				path: '/work/order',
 				element: <Order />,
 				page_name: 'work__order',
-				actions: ['read', 'update', 'delete', 'click_trx', 'click_proceed_to_repair'],
+				actions: ['read', 'update', 'delete', 'click_trx', 'click_proceed_to_repair', 'click_diagnosis_need'],
 			},
 			{
 				name: 'Order Details',
@@ -65,7 +65,16 @@ const workRoutes: IRoute[] = [
 				element: <OrderDetails />,
 				page_name: 'work__order_details',
 				hidden: true,
-				actions: ['create', 'read', 'update', 'delete', 'click_transfer_qc', 'click_transfer_delivery'],
+				actions: [
+					'create',
+					'read',
+					'update',
+					'delete',
+					'click_transfer_qc',
+					'click_transfer_delivery',
+					'click_proceed_to_repair',
+					'click_diagnosis_need',
+				],
 			},
 			{
 				name: 'Diagnosis',

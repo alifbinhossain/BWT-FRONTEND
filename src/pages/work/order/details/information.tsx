@@ -15,6 +15,8 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	const pageAccess = useAccess('work__order_details') as string[];
 	const haveDeliveryAccess = pageAccess?.includes('click_transfer_delivery');
 	const haveQCAccess = pageAccess?.includes('click_transfer_qc');
+	const haveProceedToRepairAccess = pageAccess?.includes('click_proceed_to_repair');
+	const haveDiagnosedNeedAccess = pageAccess?.includes('click_diagnosis_need');
 	const renderGeneralItems = (): ITableListItems => {
 		return [
 			{
@@ -57,6 +59,18 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: data.quantity,
 			},
 			{ label: 'Serial', value: data.serial_no },
+			{
+				label: 'Accessories',
+				value: (
+					<div className='flex flex-wrap gap-1'>
+						{(data.accessories_name as string[])?.map((item, index) => (
+							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
+								{item?.replace(/_/g, ' ')}
+							</span>
+						))}
+					</div>
+				),
+			},
 		];
 	};
 	const renderProblemItems = (): ITableListItems => {
@@ -84,19 +98,31 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: <StatusButton value={data.is_product_received as boolean} />,
 			},
 			{
-				label: 'Diagnosis Need',
-				value: <StatusButton value={data.is_diagnosis_needed as boolean} />,
+				label: 'Diagnosing Needed',
+				value: (
+					<Switch
+						checked={data?.is_diagnosis_need}
+						onCheckedChange={() => handelDiagnosisStatusChange()}
+						disabled={!haveDiagnosedNeedAccess}
+					/>
+				),
 			},
 			{
 				label: 'Proceed to Repair',
-				value: <StatusButton value={data.is_proceed_to_repair as boolean} />,
+				value: (
+					<Switch
+						checked={data?.is_proceed_to_repair}
+						onCheckedChange={() => handelProceedToRepair()}
+						disabled={!haveProceedToRepairAccess}
+					/>
+				),
 			},
 			{
 				label: 'Transfer For QC',
 				value: (
 					<Switch
 						checked={data?.is_transferred_for_qc}
-						onCheckedChange={() => handelQCStatusChange()}
+						onCheckedChange={() => handelProceedToRepair()}
 						disabled={!haveQCAccess}
 					/>
 				),
@@ -115,18 +141,6 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{
 				label: 'Receiving Date',
 				value: formatDateTable(data.received_date),
-			},
-			{
-				label: 'Accessories',
-				value: (
-					<div className='flex flex-wrap gap-1'>
-						{(data.accessories_name as string[])?.map((item, index) => (
-							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
-								{item?.replace(/_/g, ' ')}
-							</span>
-						))}
-					</div>
-				),
 			},
 		];
 	};
@@ -191,6 +205,24 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			},
 		];
 	};
+	const handelDiagnosisStatusChange = async () => {
+		await updateData.mutateAsync({
+			url: `/work/order/${data?.uuid}`,
+			updatedData: {
+				is_diagnosis_need: !data?.is_diagnosis_need,
+			},
+			isOnCloseNeeded: false,
+		});
+	};
+	const handelProceedToRepair = async () => {
+		await updateData.mutateAsync({
+			url: `/work/order/${data?.uuid}`,
+			updatedData: {
+				is_proceed_to_repair: !data?.is_proceed_to_repair,
+			},
+			isOnCloseNeeded: false,
+		});
+	};
 	const handelQCStatusChange = async () => {
 		await updateData.mutateAsync({
 			url: `/work/order/${data?.uuid}`,
@@ -200,6 +232,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			isOnCloseNeeded: false,
 		});
 	};
+
 	const handelDeliveryStatusChange = async () => {
 		await updateData.mutateAsync({
 			url: `/work/order/${data?.uuid}`,

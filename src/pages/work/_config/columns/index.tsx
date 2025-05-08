@@ -86,6 +86,8 @@ type IOrderColumns = {
 	actionProceedToRepair?: boolean;
 	handleAgainstTrx?: (row: Row<any>) => void;
 	handleProceedToRepair?: (row: Row<any>) => void;
+	actionDiagnosisNeed?: boolean;
+	handelDiagnosisStatusChange?: (row: Row<any>) => void;
 };
 export const orderColumnsForDetails = ({
 	actionTrxAccess,
@@ -111,6 +113,30 @@ export const orderColumnsForDetails = ({
 			<>
 				Proceed to <br />
 				Repair
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'is_transferred_for_qc',
+		header: () => (
+			<>
+				Transfer to <br />
+				QC
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'is_ready_for_delivery',
+		header: () => (
+			<>
+				Ready for <br />
+				Delivery
 			</>
 		),
 		size: 40,
@@ -219,6 +245,8 @@ export const orderColumns = ({
 	actionProceedToRepair,
 	handleAgainstTrx,
 	handleProceedToRepair,
+	actionDiagnosisNeed,
+	handelDiagnosisStatusChange,
 }: IOrderColumns = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_diagnosis_need',
@@ -230,7 +258,16 @@ export const orderColumns = ({
 		),
 		size: 40,
 		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+		cell: (info) => (
+			<Switch
+				checked={info.getValue() as boolean}
+				onCheckedChange={() => handelDiagnosisStatusChange?.(info.row)}
+			/>
+		),
+		meta: {
+			hidden: !actionDiagnosisNeed,
+			disableFullFilter: true,
+		},
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
@@ -250,6 +287,7 @@ export const orderColumns = ({
 			disableFullFilter: true,
 		},
 	},
+
 	{
 		accessorKey: 'order_id',
 		header: 'Order ID',
