@@ -6,7 +6,12 @@ import { DynamicFieldsProps } from './types';
 
 const FormDynamicFields = (props: DynamicFieldsProps) => {
 	return (
-		<DynamicFieldContainer title={props.title} extraHeader={props.extraHeader} handleAdd={props.handleAdd}>
+		<DynamicFieldContainer
+			title={props.title}
+			extraHeader={props.extraHeader}
+			handleAdd={props.handleAdd}
+			containerClassName={props.containerClassName}
+		>
 			{props.viewAs === 'spreadsheet' ? (
 				<SpreadsheetDynamicFields {...props} />
 			) : props.viewAs === 'kanban' ? (

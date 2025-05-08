@@ -71,7 +71,7 @@ export type FieldDef = {
 );
 
 export interface DynamicFieldsProps {
-	title: string|React.ReactNode;
+	title: string | React.ReactNode;
 	form: UseFormReturn<any>;
 	fieldName: string;
 	fieldDefs: FieldDef[];
@@ -79,4 +79,6 @@ export interface DynamicFieldsProps {
 	handleAdd?: () => void;
 	fields: FieldArrayWithId<any>[];
 	viewAs?: 'default' | 'spreadsheet' | 'kanban';
+	containerClassName?: string;
+	className?: string;
 }
