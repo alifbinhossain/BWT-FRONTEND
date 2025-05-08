@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { ShowLocalToast } from '@/components/others/toast';
 import CoreForm from '@core/form';
 
 import nanoid from '@/lib/nanoid';
@@ -44,6 +45,13 @@ const AddOrUpdate = () => {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
+		if (values.purchase_entry.length === 0) {
+			ShowLocalToast({
+				type: 'error',
+				message: 'Please add at least one entry',
+			});
+			return;
+		}
 		if (isUpdate) {
 			const purchase_data = {
 				...values,

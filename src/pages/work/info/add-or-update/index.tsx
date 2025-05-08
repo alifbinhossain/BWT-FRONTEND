@@ -266,7 +266,7 @@ const AddOrUpdate = () => {
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<Header />
+			<Header isUpdate={isUpdate} />
 			{version === 1 && (
 				<CoreForm.DynamicFields
 					title={

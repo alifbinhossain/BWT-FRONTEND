@@ -86,6 +86,7 @@ export type IInfoTableData = {
 	name: string;
 	phone: string;
 	user_phone: string;
+	submitted_by: 'customer' | 'employee';
 	user_id: string;
 	id: string;
 	info_id: string;

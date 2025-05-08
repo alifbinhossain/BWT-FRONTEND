@@ -21,6 +21,10 @@ const Information: React.FC<{ data: IPurchaseReturnDetails }> = ({ data }) => {
 				label: 'Purchase ID',
 				value: data.purchase_id,
 			},
+		];
+	};
+	const renderItems2 = (): ITableListItems => {
+		return [
 			{
 				label: 'Created At',
 				value: formatDateTable(data.created_at),
@@ -32,10 +36,12 @@ const Information: React.FC<{ data: IPurchaseReturnDetails }> = ({ data }) => {
 			{ label: 'Remarks', value: data.remarks },
 		];
 	};
-
 	return (
 		<SectionContainer title={'Information'}>
-			<TableList items={renderItems()} />
+			<div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
+				<TableList items={renderItems()} />
+				<TableList items={renderItems2()} />
+			</div>
 		</SectionContainer>
 	);
 };
