@@ -46,7 +46,7 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 		const location = userOption?.find((item) => item.value === form.watch('user_uuid'))?.location;
 		form.setValue('zone_uuid', zone_uuid || '');
 		form.setValue('location', location || '');
-	}, [form.watch('user_uuid')]);
+	}, [form.watch('user_uuid'), isUpdate, userOption]);
 
 	return (
 		<CoreForm.Section
