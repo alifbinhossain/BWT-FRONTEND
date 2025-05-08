@@ -10,10 +10,15 @@ import { useOtherDepartment, useOtherDesignation, useOtherUserByQuery, useOtherZ
 import { IInfo } from '../../_config/schema';
 import { businessTypeOptions, platformTypeOptions } from './utils';
 
-const Header = () => {
+interface ICustomUserType extends IFormSelectOption {
+	location: string;
+	zone_uuid: string;
+}
+
+const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 	const form = useFormContext<IInfo>();
 
-	const { data: userOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
+	const { data: userOption } = useOtherUserByQuery<ICustomUserType[]>('?type=customer');
 	const isProductReceived = form.watch('is_product_received');
 	const isNewCustomer = form.watch('is_new_customer');
 	const isUser = form.watch('business_type') === 'user';
@@ -35,6 +40,13 @@ const Header = () => {
 			form.resetField('department_uuid');
 		}
 	}, [isNewCustomer, form, isBusinessTypeCompany]);
+	useEffect(() => {
+		if (isUpdate) return;
+		const zone_uuid = userOption?.find((item) => item.value === form.watch('user_uuid'))?.zone_uuid;
+		const location = userOption?.find((item) => item.value === form.watch('user_uuid'))?.location;
+		form.setValue('zone_uuid', zone_uuid || '');
+		form.setValue('location', location || '');
+	}, [form.watch('user_uuid')]);
 
 	return (
 		<CoreForm.Section
