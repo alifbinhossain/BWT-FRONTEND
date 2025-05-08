@@ -25,6 +25,7 @@ export type IChallanEntryTableData = {
 	serial_no: string;
 	order_uuid: string;
 	info_uuid: string;
+	unit: string;
 	remarks: string;
 };
 //* Challan
@@ -32,7 +33,9 @@ export type IChallanTableData = {
 	challan_no: string;
 	location: string;
 	zone_name: string;
-	
+	phone_no: string;
+	order_created_by_name: string;
+
 	id: string;
 	uuid: string;
 	challan_type: string;
