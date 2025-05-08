@@ -47,7 +47,7 @@ export const USER_SCHEMA = (isUpdate: boolean) => {
 		department_uuid: STRING_NULLABLE,
 		designation_uuid: STRING_NULLABLE,
 		ext: STRING_NULLABLE,
-		phone: STRING_REQUIRED.min(11).max(15),
+		phone: PHONE_NUMBER_REQUIRED,
 		remarks: STRING_NULLABLE,
 	});
 
@@ -79,20 +79,6 @@ export const USER_SCHEMA = (isUpdate: boolean) => {
 							message: 'Required',
 							path: ['business_type'],
 						});
-					}
-					if (data?.business_type === 'tv_company' || data?.business_type === 'corporate') {
-						if (!data.department_uuid)
-							ctx.addIssue({
-								code: z.ZodIssueCode.custom,
-								message: 'Required',
-								path: ['department_uuid'],
-							});
-						if (!data.designation_uuid)
-							ctx.addIssue({
-								code: z.ZodIssueCode.custom,
-								message: 'Required',
-								path: ['designation_uuid'],
-							});
 					}
 				}
 			});

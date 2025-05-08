@@ -57,8 +57,19 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
+		accessorKey: 'submitted_by',
+		header: 'Submitted By',
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'is_product_received',
-		header: 'Product Received',
+		size: 32,
+		header: () => (
+			<>
+				Product <br />
+				Received
+			</>
+		),
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},

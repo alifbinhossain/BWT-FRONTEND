@@ -31,7 +31,7 @@ export default function Index(data: IChallanTableData, user: any) {
 
 		// * Page Header
 		header: {
-			table: getPageHeader(data) as any,
+			table: getPageHeader(data, user) as any,
 			layout: 'noBorders',
 			margin: [xMargin, 30, xMargin, 0],
 		},
@@ -72,7 +72,7 @@ export default function Index(data: IChallanTableData, user: any) {
 												bold: true,
 												fontSize: DEFAULT_FONT_SIZE - 2,
 											},
-											{ text: data?.phone_no, fontSize: DEFAULT_FONT_SIZE - 2 },
+											{ text: data?.customer_phone, fontSize: DEFAULT_FONT_SIZE - 2 },
 										],
 										[
 											{

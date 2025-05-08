@@ -50,7 +50,7 @@ export const ORDER_NULL: Partial<IOrder> = {
 	is_ready_for_delivery: false,
 	is_proceed_to_repair: false,
 	brand_uuid: '',
-	model_uuid: '',
+	model_uuid: undefined,
 	serial_no: '',
 	quantity: 1,
 	problems_uuid: [],
@@ -83,6 +83,7 @@ export const INFO_NULL: Partial<IInfo> = {
 	where_they_find_us: 'none',
 	name: '',
 	phone: '',
+	location: '',
 	order_entry: [ORDER_NULL as IOrder],
 	remarks: null,
 };

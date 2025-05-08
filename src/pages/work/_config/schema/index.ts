@@ -4,6 +4,7 @@ import {
 	BOOLEAN_OPTIONAL,
 	BOOLEAN_REQUIRED,
 	NUMBER_DOUBLE_REQUIRED,
+	PHONE_NUMBER_OPTIONAL,
 	STRING_ARRAY,
 	STRING_ARRAY_OPTIONAL,
 	STRING_NULLABLE,
@@ -75,7 +76,7 @@ export const INFO_SCHEMA = z
 		uuid: STRING_OPTIONAL,
 		user_uuid: STRING_NULLABLE,
 		name: STRING_OPTIONAL,
-		phone: STRING_OPTIONAL,
+		phone: PHONE_NUMBER_OPTIONAL,
 		business_type: STRING_OPTIONAL,
 		where_they_find_us: z.enum(['whatsapp', 'instagram', 'facebook', 'youtube', 'person', 'none']).optional(),
 		designation_uuid: STRING_OPTIONAL,
@@ -101,14 +102,6 @@ export const INFO_SCHEMA = z
 			if (!data.business_type) {
 				ctx.addIssue(customIssue('Required', 'business_type'));
 			}
-			if (data.business_type === 'company') {
-				if (!data.department_uuid) {
-					ctx.addIssue(customIssue('Required', 'department_uuid'));
-				}
-				if (!data.designation_uuid) {
-					ctx.addIssue(customIssue('Required', 'designation_uuid'));
-				}
-			}
 		}
 		if (data.is_product_received) {
 			if (!data.received_date) {
@@ -132,7 +125,7 @@ export const INFO_NULL: Partial<IInfo> = {
 	received_date: null,
 	where_they_find_us: 'none',
 	name: '',
-	phone: '',
+	phone: undefined,
 	order_entry: [ORDER_NULL as IOrder],
 	remarks: null,
 };
