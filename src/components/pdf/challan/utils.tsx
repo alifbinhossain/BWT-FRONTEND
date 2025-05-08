@@ -8,7 +8,7 @@ import { formatDateTable } from '@/utils/formatDate';
 
 import { DEFAULT_FONT_SIZE } from '../ui';
 
-export const getPageHeader = (data: IChallanTableData) => {
+export const getPageHeader = (data: IChallanTableData, user: any) => {
 	return {
 		heights: ['auto', 2, 'auto', 'auto'],
 		widths: ['*'], // 4 columns
@@ -97,7 +97,7 @@ export const getPageHeader = (data: IChallanTableData) => {
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 												{
-													text: data?.created_by_name,
+													text: user?.name,
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],

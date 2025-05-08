@@ -35,7 +35,7 @@ export type IChallanTableData = {
 	zone_name: string;
 	phone_no: string;
 	order_created_by_name: string;
-
+	customer_phone: string;
 	id: string;
 	uuid: string;
 	challan_type: string;

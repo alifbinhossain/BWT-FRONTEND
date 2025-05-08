@@ -3,6 +3,7 @@ import { z } from 'zod';
 import {
 	BOOLEAN_REQUIRED,
 	NUMBER_DOUBLE_REQUIRED,
+	PHONE_NUMBER_REQUIRED,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
 	STRING_REQUIRED,
@@ -95,7 +96,7 @@ export const VENDOR_SCHEMA = z.object({
 	model_uuid: STRING_REQUIRED,
 	name: STRING_REQUIRED,
 	company_name: STRING_REQUIRED,
-	phone: STRING_REQUIRED,
+	phone: PHONE_NUMBER_REQUIRED,
 	address: STRING_REQUIRED,
 	description: STRING_REQUIRED,
 	is_active: BOOLEAN_REQUIRED,
