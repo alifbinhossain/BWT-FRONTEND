@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { ClipboardList } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
@@ -178,45 +179,46 @@ const AddOrUpdate = () => {
 		form: form,
 	});
 	return (
-		<CoreForm.AddEditWrapper
-			title={isUpdate ? 'Edit Order Entry' : ' Add Order Entry'}
-			form={form}
-			onSubmit={onSubmit}
-		>
-			<Header />
+		<div className='container my-8 w-full px-4 sm:mx-auto lg:my-12 lg:max-w-[840px] lg:px-0'>
+			<h1 className='mb-4 text-center text-2xl font-bold text-primary md:text-3xl lg:mb-6'>
+				Customer Order Form
+			</h1>
 
-			{
+			<CoreForm.AddEditWrapper
+				title={isUpdate ? 'Edit Order Entry' : ' Add Order Entry'}
+				form={form}
+				onSubmit={onSubmit}
+			>
+				<Header />
 				<CoreForm.DynamicFields
+					containerClassName='p-4'
+					className='2xl:grid-cols-2'
 					viewAs='kanban'
-					title={
-						<div className='flex gap-2'>
-							<h1 className='flex-1'>Order Entry</h1>
-						</div>
-					}
+					title={'Order Details'}
 					form={form}
 					fieldName='order_entry'
 					fieldDefs={fieldDefs}
 					handleAdd={handleAdd}
 					fields={fields}
 				/>
-			}
-			<Suspense fallback={null}>
-				<DeleteModal
-					{...{
-						deleteItem,
-						setDeleteItem,
-						url: `/work/order`,
-						deleteData,
-						onClose: () => {
-							form.setValue(
-								'order_entry',
-								form.getValues('order_entry').filter((item) => item.uuid !== deleteItem?.id)
-							);
-						},
-					}}
-				/>
-			</Suspense>
-		</CoreForm.AddEditWrapper>
+				<Suspense fallback={null}>
+					<DeleteModal
+						{...{
+							deleteItem,
+							setDeleteItem,
+							url: `/work/order`,
+							deleteData,
+							onClose: () => {
+								form.setValue(
+									'order_entry',
+									form.getValues('order_entry').filter((item) => item.uuid !== deleteItem?.id)
+								);
+							},
+						}}
+					/>
+				</Suspense>
+			</CoreForm.AddEditWrapper>
+		</div>
 	);
 };
 
