@@ -20,6 +20,10 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 				label: 'Phone',
 				value: data?.user_phone,
 			},
+			{
+				label: 'Submitted By',
+				value: data?.submitted_by,
+			},
 			{ label: 'Location', value: data.location + ' (' + data.zone_name + ')' },
 			{ label: 'Remarks', value: data.remarks },
 		];
