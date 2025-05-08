@@ -49,17 +49,17 @@ export const Location = ({ branch_name, warehouse_name, rack_name, floor_name, b
 	return (
 		<div className='flex flex-col gap-2'>
 			<div className='flex items-center gap-1'>
-				<House size={16} />
-				<span>{branch_name}</span>
+				<House className='size-4' />
+				<span className='inline-block flex-1'>{branch_name}</span>
 			</div>
 			<div className='flex items-center gap-1'>
-				<Warehouse size={16} />
-				<span>{warehouse_name}</span>
+				<Warehouse className='size-4' />
+				<span className='inline-block flex-1'>{warehouse_name}</span>
 			</div>
 			{(rack_name || floor_name || box_name) && (
 				<div className='flex items-center gap-1'>
-					<MapPin size={16} />
-					<span className='text-sm'>
+					<MapPin className='size-4' />
+					<span className='inline-block flex-1 text-sm'>
 						{rack_name}, {floor_name}, {box_name}
 					</span>
 				</div>

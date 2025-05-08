@@ -280,8 +280,8 @@ export const orderColumns = ({
 						openInNewTab={true}
 					/>
 					<div className='flex gap-2'>
-						<User size={14} />
-						{user_name}
+						<User className='size-4' />
+						<div className='flex-1'>{user_name}</div>
 					</div>
 				</div>
 			);
