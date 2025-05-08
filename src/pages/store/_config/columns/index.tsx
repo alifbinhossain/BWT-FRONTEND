@@ -477,9 +477,25 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 		enableColumnFilter: false,
 	},
 	{
+		accessorFn: (row) => row.price_per_unit * row.quantity,
+		header: 'Total(No Discount)',
+		enableColumnFilter: false,
+		cell: (info) => (
+			<span>{info.row.original.price_per_unit * info.row.original.quantity}</span>
+		),
+	},
+	{
 		accessorKey: 'discount',
 		header: 'Discount',
 		enableColumnFilter: false,
+	},
+	{
+		accessorFn: (row) => row.price_per_unit * row.quantity - row.discount,
+		header: 'Total',
+		enableColumnFilter: false,
+		cell: (info) => (
+			<span>{info.row.original.price_per_unit * info.row.original.quantity - info.row.original.discount}</span>
+		),
 	},
 	{
 		accessorFn: (row) => LocationName(row),

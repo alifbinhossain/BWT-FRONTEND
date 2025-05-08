@@ -20,6 +20,10 @@ const Information: React.FC<{ data: IPurchaseDetails }> = ({ data }) => {
 				label: 'Date',
 				value: formatDateTable(data.date),
 			},
+		];
+	};
+	const renderItems2 = (): ITableListItems => {
+		return [
 			{
 				label: 'Created At',
 				value: formatDateTable(data.created_at),
@@ -34,7 +38,10 @@ const Information: React.FC<{ data: IPurchaseDetails }> = ({ data }) => {
 
 	return (
 		<SectionContainer title={'Information'}>
-			<TableList items={renderItems()} />
+			<div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
+				<TableList items={renderItems()} />
+				<TableList items={renderItems2()} />
+			</div>
 		</SectionContainer>
 	);
 };
