@@ -23,7 +23,7 @@ const User = () => {
 	const [status, setStatus] = useState<boolean | undefined>(undefined);
 	const handleChangeStatus = () => setStatus(!status);
 	const handleClearStatus = () => setStatus(undefined);
-	const [type, setType] = useState('employee');
+	const [type, setType] = useState('');
 	let query;
 	if (type && status !== undefined) {
 		query = `status=${status}&user_type=${type}`;
@@ -46,10 +46,6 @@ const User = () => {
 		{
 			label: 'Customer',
 			value: 'customer',
-		},
-		{
-			label: 'Employ',
-			value: 'employee',
 		},
 		{
 			label: 'Vendor',

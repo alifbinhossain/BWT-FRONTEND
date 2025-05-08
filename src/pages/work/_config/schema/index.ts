@@ -102,14 +102,6 @@ export const INFO_SCHEMA = z
 			if (!data.business_type) {
 				ctx.addIssue(customIssue('Required', 'business_type'));
 			}
-			if (data.business_type === 'company') {
-				if (!data.department_uuid) {
-					ctx.addIssue(customIssue('Required', 'department_uuid'));
-				}
-				if (!data.designation_uuid) {
-					ctx.addIssue(customIssue('Required', 'designation_uuid'));
-				}
-			}
 		}
 		if (data.is_product_received) {
 			if (!data.received_date) {
@@ -133,7 +125,7 @@ export const INFO_NULL: Partial<IInfo> = {
 	received_date: null,
 	where_they_find_us: 'none',
 	name: '',
-	phone: '',
+	phone: undefined,
 	order_entry: [ORDER_NULL as IOrder],
 	remarks: null,
 };

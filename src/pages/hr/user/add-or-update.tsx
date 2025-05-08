@@ -37,10 +37,6 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 			value: 'customer',
 		},
 		{
-			label: 'Employ',
-			value: 'employee',
-		},
-		{
 			label: 'Vendor',
 			value: 'vendor',
 		},

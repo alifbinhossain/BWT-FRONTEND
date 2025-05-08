@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { sub } from 'date-fns';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
@@ -74,6 +75,7 @@ const AddOrUpdate = () => {
 				...values,
 				...(isNewCustomer && { user_uuid: nanoid() }),
 				...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
+				submitted_by: 'employee',
 				updated_at: getDateTime(),
 			};
 			if ('order_entry' in infoData) {
@@ -141,6 +143,7 @@ const AddOrUpdate = () => {
 			...(isNewCustomer && { user_uuid: nanoid() }),
 			...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
 			uuid: info_uuid,
+			submitted_by: 'employee',
 			created_at,
 			created_by,
 		};
