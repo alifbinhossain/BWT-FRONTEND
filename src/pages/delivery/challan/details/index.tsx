@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import useAuth from '@/hooks/useAuth';
 
 import { IChallanTableData } from '../../_config/columns/columns.type';
 import { useDeliveryChallanByUUID } from '../../_config/query'; // TODO: replace with details query
 
-import ChallanPdf from '../../../../components/pdf/item-requstion';
+import ChallanPdf from '../../../../components/pdf/challan';
 import EntryTable from './entry-table';
 import Information from './information';
 
 const DetailsPage = () => {
 	const { uuid } = useParams();
+	const { user } = useAuth();
 	const { data, isLoading } = useDeliveryChallanByUUID<IChallanTableData>(uuid as string);
 
 	useEffect(() => {
@@ -18,12 +20,12 @@ const DetailsPage = () => {
 	const [data2, setData] = useState('');
 
 	useEffect(() => {
-		if (data) {
-			ChallanPdf(data)?.getDataUrl((dataUrl) => {
+		if (data && user) {
+			ChallanPdf(data, user)?.getDataUrl((dataUrl) => {
 				setData(dataUrl);
 			});
 		}
-	}, [data]);
+	}, [data, user]);
 	if (isLoading) return <div>Loading...</div>;
 
 	return (
