@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { ClipboardList } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
@@ -23,14 +22,13 @@ const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const AddOrUpdate = () => {
 	const { user } = useAuth();
-	const navigate = useNavigate();
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 
 	const { url: infoUrl, postData, deleteData } = useWorkInfo();
 	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 
-	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
+	const { data } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
 
 	const form = useRHF(INFO_SCHEMA, INFO_NULL);
 
@@ -179,8 +177,8 @@ const AddOrUpdate = () => {
 		form: form,
 	});
 	return (
-		<div className='container my-8 w-full px-4 sm:mx-auto lg:my-12 lg:max-w-[840px] lg:px-0'>
-			<h1 className='mb-4 text-center text-2xl font-bold text-primary md:text-3xl lg:mb-6'>
+		<div className='container my-6 w-full px-2 sm:mx-auto lg:my-12 lg:max-w-[840px] lg:px-0'>
+			<h1 className='mb-2.5 text-center text-2xl font-bold text-primary md:text-3xl lg:mb-6'>
 				Customer Order Form
 			</h1>
 
@@ -191,7 +189,7 @@ const AddOrUpdate = () => {
 			>
 				<Header />
 				<CoreForm.DynamicFields
-					containerClassName='p-4'
+					containerClassName='p-2 lg:p-4'
 					className='2xl:grid-cols-2'
 					viewAs='kanban'
 					title={'Order Details'}
