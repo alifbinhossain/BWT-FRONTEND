@@ -82,7 +82,7 @@ const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsP
 					<div className='flex flex-col gap-2'>
 						<FormField
 							control={form.control}
-							name='warehouse_uuid'
+							name={`purchase_entry.${index}.warehouse_uuid`}
 							render={(props) => (
 								<CoreForm.ReactSelect
 									label='warehouse_uuid'
@@ -93,10 +93,10 @@ const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsP
 								/>
 							)}
 						/>
-						{form.watch(`warehouse_uuid`) && (
+						{form.watch(`purchase_entry.${index}.warehouse_uuid`) && (
 							<FormField
 								control={form.control}
-								name='rack_uuid'
+								name={`purchase_entry.${index}.rack_uuid`}
 								render={(props) => (
 									<CoreForm.ReactSelect
 										label='rack_uuid'
@@ -108,10 +108,10 @@ const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsP
 								)}
 							/>
 						)}
-						{form.watch(`rack_uuid`) && (
+						{form.watch(`purchase_entry.${index}rack_uuid`) && (
 							<FormField
 								control={form.control}
-								name='floor_uuid'
+								name={`purchase_entry.${index}.floor_uuid`}
 								render={(props) => (
 									<CoreForm.ReactSelect
 										label='floor_uuid'
@@ -123,10 +123,10 @@ const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsP
 								)}
 							/>
 						)}
-						{form.watch(`floor_uuid`) && (
+						{form.watch(`purchase_entry.${index}.floor_uuid`) && (
 							<FormField
 								control={form.control}
-								name='box_uuid'
+								name={`purchase_entry.${index}.box_uuid`}
 								render={(props) => (
 									<CoreForm.ReactSelect
 										label='box_uuid'
