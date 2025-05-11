@@ -14,7 +14,7 @@ const FormSection: React.FC<IFormSectionProps> = ({ children, className, title, 
 				</div>
 				<div
 					className={cn(
-						'grid grid-cols-1 gap-2.5 rounded-b-md border bg-base p-4 sm:grid-cols-1 sm:gap-4 lg:grid-cols-3',
+						'grid grid-cols-1 gap-2.5 rounded-b-md border bg-base p-2.5 sm:grid-cols-1 sm:gap-4 lg:grid-cols-3 lg:p-4',
 						className
 					)}
 				>

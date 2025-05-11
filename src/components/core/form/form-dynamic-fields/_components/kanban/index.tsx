@@ -20,7 +20,7 @@ const KanbanDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs' 
 			{fields.length === 0 && <p className='text-destructive'>No fields added yet</p>}
 			{fields.length > 0 &&
 				fields.map((field, fieldIndex) => (
-					<div className='relative flex flex-col items-start space-y-4 overflow-hidden rounded-md border bg-white px-4 pb-3 pt-12 shadow-sm'>
+					<div className='relative flex flex-col items-start space-y-4 overflow-hidden rounded-md border bg-white px-2.5 pb-3 pt-10 shadow-sm lg:px-4 lg:pt-12'>
 						{fieldDefs
 							.filter((fieldDef) => !fieldDef.hidden)
 							.map((fieldDef) => {
