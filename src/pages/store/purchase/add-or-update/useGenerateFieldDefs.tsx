@@ -88,6 +88,7 @@ const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsP
 									label='warehouse_uuid'
 									disableLabel={true}
 									placeholder='Select Warehouse'
+									menuPortalTarget={document.body}
 									options={warehouseOptions!}
 									{...props}
 								/>
@@ -102,13 +103,14 @@ const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsP
 										label='rack_uuid'
 										disableLabel={true}
 										placeholder='Select Rack'
+										menuPortalTarget={document.body}
 										options={RackOptions!}
 										{...props}
 									/>
 								)}
 							/>
 						)}
-						{form.watch(`purchase_entry.${index}rack_uuid`) && (
+						{form.watch(`purchase_entry.${index}.rack_uuid`) && (
 							<FormField
 								control={form.control}
 								name={`purchase_entry.${index}.floor_uuid`}
@@ -117,6 +119,7 @@ const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsP
 										label='floor_uuid'
 										disableLabel={true}
 										placeholder='Select Floor'
+										menuPortalTarget={document.body}
 										options={FloorOptions!}
 										{...props}
 									/>
@@ -132,6 +135,7 @@ const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsP
 										label='box_uuid'
 										disableLabel={true}
 										placeholder='Select Box'
+										menuPortalTarget={document.body}
 										options={BoxOptions!}
 										{...props}
 									/>
