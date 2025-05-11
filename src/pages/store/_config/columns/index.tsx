@@ -28,8 +28,10 @@ import {
 	IStockTableData,
 	ITransferTableData,
 	IVendorTableData,
+	IWarehouseFetch,
 	IWarehouseTableData,
 } from './columns.type';
+import { getWarehouseAndBranch } from './utils';
 
 //* Group Columns
 export const groupColumns = (): ColumnDef<IGroupTableData>[] => [
@@ -153,7 +155,7 @@ export const productColumns = ({
 }: {
 	actionTrxAccess: boolean;
 	actionOrderAgainstTrxAccess: boolean;
-	warehouse: { label: string; value: string; assigned: string }[] | undefined;
+	warehouse: IWarehouseFetch;
 	handleAgainstTrx: (row: Row<any>) => void;
 	handleOrderAgainstWarehouse1Trx: (row: Row<any>) => void;
 	handleOrderAgainstWarehouse2Trx: (row: Row<any>) => void;
@@ -172,11 +174,12 @@ export const productColumns = ({
 		accessorKey: 'is_maintaining_stock',
 		header: () => (
 			<>
-				Marinating <br />
+				Maintain <br />
 				Stock
 			</>
 		),
 		enableColumnFilter: false,
+		size: 90,
 		cell: (info) => {
 			return <StatusButton value={info.getValue() as boolean} />;
 		},
@@ -218,7 +221,12 @@ export const productColumns = ({
 	},
 	{
 		id: 'action_trx',
-		header: 'Internal Transfer',
+		header: () => (
+			<>
+				Internal <br />
+				Transfer
+			</>
+		),
 		cell: (info) => <Transfer onClick={() => handleAgainstTrx(info.row)} />,
 		size: 40,
 		meta: {
@@ -228,192 +236,228 @@ export const productColumns = ({
 	},
 	{
 		accessorKey: 'warehouse_1',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_1')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_1');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse1Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_2',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_2')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_2');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse2Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_3',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_3')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_3');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse3Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_4',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_4')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_4');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse4Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_5',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_5')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_5');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse5Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_6',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_6')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_6');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse6Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_7',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_7')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_7');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse7Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_8',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_8')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_8');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse8Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_9',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_9')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_9');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse9Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_10',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_10')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_10');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse10Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_11',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_11')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_11');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse11Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: 'warehouse_12',
-		header: `${warehouse?.find((item) => item.assigned === 'warehouse_12')?.label}`,
+		header: () => {
+			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_12');
+			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		},
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
-					<span>{info.getValue() as string}</span>
 					<Transfer
 						onClick={() => handleOrderAgainstWarehouse12Trx(info.row)}
 						disabled={!actionOrderAgainstTrxAccess}
 					/>
+					<span>{info.getValue() as string}</span>
 				</div>
 			);
 		},

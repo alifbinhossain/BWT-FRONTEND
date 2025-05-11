@@ -292,3 +292,20 @@ export type IBoxTableData = {
 	updated_at: string;
 	remarks: string;
 };
+
+//* Fetch
+export type IWarehouseFetch = { label: string; value: string; assigned: string }[] | undefined;
+export type IWarehouseKey =
+	| 'warehouse_1'
+	| 'warehouse_2'
+	| 'warehouse_3'
+	| 'warehouse_4'
+	| 'warehouse_5'
+	| 'warehouse_5'
+	| 'warehouse_6'
+	| 'warehouse_7'
+	| 'warehouse_8'
+	| 'warehouse_9'
+	| 'warehouse_10'
+	| 'warehouse_11'
+	| 'warehouse_12';
