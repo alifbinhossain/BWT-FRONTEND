@@ -17,7 +17,10 @@ const Header = ({ challan_uuid }: { challan_uuid: string }) => {
 	const { data: vehicleOption } = useOtherVehicle<IFormSelectOption[]>();
 	const { data: employeeOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=employee&designation=delivery');
 	const { data: courierOption } = useOtherCourier<IFormSelectOption[]>();
-	const paymentMethodOptions = [{ value: 'cash', label: 'Cash' }];
+	const paymentMethodOptions = [
+		{ value: 'cash', label: 'Cash' },
+		{ value: 'due', label: 'Due' },
+	];
 	const typeOption = [
 		{ label: 'Customer Pickup', value: 'customer_pickup' },
 		{ label: 'Employee Delivery', value: 'employee_delivery' },
@@ -65,7 +68,7 @@ const Header = ({ challan_uuid }: { challan_uuid: string }) => {
 				render={(props) => (
 					<CoreForm.ReactSelect
 						menuPortalTarget={document.body}
-						label='Type'
+						label='Payment Method'
 						placeholder='Select payment method'
 						options={paymentMethodOptions!}
 						{...props}
