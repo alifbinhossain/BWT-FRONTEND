@@ -42,7 +42,7 @@ export const CHALLAN_SCHEMA = z
 		customer_uuid: STRING_REQUIRED,
 		challan_type: z.enum(['customer_pickup', 'employee_delivery', 'courier_delivery', 'vehicle_delivery']),
 		employee_uuid: STRING_NULLABLE,
-		payment_method: z.enum(['cash']),
+		payment_method: z.enum(['cash', 'due']),
 		vehicle_uuid: STRING_NULLABLE,
 		courier_uuid: STRING_NULLABLE,
 		is_delivery_complete: BOOLEAN_REQUIRED,
