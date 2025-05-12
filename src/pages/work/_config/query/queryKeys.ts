@@ -1,5 +1,9 @@
 import { orderBy } from 'lodash';
 
+
+
+
+
 export const workQK = {
 	all: () => ['work'],
 
@@ -43,4 +47,7 @@ export const workQK = {
 	//* Accessories
 	accessories: () => [...workQK.all(), 'accessories'],
 	accessoriesByUUID: (uuid: string) => [...workQK.accessories(), uuid],
+	//* Order Transfer
+	orderTransfer: () => [...workQK.all(), 'orderTransfer'],
+	orderTransferByUUID: (uuid: string) => [...workQK.orderTransfer(), uuid],
 };

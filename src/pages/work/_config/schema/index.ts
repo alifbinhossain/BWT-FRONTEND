@@ -261,3 +261,19 @@ export const ACCESSORIES_NULL: Partial<IAccessories> = {
 	remarks: null,
 };
 export type IAccessories = z.infer<typeof ACCESSORIES_SCHEMA>;
+//* Transfer Schema
+export const TRANSFER_SCHEMA = z.object({
+	product_uuid: STRING_REQUIRED,
+	warehouse_uuid: STRING_REQUIRED,
+	quantity: NUMBER_DOUBLE_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const TRANSFER_NULL: Partial<ITransfer> = {
+	product_uuid: '',
+	warehouse_uuid: '',
+	quantity: 0,
+	remarks: null,
+};
+
+export type ITransfer = z.infer<typeof TRANSFER_SCHEMA>;

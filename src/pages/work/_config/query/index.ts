@@ -1,6 +1,9 @@
 import useTQuery from '@/hooks/useTQuery';
 
+
+
 import { workQK } from './queryKeys';
+
 
 // * Problem
 export const useWorkProblems = <T>() =>
@@ -148,5 +151,18 @@ export const useWorkAccessoriesByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: workQK.accessoriesByUUID(uuid),
 		url: `/work/accessory/${uuid}`,
+		enabled: !!uuid,
+	});
+//* Order Transfer
+export const useStoreOrderTransfers = <T>() =>
+	useTQuery<T>({
+		queryKey: workQK.orderTransfer(),
+		url: '/store/product-transfer',
+	});
+
+export const useStoreOrderTransfersByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.orderTransferByUUID(uuid),
+		url: `/store/product-transfer/${uuid}`,
 		enabled: !!uuid,
 	});

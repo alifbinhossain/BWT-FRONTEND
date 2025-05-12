@@ -29,6 +29,7 @@ import {
 	ITransferTableData,
 	IVendorTableData,
 	IWarehouseFetch,
+	IWarehouseKey,
 	IWarehouseTableData,
 } from './columns.type';
 import { getWarehouseAndBranch } from './utils';
@@ -169,300 +170,115 @@ export const productColumns = ({
 	handleOrderAgainstWarehouse10Trx: (row: Row<any>) => void;
 	handleOrderAgainstWarehouse11Trx: (row: Row<any>) => void;
 	handleOrderAgainstWarehouse12Trx: (row: Row<any>) => void;
-}): ColumnDef<IProductTableData>[] => [
-	{
-		accessorKey: 'is_maintaining_stock',
-		header: () => (
-			<>
-				Maintain <br />
-				Stock
-			</>
-		),
-		enableColumnFilter: false,
-		size: 90,
-		cell: (info) => {
-			return <StatusButton value={info.getValue() as boolean} />;
+}): ColumnDef<IProductTableData>[] => {
+	const columns: ColumnDef<IProductTableData>[] = [
+		{
+			accessorKey: 'is_maintaining_stock',
+			header: () => (
+				<>
+					Maintain <br />
+					Stock
+				</>
+			),
+			enableColumnFilter: false,
+			size: 90,
+			cell: (info) => {
+				return <StatusButton value={info.getValue() as boolean} />;
+			},
 		},
-	},
-	{
-		accessorKey: 'name',
-		header: 'Name',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'category_name',
-		header: 'Category',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'model_name',
-		header: 'Model',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'size_name',
-		header: 'Size',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'warranty_days',
-		header: 'Warranty Days',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'service_warranty_days',
-		header: 'Service Warranty',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'type',
-		header: 'Type',
-		enableColumnFilter: false,
-	},
-	{
-		id: 'action_trx',
-		header: () => (
-			<>
-				Internal <br />
-				Transfer
-			</>
-		),
-		cell: (info) => <Transfer onClick={() => handleAgainstTrx(info.row)} />,
-		size: 40,
-		meta: {
-			hidden: !actionTrxAccess,
-			disableFullFilter: true,
+		{
+			accessorKey: 'name',
+			header: 'Name',
+			enableColumnFilter: false,
 		},
-	},
-	{
-		accessorKey: 'warehouse_1',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_1');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		{
+			accessorKey: 'category_name',
+			header: 'Category',
+			enableColumnFilter: false,
 		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse1Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
+		{
+			accessorKey: 'model_name',
+			header: 'Model',
+			enableColumnFilter: false,
 		},
-	},
-	{
-		accessorKey: 'warehouse_2',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_2');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		{
+			accessorKey: 'size_name',
+			header: 'Size',
+			enableColumnFilter: false,
 		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse2Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
+		{
+			accessorKey: 'warranty_days',
+			header: 'Warranty Days',
+			enableColumnFilter: false,
 		},
-	},
-	{
-		accessorKey: 'warehouse_3',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_3');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		{
+			accessorKey: 'service_warranty_days',
+			header: 'Service Warranty',
+			enableColumnFilter: false,
 		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse3Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
+		{
+			accessorKey: 'type',
+			header: 'Type',
+			enableColumnFilter: false,
 		},
-	},
-	{
-		accessorKey: 'warehouse_4',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_4');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+		{
+			id: 'action_trx',
+			header: () => (
+				<>
+					Internal <br />
+					Transfer
+				</>
+			),
+			cell: (info) => <Transfer onClick={() => handleAgainstTrx(info.row)} />,
+			size: 40,
+			meta: {
+				hidden: !actionTrxAccess,
+				disableFullFilter: true,
+			},
 		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse4Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
-		},
-	},
-	{
-		accessorKey: 'warehouse_5',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_5');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
-		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse5Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
-		},
-	},
-	{
-		accessorKey: 'warehouse_6',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_6');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
-		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse6Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
-		},
-	},
-	{
-		accessorKey: 'warehouse_7',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_7');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
-		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse7Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
-		},
-	},
-	{
-		accessorKey: 'warehouse_8',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_8');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
-		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse8Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
-		},
-	},
-	{
-		accessorKey: 'warehouse_9',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_9');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
-		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse9Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
-		},
-	},
-	{
-		accessorKey: 'warehouse_10',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_10');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
-		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse10Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
-		},
-	},
-	{
-		accessorKey: 'warehouse_11',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_11');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
-		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse11Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
-		},
-	},
-	{
-		accessorKey: 'warehouse_12',
-		header: () => {
-			const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, 'warehouse_12');
-			return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
-		},
-		enableColumnFilter: false,
-		cell: (info) => {
-			return (
-				<div className='flex items-center gap-2'>
-					<Transfer
-						onClick={() => handleOrderAgainstWarehouse12Trx(info.row)}
-						disabled={!actionOrderAgainstTrxAccess}
-					/>
-					<span>{info.getValue() as string}</span>
-				</div>
-			);
-		},
-	},
-];
+	];
+
+	const handlerMap = [
+		handleOrderAgainstWarehouse1Trx,
+		handleOrderAgainstWarehouse2Trx,
+		handleOrderAgainstWarehouse3Trx,
+		handleOrderAgainstWarehouse4Trx,
+		handleOrderAgainstWarehouse5Trx,
+		handleOrderAgainstWarehouse6Trx,
+		handleOrderAgainstWarehouse7Trx,
+		handleOrderAgainstWarehouse8Trx,
+		handleOrderAgainstWarehouse9Trx,
+		handleOrderAgainstWarehouse10Trx,
+		handleOrderAgainstWarehouse11Trx,
+		handleOrderAgainstWarehouse12Trx,
+	];
+
+	for (let i = 0; i < 12; i++) {
+		const warehouseNum = i + 1;
+		const accessorKey = `warehouse_${warehouseNum}` as const;
+		columns.push({
+			accessorKey,
+			header: () => {
+				const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, accessorKey as IWarehouseKey);
+				return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
+			},
+			enableColumnFilter: false,
+			cell: (info: any) => {
+				return (
+					<div className='flex items-center gap-2'>
+						<Transfer
+							onClick={() => handlerMap[i](info.row)}
+							disabled={!actionOrderAgainstTrxAccess || info.getValue() === 0}
+						/>
+						<span>{info.getValue() as string}</span>
+					</div>
+				);
+			},
+		});
+	}
+
+	return columns;
+};
 
 //* Purchase Columns
 export const purchaseColumns = (): ColumnDef<IPurchaseTableData>[] => [

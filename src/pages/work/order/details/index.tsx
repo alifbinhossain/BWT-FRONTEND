@@ -6,12 +6,11 @@ import { IOrderTableData } from '../../_config/columns/columns.type';
 import { useWorkOrderByDetails } from '../../_config/query';
 import Information from './information';
 import EntryTable from './process';
+import Transfer from './transfer';
 
 const DetailsPage = () => {
 	const { uuid } = useParams();
 	const { data, isLoading, updateData } = useWorkOrderByDetails<IOrderTableData>(uuid as string);
-
-
 
 	useEffect(() => {
 		document.title = 'Order Details';
@@ -22,6 +21,9 @@ const DetailsPage = () => {
 	return (
 		<div className='space-y-8'>
 			<Information data={(data || []) as IOrderTableData} updateData={updateData} />
+			{data?.is_proceed_to_repair && (
+				<Transfer data={(data || []) as IOrderTableData} isLoading={isLoading} order_uuid={data?.uuid} />
+			)}
 			{data?.is_proceed_to_repair && <EntryTable data={(data || []) as IOrderTableData} isLoading={isLoading} />}
 		</div>
 	);

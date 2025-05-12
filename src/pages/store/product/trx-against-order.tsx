@@ -69,7 +69,7 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 	}
 
 	return (
-		<AddModal open={open} setOpen={onClose} title={'Transfer Material'} form={form} onSubmit={onSubmit}>
+		<AddModal open={open} setOpen={onClose} title={'Transfer Material'} form={form} isSmall={true} onSubmit={onSubmit}>
 			<FormField
 				control={form.control}
 				name='order_uuid'

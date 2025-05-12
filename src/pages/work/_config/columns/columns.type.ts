@@ -33,6 +33,31 @@ export type IDiagnosisTableData = {
 	created_at: string;
 	updated_at: string;
 };
+//* Transfer
+export type ITransferTableData = {
+	uuid: string;
+	id: string;
+	warehouse_uuid: string;
+	warehouse_name: string;
+	max_quantity?: number;
+	product_name: string;
+	product_uuid: string;
+	order_id: string;
+	order_uuid: string;
+	info_uuid: string;
+	quantity: number;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
+//* IStockTrx
+export type IStockActionTrx = {
+	uuid: string;
+	name: string;
+	max_quantity?: number;
+	warehouse_uuid?: string;
+	product_uuid?: string;
+};
 //* Order Columns
 export type IOrderTableData = {
 	id: string;
@@ -76,6 +101,7 @@ export type IOrderTableData = {
 	created_at: string;
 	updated_at: string;
 	diagnosis?: IDiagnosisTableData;
+	product_transfer?: ITransferTableData[];
 	process?: IProcessTableData[];
 	remarks: string;
 };

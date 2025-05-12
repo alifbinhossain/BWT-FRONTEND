@@ -1,13 +1,17 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
-import { MessageSquareMore, Pin, User } from 'lucide-react';
+import { values } from 'lodash';
+import { User } from 'lucide-react';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
+import DataTableEntry from '@/components/core/data-table/entry';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-import { Location, Problem, Product } from '../utils/component';
+import { cn } from '@/lib/utils';
+
+import { Location, Problem, Product, TableForColumn } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
 import {
 	IAccessoriesTableData,
@@ -17,6 +21,7 @@ import {
 	IProblemsTableData,
 	IProcessTableData,
 	ISectionTableData,
+	ITransferTableData,
 	IZoneTableData,
 } from './columns.type';
 
@@ -537,11 +542,15 @@ export const RepairingColumns = ({
 	haveDeliveryAccess,
 	handelQCStatusChange,
 	haveQCAccess,
+	handleAgainstTrx,
+	actionTrxAccess,
 }: {
 	handelDeliveryStatusChange?: (row: Row<any>) => void;
 	haveDeliveryAccess?: boolean;
 	handelQCStatusChange?: (row: Row<any>) => void;
 	haveQCAccess?: boolean;
+	handleAgainstTrx?: (row: Row<any>) => void;
+	actionTrxAccess?: boolean;
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_transferred_for_qc',
@@ -616,6 +625,37 @@ export const RepairingColumns = ({
 					</div>
 				</div>
 			);
+		},
+	},
+	{
+		id: 'action_trx',
+		header: () => (
+			<>
+				Transfer Repairing <br />
+				Product
+			</>
+		),
+		cell: (info) => <Transfer onClick={() => handleAgainstTrx?.(info.row)} />,
+		size: 40,
+		meta: {
+			hidden: !actionTrxAccess,
+			disableFullFilter: true,
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return (
+				row.product_transfer
+					?.map((item) => item?.product_name + '-' + item?.warehouse_name + '(' + item?.quantity + ')')
+					.join(', ') || ''
+			);
+		},
+		header: 'Repairing Item',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const value = info.row.original.product_transfer as ITransferTableData[] | undefined;
+			const headers = ['Product', 'Warehouse', 'QTY'];
+			return <TableForColumn value={value} headers={headers} />;
 		},
 	},
 	{
@@ -762,6 +802,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => info.getValue() as string,
 	},
+
 	{
 		accessorFn: (row) => LocationName(row),
 		id: 'location',
@@ -1000,6 +1041,24 @@ export const accessoriesColumns = (): ColumnDef<IAccessoriesTableData>[] => [
 	{
 		accessorKey: 'name',
 		header: 'Name',
+		enableColumnFilter: false,
+	},
+];
+//* Transfer Columns
+export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
+	{
+		accessorKey: 'product_name',
+		header: 'Product',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'Quantity',
 		enableColumnFilter: false,
 	},
 ];

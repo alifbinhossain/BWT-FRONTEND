@@ -41,7 +41,12 @@ export const challanColumns = (
 ): ColumnDef<IChallanTableData>[] => [
 	{
 		accessorKey: 'is_delivery_complete',
-		header: 'Delivery Complete',
+		header: () => (
+			<>
+				Delivery <br />
+				Complete
+			</>
+		),
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
