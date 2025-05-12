@@ -88,7 +88,7 @@ const workRoutes: IRoute[] = [
 				path: '/work/repairing',
 				element: <Repairing />,
 				page_name: 'work__repairing',
-				actions: ['read', 'update', 'click_transfer_qc', 'click_transfer_delivery'],
+				actions: ['read', 'update', 'click_transfer_qc', 'click_transfer_delivery', 'click_order_transfer'],
 			},
 			{
 				name: 'QC',

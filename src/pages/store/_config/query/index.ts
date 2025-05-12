@@ -267,10 +267,10 @@ export const useStoreInternalTransfersByUUID = <T>(uuid: string) =>
 	});
 
 //* Order Transfer
-export const useStoreOrderTransfers = <T>() =>
+export const useStoreOrderTransfers = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: storeQK.orderTransfer(),
-		url: '/store/product-transfer',
+		queryKey: storeQK.orderTransfer(query),
+		url: query ? `/store/product-transfer${query}` : '/store/product-transfer',
 	});
 
 export const useStoreOrderTransfersByUUID = <T>(uuid: string) =>

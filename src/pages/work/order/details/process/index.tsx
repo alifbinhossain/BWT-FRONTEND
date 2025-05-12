@@ -17,8 +17,8 @@ const EntryTable: React.FC<{ data?: IOrderTableData; isLoading?: any }> = ({ dat
 	const navigate = useNavigate();
 	const { url, deleteData, postData, updateData, refetch } = useWorkProcesses<IProcessTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Work/Process', url, 'work__process'), [url]);
-	const diagnosis_uuid = data?.is_diagnosis_need ? data?.diagnosis?.uuid : 'null';
+	const pageInfo = useMemo(() => new PageInfo('Process', url, 'work__process'), [url]);
+
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);

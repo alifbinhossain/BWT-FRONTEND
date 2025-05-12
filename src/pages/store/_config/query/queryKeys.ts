@@ -74,6 +74,6 @@ export const storeQK = {
 	internalTransferByUUID: (uuid: string) => [...storeQK.internalTransfer(), uuid],
 
 	//* Order Transfer
-	orderTransfer: () => [...storeQK.all(), 'orderTransfer'],
+	orderTransfer: (query?: string) => [...storeQK.all(), 'orderTransfer',query],
 	orderTransferByUUID: (uuid: string) => [...storeQK.orderTransfer(), uuid],
 };

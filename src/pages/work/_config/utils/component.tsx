@@ -1,5 +1,7 @@
 import { Building2, Component, FileDigit, House, MapPin, MessageSquareMore, Pin, Warehouse } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
+
 import { TLocationProps, TProblemProps, TProductProps } from '../types';
 
 export const Product = ({ brand_name, model_name, serial_no }: TProductProps) => {
@@ -26,7 +28,34 @@ export const Product = ({ brand_name, model_name, serial_no }: TProductProps) =>
 		</div>
 	);
 };
-
+export const TableForColumn = ({ value, headers }: any) => {
+	const rowStyle = 'border border-gray-300 px-2 py-1 text-xs';
+	return (
+		value?.length !== undefined &&
+		value?.length > 0 && (
+			<table className='border-2 border-gray-300'>
+				<thead>
+					<tr className='text-xs text-gray-600'>
+						{headers.map((header: any, idx: number) => (
+							<th key={idx} className={cn(rowStyle)}>
+								{header}
+							</th>
+						))}
+					</tr>
+				</thead>
+				<tbody>
+					{value?.map((item: any, idx: number) => (
+						<tr key={idx}>
+							<td className={cn(rowStyle)}>{item.product_name}</td>
+							<td className={cn(rowStyle)}>{item.warehouse_name}</td>
+							<td className={cn(rowStyle)}>{item.quantity}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		)
+	);
+};
 export const Problem = ({ problem_statement, problems_name }: TProblemProps) => {
 	return (
 		<div className='flex flex-col gap-2'>

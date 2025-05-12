@@ -10,6 +10,8 @@ import { RepairingColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkRepairing } from '../_config/query';
 
+const OrderTransferModal = lazy(() => import('../order/details/transfer/add-or-update'));
+
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 
 const Order = () => {
@@ -19,9 +21,12 @@ const Order = () => {
 	const pageAccess = useAccess('work__repairing') as string[];
 	const haveDeliveryAccess = pageAccess?.includes('click_transfer_delivery');
 	const haveQCAccess = pageAccess?.includes('click_transfer_qc');
+	const actionTrxAccess = pageAccess?.includes('click_order_transfer');
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+	const [isTrxOpenAddModal, setIsTrxOpenAddModal] = useState(false);
+	const [order_uuid, setOrderUuid] = useState('');
 
 	const handleCreate = () => {
 		setIsOpenAddModal(true);
@@ -32,6 +37,11 @@ const Order = () => {
 	const handleUpdate = (row: Row<IOrderTableData>) => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
+	};
+	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
+		setUpdatedData(row.original);
+		setIsTrxOpenAddModal(true);
+		setOrderUuid(row.original.uuid);
 	};
 
 	// Table Columns
@@ -55,11 +65,14 @@ const Order = () => {
 			isOnCloseNeeded: false,
 		});
 	};
+
 	const columns = RepairingColumns({
 		handelDeliveryStatusChange,
 		haveDeliveryAccess,
 		handelQCStatusChange,
 		haveQCAccess,
+		handleAgainstTrx,
+		actionTrxAccess,
 	});
 
 	return (
@@ -72,7 +85,7 @@ const Order = () => {
 				handleCreate={handleCreate}
 				handleUpdate={handleUpdate}
 				handleRefetch={refetch}
-				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
+				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
@@ -84,6 +97,16 @@ const Order = () => {
 							setUpdatedData,
 							postData,
 							updateData,
+						}}
+					/>,
+					<OrderTransferModal
+						{...{
+							open: isTrxOpenAddModal,
+							setOpen: setIsTrxOpenAddModal,
+							url: '/store/product-transfer',
+							postData,
+							updateData,
+							order_uuid,
 						}}
 					/>,
 				])}

@@ -44,6 +44,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
 	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
 	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
+	
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
 	const { data: modelOption, invalidateQuery: invalidateModel } = useOtherModelByQuery<IFormSelectOption[]>(
