@@ -1,17 +1,15 @@
-import { table } from 'console';
 import { BWT_LOGO } from '@/assets/images/base64';
 import { IChallanTableData } from '@/pages/delivery/_config/columns/columns.type';
 import { format, formatDate } from 'date-fns';
 
 import { getDateTime } from '@/utils';
-import { formatDateTable } from '@/utils/formatDate';
 
 import { DEFAULT_FONT_SIZE } from '../ui';
 
 export const getPageHeader = (data: IChallanTableData, user: any) => {
 	return {
 		heights: ['auto', 2, 'auto', 'auto'],
-		widths: ['*'], // 4 columns
+		widths: ['*'],
 		body: [
 			[
 				{
@@ -20,12 +18,6 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 						widths: [50, '*', 200],
 						body: [
 							[
-								// {
-								// 	image: EUB_LOGO,
-								// 	width: 50,
-								// 	height: 40,
-								// 	alignment: 'right',
-								// },
 								{
 									image: BWT_LOGO,
 									width: 50,
@@ -112,28 +104,6 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],
-											[
-												{
-													text: 'Entry By:',
-													bold: true,
-													fontSize: DEFAULT_FONT_SIZE - 2,
-												},
-												{
-													text: data?.order_created_by_name,
-													fontSize: DEFAULT_FONT_SIZE - 2,
-												},
-											],
-											[
-												{
-													text: 'Reference No:',
-													bold: true,
-													fontSize: DEFAULT_FONT_SIZE - 2,
-												},
-												{
-													text: '',
-													fontSize: DEFAULT_FONT_SIZE - 2,
-												},
-											],
 										],
 									},
 									layout: 'noBorders',
@@ -146,8 +116,6 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 		],
 	};
 };
-
-// const EMPTY_COLUMN: string[] = getEmptyColumn(4);
 
 export const getPageFooter = ({
 	currentPage,
