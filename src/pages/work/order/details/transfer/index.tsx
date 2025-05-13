@@ -1,6 +1,5 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
-import { transferColumns } from '../../../_config/columns';
 import { IStockActionTrx, ITransferTableData } from '@/pages/store/_config/columns/columns.type';
 import { useStoreOrderTransfers } from '@/pages/store/_config/query';
 import { IOrderTableData } from '@/pages/work/_config/columns/columns.type';
@@ -8,6 +7,8 @@ import { Row } from '@tanstack/react-table';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
+
+import { transferColumns } from '../../../_config/columns';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -109,6 +110,7 @@ const Transfer: React.FC<{ data?: IOrderTableData; isLoading?: any; order_uuid?:
 							setDeleteItem,
 							url,
 							deleteData,
+							needRefresh: true,
 						}}
 					/>,
 					<DeleteAllModal
