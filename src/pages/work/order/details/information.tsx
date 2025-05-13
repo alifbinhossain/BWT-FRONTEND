@@ -184,6 +184,10 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				),
 			},
 			{
+				label: 'Problem Statement',
+				value: data.diagnosis?.problem_statement,
+			},
+			{
 				label: 'Customer Problem Statement',
 				value: data.diagnosis?.customer_problem_statement,
 			},
@@ -192,8 +196,12 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	const renderDiagnosisItemsRight = (): ITableListItems => {
 		return [
 			{
-				label: 'Customer FeedBack',
+				label: 'Customer Remarks',
 				value: data.diagnosis?.customer_remarks,
+			},
+			{
+				label: 'Proposed Cost',
+				value: data.diagnosis?.proposed_cost,
 			},
 			{
 				label: 'Proceed to Repair',
