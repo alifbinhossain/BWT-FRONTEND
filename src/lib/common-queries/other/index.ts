@@ -61,10 +61,10 @@ export const useOtherCategory = <T>() =>
 		url: `/other/category/value/label`,
 	});
 //* GET OTHER PRODUCT
-export const useOtherProduct = <T>() =>
+export const useOtherProduct = <T>(query?: string) =>
 	useTQuery<T>({
 		queryKey: otherQK.product(),
-		url: `/other/product/value/label`,
+		url: query ? `/other/product/value/label${query}` : `/other/product/value/label`,
 	});
 //* GET OTHER VENDOR
 export const useOtherVendor = <T>() =>

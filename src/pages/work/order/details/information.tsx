@@ -122,7 +122,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				value: (
 					<Switch
 						checked={data?.is_transferred_for_qc}
-						onCheckedChange={() => handelProceedToRepair()}
+						onCheckedChange={() => handelQCStatusChange()}
 						disabled={!haveQCAccess}
 					/>
 				),

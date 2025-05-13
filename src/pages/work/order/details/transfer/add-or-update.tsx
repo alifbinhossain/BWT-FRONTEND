@@ -64,7 +64,7 @@ const Trx: React.FC<ITrxProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { data } = useStoreOrderTransfersByUUID<ITransferTableData>(updatedData?.uuid as string);
-	const { data: productOptions } = useOtherProduct<ICustomProductsSelectOption[]>();
+	const { data: productOptions } = useOtherProduct<ICustomProductsSelectOption[]>(`?is_quantity=true`);
 	const { data: warehouseOptions } = useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
 		order_uuid as string
