@@ -48,6 +48,7 @@ export const challanColumns = (
 			</>
 		),
 		enableColumnFilter: false,
+		size: 80,
 		cell: (info) => (
 			<Switch
 				checked={info.getValue() as boolean}

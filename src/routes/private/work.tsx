@@ -12,6 +12,7 @@ import Process from '@/pages/work/order/details/process';
 import Problem from '@/pages/work/problem';
 import QC from '@/pages/work/qc';
 import Repairing from '@/pages/work/repairing';
+import RepairingEntry from '@/pages/work/repairing/add-or-update';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
 
@@ -89,6 +90,13 @@ const workRoutes: IRoute[] = [
 				element: <Repairing />,
 				page_name: 'work__repairing',
 				actions: ['read', 'update', 'click_transfer_qc', 'click_transfer_delivery', 'click_order_transfer'],
+			},
+			{
+				name: 'Repairing Update',
+				path: '/work/repairing/update/:uuid',
+				element: <RepairingEntry />,
+				page_name: 'work__repairing_update',
+				actions: ['read', 'update', 'delete'],
 			},
 			{
 				name: 'QC',

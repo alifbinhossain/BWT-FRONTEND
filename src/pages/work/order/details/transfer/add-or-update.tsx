@@ -64,15 +64,25 @@ const Trx: React.FC<ITrxProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { data } = useStoreOrderTransfersByUUID<ITransferTableData>(updatedData?.uuid as string);
-	const { data: productOptions } = useOtherProduct<ICustomProductsSelectOption[]>(`?is_quantity=true`);
-	const { data: warehouseOptions } = useOtherWarehouse<ICustomWarehouseSelectOption[]>();
+	const { data: productOptions, invalidateQuery: invalidateQueryOtherProduct } =
+		useOtherProduct<ICustomProductsSelectOption[]>(`?is_quantity=true`);
+	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
+		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
 		order_uuid as string
 	);
 
 	const { user } = useAuth();
 	const [MAX_QUANTITY, setMAX_QUANTITY] = useState(0);
-	const schema = TRANSFER_SCHEMA.extend({ quantity: z.number().int().positive().max(MAX_QUANTITY) });
+	const schema = TRANSFER_SCHEMA.extend({
+		quantity: z
+			.number()
+			.int()
+			.positive()
+			.max(MAX_QUANTITY + ((data?.quantity as number) || 0), {
+				message: `Quantity must be less than or equal to ${MAX_QUANTITY + ((data?.quantity as number) || 0)}`,
+			}),
+	});
 	const form = useRHF(schema, TRANSFER_NULL);
 
 	const filteredWarehouseOptions = getFilteredWarehouseOptions(
@@ -106,6 +116,8 @@ const Trx: React.FC<ITrxProps> = ({
 		form.reset(TRANSFER_NULL);
 		setOpen((prev) => !prev);
 		invalidateQueryOrderByDetails();
+		invalidateQueryOtherProduct();
+		invalidateQueryOtherWarehouse();
 	};
 	useEffect(() => {
 		if (data && isUpdate) {
@@ -151,7 +163,7 @@ const Trx: React.FC<ITrxProps> = ({
 				render={(props) => (
 					<CoreForm.ReactSelect
 						label='Product'
-						placeholder='Select Order'
+						placeholder='Select Product'
 						options={productOptions!}
 						{...props}
 					/>
@@ -163,7 +175,7 @@ const Trx: React.FC<ITrxProps> = ({
 				render={(props) => (
 					<CoreForm.ReactSelect
 						label='Warehouse'
-						placeholder='Select Order'
+						placeholder='Select Warehouse'
 						options={filteredWarehouseOptions!}
 						{...props}
 					/>
@@ -173,7 +185,11 @@ const Trx: React.FC<ITrxProps> = ({
 				control={form.control}
 				name='quantity'
 				render={(props) => (
-					<CoreForm.Input label={`Quantity (Max Transfer: ${MAX_QUANTITY})`} type='number' {...props} />
+					<CoreForm.Input
+						label={`Quantity (Max Transfer: ${MAX_QUANTITY + ((data?.quantity as number) || 0)})`}
+						type='number'
+						{...props}
+					/>
 				)}
 			/>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />

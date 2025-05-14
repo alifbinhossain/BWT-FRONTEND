@@ -3,6 +3,7 @@ import { z } from 'zod';
 import {
 	BOOLEAN_OPTIONAL,
 	BOOLEAN_REQUIRED,
+	NUMBER_DOUBLE_OPTIONAL,
 	NUMBER_DOUBLE_REQUIRED,
 	PHONE_NUMBER_OPTIONAL,
 	STRING_ARRAY,
@@ -64,6 +65,56 @@ export const ORDER_NULL: Partial<IOrder> = {
 	remarks: null,
 };
 export type IOrder = z.infer<typeof ORDER_SCHEMA>;
+//*Order Schema
+export const REPAIR_SCHEMA = z
+	.object({
+		uuid: STRING_OPTIONAL,
+		is_transferred_for_qc: BOOLEAN_OPTIONAL.default(false),
+		is_ready_for_delivery: BOOLEAN_OPTIONAL.default(false),
+		repair_product_transfer: BOOLEAN_OPTIONAL.default(false),
+		product_transfer: z.array(
+			z.object({
+				uuid: STRING_OPTIONAL,
+				product_uuid: STRING_OPTIONAL,
+				quantity: NUMBER_DOUBLE_OPTIONAL,
+				warehouse_uuid: STRING_OPTIONAL,
+				remarks: STRING_NULLABLE,
+			})
+		),
+		remarks: STRING_NULLABLE,
+	})
+	.superRefine((data, ctx) => {
+		if (data?.repair_product_transfer) {
+			data?.product_transfer.map((transfer, index) => {
+				if (!transfer.product_uuid) {
+					ctx.addIssue(customIssue('Required', `product_transfer[${index}].product_uuid`));
+				}
+				if (!transfer.quantity) {
+					ctx.addIssue(customIssue('Required', `product_transfer[${index}].quantity`));
+				}
+				if (!transfer.warehouse_uuid) {
+					ctx.addIssue(customIssue('Required', `product_transfer[${index}].warehouse_uuid`));
+				}
+			});
+		}
+	});
+
+export const REPAIR_NULL: Partial<IRepair> = {
+	is_transferred_for_qc: false,
+	is_ready_for_delivery: false,
+	repair_product_transfer: false,
+	product_transfer: [
+		{
+			uuid: '',
+			product_uuid: '',
+			quantity: 0,
+			warehouse_uuid: '',
+			remarks: null,
+		},
+	],
+	remarks: null,
+};
+export type IRepair = z.infer<typeof REPAIR_SCHEMA>;
 
 //* Info Schema
 const ORDER_SCHEMA_FOR_INFO = (ORDER_SCHEMA as any)._def.schema.omit({

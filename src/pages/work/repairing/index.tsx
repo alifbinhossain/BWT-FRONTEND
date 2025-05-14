@@ -1,47 +1,29 @@
-import { lazy, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
+import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
 import { PageInfo } from '@/utils';
-import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { RepairingColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkRepairing } from '../_config/query';
 
-const OrderTransferModal = lazy(() => import('../order/details/transfer/add-or-update'));
-
-const AddOrUpdate = lazy(() => import('./add-or-update'));
-
 const Order = () => {
 	const { data, isLoading, url, postData, updateData, refetch } = useWorkRepairing<IOrderTableData[]>();
+	const navigate = useNavigate();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Repairing', url, 'work__repairing'), [url]);
 	const pageAccess = useAccess('work__repairing') as string[];
 	const haveDeliveryAccess = pageAccess?.includes('click_transfer_delivery');
 	const haveQCAccess = pageAccess?.includes('click_transfer_qc');
-	const actionTrxAccess = pageAccess?.includes('click_order_transfer');
+	
 
 	// Add/Update Modal state
-	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
-	const [isTrxOpenAddModal, setIsTrxOpenAddModal] = useState(false);
-	const [order_uuid, setOrderUuid] = useState('');
-
-	const handleCreate = () => {
-		setIsOpenAddModal(true);
-	};
-
-	const [updatedData, setUpdatedData] = useState<IOrderTableData | null>(null);
 
 	const handleUpdate = (row: Row<IOrderTableData>) => {
-		setUpdatedData(row.original);
-		setIsOpenAddModal(true);
-	};
-	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
-		setUpdatedData(row.original);
-		setIsTrxOpenAddModal(true);
-		setOrderUuid(row.original.uuid);
+		navigate(`/work/repairing/update/${row.original.uuid}`);
 	};
 
 	// Table Columns
@@ -71,8 +53,6 @@ const Order = () => {
 		haveDeliveryAccess,
 		handelQCStatusChange,
 		haveQCAccess,
-		handleAgainstTrx,
-		actionTrxAccess,
 	});
 
 	return (
@@ -82,35 +62,10 @@ const Order = () => {
 				columns={columns}
 				data={data ?? []}
 				isLoading={isLoading}
-				handleCreate={handleCreate}
 				handleUpdate={handleUpdate}
 				handleRefetch={refetch}
 				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
-			>
-				{renderSuspenseModals([
-					<AddOrUpdate
-						{...{
-							url,
-							open: isOpenAddModal,
-							setOpen: setIsOpenAddModal,
-							updatedData,
-							setUpdatedData,
-							postData,
-							updateData,
-						}}
-					/>,
-					<OrderTransferModal
-						{...{
-							open: isTrxOpenAddModal,
-							setOpen: setIsTrxOpenAddModal,
-							url: '/store/product-transfer',
-							postData,
-							updateData,
-							order_uuid,
-						}}
-					/>,
-				])}
-			</TableProvider>
+			></TableProvider>
 		</PageProvider>
 	);
 };

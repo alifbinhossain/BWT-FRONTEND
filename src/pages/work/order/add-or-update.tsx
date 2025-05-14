@@ -126,7 +126,6 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					render={(props) => <CoreForm.Checkbox label='Ready for Delivery' {...props} />}
 				/>
 			</div>
-
 			<div className='flex space-x-4'>
 				<div className='flex-1'>
 					<div className='flex-1'>
@@ -205,7 +204,6 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					/>
 				</div>
 			</div>
-
 			<div className='flex space-x-4'>
 				<div className='flex-1'>
 					<FormField
@@ -267,8 +265,9 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						)}
 					/>
 				</div>
+				
 			}
-
+			
 			<FormField
 				control={form.control}
 				name='remarks'

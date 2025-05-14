@@ -1,15 +1,13 @@
 import { IChallanTableData } from '@/pages/delivery/_config/columns/columns.type';
-import { format } from 'date-fns';
-import useAuth from '@/hooks/useAuth';
 
-import { customTable, DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
+import { DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
 import { DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
 
 import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
 
 export default function Index(data: IChallanTableData, user: any) {
-	const headerHeight = 180;
+	const headerHeight = 140;
 	const footerHeight = 20;
 	data?.challan_entries?.forEach((item) => {
 		item.description = `${item.brand_name}, ${item.model_name} - SN: ${item.serial_no}`;
