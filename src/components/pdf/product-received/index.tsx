@@ -1,4 +1,4 @@
-import { IChallanTableData } from '@/pages/delivery/_config/columns/columns.type';
+import { IInfoTableData } from '@/pages/work/_config/columns/columns.type';
 
 import { DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
 import { DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
@@ -6,17 +6,21 @@ import { DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
 import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
 
-export default function Index(data: IChallanTableData, user: any) {
+export default function Index(data: IInfoTableData, user: any) {
 	const headerHeight = 140;
 	const footerHeight = 20;
-	data?.challan_entries?.forEach((item) => {
-		item.description = `${item.brand_name}, ${item.model_name} - SN: ${item.serial_no}`;
+
+	data?.order_entry?.forEach((item) => {
+		item.product = `${item.brand_name}, ${item.model_name} - SN: ${item.serial_no}`;
+		item.accessoriesString = item.accessories_name?.join(', ');
 		item.unit = 'Pcs';
 	});
 
 	const node = [
 		getTable('index', '#', 'center'),
-		getTable('description', 'Product Name'),
+		getTable('order_id', 'O/N'),
+		getTable('product', 'Product'),
+		getTable('accessoriesString', 'Accessories'),
 		getTable('quantity', 'Qty', 'right'),
 		getTable('unit', 'Unit'),
 	];
@@ -48,7 +52,7 @@ export default function Index(data: IChallanTableData, user: any) {
 					body: [
 						[
 							{
-								text: `Customer & Delivery Information`,
+								text: `Customer Information`,
 								bold: true,
 								fontSize: DEFAULT_FONT_SIZE + 2,
 								fillColor: '#dedede',
@@ -62,7 +66,7 @@ export default function Index(data: IChallanTableData, user: any) {
 									body: [
 										[
 											{ text: `Customer Name:`, fontSize: DEFAULT_FONT_SIZE - 2, bold: true },
-											{ text: data?.customer_name, fontSize: DEFAULT_FONT_SIZE - 2 },
+											{ text: data?.user_name, fontSize: DEFAULT_FONT_SIZE - 2 },
 										],
 										[
 											{
@@ -70,7 +74,7 @@ export default function Index(data: IChallanTableData, user: any) {
 												bold: true,
 												fontSize: DEFAULT_FONT_SIZE - 2,
 											},
-											{ text: data?.customer_phone, fontSize: DEFAULT_FONT_SIZE - 2 },
+											{ text: data?.user_phone, fontSize: DEFAULT_FONT_SIZE - 2 },
 										],
 										[
 											{
@@ -108,7 +112,7 @@ export default function Index(data: IChallanTableData, user: any) {
 			{
 				table: {
 					headerRows: 1,
-					widths: [15, '*', 50, 30],
+					widths: [15, 50, '*', '*', 30, 30],
 					body: [
 						node.map((col) => ({
 							text: col.name,
@@ -117,7 +121,7 @@ export default function Index(data: IChallanTableData, user: any) {
 							fontSize: DEFAULT_FONT_SIZE - 2,
 							bold: true,
 						})),
-						...(data?.challan_entries || []).map((item, index) =>
+						...(data?.order_entry || []).map((item, index) =>
 							node.map((nodeItem) => ({
 								text: nodeItem.field === 'index' ? index + 1 : (item as any)[nodeItem.field],
 								style: nodeItem.cellStyle,
@@ -132,18 +136,46 @@ export default function Index(data: IChallanTableData, user: any) {
 			{ text: '\n' },
 			{
 				table: {
-					widths: ['*', '*'],
+					widths: ['*', 10, '*'],
 					body: [
 						[
-							{ text: `\n\n\n\n`, fontSize: DEFAULT_FONT_SIZE - 2, bold: true },
-							{ text: `\n\n\n\n`, fontSize: DEFAULT_FONT_SIZE - 2, bold: true },
+							{
+								text: `\n\n\n\n`,
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								bold: true,
+								border: [false, false, false, false],
+							},
+							{
+								text: `\n\n\n\n`,
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								bold: true,
+								border: [false, false, false, false],
+							},
+							{
+								text: `\n\n\n\n`,
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								bold: true,
+								border: [false, false, false, false],
+							},
 						],
 						[
-							{ text: `Received By`, fontSize: DEFAULT_FONT_SIZE - 2, alignment: 'center' },
 							{
-								text: 'For Bismillah World Technology',
+								text: `Customer Signature`,
 								fontSize: DEFAULT_FONT_SIZE - 2,
 								alignment: 'center',
+								border: [false, true, false, false],
+							},
+							{
+								text: ``,
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								bold: true,
+								border: [false, false, false, false],
+							},
+							{
+								text: 'Sales/Receiver Person Signature',
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								alignment: 'center',
+								border: [false, true, false, false],
 							},
 						],
 					],

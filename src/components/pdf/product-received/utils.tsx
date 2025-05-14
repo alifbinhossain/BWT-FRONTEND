@@ -1,12 +1,12 @@
 import { BWT_LOGO } from '@/assets/images/base64';
-import { IChallanTableData } from '@/pages/delivery/_config/columns/columns.type';
+import { IInfoTableData } from '@/pages/work/_config/columns/columns.type';
 import { format, formatDate } from 'date-fns';
 
 import { getDateTime } from '@/utils';
 
 import { DEFAULT_FONT_SIZE } from '../ui';
 
-export const getPageHeader = (data: IChallanTableData, user: any) => {
+export const getPageHeader = (data: IInfoTableData, user: any) => {
 	return {
 		heights: ['auto', 2, 'auto', 'auto'],
 		widths: ['*'],
@@ -39,7 +39,7 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 										body: [
 											[
 												{
-													text: 'Challan',
+													text: 'Received Details',
 													fontSize: DEFAULT_FONT_SIZE + 2,
 													bold: true,
 													style: 'header',
@@ -51,12 +51,12 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 											],
 											[
 												{
-													text: 'Challan No:',
+													text: 'Info ID:',
 													bold: true,
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 												{
-													text: data?.challan_no,
+													text: data?.info_id,
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],
@@ -73,34 +73,25 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 											],
 											[
 												{
-													text: 'Status:',
+													text: 'Received:',
 													bold: true,
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 												{
-													text: '',
+													text: data?.is_product_received ? 'Yes' : 'No',
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],
 											[
 												{
-													text: 'Approved By:',
+													text: 'Received Date:',
 													bold: true,
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 												{
-													text: user?.name,
-													fontSize: DEFAULT_FONT_SIZE - 2,
-												},
-											],
-											[
-												{
-													text: 'Sales Mode:',
-													bold: true,
-													fontSize: DEFAULT_FONT_SIZE - 2,
-												},
-												{
-													text: data?.payment_method,
+													text:
+														data?.received_date &&
+														formatDate(data?.received_date, 'dd-MMM-yyyy'),
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],
@@ -125,7 +116,7 @@ export const getPageFooter = ({
 }: {
 	currentPage: number;
 	pageCount: number;
-	data?: IChallanTableData;
+	data?: IInfoTableData;
 	user?: any;
 }) => {
 	return {
@@ -144,7 +135,7 @@ export const getPageFooter = ({
 					border: [false, true, false, false],
 				},
 				{
-					text: `${data?.challan_no} | Page: ${currentPage} of ${pageCount}`,
+					text: `${data?.info_id} | Page: ${currentPage} of ${pageCount}`,
 					fontSize: DEFAULT_FONT_SIZE - 4,
 					alignment: 'right',
 					border: [false, true, false, false],
