@@ -88,7 +88,7 @@ const Transfer: React.FC<{ data?: IOrderTableData; isLoading?: any; order_uuid?:
 				handleCreate={handleCreate}
 				handleRefetch={refetch}
 				handleDeleteAll={handleDeleteAll}
-				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
+				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
