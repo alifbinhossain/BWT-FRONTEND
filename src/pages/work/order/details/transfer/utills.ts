@@ -1,7 +1,6 @@
 import { IFormSelectOption } from '@/components/core/form/types';
 
 export interface ICustomProductsSelectOption extends IFormSelectOption {
-	
 	warehouse_1: number;
 	warehouse_2: number;
 	warehouse_3: number;
@@ -14,7 +13,6 @@ export interface ICustomProductsSelectOption extends IFormSelectOption {
 	warehouse_10: number;
 	warehouse_11: number;
 	warehouse_12: number;
-
 }
 export interface ICustomWarehouseSelectOption extends IFormSelectOption {
 	assigned: string;

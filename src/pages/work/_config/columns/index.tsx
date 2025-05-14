@@ -542,15 +542,12 @@ export const RepairingColumns = ({
 	haveDeliveryAccess,
 	handelQCStatusChange,
 	haveQCAccess,
-	handleAgainstTrx,
-	actionTrxAccess,
 }: {
 	handelDeliveryStatusChange?: (row: Row<any>) => void;
 	haveDeliveryAccess?: boolean;
 	handelQCStatusChange?: (row: Row<any>) => void;
 	haveQCAccess?: boolean;
-	handleAgainstTrx?: (row: Row<any>) => void;
-	actionTrxAccess?: boolean;
+
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_transferred_for_qc',
@@ -563,6 +560,7 @@ export const RepairingColumns = ({
 			</div>
 		),
 		enableColumnFilter: false,
+		size: 80,
 		cell: (info) => (
 			<Switch
 				checked={info.getValue() as boolean}
@@ -582,6 +580,7 @@ export const RepairingColumns = ({
 			</div>
 		),
 		enableColumnFilter: false,
+		size: 80,
 		cell: (info) => (
 			<Switch
 				checked={info.getValue() as boolean}
@@ -627,21 +626,21 @@ export const RepairingColumns = ({
 			);
 		},
 	},
-	{
-		id: 'action_trx',
-		header: () => (
-			<>
-				Transfer Repairing <br />
-				Product
-			</>
-		),
-		cell: (info) => <Transfer onClick={() => handleAgainstTrx?.(info.row)} />,
-		size: 40,
-		meta: {
-			hidden: !actionTrxAccess,
-			disableFullFilter: true,
-		},
-	},
+	// {
+	// 	id: 'action_trx',
+	// 	header: () => (
+	// 		<>
+	// 			Transfer Repairing <br />
+	// 			Product
+	// 		</>
+	// 	),
+	// 	cell: (info) => <Transfer onClick={() => handleAgainstTrx?.(info.row)} />,
+	// 	size: 40,
+	// 	meta: {
+	// 		hidden: !actionTrxAccess,
+	// 		disableFullFilter: true,
+	// 	},
+	// },
 	{
 		accessorFn: (row) => {
 			return (
