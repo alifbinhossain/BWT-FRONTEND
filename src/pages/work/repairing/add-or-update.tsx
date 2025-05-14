@@ -140,7 +140,7 @@ const AddOrUpdate = () => {
 				// Now this comparison is safe
 				ShowLocalToast({
 					type: 'error',
-					message: `Product ${product.label} has only ${availableQty} quantity, but ${item.quantity} were requested.`,
+					message: `Product ${product.label} has only ${availableQty + prevQty} quantity, but ${item.quantity} were requested.`,
 				});
 				valid = false;
 				return;
