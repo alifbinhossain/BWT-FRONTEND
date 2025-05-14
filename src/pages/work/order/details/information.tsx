@@ -137,6 +137,10 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 					/>
 				),
 			},
+			{
+				label: 'Delivery Complete',
+				value: <StatusButton value={data.is_delivery_complete as boolean} />,
+			},
 
 			{
 				label: 'Receiving Date',

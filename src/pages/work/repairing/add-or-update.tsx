@@ -145,6 +145,14 @@ const AddOrUpdate = () => {
 				valid = false;
 				return;
 			}
+			if (item.quantity <= 0) {
+				ShowLocalToast({
+					type: 'error',
+					message: `Quantity must be greater than 0 for product ${product.label}.`,
+				});
+				valid = false;
+				return;
+			}
 		});
 		if (!valid) {
 			return;

@@ -96,6 +96,7 @@ const workRoutes: IRoute[] = [
 				path: '/work/repairing/update/:uuid',
 				element: <RepairingEntry />,
 				page_name: 'work__repairing_update',
+				hidden: true,
 				actions: ['read', 'update', 'delete'],
 			},
 			{
