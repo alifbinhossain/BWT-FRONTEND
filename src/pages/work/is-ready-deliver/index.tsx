@@ -11,7 +11,6 @@ import { useWorkIsDeliveryReady } from '../_config/query';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Order = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =

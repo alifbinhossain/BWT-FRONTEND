@@ -77,6 +77,8 @@ export type IOrderTableData = {
 	size_uuid: string;
 	size_name: string;
 	serial_no: string;
+	product: string;
+	accessoriesString: string;
 	problems_uuid: string[];
 	problems_name: string[];
 	problem_statement: string;
@@ -97,6 +99,7 @@ export type IOrderTableData = {
 	box_uuid: string;
 	box_name: string;
 	quantity: number;
+	unit: string;
 	created_by: string;
 	created_at: string;
 	updated_at: string;
@@ -116,6 +119,7 @@ export type IInfoTableData = {
 	user_id: string;
 	id: string;
 	info_id: string;
+
 	user_uuid: string;
 	user_name: string;
 	zone_name: string;
