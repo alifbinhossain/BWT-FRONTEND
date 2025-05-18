@@ -19,7 +19,7 @@ const Header = () => {
 			<FormField
 				control={form.control}
 				name='phone'
-				render={(props) => <CoreForm.Input label='Phone Number' {...props} />}
+				render={(props) => <CoreForm.Phone label='Phone Number' {...props} />}
 			/>
 
 			<FormField

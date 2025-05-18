@@ -6,6 +6,8 @@ import FormInput from './input';
 import FormJoinInputSelect from './join-input-select';
 import FormJoinInputUnit from './join-input-unit';
 import FormMultiSelect from './multi-select';
+import Otp from './otp';
+import Phone from './phone';
 import FormReactSelect from './react-select';
 import FormReactSelectCreate from './react-select-create';
 import FormSection from './section';
@@ -28,6 +30,8 @@ const Form = {
 	DynamicFields: FormDynamicFields,
 	AddEditWrapper: FormAddEditWrapper,
 	ReactSelectCreate: FormReactSelectCreate,
+	Phone,
+	Otp,
 };
 
 export default Form;

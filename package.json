@@ -46,6 +46,7 @@
 		"date-fns": "^3.6.0",
 		"framer-motion": "^11.18.2",
 		"handsontable": "^14.6.1",
+		"input-otp": "^1.4.2",
 		"js-cookie": "^3.0.5",
 		"lodash": "^4.17.21",
 		"lucide-react": "^0.451.0",

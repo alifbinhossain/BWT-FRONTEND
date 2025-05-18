@@ -103,7 +103,7 @@ const AddOrUpdate: React.FC<IVendorAddOrUpdateProps> = ({
 				)}
 			/>
 			<FormField control={form.control} name='company_name' render={(props) => <CoreForm.Input {...props} />} />
-			<FormField control={form.control} name='phone' render={(props) => <CoreForm.Input {...props} />} />
+			<FormField control={form.control} name='phone' render={(props) => <CoreForm.Phone {...props} />} />
 			<FormField control={form.control} name='address' render={(props) => <CoreForm.Textarea {...props} />} />
 			<FormField control={form.control} name='description' render={(props) => <CoreForm.Textarea {...props} />} />
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />

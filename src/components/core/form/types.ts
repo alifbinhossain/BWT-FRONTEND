@@ -1,6 +1,7 @@
 //
 import React from 'react';
 import { CheckboxProps } from '@radix-ui/react-checkbox';
+import { OTPInputProps } from 'input-otp';
 import { ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStateReturn } from 'react-hook-form';
 
 import { CalendarProps } from '@/components/ui/calendar';
@@ -127,6 +128,17 @@ export interface FormInputProps extends InputProps {
 	icon?: React.ReactNode;
 	disableLabel?: boolean;
 }
+
+// * form-phone
+export type FormOtpProps = Omit<OTPInputProps, 'children'> & {
+	field: ControllerRenderProps<any, any>;
+	fieldState: ControllerFieldState;
+	formState: UseFormStateReturn<any>;
+	label?: string;
+	subLabel?: string;
+	optional?: boolean;
+	disableLabel?: boolean;
+};
 
 // * form-date-picker
 export interface FormDatePickerProps {
