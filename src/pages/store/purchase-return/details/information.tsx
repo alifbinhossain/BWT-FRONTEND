@@ -8,9 +8,6 @@ import { formatDateTable } from '@/utils/formatDate';
 import { IPurchaseReturnDetails } from '../../_config/columns/columns.type'; // TODO: update data type
 
 const Information: React.FC<{ data: IPurchaseReturnDetails }> = ({ data }) => {
-	console.log({
-		data,
-	});
 	const renderItems = (): ITableListItems => {
 		return [
 			{

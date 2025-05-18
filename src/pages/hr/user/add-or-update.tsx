@@ -93,7 +93,6 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
-	console.log(form.formState.errors);
 
 	// Submit handler
 	async function onSubmit(values: IUser) {

@@ -15,7 +15,6 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Branch = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreBranches<IBranchTableData[]>();
-	console.log(data);
 
 	const pageInfo = useMemo(() => new PageInfo('Store/Branch', url, 'store__branch'), [url]);
 
