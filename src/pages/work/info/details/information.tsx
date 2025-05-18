@@ -1,6 +1,7 @@
 import React from 'react';
 
 import StatusButton from '@/components/buttons/status';
+import { CustomLink } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
 
@@ -9,6 +10,10 @@ import { formatDateTable } from '@/utils/formatDate';
 import { IInfoTableData } from '../../_config/columns/columns.type';
 
 const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
+	
+	const fullURL = window.location.href;
+	const slice = fullURL.split('w');
+	const baseURl = slice[0];
 	const renderGeneralItems = (): ITableListItems => {
 		return [
 			{
@@ -45,6 +50,16 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 			{
 				label: 'Updated At',
 				value: formatDateTable(data.updated_at),
+			},
+			{
+				label: 'Link',
+				value: (
+					<CustomLink
+						url={`${baseURl}order/${data?.uuid}`}
+						label={`${baseURl}order/${data?.uuid}`}
+						openInNewTab={true}
+					/>
+				),
 			},
 		];
 	};

@@ -1,15 +1,11 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
-import { values } from 'lodash';
 import { User } from 'lucide-react';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
-import DataTableEntry from '@/components/core/data-table/entry';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
-
-import { cn } from '@/lib/utils';
 
 import { Location, Problem, Product, TableForColumn } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';

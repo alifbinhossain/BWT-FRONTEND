@@ -11,6 +11,9 @@ import OrderTable from './order-table';
 const DetailsPage = () => {
 	const { user } = useAuth();
 	const { uuid } = useParams();
+	const fullURL = window.location.href;
+	const slice = fullURL.split('w');
+	const baseURl = slice[0];
 	const { data, isLoading } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
 
 	useEffect(() => {
@@ -18,14 +21,15 @@ const DetailsPage = () => {
 	}, []);
 	const [data2, setData] = useState('');
 	useEffect(() => {
-		if (data && user) {
-			ChallanPdf(data, user)?.getDataUrl((dataUrl) => {
-				setData(dataUrl);
-			});
-		}
-	}, [data, user]);
-	if (isLoading) return <div>Loading...</div>;
-
+		const generatePdf = async () => {
+			if (data && user) {
+				(await ChallanPdf(data, user, baseURl))?.getDataUrl((dataUrl) => {
+					setData(dataUrl);
+				});
+			}
+		};
+		generatePdf();
+	}, [data, user, baseURl]);
 	if (isLoading) return <div>Loading...</div>;
 
 	return (

@@ -3,8 +3,6 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import useAccess from '@/hooks/useAccess';
 
-import { IFormSelectOption } from '@/components/core/form/types';
-
 import { useOtherWarehouse } from '@/lib/common-queries/other';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';

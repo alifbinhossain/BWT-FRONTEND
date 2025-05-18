@@ -4,9 +4,9 @@ import { format, formatDate } from 'date-fns';
 
 import { getDateTime } from '@/utils';
 
-import { DEFAULT_FONT_SIZE } from '../ui';
+import { customTable, DEFAULT_FONT_SIZE } from '../ui';
 
-export const getPageHeader = (data: IInfoTableData, user: any) => {
+export const getPageHeader = (data: IInfoTableData, user: any, GenerateQRCode: string) => {
 	return {
 		heights: ['auto', 2, 'auto', 'auto'],
 		widths: ['*'],
@@ -15,23 +15,64 @@ export const getPageHeader = (data: IInfoTableData, user: any) => {
 				{
 					table: {
 						headerRows: 1,
-						widths: [50, '*', 200],
+						widths: [50, '*', 180],
 						body: [
 							[
 								{
 									image: BWT_LOGO,
-									width: 50,
-									height: 40,
+									width: 60,
+									height: 50,
 									alignment: 'right',
 									border: [true, true, false, true],
 								},
 								{
-									text: 'Bismillah World Technology',
+									table: {
+										widths: ['*', 40],
+										body: [
+											[
+												{
+													text: 'Bismillah World Technology',
+													border: [false, false, false, false],
+													fontSize: DEFAULT_FONT_SIZE + 6,
+													bold: true,
+													color: '#283791',
+													style: 'header',
+												},
+												{
+													svg: GenerateQRCode,
+													width: 40,
+													height: 50,
+													alignment: 'left',
+													border: [false, false, false, false],
+													rowSpan: 3,
+												},
+											],
+											[
+												{
+													text: 'Address: 519/A Dhanmondi-1, Dhanmondi - Dhaka-1205',
+													border: [false, false, false, false],
+													fontSize: DEFAULT_FONT_SIZE - 2,
+													bold: true,
+
+													style: 'header',
+												},
+												{},
+											],
+											[
+												{
+													text: 'Contact Number: 01956666777, website:bwt.com.bd',
+													border: [false, false, false, false],
+													fontSize: DEFAULT_FONT_SIZE - 2,
+													bold: true,
+
+													style: 'header',
+												},
+												{},
+											],
+										],
+										layout: customTable,
+									},
 									border: [false, true, false, true],
-									fontSize: DEFAULT_FONT_SIZE + 8,
-									bold: true,
-									color: '#283791',
-									style: 'header',
 								},
 								{
 									table: {

@@ -233,6 +233,16 @@ export type TProductProps = {
 	model_name: string;
 	serial_no?: string;
 };
+export type TStoreProductProps = {
+	name: string;
+	model_name: string;
+	category_name?: string;
+	size_name?: string;
+};
+export type TWarrantyProps = {
+	service_warranty: number;
+	warranty: number;
+};
 export type TLocationProps = {
 	branch_name: string;
 	warehouse_name: string;

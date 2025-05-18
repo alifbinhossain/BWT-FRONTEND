@@ -1,4 +1,4 @@
-import { Location } from '@/pages/work/_config/utils/component';
+import { Location, StoreProduct } from '@/pages/work/_config/utils/component';
 import { LocationName } from '@/pages/work/_config/utils/function';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
@@ -181,44 +181,56 @@ export const productColumns = ({
 				</>
 			),
 			enableColumnFilter: false,
-			size: 90,
+			size: 40,
 			cell: (info) => {
 				return <StatusButton value={info.getValue() as boolean} />;
 			},
 		},
 		{
-			accessorKey: 'name',
-			header: 'Name',
+			accessorFn: (row) => {
+				return row.name + '-' + row.model_name + '-' + row.category_name + '-' + row.size_name;
+			},
+			id: 'product',
+			header: 'Product',
 			enableColumnFilter: false,
-		},
-		{
-			accessorKey: 'category_name',
-			header: 'Category',
-			enableColumnFilter: false,
-		},
-		{
-			accessorKey: 'model_name',
-			header: 'Model',
-			enableColumnFilter: false,
-		},
-		{
-			accessorKey: 'size_name',
-			header: 'Size',
-			enableColumnFilter: false,
+			cell: (info) => {
+				const { name, model_name, category_name, size_name } = info.row.original;
+				return (
+					<StoreProduct
+						name={name}
+						model_name={model_name}
+						category_name={category_name}
+						size_name={size_name}
+					/>
+				);
+			},
 		},
 		{
 			accessorKey: 'warranty_days',
-			header: 'Warranty Days',
+			header: () => (
+				<>
+					Warranty <br />
+					Days
+				</>
+			),
+			size: 40,
 			enableColumnFilter: false,
 		},
 		{
 			accessorKey: 'service_warranty_days',
-			header: 'Service Warranty',
+			header: () => (
+				<>
+					Service <br />
+					Warranty
+				</>
+			),
+			size: 40,
 			enableColumnFilter: false,
 		},
 		{
 			accessorKey: 'type',
 			header: 'Type',
+			size: 40,
 			enableColumnFilter: false,
 		},
 		{
@@ -263,6 +275,7 @@ export const productColumns = ({
 				return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
 			},
 			enableColumnFilter: false,
+			size: 40,
 			cell: (info: any) => {
 				return (
 					<div className='flex items-center gap-2'>
