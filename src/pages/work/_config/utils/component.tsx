@@ -1,8 +1,19 @@
-import { Building2, Component, FileDigit, House, MapPin, MessageSquareMore, Pin, Warehouse } from 'lucide-react';
+import {
+	Building2,
+	Component,
+	FileDigit,
+	House,
+	MapPin,
+	MessageSquareMore,
+	Pin,
+	Ruler,
+	SquareMenu,
+	Warehouse,
+} from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-import { TLocationProps, TProblemProps, TProductProps } from '../types';
+import { TLocationProps, TProblemProps, TProductProps, TStoreProductProps, TWarrantyProps } from '../types';
 
 export const Product = ({ brand_name, model_name, serial_no }: TProductProps) => {
 	return (
@@ -28,6 +39,31 @@ export const Product = ({ brand_name, model_name, serial_no }: TProductProps) =>
 		</div>
 	);
 };
+export const StoreProduct = ({ name, model_name, category_name, size_name }: TStoreProductProps) => {
+	return (
+		<div className='flex flex-col gap-2'>
+			{name && (
+				<div className='flex items-center gap-1'>
+					<Building2 size={16} />
+					<span className='flex-1'>{name + ' (' + size_name + ')'}</span>
+				</div>
+			)}
+			{model_name && (
+				<div className='flex items-center gap-1'>
+					<Component size={16} />
+					<span className='flex-1'>{model_name}</span>
+				</div>
+			)}
+			{category_name && (
+				<div className='flex items-center gap-1'>
+					<SquareMenu size={16} />
+					<span className='flex-1'>{category_name}</span>
+				</div>
+			)}
+		</div>
+	);
+};
+
 export const TableForColumn = ({ value, headers }: any) => {
 	const rowStyle = 'border border-gray-300 px-2 py-1 text-xs';
 	return (

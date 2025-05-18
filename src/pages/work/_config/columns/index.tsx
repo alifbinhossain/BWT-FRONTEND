@@ -1,15 +1,11 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
-import { values } from 'lodash';
 import { User } from 'lucide-react';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
-import DataTableEntry from '@/components/core/data-table/entry';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
-
-import { cn } from '@/lib/utils';
 
 import { Location, Problem, Product, TableForColumn } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
@@ -232,7 +228,6 @@ export const orderColumnsForDetails = ({
 		size: 170,
 		cell: (info) => {
 			const { branch_name, warehouse_name, rack_name, floor_name, box_name } = info.row.original;
-			console.log(info.row.original);
 			return (
 				<Location
 					branch_name={branch_name}
@@ -547,7 +542,6 @@ export const RepairingColumns = ({
 	haveDeliveryAccess?: boolean;
 	handelQCStatusChange?: (row: Row<any>) => void;
 	haveQCAccess?: boolean;
-
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_transferred_for_qc',

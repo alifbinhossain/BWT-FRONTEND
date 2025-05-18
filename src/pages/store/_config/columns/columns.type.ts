@@ -61,7 +61,10 @@ export type IProductTableData = {
 	uuid: string;
 	category_uuid: string;
 	model_uuid: string;
+	model_name: string;
+	category_name: string;
 	size_uuid: string;
+	size_name: string;
 	name: string;
 	warehouse_1: number;
 	warehouse_2: number;

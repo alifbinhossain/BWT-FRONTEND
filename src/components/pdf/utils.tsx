@@ -134,21 +134,7 @@ export const CUSTOM_PAGE_CONE_STICKER = ({
 	};
 };
 
-//
-// Company Information
-//
-// export const company = {
-// 	logo: EUB_LOGO.src,
-// 	name: 'Fortune Zipper LTD.',
-// 	address: 'Aukpara, Ashulia, Savar, DHK-1340',
-// 	email: 'Email: info@fortunezip.com',
-// 	phone: 'Phone: 01810001301',
-// 	challan_phone: 'Phone: 01810001301',
-// 	bin: 'BIN: 000537296-0403',
-// 	tax: 'VAT: 17141000815',
-// };
 
-//
 // Table Helpers
 //
 type Alignment = 'left' | 'center' | 'right';

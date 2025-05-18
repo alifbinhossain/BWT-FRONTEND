@@ -56,7 +56,7 @@ export const tableLayoutStyle: {
 };
 export const customTable = {
 	paddingTop: function () {
-		return 5;
+		return 0;
 	},
 	paddingBottom: function () {
 		return 0;
