@@ -232,7 +232,6 @@ export const orderColumnsForDetails = ({
 		size: 170,
 		cell: (info) => {
 			const { branch_name, warehouse_name, rack_name, floor_name, box_name } = info.row.original;
-			console.log(info.row.original);
 			return (
 				<Location
 					branch_name={branch_name}
@@ -547,7 +546,6 @@ export const RepairingColumns = ({
 	haveDeliveryAccess?: boolean;
 	handelQCStatusChange?: (row: Row<any>) => void;
 	haveQCAccess?: boolean;
-
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_transferred_for_qc',

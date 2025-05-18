@@ -93,7 +93,6 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
-	console.log(form.formState.errors)
 
 	// Submit handler
 	async function onSubmit(values: IUser) {
@@ -158,7 +157,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						)}
 					/>
 				)}
-				{ (
+				{
 					<FormField
 						control={form.control}
 						name='department_uuid'
@@ -171,8 +170,8 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 							/>
 						)}
 					/>
-				)}
-				{ (
+				}
+				{
 					<FormField
 						control={form.control}
 						name='designation_uuid'
@@ -185,7 +184,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 							/>
 						)}
 					/>
-				)}
+				}
 				<FormField
 					control={form.control}
 					name='rating'
@@ -215,7 +214,7 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
 				<FormField control={form.control} name='email' render={(props) => <CoreForm.Input {...props} />} />
 				<FormField control={form.control} name='ext' render={(props) => <CoreForm.Input {...props} />} />
-				<FormField control={form.control} name='phone' render={(props) => <CoreForm.Input {...props} />} />
+				<FormField control={form.control} name='phone' render={(props) => <CoreForm.Phone {...props} />} />
 			</div>
 			{!isUpdate && (
 				<div className='grid grid-cols-2 gap-4'>

@@ -89,7 +89,6 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 								label='Customer'
 								options={userOption || []}
 								placeholder='Select Customer'
-							
 								{...props}
 							/>
 						)}
@@ -104,7 +103,7 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 						<FormField
 							control={form.control}
 							name='phone'
-							render={(props) => <CoreForm.Input label='Phone Number' {...props} />}
+							render={(props) => <CoreForm.Phone label='Phone Number' {...props} />}
 						/>
 						<FormField
 							control={form.control}

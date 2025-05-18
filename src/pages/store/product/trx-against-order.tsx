@@ -43,7 +43,6 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 	const MAX_QUANTITY = updatedData?.max_quantity ?? 0;
 	const schema = TRANSFER_SCHEMA.extend({ quantity: z.number().int().positive().max(MAX_QUANTITY) });
 	const form = useRHF(schema, TRANSFER_NULL);
-	console.log('MAX_QUANTITY', MAX_QUANTITY);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -69,7 +68,14 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 	}
 
 	return (
-		<AddModal open={open} setOpen={onClose} title={'Transfer Material'} form={form} isSmall={true} onSubmit={onSubmit}>
+		<AddModal
+			open={open}
+			setOpen={onClose}
+			title={'Transfer Material'}
+			form={form}
+			isSmall={true}
+			onSubmit={onSubmit}
+		>
 			<FormField
 				control={form.control}
 				name='order_uuid'

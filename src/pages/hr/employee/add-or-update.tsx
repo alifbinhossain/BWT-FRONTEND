@@ -119,7 +119,7 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
 				<FormField control={form.control} name='email' render={(props) => <CoreForm.Input {...props} />} />
 				<FormField control={form.control} name='ext' render={(props) => <CoreForm.Input {...props} />} />
-				<FormField control={form.control} name='phone' render={(props) => <CoreForm.Input {...props} />} />
+				<FormField control={form.control} name='phone' render={(props) => <CoreForm.Phone {...props} />} />
 			</div>
 			{!isUpdate && (
 				<div className='grid grid-cols-2 gap-4'>
