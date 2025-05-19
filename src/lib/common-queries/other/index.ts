@@ -187,3 +187,10 @@ export const useOtherZone = <T>() =>
 		queryKey: otherQK.zone(),
 		url: `/other/zone/value/label`,
 	});
+
+//*GET OTHER WORKPLACE
+export const useOtherWorkplace = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.workplace(),
+		url: `/other/workplace/value/label`,
+	});

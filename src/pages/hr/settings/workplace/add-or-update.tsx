@@ -9,11 +9,11 @@ import { AddModal } from '@core/modal';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { useHrDesignationByUUID, useHrUsers } from '../_config/query';
-import { DESIGNATION_NULL, DESIGNATION_SCHEMA, IDesignation } from '../_config/schema';
-import { IDesignationAddOrUpdateProps } from '../_config/types';
+import { useHrWorkPlaceByUUID, useHrWorkPlaces } from '../_config/query';
+import { IWorkplace, WORKPLACE_NULL, WORKPLACE_SCHEMA } from '../_config/schema';
+import { IWorkplaceAddOrUpdateProps } from '../_config/types';
 
-const AddOrUpdate: React.FC<IDesignationAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IWorkplaceAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,
@@ -25,14 +25,14 @@ const AddOrUpdate: React.FC<IDesignationAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useHrDesignationByUUID(updatedData?.uuid as string);
-	const { invalidateQuery: invalidateUserQuery } = useHrUsers();
+	const { data } = useHrWorkPlaceByUUID(updatedData?.uuid as string);
+	const { invalidateQuery: invalidateUserQuery } = useHrWorkPlaces();
 
-	const form = useRHF(DESIGNATION_SCHEMA, DESIGNATION_NULL);
+	const form = useRHF(WORKPLACE_SCHEMA, WORKPLACE_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(DESIGNATION_NULL);
+		form.reset(WORKPLACE_NULL);
 		invalidateUserQuery();
 		setOpen((prev) => !prev);
 	};
@@ -46,7 +46,7 @@ const AddOrUpdate: React.FC<IDesignationAddOrUpdateProps> = ({
 	}, [data, isUpdate]);
 
 	// Submit handler
-	async function onSubmit(values: IDesignation) {
+	async function onSubmit(values: IWorkplace) {
 		if (isUpdate) {
 			// UPDATE ITEM
 			updateData.mutateAsync({
@@ -76,11 +76,27 @@ const AddOrUpdate: React.FC<IDesignationAddOrUpdateProps> = ({
 		<AddModal
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? 'Update Designation' : 'Add Designation'}
+			title={isUpdate ? 'Update WorkPlace' : 'Add WorkPlace'}
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<FormField control={form.control} name='designation' render={(props) => <CoreForm.Input {...props} />} />
+			<FormField control={form.control} name='status' render={(props) => <CoreForm.Checkbox {...props} />} />
+			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
+			<FormField
+				control={form.control}
+				name='hierarchy'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
+			/>
+			<FormField
+				control={form.control}
+				name='latitude'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
+			/>
+			<FormField
+				control={form.control}
+				name='longitude'
+				render={(props) => <CoreForm.Input type='number' {...props} />}
+			/>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

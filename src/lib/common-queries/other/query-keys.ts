@@ -69,6 +69,8 @@ const otherQK = {
 	accessories: () => [...otherQK.all(), 'accessories'],
 	//* Zone
 	zone: () => [...otherQK.all(), 'zone'],
+	//*Workplace
+	workplace: () => [...otherQK.all(), 'workplace'],
 };
 
 export default otherQK;
