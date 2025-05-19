@@ -22,6 +22,7 @@ const AddModal: React.FC<IAddModalProps> = ({
 	children,
 	className,
 	isSmall,
+	containerClassName,
 }) => {
 	useHotkeys(
 		'esc',
@@ -72,7 +73,7 @@ const AddModal: React.FC<IAddModalProps> = ({
 
 							<Form {...form}>
 								<form onSubmit={form.handleSubmit(onSubmit)} className='relative space-y-6'>
-									<div className='space-y-3'>{children}</div>
+									<div className={cn('space-y-3', containerClassName)}>{children}</div>
 									<CoreForm.Submit className='w-full' title='Save' />
 									<DevTool control={form.control} placement='top-left' />
 								</form>

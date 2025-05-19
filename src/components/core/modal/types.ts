@@ -3,10 +3,6 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { UseFormReturn } from 'react-hook-form';
 
-
-
-
-
 export interface IDeleteAllModalProps {
 	deleteItems:
 		| {
@@ -76,4 +72,5 @@ export interface IAddModalProps {
 	children?: React.ReactNode;
 	className?: string;
 	isSmall?: boolean;
+	containerClassName?: string;
 }

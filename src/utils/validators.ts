@@ -122,3 +122,5 @@ export const ORDER_NUMBER_NOT_REQUIRED = STRING()
 		'O/N format: XXXX-23, CSXXXX-23, SXXXX-23'
 	)
 	.optional();
+
+export const GENDER = z.enum(['male', 'female', 'other']);

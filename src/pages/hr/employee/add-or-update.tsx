@@ -2,18 +2,27 @@ import { useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { IFormSelectOption } from '@core/form/types';
 import { AddModal } from '@core/modal';
 
-import { useOtherDepartment, useOtherDesignation } from '@/lib/common-queries/other';
+import {
+	useOtherDepartment,
+	useOtherDesignation,
+	useOtherEmploymentType,
+	useOtherLeavePolicy,
+	useOtherShiftGroup,
+	useOtherSubDepartment,
+	useOtherWorkplace,
+} from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { useHrUsersByUUID } from '../_config/query';
-import { EMPLOYEE_NULL, EMPLOYEE_SCHEMA, IEmployee } from '../_config/schema';
-import { IEmployeeAddOrUpdateProps } from '../_config/types';
+import { useHrEmployeesByUUID } from '../_config/query';
+import { EMPLOYEE_NULL, EMPLOYEE_SCHEMA, IEmployee } from './_config/schema';
+import { IEmployeeAddOrUpdateProps } from './_config/types';
 
 const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 	url,
@@ -27,9 +36,15 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { user } = useAuth();
-	const { data } = useHrUsersByUUID(updatedData?.uuid as string);
-	const { data: departmentData } = useOtherDepartment<IFormSelectOption[]>();
-	const { data: designationData } = useOtherDesignation<IFormSelectOption[]>();
+	const { data } = useHrEmployeesByUUID(updatedData?.uuid as string);
+
+	const { data: departments } = useOtherDepartment<IFormSelectOption[]>();
+	const { data: subDepartments } = useOtherSubDepartment<IFormSelectOption[]>();
+	const { data: designations } = useOtherDesignation<IFormSelectOption[]>();
+	const { data: workplaces } = useOtherWorkplace<IFormSelectOption[]>();
+	const { data: leavePolicies } = useOtherLeavePolicy<IFormSelectOption[]>();
+	const { data: employmentTypes } = useOtherEmploymentType<IFormSelectOption[]>();
+	const { data: shiftGroups } = useOtherShiftGroup<IFormSelectOption[]>();
 
 	const form = useRHF(EMPLOYEE_SCHEMA(isUpdate) as any, EMPLOYEE_NULL);
 
@@ -55,7 +70,6 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 				url: `${url}/${updatedData?.uuid}`,
 				updatedData: {
 					...values,
-					user_type: 'employee',
 					updated_at: getDateTime(),
 				},
 				onClose,
@@ -66,7 +80,6 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 				url,
 				newData: {
 					...values,
-					user_type: 'employee',
 					created_at: getDateTime(),
 					created_by: user?.uuid,
 					uuid: nanoid(),
@@ -81,62 +94,133 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 			isSmall
 			open={open}
 			setOpen={onClose}
-			title={isUpdate ? 'Update Employ' : 'Add Employ'}
+			title={isUpdate ? 'Update Employee' : 'Add Employee'}
 			form={form}
 			onSubmit={onSubmit}
+			containerClassName='space-y-6'
 		>
-			<div className='grid grid-cols-3 gap-4'>
-				{
-					<FormField
-						control={form.control}
-						name='department_uuid'
-						render={(props) => (
-							<CoreForm.ReactSelect
-								label='Department'
-								placeholder='Select Department'
-								options={departmentData!}
-								{...props}
-							/>
-						)}
-					/>
-				}
-				{
-					<FormField
-						control={form.control}
-						name='designation_uuid'
-						render={(props) => (
-							<CoreForm.ReactSelect
-								label='Designation'
-								placeholder='Select Designation'
-								options={designationData!}
-								{...props}
-							/>
-						)}
-					/>
-				}
-			</div>
 			<div className='grid grid-cols-2 gap-4'>
 				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
+				<FormField
+					control={form.control}
+					name='employee_id'
+					render={(props) => <CoreForm.Input {...props} />}
+				/>
 				<FormField control={form.control} name='email' render={(props) => <CoreForm.Input {...props} />} />
-				<FormField control={form.control} name='ext' render={(props) => <CoreForm.Input {...props} />} />
-				<FormField control={form.control} name='phone' render={(props) => <CoreForm.Phone {...props} />} />
+				<FormField
+					control={form.control}
+					name='pass'
+					render={(props) => <CoreForm.Input type='password' label='Password' {...props} />}
+				/>
+				<FormField control={form.control} name='gender' render={(props) => <CoreForm.Gender {...props} />} />
+				<FormField
+					control={form.control}
+					name='confirm_pass'
+					render={(props) => <CoreForm.Input type='password' label='Confirm Password' {...props} />}
+				/>
 			</div>
-			{!isUpdate && (
-				<div className='grid grid-cols-2 gap-4'>
-					<FormField
-						control={form.control}
-						name='pass'
-						render={(props) => <CoreForm.Input label='Password' type={'password'} {...props} />}
-					/>
-					<FormField
-						control={form.control}
-						name='repeatPass'
-						render={(props) => <CoreForm.Input label='Repeat Password' type={'password'} {...props} />}
-					/>
-				</div>
-			)}
 
-			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
+			<Accordion type='single' collapsible>
+				<AccordionItem value='advance-options' className='w-full border-b-0'>
+					<AccordionTrigger className='!h-fit w-40 rounded-md bg-accent px-3 py-2 text-sm text-white'>
+						Advance Options
+					</AccordionTrigger>
+					<AccordionContent className='pt-4'>
+						<div className='grid grid-cols-2 gap-4'>
+							<FormField
+								control={form.control}
+								name='start_date'
+								render={(props) => <CoreForm.DatePicker {...props} />}
+							/>
+							<FormField
+								control={form.control}
+								name='workplace_uuid'
+								render={(props) => (
+									<CoreForm.Select label='Workplace' options={workplaces || []} {...props} />
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='designation_uuid'
+								render={(props) => (
+									<CoreForm.Select label='Designation' options={designations || []} {...props} />
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='report_position'
+								render={(props) => <CoreForm.Input {...props} />}
+							/>
+							<FormField
+								control={form.control}
+								name='department_uuid'
+								render={(props) => (
+									<CoreForm.Select label='Department' options={departments || []} {...props} />
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='rfid'
+								render={(props) => <CoreForm.Input label='RFID' {...props} />}
+							/>
+
+							<FormField
+								control={form.control}
+								name='sub_department_uuid'
+								render={(props) => (
+									<CoreForm.Select label='Sub Department' options={subDepartments || []} {...props} />
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name='primary_display_text'
+								render={(props) => <CoreForm.Input label='Primary Display Text' {...props} />}
+							/>
+
+							<FormField
+								control={form.control}
+								name='leave_policy_uuid'
+								render={(props) => (
+									<CoreForm.Select label='Leave Policy' options={leavePolicies || []} {...props} />
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name='secondary_display_text'
+								render={(props) => <CoreForm.Input label='Secondary Display Text' {...props} />}
+							/>
+
+							<FormField
+								control={form.control}
+								name='employment_type_uuid'
+								render={(props) => (
+									<CoreForm.Select
+										label='Employment Type'
+										options={employmentTypes || []}
+										{...props}
+									/>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name='end_date'
+								render={(props) => <CoreForm.DatePicker {...props} />}
+							/>
+
+							<FormField
+								control={form.control}
+								name='shift_group_uuid'
+								render={(props) => (
+									<CoreForm.Select label='Shift Group' options={shiftGroups || []} {...props} />
+								)}
+							/>
+						</div>
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
 		</AddModal>
 	);
 };

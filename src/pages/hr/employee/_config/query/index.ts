@@ -9,7 +9,7 @@ import { hrQK } from './queryKeys';
 
 export const useHrUsers = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.user(query || ''),
+		queryKey: hrQK.user(query||''),
 		url: `/hr/user?${query}`,
 	});
 
@@ -24,20 +24,6 @@ export const useHrCanAccess = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.userCanAccess(uuid),
 		url: `/hr/user/can-access/${uuid}`,
-		enabled: !!uuid,
-	});
-
-// * Employee
-export const useHrEmployees = <T>() =>
-	useTQuery<T>({
-		queryKey: hrQK.employees(),
-		url: `/hr/employee`,
-	});
-
-export const useHrEmployeesByUUID = <T>(uuid: string) =>
-	useTQuery<T>({
-		queryKey: hrQK.employeesByUUID(uuid),
-		url: `/hr/employee/${uuid}`,
 		enabled: !!uuid,
 	});
 
