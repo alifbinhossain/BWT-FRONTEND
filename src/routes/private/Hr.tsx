@@ -8,6 +8,8 @@ const EmployeeType = lazy(() => import('@/pages/hr/settings/employee-types'));
 const Holiday = lazy(() => import('@/pages/hr/settings/holidays'));
 const SpecialDays = lazy(() => import('@/pages/hr/settings/specials-days'));
 const SubDepartment = lazy(() => import('@/pages/hr/settings/sub-departments'));
+const LeavePolicy = lazy(() => import('@/pages/hr/leave/policy'));
+const LeaveCategory = lazy(() => import('@/pages/hr/leave/categories'));
 const WorkPlace = lazy(() => import('@/pages/hr/settings/workplace'));
 const HrRoutes: IRoute[] = [
 	{
@@ -79,6 +81,25 @@ const HrRoutes: IRoute[] = [
 						path: '/hr/special-holidays',
 						element: <SpecialDays />,
 						page_name: 'admin__special_holiday',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+				],
+			},
+			{
+				name: 'Leave',
+				children: [
+					{
+						name: 'Leave Policy',
+						path: '/hr/leave-policy',
+						element: <LeavePolicy />,
+						page_name: 'admin__leave_policy',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Leave Categories',
+						path: '/hr/leave-categories',
+						element: <LeaveCategory />,
+						page_name: 'admin__leave_categories',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 				],
