@@ -2,9 +2,9 @@
 import React from 'react';
 import { CheckboxProps } from '@radix-ui/react-checkbox';
 import { OTPInputProps } from 'input-otp';
+import { DayPickerProps } from 'react-day-picker';
 import { ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStateReturn } from 'react-hook-form';
 
-import { CalendarProps } from '@/components/ui/calendar';
 import { InputProps } from '@/components/ui/input';
 import { TextareaProps } from '@/components/ui/textarea';
 
@@ -152,7 +152,8 @@ export interface FormDatePickerProps {
 	icon?: React.ReactNode;
 	disableLabel?: boolean;
 	className?: string;
-	calendarProps?: CalendarProps;
+	calendarProps?: DayPickerProps;
+	disabled?: boolean;
 }
 
 // * form-checkbox

@@ -8,12 +8,21 @@ export const useOtherHR = <T>() =>
 		queryKey: otherQK.hr(),
 		url: `/other/hr/value/label`,
 	});
+
 //* GET OTHER DEPARTMENT
 export const useOtherDepartment = <T>() =>
 	useTQuery<T>({
 		queryKey: otherQK.department(),
 		url: `/other/department/value/label`,
 	});
+
+//* GET OTHER SUB DEPARTMENT
+export const useOtherSubDepartment = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.subDepartment(),
+		url: `/other/sub-department/value/label`,
+	});
+
 //* GET OTHER Designation
 export const useOtherDesignation = <T>() =>
 	useTQuery<T>({
@@ -34,12 +43,6 @@ export const useOtherBrand = <T>() =>
 		queryKey: otherQK.brand(),
 		url: `/other/brand/value/label`,
 	});
-//* GET OTHER MODEL
-export const useOtherModelByQuery = <T>(query: string) =>
-	useTQuery<T>({
-		queryKey: otherQK.modelByQuery(query),
-		url: `/other/model/value/label?${query}`,
-	});
 
 //* GET OTHER MODEL
 export const useOtherModel = <T>() =>
@@ -48,30 +51,40 @@ export const useOtherModel = <T>() =>
 		url: `/other/model/value/label`,
 	});
 
+export const useOtherModelByQuery = <T>(query: string) =>
+	useTQuery<T>({
+		queryKey: otherQK.modelByQuery(query),
+		url: `/other/model/value/label?${query}`,
+	});
+
 //* GET OTHER SIZE
 export const useOtherSize = <T>() =>
 	useTQuery<T>({
 		queryKey: otherQK.size(),
 		url: `/other/size/value/label`,
 	});
+
 //* GET OTHER CATEGORY
 export const useOtherCategory = <T>() =>
 	useTQuery<T>({
 		queryKey: otherQK.category(),
 		url: `/other/category/value/label`,
 	});
+
 //* GET OTHER PRODUCT
 export const useOtherProduct = <T>(query?: string) =>
 	useTQuery<T>({
 		queryKey: otherQK.product(),
 		url: query ? `/other/product/value/label${query}` : `/other/product/value/label`,
 	});
+
 //* GET OTHER VENDOR
 export const useOtherVendor = <T>() =>
 	useTQuery<T>({
 		queryKey: otherQK.vendor(),
 		url: `/other/vendor/value/label`,
 	});
+
 //* GET OTHER STOCK
 export const useOtherStock = <T>() =>
 	useTQuery<T>({
@@ -85,12 +98,14 @@ export const useOtherBranch = <T>() =>
 		queryKey: otherQK.branch(),
 		url: `/other/branch/value/label`,
 	});
+
 //* GET OTHER PURCHASE
 export const useOtherPurchase = <T>() =>
 	useTQuery<T>({
 		queryKey: otherQK.purchase(),
 		url: `/other/purchase/value/label`,
 	});
+
 //* GET OTHER WAREHOUSE
 export const useOtherWarehouse = <T>() =>
 	useTQuery<T>({
@@ -188,9 +203,30 @@ export const useOtherZone = <T>() =>
 		url: `/other/zone/value/label`,
 	});
 
-//*GET OTHER WORKPLACE
+//* GET OTHER WORKPLACE
 export const useOtherWorkplace = <T>() =>
 	useTQuery<T>({
-		queryKey: otherQK.workplace(),
+		queryKey: otherQK.workPlace(),
 		url: `/other/workplace/value/label`,
+	});
+
+//* GET OTHER EMPLOYMENT TYPE
+export const useOtherEmploymentType = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.employmentType(),
+		url: `/other/employment-type/value/label`,
+	});
+
+//* GET OTHER SHIFT GROUP
+export const useOtherShiftGroup = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.shiftGroup(),
+		url: `/other/shift-group/value/label`,
+	});
+
+//* GET OTHER LEAVE POLICY
+export const useOtherLeavePolicy = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.leavePolicy(),
+		url: `/other/leave-policy/value/label`,
 	});

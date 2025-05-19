@@ -2,6 +2,7 @@ import FormAddEditWrapper from './add-edit-wrapper';
 import FormCheckbox from './checkbox';
 import FormDatePicker from './date-picker';
 import FormDynamicFields from './form-dynamic-fields';
+import Gender from './gender';
 import FormInput from './input';
 import FormJoinInputSelect from './join-input-select';
 import FormJoinInputUnit from './join-input-unit';
@@ -32,6 +33,7 @@ const Form = {
 	ReactSelectCreate: FormReactSelectCreate,
 	Phone,
 	Otp,
+	Gender,
 };
 
 export default Form;

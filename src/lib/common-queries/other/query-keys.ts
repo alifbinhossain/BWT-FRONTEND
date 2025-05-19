@@ -1,24 +1,28 @@
-import { useOtherWarehouseByQuery } from '.';
-
 const otherQK = {
 	all: () => ['other'],
 
 	//* HR
 	hr: () => [...otherQK.all(), 'hr'],
+
 	//* Department
 	department: () => [...otherQK.all(), 'department'],
+
 	//* Designation
 	designation: () => [...otherQK.all(), 'designation'],
+
 	//* Group
 	group: () => [...otherQK.all(), 'group'],
 
 	//* Brand
 	brand: () => [...otherQK.all(), 'brand'],
+
 	//* Model
 	model: () => [...otherQK.all(), 'model'],
 	modelByQuery: (query: string) => [...otherQK.all(), 'model', query],
+
 	//* Size
 	size: () => [...otherQK.all(), 'size'],
+
 	//* Category
 	category: () => [...otherQK.all(), 'category'],
 
@@ -36,6 +40,7 @@ const otherQK = {
 
 	//* purchase
 	purchase: () => [...otherQK.all(), 'purchase'],
+
 	//* Warehouse
 	warehouse: () => [...otherQK.all(), 'warehouse'],
 	warehouseByQuery: (query: string) => [...otherQK.all(), 'warehouse', query],
@@ -48,29 +53,49 @@ const otherQK = {
 
 	//* Floor
 	floor: () => [...otherQK.all(), 'floor'],
+
 	//* Box
 	box: () => [...otherQK.all(), 'box'],
+
 	//* Problem
 	problem: (query: string) => [...otherQK.all(), 'problem', query],
+
 	//*Section
 	section: () => [...otherQK.all(), 'section'],
+
 	//* User
 	user: () => [...otherQK.all(), 'user'],
 	userByQuery: (query: string) => [...otherQK.all(), 'byUserQuery', query],
 
 	//* Vehicle
 	vehicle: () => [...otherQK.all(), 'vehicle'],
+
 	//*courier
 	courier: () => [...otherQK.all(), 'courier'],
 
 	//* Order
 	order: () => [...otherQK.all(), 'order'],
+
 	//* Accessories
 	accessories: () => [...otherQK.all(), 'accessories'],
+
 	//* Zone
 	zone: () => [...otherQK.all(), 'zone'],
-	//*Workplace
-	workplace: () => [...otherQK.all(), 'workplace'],
+
+	//* Work Place
+	workPlace: () => [...otherQK.all(), 'workPlace'],
+
+	//* Sub Department
+	subDepartment: () => [...otherQK.all(), 'subDepartment'],
+
+	//* Leave Policy
+	leavePolicy: () => [...otherQK.all(), 'leavePolicy'],
+
+	//* Employment Type
+	employmentType: () => [...otherQK.all(), 'employmentType'],
+
+	//* Shift Group
+	shiftGroup: () => [...otherQK.all(), 'shiftGroup'],
 };
 
 export default otherQK;
