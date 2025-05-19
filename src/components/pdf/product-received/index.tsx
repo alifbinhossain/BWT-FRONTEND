@@ -1,16 +1,11 @@
 import { IInfoTableData } from '@/pages/work/_config/columns/columns.type';
 import QRCode from 'qrcode';
 
-
-
 import { DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
 import { DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
 
-
-
 import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
-
 
 export default async function Index(data: IInfoTableData, user: any, baseURl: string) {
 	const headerHeight = 140;
@@ -37,7 +32,10 @@ export default async function Index(data: IInfoTableData, user: any, baseURl: st
 			headerHeight,
 			footerHeight,
 		}),
-
+		info: {
+			title: `Product Received Pdf of ${data?.user_name}-${data?.user_phone}-RCV_Date: ${data?.received_date}`,
+			author: 'Bismillash World Technology',
+		},
 		// * Page Header
 		header: {
 			table: getPageHeader(data, user, GenerateQRCode) as any,

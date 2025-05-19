@@ -61,6 +61,7 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		accessorKey: 'submitted_by',
 		header: 'Submitted By',
 		enableColumnFilter: false,
+		cell: (info) => <span className='capitalize'>{info.getValue() as string}</span>,
 	},
 	{
 		accessorKey: 'is_product_received',

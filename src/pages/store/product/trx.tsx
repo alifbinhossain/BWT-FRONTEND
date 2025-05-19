@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '@/pages/work/order/details/transfer/utills';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -10,7 +12,13 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherBox, useOtherFloor, useOtherRack, useOtherWarehouse } from '@/lib/common-queries/other';
+import {
+	useOtherBox,
+	useOtherFloor,
+	useOtherProduct,
+	useOtherRack,
+	useOtherWarehouse,
+} from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -37,15 +45,30 @@ interface ITrxProps {
 }
 
 const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedData, postData }) => {
-	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
+	const { data: warehouseOptions } = useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
+	const { data: productOptions } = useOtherProduct<ICustomProductsSelectOption[]>();
 
 	const { user } = useAuth();
-	const MAX_QUANTITY = Infinity;
+	const [MAX_QUANTITY, SET_MAX_QUANTITY] = useState(Infinity);
 	const schema = INTERNAL_TRANSFER_SCHEMA.extend({ quantity: z.number().int().positive().max(MAX_QUANTITY) });
 	const form = useRHF(schema, INTERNAL_TRANSFER_NULL);
+	// const from_warehouse = warehouseOptions
+	// 	? warehouseOptions.filter((w) => w.value === form.watch('from_warehouse_uuid'))
+	// 	: [];
+	// const from_warehouse_assignged = from_warehouse[0]?.assigned;
+	// const product = productOptions?.filter((p) => p.value === updatedData?.product_uuid);
+	// console.log(product);
+
+	useEffect(() => {
+		if (updatedData) {
+			SET_MAX_QUANTITY(form.watch('quantity') || Infinity);
+		} else {
+			SET_MAX_QUANTITY(Infinity);
+		}
+	});
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -78,7 +101,11 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 					<CoreForm.ReactSelect
 						label='From'
 						placeholder='Select Warehouse'
-						options={warehouseOptions!}
+						options={
+							warehouseOptions
+								? warehouseOptions.filter((w) => w.value !== form.watch('to_warehouse_uuid'))
+								: []
+						}
 						{...props}
 					/>
 				)}
@@ -90,7 +117,11 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 					<CoreForm.ReactSelect
 						label='To'
 						placeholder='Select Warehouse'
-						options={warehouseOptions!}
+						options={
+							warehouseOptions
+								? warehouseOptions.filter((w) => w.value !== form.watch('from_warehouse_uuid'))
+								: []
+						}
 						{...props}
 					/>
 				)}

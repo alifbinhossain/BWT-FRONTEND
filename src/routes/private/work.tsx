@@ -1,3 +1,4 @@
+import { lazy } from 'react';
 import { Column } from '@/pages/test';
 import Accessories from '@/pages/work/accessories';
 import Zone from '@/pages/work/delivery-zone';
@@ -16,10 +17,28 @@ import RepairingEntry from '@/pages/work/repairing/add-or-update';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
 
+const User = lazy(() => import('@/pages/hr/user'));
+
 const workRoutes: IRoute[] = [
 	{
 		name: 'Work',
 		children: [
+			{
+				name: 'User',
+				path: '/hr/user',
+				element: <User />,
+				page_name: 'admin__user',
+				actions: [
+					'create',
+					'read',
+					'update',
+					'delete',
+					'click_status',
+					'click_reset_password',
+					'click_page_assign',
+					'click_rating_change',
+				],
+			},
 			{
 				name: 'Info',
 				path: '/work/info',

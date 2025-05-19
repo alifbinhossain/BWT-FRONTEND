@@ -3,6 +3,8 @@ import { IChallanTableData } from '@/pages/delivery/_config/columns/columns.type
 import { DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
 import { DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
 
+import { getDateTime } from '@/utils';
+
 import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
 
@@ -26,7 +28,10 @@ export default function Index(data: IChallanTableData, user: any) {
 			headerHeight,
 			footerHeight,
 		}),
-
+		info: {
+			title: `Delivery Challan Pdf of ${data?.customer_name}-${data?.customer_phone}-RCV_Date: ${getDateTime()}`,
+			author: 'Bismillash World Technology',
+		},
 		// * Page Header
 		header: {
 			table: getPageHeader(data, user) as any,
