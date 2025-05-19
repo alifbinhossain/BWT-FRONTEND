@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 
@@ -19,9 +20,12 @@ const FormDatePicker: React.FC<FormDatePickerProps> = ({
 	className,
 	disableLabel,
 	calendarProps,
+	disabled = false, // New prop to disable the field
 }) => {
+	const [open, setOpen] = useState(false);
+
 	return (
-		<FormItem className='w-full space-y-1.5'>
+		<FormItem className='space-y-1.5'>
 			{!disableLabel && (
 				<FormLabel className='flex items-center justify-between capitalize'>
 					<span>
@@ -32,7 +36,7 @@ const FormDatePicker: React.FC<FormDatePickerProps> = ({
 				</FormLabel>
 			)}
 
-			<Popover>
+			<Popover open={open} onOpenChange={setOpen}>
 				<PopoverTrigger asChild>
 					<FormControl>
 						<Button
@@ -43,6 +47,7 @@ const FormDatePicker: React.FC<FormDatePickerProps> = ({
 								!field.value && 'text-muted-foreground',
 								className
 							)}
+							disabled={disabled} // Disable the button when the field is disabled
 						>
 							{field.value ? format(new Date(field.value), 'PPP') : <span>Pick a date</span>}
 							<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
@@ -51,11 +56,24 @@ const FormDatePicker: React.FC<FormDatePickerProps> = ({
 				</PopoverTrigger>
 				<PopoverContent className='w-auto p-0' align='start'>
 					<Calendar
-						initialFocus
 						{...calendarProps}
+						captionLayout={'dropdown'}
 						mode='single'
-						selected={new Date(field.value)}
-						onSelect={(date) => field.onChange(formatDate(date as Date))}
+						selected={field.value ? new Date(field.value) : new Date()}
+						onSelect={(selected, triggerDate) => {
+							if (!disabled) {
+								field.onChange(formatDate(triggerDate as Date));
+								setOpen(false);
+							}
+						}}
+						onMonthChange={(date) => {
+							if (!disabled) {
+								field.onChange(formatDate(date as Date));
+							}
+						}}
+						month={field.value ? new Date(field.value) : undefined}
+						endMonth={new Date(2040, 11)}
+						disabled={disabled} // Disable the calendar when the field is disabled
 					/>
 				</PopoverContent>
 			</Popover>

@@ -1,3 +1,5 @@
+import { IParams } from '@/types';
+
 export const hrQK = {
 	all: () => ['admin'],
 
@@ -8,10 +10,6 @@ export const hrQK = {
 	//* designation
 	designation: () => [...hrQK.all(), 'designation'],
 	designationByUUID: (uuid: string) => [...hrQK.designation(), uuid],
-
-	//* employee
-	employees: () => [...hrQK.all(), 'employees'],
-	employeesByUUID: (uuid: string) => [...hrQK.employees(), uuid],
 
 	//* user
 	userDefault: () => [...hrQK.all(), 'user'],
