@@ -96,6 +96,9 @@ const otherQK = {
 
 	//* Shift Group
 	shiftGroup: () => [...otherQK.all(), 'shiftGroup'],
+
+	//* Employees
+	employees: () => [...otherQK.all(), 'employees'],
 };
 
 export default otherQK;

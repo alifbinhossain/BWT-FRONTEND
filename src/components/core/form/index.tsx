@@ -1,6 +1,7 @@
 import FormAddEditWrapper from './add-edit-wrapper';
 import FormCheckbox from './checkbox';
 import FormDatePicker from './date-picker';
+import DateTimePicker from './date-time-picker';
 import FormDynamicFields from './form-dynamic-fields';
 import Gender from './gender';
 import FormInput from './input';
@@ -34,6 +35,7 @@ const Form = {
 	Phone,
 	Otp,
 	Gender,
+	DateTimePicker,
 };
 
 export default Form;

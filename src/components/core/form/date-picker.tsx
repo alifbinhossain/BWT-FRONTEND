@@ -73,7 +73,6 @@ const FormDatePicker: React.FC<FormDatePickerProps> = ({
 						}}
 						month={field.value ? new Date(field.value) : undefined}
 						endMonth={new Date(2040, 11)}
-						disabled={disabled} // Disable the calendar when the field is disabled
 					/>
 				</PopoverContent>
 			</Popover>

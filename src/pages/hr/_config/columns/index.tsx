@@ -5,7 +5,13 @@ import ResetPassword from '@/components/buttons/reset-password';
 import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
 
-import { IDepartmentTableData, IDesignationTableData, IEmployeeTableData, IUserTableData } from './columns.type';
+import {
+	IDepartmentTableData,
+	IDesignationTableData,
+	IEmployeeTableData,
+	IFieldVisitTableData,
+	IUserTableData,
+} from './columns.type';
 
 // Department Columns
 export const departmentColumns = (): ColumnDef<IDepartmentTableData>[] => [
@@ -316,3 +322,13 @@ export function employeeColumns({
 		},
 	];
 }
+
+// Field Visit Columns
+export const fieldVisitColumns = (): ColumnDef<IFieldVisitTableData>[] => [
+	{
+		accessorKey: 'uuid',
+		header: 'Uuid',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+	},
+];

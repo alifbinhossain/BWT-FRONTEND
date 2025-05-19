@@ -63,3 +63,18 @@ export type IEmployeeTableData = {
 	status: string;
 	remarks: string;
 };
+
+//* Designation
+export type IFieldVisitTableData = {
+	uuid: string;
+	employee_uuid: string;
+	type: string;
+	entry_time: string;
+	exit_time: string;
+	reason: string;
+	area: any;
+	created_by: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+};
