@@ -12,7 +12,7 @@ import {
 	IDepartmentTableData,
 	IDesignationTableData,
 	IEmployeeTableData,
-	IFieldVisitTableData,
+	IManualEntryTableData,
 	IUserTableData,
 } from './columns.type';
 
@@ -331,9 +331,9 @@ export const fieldVisitColumns = ({
 	selectedFieldVisit,
 	setSelectedFieldVisit,
 }: {
-	selectedFieldVisit: IFieldVisitTableData | undefined;
-	setSelectedFieldVisit: React.Dispatch<React.SetStateAction<IFieldVisitTableData | undefined>>;
-}): ColumnDef<IFieldVisitTableData>[] => [
+	selectedFieldVisit: IManualEntryTableData | undefined;
+	setSelectedFieldVisit: React.Dispatch<React.SetStateAction<IManualEntryTableData | undefined>>;
+}): ColumnDef<IManualEntryTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Name',
@@ -349,6 +349,33 @@ export const fieldVisitColumns = ({
 				{info.getValue<string>()}
 			</span>
 		),
+	},
+	{
+		accessorKey: 'entry_time',
+		header: 'Entry Time',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'exit_time',
+		header: 'Exit Time',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+];
+
+export const manualEntryColumns = (): ColumnDef<IManualEntryTableData>[] => [
+	{
+		accessorKey: 'employee_name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'type',
+		header: 'Type',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
 	},
 	{
 		accessorKey: 'entry_time',

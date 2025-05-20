@@ -95,7 +95,7 @@ export type IEmployeeTableData = {
 };
 
 //* Designation
-export interface IFieldVisitTableData {
+export interface IManualEntryTableData {
 	uuid: string;
 	employee_uuid: string;
 	employee_name: string;

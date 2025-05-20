@@ -194,16 +194,17 @@ export const RESET_PASSWORD_NULL: Partial<IResetPasswordSchema> = {
 
 export type IResetPasswordSchema = z.infer<typeof RESET_PASSWORD_SCHEMA>;
 
-//* Field Visit Schema
-export const FIELD_VISIT_SCHEMA = z.object({
+//* Manual Entry Schema
+export const MANUAL_ENTRY_SCHEMA = z.object({
 	employee_uuid: STRING_REQUIRED,
 	entry_time: STRING_REQUIRED,
 	exit_time: STRING_REQUIRED,
 	reason: STRING_REQUIRED,
 	area: STRING_REQUIRED,
+	type: z.enum(['field_visit', 'manual_entry', 'missing_punch']),
 });
 
-export const FIELD_VISIT_NULL: Partial<IFieldVisit> = {
+export const MANUAL_ENTRY_NULL: Partial<IManualEntry> = {
 	employee_uuid: '',
 	entry_time: '',
 	exit_time: '',
@@ -211,4 +212,4 @@ export const FIELD_VISIT_NULL: Partial<IFieldVisit> = {
 	area: '',
 };
 
-export type IFieldVisit = z.infer<typeof FIELD_VISIT_SCHEMA>;
+export type IManualEntry = z.infer<typeof MANUAL_ENTRY_SCHEMA>;

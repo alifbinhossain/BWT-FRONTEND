@@ -18,6 +18,8 @@ const FieldVisit = lazy(() => import('@/pages/hr/field-visit'));
 const FieldVisitAddOrUpdate = lazy(() => import('@/pages/hr/field-visit/add-or-update'));
 const FieldVisitDetails = lazy(() => import('@/pages/hr/field-visit/details'));
 
+const ManualEntry = lazy(() => import('@/pages/hr/manual-entry'));
+
 const HrRoutes: IRoute[] = [
 	{
 		name: 'HR',
@@ -37,6 +39,14 @@ const HrRoutes: IRoute[] = [
 					'click_page_assign',
 					'click_rating_change',
 				],
+			},
+
+			{
+				name: 'Manual Entry',
+				path: '/hr/manual-entry',
+				element: <ManualEntry />,
+				page_name: 'admin__manual_entry',
+				actions: ['create', 'read', 'update', 'delete'],
 			},
 
 			{

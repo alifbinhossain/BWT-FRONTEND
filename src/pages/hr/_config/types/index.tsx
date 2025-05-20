@@ -6,7 +6,7 @@ import {
 	IDepartmentTableData,
 	IDesignationTableData,
 	IEmployeeTableData,
-	IFieldVisitTableData,
+	IManualEntryTableData,
 	IPageAssign,
 	IResetPassword,
 	IUserTableData,
@@ -177,5 +177,35 @@ export interface IDesignationAddOrUpdateProps {
 export type usersWithAccess = { value: string; label: string; can_access: string };
 
 export interface IFieldVisitEmployee extends IEmployeeTableData {
-	field_visit: IFieldVisitTableData[];
+	field_visit: IManualEntryTableData[];
+}
+
+export interface IManualEntryAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: IManualEntryTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
 }
