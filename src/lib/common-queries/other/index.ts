@@ -231,9 +231,15 @@ export const useOtherLeavePolicy = <T>() =>
 		url: `/other/leave-policy/value/label`,
 	});
 
-//* GET OTHER LEAVE POLICY
+//* GET OTHER LEAVE EMPLOYEE
 export const useOtherEmployees = <T>() =>
 	useTQuery<T>({
 		queryKey: otherQK.employees(),
 		url: `/other/employee/value/label`,
+	});
+//* GET OTHER LEAVE CATEGORY
+export const useOtherLeaveCategory = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.leaveCategory(),
+		url: `/other/leave-category/value/label`,
 	});
