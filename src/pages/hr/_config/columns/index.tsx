@@ -2,6 +2,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
+import StatusButton from '@/components/buttons/status';
 import DateTime from '@/components/ui/date-time';
 import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
@@ -11,6 +12,7 @@ import { cn } from '@/lib/utils';
 import {
 	IDepartmentTableData,
 	IDesignationTableData,
+	IDeviceListTableData,
 	IEmployeeTableData,
 	IManualEntryTableData,
 	IUserTableData,
@@ -388,5 +390,44 @@ export const manualEntryColumns = (): ColumnDef<IManualEntryTableData>[] => [
 		header: 'Exit Time',
 		enableColumnFilter: false,
 		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+];
+
+export const deviceListColumns = (): ColumnDef<IDeviceListTableData>[] => [
+	{
+		accessorKey: 'identifier',
+		header: 'Identifier',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'location',
+		header: 'Location',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'connection_status',
+		header: 'Connection Status',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'phone_number',
+		header: 'Phone Number',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'description',
+		header: 'Description',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
 	},
 ];

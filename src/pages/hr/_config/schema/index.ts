@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
 import {
+	BOOLEAN_REQUIRED,
 	FORTUNE_ZIP_EMAIL_PATTERN,
+	NUMBER_REQUIRED,
 	PASSWORD,
 	PHONE_NUMBER_REQUIRED,
 	STRING_NULLABLE,
@@ -195,21 +197,81 @@ export const RESET_PASSWORD_NULL: Partial<IResetPasswordSchema> = {
 export type IResetPasswordSchema = z.infer<typeof RESET_PASSWORD_SCHEMA>;
 
 //* Manual Entry Schema
-export const MANUAL_ENTRY_SCHEMA = z.object({
-	employee_uuid: STRING_REQUIRED,
-	entry_time: STRING_REQUIRED,
-	exit_time: STRING_REQUIRED,
-	reason: STRING_REQUIRED,
-	area: STRING_REQUIRED,
-	type: z.enum(['field_visit', 'manual_entry', 'missing_punch']),
-});
+export const MANUAL_ENTRY_SCHEMA = z
+	.object({
+		employee_uuid: STRING_REQUIRED,
+		device_uuid: STRING_NULLABLE,
+		entry_time: STRING_NULLABLE,
+		exit_time: STRING_NULLABLE,
+		reason: STRING_REQUIRED,
+		area: STRING_NULLABLE,
+		type: z.enum(['field_visit', 'manual_entry', 'missing_punch']),
+	})
+	.superRefine((data, ctx) => {
+		if (data.type === 'field_visit' || data.type === 'manual_entry') {
+			if (!data.entry_time) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Required',
+					path: ['entry_time'],
+				});
+			}
+			if (!data.exit_time) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Required',
+					path: ['exit_time'],
+				});
+			}
+		}
+
+		if (data.type === 'missing_punch') {
+			if (!data.device_uuid) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Required',
+					path: ['device_uuid'],
+				});
+			}
+
+			if (!data.exit_time) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Required',
+					path: ['exit_time'],
+				});
+			}
+		}
+	});
 
 export const MANUAL_ENTRY_NULL: Partial<IManualEntry> = {
 	employee_uuid: '',
+	device_uuid: null,
 	entry_time: '',
 	exit_time: '',
 	reason: '',
-	area: '',
+	area: null,
 };
 
 export type IManualEntry = z.infer<typeof MANUAL_ENTRY_SCHEMA>;
+
+//* Device List Schema
+export const DEVICE_LIST_SCHEMA = z.object({
+	name: STRING_REQUIRED,
+	identifier: NUMBER_REQUIRED,
+	location: STRING_NULLABLE,
+	connection_status: BOOLEAN_REQUIRED,
+	phone_number: STRING_NULLABLE,
+	description: STRING_NULLABLE,
+	remarks: STRING_NULLABLE,
+});
+
+export const DEVICE_LIST_NULL: Partial<IDeviceList> = {
+	name: '',
+	location: null,
+	connection_status: false,
+	phone_number: null,
+	description: null,
+};
+
+export type IDeviceList = z.infer<typeof DEVICE_LIST_SCHEMA>;

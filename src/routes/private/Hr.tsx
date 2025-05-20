@@ -20,6 +20,8 @@ const FieldVisitDetails = lazy(() => import('@/pages/hr/field-visit/details'));
 
 const ManualEntry = lazy(() => import('@/pages/hr/manual-entry'));
 
+const DeviceList = lazy(() => import('@/pages/hr/device-list'));
+
 const HrRoutes: IRoute[] = [
 	{
 		name: 'HR',
@@ -175,6 +177,14 @@ const HrRoutes: IRoute[] = [
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 				],
+			},
+
+			{
+				name: 'Device List',
+				path: '/hr/device-list',
+				element: <DeviceList />,
+				page_name: 'admin__device_list',
+				actions: ['create', 'read', 'update', 'delete'],
 			},
 		],
 	},

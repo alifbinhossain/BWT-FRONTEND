@@ -8,15 +8,17 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherEmployees } from '@/lib/common-queries/other';
+import { useOtherDeviceList, useOtherEmployees } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
+import { cn } from '@/lib/utils';
 import { getDateTime } from '@/utils';
 
+import { IManualEntryTableData } from '../_config/columns/columns.type';
 import { useHrManualEntryByUUID, useHrUsers } from '../_config/query';
 import { IManualEntry, MANUAL_ENTRY_NULL, MANUAL_ENTRY_SCHEMA } from '../_config/schema';
-import { IManualEntryAddOrUpdateProps } from '../_config/types';
+import { IAddOrUpdateProps } from '../_config/types';
 
-const AddOrUpdate: React.FC<IManualEntryAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 	url,
 	open,
 	setOpen,
@@ -33,6 +35,8 @@ const AddOrUpdate: React.FC<IManualEntryAddOrUpdateProps> = ({
 	const { data: employees } = useOtherEmployees<IFormSelectOption[]>();
 
 	const form = useRHF(MANUAL_ENTRY_SCHEMA, MANUAL_ENTRY_NULL);
+
+	const { data: deviceList } = useOtherDeviceList<IFormSelectOption[]>();
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -89,6 +93,7 @@ const AddOrUpdate: React.FC<IManualEntryAddOrUpdateProps> = ({
 				name='employee_uuid'
 				render={(props) => <CoreForm.ReactSelect label='Employee' options={employees || []} {...props} />}
 			/>
+
 			<FormField
 				control={form.control}
 				name='type'
@@ -112,23 +117,34 @@ const AddOrUpdate: React.FC<IManualEntryAddOrUpdateProps> = ({
 					/>
 				)}
 			/>
-
-			<div className='grid grid-cols-2 gap-4'>
+			{form.watch('type') === 'missing_punch' && (
 				<FormField
 					control={form.control}
-					name='entry_time'
+					name='device_uuid'
 					render={(props) => (
-						<CoreForm.DateTimePicker
-							calendarProps={{
-								disabled: (date) => {
-									const exitTime = new Date(form.watch('exit_time') as string);
-									return isAfter(date, exitTime);
-								},
-							}}
-							{...props}
-						/>
+						<CoreForm.ReactSelect label='Select Device' options={deviceList || []} {...props} />
 					)}
 				/>
+			)}
+
+			<div className={cn('grid grid-cols-2 gap-4', { 'grid-cols-1': form.watch('type') === 'missing_punch' })}>
+				{form.watch('type') !== 'missing_punch' && (
+					<FormField
+						control={form.control}
+						name='entry_time'
+						render={(props) => (
+							<CoreForm.DateTimePicker
+								calendarProps={{
+									disabled: (date) => {
+										const exitTime = new Date(form.watch('exit_time') as string);
+										return isAfter(date, exitTime);
+									},
+								}}
+								{...props}
+							/>
+						)}
+					/>
+				)}
 				<FormField
 					control={form.control}
 					name='exit_time'
@@ -145,8 +161,12 @@ const AddOrUpdate: React.FC<IManualEntryAddOrUpdateProps> = ({
 					)}
 				/>
 			</div>
+
 			<FormField control={form.control} name='reason' render={(props) => <CoreForm.Textarea {...props} />} />
-			<FormField control={form.control} name='area' render={(props) => <CoreForm.Input {...props} />} />
+
+			{form.watch('type') === 'field_visit' && (
+				<FormField control={form.control} name='area' render={(props) => <CoreForm.Input {...props} />} />
+			)}
 		</AddModal>
 	);
 };
