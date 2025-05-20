@@ -19,4 +19,9 @@ export const hrQK = {
 	userByUUID: (uuid: string) => [...hrQK.userDefault(), uuid],
 	userCanAccess: (uuid: string) => [...hrQK.userDefault(), 'can-access', uuid],
 	userWithAccess: () => [...hrQK.userDefault(), 'users-with-access'],
+
+	//* field visit
+	fieldVisit: () => [...hrQK.all(), 'field-visit'],
+	fieldVisitByUUID: (uuid: string) => [...hrQK.fieldVisit(), uuid],
+	fieldVisitEmployeeInfoByUUID: (uuid: string) => [...hrQK.fieldVisit(), 'employee-info', uuid],
 };

@@ -230,6 +230,13 @@ export const useOtherLeavePolicy = <T>() =>
 		queryKey: otherQK.leavePolicy(),
 		url: `/other/leave-policy/value/label`,
 	});
+
+//* GET OTHER LEAVE EMPLOYEE
+export const useOtherEmployees = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.employees(),
+		url: `/other/employee/value/label`,
+	});
 //* GET OTHER LEAVE CATEGORY
 export const useOtherLeaveCategory = <T>() =>
 	useTQuery<T>({

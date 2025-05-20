@@ -13,6 +13,11 @@ const LeaveCategory = lazy(() => import('@/pages/hr/leave/categories'));
 const LeaveConfiguration = lazy(() => import('@/pages/hr/leave/configuration'));
 const LeaveConfigurationEntry = lazy(() => import('@/pages/hr/leave/configuration/add-or-update'));
 const WorkPlace = lazy(() => import('@/pages/hr/settings/workplace'));
+
+const FieldVisit = lazy(() => import('@/pages/hr/field-visit'));
+const FieldVisitAddOrUpdate = lazy(() => import('@/pages/hr/field-visit/add-or-update'));
+const FieldVisitDetails = lazy(() => import('@/pages/hr/field-visit/details'));
+
 const HrRoutes: IRoute[] = [
 	{
 		name: 'HR',
@@ -32,6 +37,38 @@ const HrRoutes: IRoute[] = [
 					'click_page_assign',
 					'click_rating_change',
 				],
+			},
+
+			{
+				name: 'Field Visit',
+				path: '/hr/field-visit',
+				element: <FieldVisit />,
+				page_name: 'admin__field_visit',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Field Visit Add',
+				path: '/hr/field-visit/add',
+				element: <FieldVisitAddOrUpdate />,
+				page_name: 'admin__field_visit_add',
+				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Field Visit Update',
+				path: '/hr/field-visit/:uuid/update',
+				element: <FieldVisitAddOrUpdate />,
+				page_name: 'admin__field_visit_update',
+				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Field Visit Details',
+				path: '/hr/field-visit/:uuid/details',
+				element: <FieldVisitDetails />,
+				page_name: 'admin__field_visit_details',
+				hidden: true,
+				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
 				name: 'Settings',
