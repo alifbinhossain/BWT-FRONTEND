@@ -10,6 +10,8 @@ const SpecialDays = lazy(() => import('@/pages/hr/settings/specials-days'));
 const SubDepartment = lazy(() => import('@/pages/hr/settings/sub-departments'));
 const LeavePolicy = lazy(() => import('@/pages/hr/leave/policy'));
 const LeaveCategory = lazy(() => import('@/pages/hr/leave/categories'));
+const LeaveConfiguration = lazy(() => import('@/pages/hr/leave/configuration'));
+const LeaveConfigurationEntry = lazy(() => import('@/pages/hr/leave/configuration/add-or-update'));
 const WorkPlace = lazy(() => import('@/pages/hr/settings/workplace'));
 const HrRoutes: IRoute[] = [
 	{
@@ -100,6 +102,29 @@ const HrRoutes: IRoute[] = [
 						path: '/hr/leave-categories',
 						element: <LeaveCategory />,
 						page_name: 'admin__leave_categories',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Leave Configuration',
+						path: '/hr/leave-configuration',
+						element: <LeaveConfiguration />,
+						page_name: 'admin__leave_configuration',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Leave Configuration Entry',
+						path: '/hr/leave-configuration/entry',
+						element: <LeaveConfigurationEntry />,
+						hidden: true,
+						page_name: 'admin__leave_configuration_entry',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Leave Configuration Update',
+						path: '/hr/leave-configuration/:uuid/update',
+						element: <LeaveConfigurationEntry />,
+						hidden: true,
+						page_name: 'admin__leave_configuration_update',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 				],

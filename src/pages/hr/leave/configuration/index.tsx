@@ -6,21 +6,21 @@ import { useNavigate } from 'react-router-dom';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { infoColumns } from '../_config/columns';
-import { IInfoTableData } from '../_config/columns/columns.type';
-import { useWorkInfo } from '../_config/query';
+import { configurationColumns } from '../_config/columns';
+import { IConfigurationTableData } from '../_config/columns/columns.type';
+import { useHrConfiguration } from '../_config/query';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const Info = () => {
 	const navigate = useNavigate();
-	const { data, isLoading, url, deleteData, refetch } = useWorkInfo<IInfoTableData[]>();
+	const { data, isLoading, url, deleteData, refetch } = useHrConfiguration<IConfigurationTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Work/Info', url, 'work__info'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('Work/Leave Configuration', url, 'admin__leave_configuration'), [url]);
 
-	const handleCreate = () => navigate('/work/info/entry');
-	const handleUpdate = (row: Row<IInfoTableData>) => {
-		navigate(`/work/info/${row.original.uuid}/update`);
+	const handleCreate = () => navigate('/hr/leave-configuration/entry');
+	const handleUpdate = (row: Row<IConfigurationTableData>) => {
+		navigate(`/hr/leave-configuration/${row.original.uuid}/update`);
 	};
 
 	//* Delete Modal state
@@ -31,15 +31,15 @@ const Info = () => {
 	} | null>(null);
 
 	//* Single Delete Handler
-	const handleDelete = (row: Row<IInfoTableData>) => {
+	const handleDelete = (row: Row<IConfigurationTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
-			name: row?.original?.info_id,
+			name: row?.original?.name,
 		});
 	};
 
 	//* Table Columns
-	const columns = infoColumns();
+	const columns = configurationColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

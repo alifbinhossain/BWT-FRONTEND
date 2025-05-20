@@ -27,3 +27,15 @@ export const useHrLeaveCategoryByUUID = <T>(uuid: string) =>
 		url: `/hr/leave-category/${uuid}`,
 		enabled: !!uuid,
 	});
+//*Configuration
+export const useHrConfiguration = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.configuration(),
+		url: '/hr/configuration',
+	});
+export const useHrConfigurationByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.configurationByUUID(uuid),
+		url: `/hr/configuration-entry-details/by/${uuid}`,
+		enabled: !!uuid,
+	});

@@ -9,4 +9,8 @@ export const hrQK = {
 	//* leave category
 	leaveCategory: () => [...hrQK.all(), 'category'],
 	leaveCategoryByUUID: (uuid: string) => [...hrQK.leaveCategory(), uuid],
+
+	//*Configuration
+	configuration: () => [...hrQK.all(), 'configuration'],
+	configurationByUUID: (uuid: string) => [...hrQK.configuration(), uuid],
 };

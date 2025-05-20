@@ -96,6 +96,9 @@ const otherQK = {
 
 	//* Shift Group
 	shiftGroup: () => [...otherQK.all(), 'shiftGroup'],
+
+	//*leave category
+	leaveCategory: () => [...otherQK.all(), 'leaveCategory'],
 };
 
 export default otherQK;
