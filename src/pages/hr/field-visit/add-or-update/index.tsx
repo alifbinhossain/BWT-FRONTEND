@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { isAfter, isBefore } from 'date-fns';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
@@ -119,7 +120,7 @@ const AddOrUpdate = () => {
 									calendarProps={{
 										disabled: (date) => {
 											const exitTime = new Date(form.watch('exit_time') as string);
-											return date > exitTime;
+											return isAfter(date, exitTime);
 										},
 									}}
 									{...props}
@@ -134,7 +135,7 @@ const AddOrUpdate = () => {
 									calendarProps={{
 										disabled: (date) => {
 											const entryDate = new Date(form.watch('entry_time') as string);
-											return date < entryDate;
+											return isBefore(date, entryDate);
 										},
 									}}
 									{...props}
