@@ -74,3 +74,22 @@ export const useHrUsersWithAccess = <T>() =>
 		queryKey: hrQK.userWithAccess(),
 		url: '/other/hr/users-can-access/value/label',
 	});
+
+export const useHrFieldVisit = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.fieldVisit(),
+		url: '/hr/manual-entry?type=field_visit',
+	});
+
+export const useHrFieldVisitByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.fieldVisitByUUID(uuid),
+		url: `/hr/manual-entry/${uuid}`,
+		enabled: !!uuid,
+	});
+export const useHrEmployeeFieldVisitInfoByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.fieldVisitEmployeeInfoByUUID(uuid),
+		url: `/hr/manual-entry-details/by/${uuid}`,
+		enabled: !!uuid,
+	});

@@ -1,3 +1,4 @@
+import { IEmployeeTableData, IFieldVisitTableData } from '@/pages/hr/_config/columns/columns.type';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -5,7 +6,6 @@ import { AxiosError } from 'axios';
 import {
 	IDepartmentTableData,
 	IDesignationTableData,
-	IEmployeeTableData,
 	IPageAssign,
 	IResetPassword,
 	IUserTableData,

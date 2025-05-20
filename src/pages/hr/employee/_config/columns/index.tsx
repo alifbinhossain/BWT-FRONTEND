@@ -1,8 +1,7 @@
+import { IEmployeeTableData } from '@/pages/hr/_config/columns/columns.type';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
-
-import { IEmployeeTableData } from './columns.type';
 
 export const employeeColumns = (): ColumnDef<IEmployeeTableData>[] => [
 	{
@@ -34,7 +33,7 @@ export const employeeColumns = (): ColumnDef<IEmployeeTableData>[] => [
 		header: 'Shift Group',
 	},
 	{
-		accessorKey: 'employment_type_uuid',
+		accessorKey: 'employment_type_name',
 		header: 'Employment Type',
 	},
 	{
