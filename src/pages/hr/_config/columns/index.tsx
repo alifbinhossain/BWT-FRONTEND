@@ -2,8 +2,11 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
+import DateTime from '@/components/ui/date-time';
 import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
+
+import { cn } from '@/lib/utils';
 
 import {
 	IDepartmentTableData,
@@ -272,12 +275,12 @@ export function employeeColumns({
 			header: 'Department',
 			enableColumnFilter: false,
 			cell: (info) => {
-				const { department, designation } = info.row.original;
+				const { department_name, designation_name } = info.row.original;
 
 				return (
 					<div className='flex flex-col'>
-						<span className='capitalize'>{department}</span>
-						<span className='text-xs capitalize text-gray-400'>{designation}</span>
+						<span className='capitalize'>{department_name}</span>
+						<span className='text-xs capitalize text-gray-400'>{designation_name}</span>
 					</div>
 				);
 			},
@@ -324,11 +327,39 @@ export function employeeColumns({
 }
 
 // Field Visit Columns
-export const fieldVisitColumns = (): ColumnDef<IFieldVisitTableData>[] => [
+export const fieldVisitColumns = ({
+	selectedFieldVisit,
+	setSelectedFieldVisit,
+}: {
+	selectedFieldVisit: IFieldVisitTableData | undefined;
+	setSelectedFieldVisit: React.Dispatch<React.SetStateAction<IFieldVisitTableData | undefined>>;
+}): ColumnDef<IFieldVisitTableData>[] => [
 	{
-		accessorKey: 'uuid',
-		header: 'Uuid',
+		accessorKey: 'employee_name',
+		header: 'Name',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
+		cell: (info) => (
+			<span
+				onClick={() => setSelectedFieldVisit(info.row.original)}
+				className={cn(
+					'cursor-pointer',
+					selectedFieldVisit?.uuid === info.row.original.uuid ? 'font-medium text-accent underline' : ''
+				)}
+			>
+				{info.getValue<string>()}
+			</span>
+		),
+	},
+	{
+		accessorKey: 'entry_time',
+		header: 'Entry Time',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'exit_time',
+		header: 'Exit Time',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 ];

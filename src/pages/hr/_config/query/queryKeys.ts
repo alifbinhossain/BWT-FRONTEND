@@ -23,4 +23,5 @@ export const hrQK = {
 	//* field visit
 	fieldVisit: () => [...hrQK.all(), 'field-visit'],
 	fieldVisitByUUID: (uuid: string) => [...hrQK.fieldVisit(), uuid],
+	fieldVisitEmployeeInfoByUUID: (uuid: string) => [...hrQK.fieldVisit(), 'employee-info', uuid],
 };

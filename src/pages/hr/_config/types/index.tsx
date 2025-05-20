@@ -6,6 +6,7 @@ import {
 	IDepartmentTableData,
 	IDesignationTableData,
 	IEmployeeTableData,
+	IFieldVisitTableData,
 	IPageAssign,
 	IResetPassword,
 	IUserTableData,
@@ -174,3 +175,7 @@ export interface IDesignationAddOrUpdateProps {
 }
 
 export type usersWithAccess = { value: string; label: string; can_access: string };
+
+export interface IFieldVisitEmployee extends IEmployeeTableData {
+	field_visit: IFieldVisitTableData[];
+}

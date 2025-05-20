@@ -5,9 +5,9 @@ import { Row } from '@tanstack/react-table';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
+import { IEmployeeTableData } from '../_config/columns/columns.type';
 import { useHrEmployees } from '../_config/query';
 import { employeeColumns } from './_config/columns';
-import { IEmployeeTableData } from './_config/columns/columns.type';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 

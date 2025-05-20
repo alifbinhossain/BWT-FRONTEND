@@ -87,3 +87,9 @@ export const useHrFieldVisitByUUID = <T>(uuid: string) =>
 		url: `/hr/manual-entry/${uuid}`,
 		enabled: !!uuid,
 	});
+export const useHrEmployeeFieldVisitInfoByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.fieldVisitEmployeeInfoByUUID(uuid),
+		url: `/hr/manual-entry-details/by/${uuid}`,
+		enabled: !!uuid,
+	});

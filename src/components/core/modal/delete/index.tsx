@@ -13,7 +13,14 @@ import {
 
 import { IDeleteModalProps } from '../types';
 
-const DeleteModal: React.FC<IDeleteModalProps> = ({ deleteItem, setDeleteItem, url, deleteData, onClose,needRefresh=false }) => {
+const DeleteModal: React.FC<IDeleteModalProps> = ({
+	deleteItem,
+	setDeleteItem,
+	url,
+	deleteData,
+	onClose,
+	needRefresh = false,
+}) => {
 	const handleConfirm = async () => {
 		await deleteData.mutateAsync({
 			url: `${url}/${deleteItem?.id}`,

@@ -69,9 +69,9 @@ const FormDateTimePicker: React.FC<FormDatePickerProps> = ({
 							disabled={disabled}
 						>
 							{field.value ? (
-								format(field.value, 'MM/dd/yyyy hh:mm aa')
+								format(field.value, 'dd/MM/yyyy hh:mm aa')
 							) : (
-								<span>MM/DD/YYYY hh:mm aa</span>
+								<span>DD/MM/YYYY hh:mm aa</span>
 							)}
 							<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
 						</Button>
