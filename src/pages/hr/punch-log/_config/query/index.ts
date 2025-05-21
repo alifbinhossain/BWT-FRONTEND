@@ -9,7 +9,7 @@ import { hrQK } from './queryKeys';
 
 export const useHrUsers = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.user(query || ''),
+		queryKey: hrQK.user(query||''),
 		url: `/hr/user?${query}`,
 	});
 
@@ -24,27 +24,6 @@ export const useHrCanAccess = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.userCanAccess(uuid),
 		url: `/hr/user/can-access/${uuid}`,
-		enabled: !!uuid,
-	});
-
-// * Employee
-export const useHrEmployees = <T>() =>
-	useTQuery<T>({
-		queryKey: hrQK.employees(),
-		url: `/hr/employee`,
-	});
-
-// * Punch log
-export const useHrPunchLogs = <T>() =>
-	useTQuery<T>({
-		queryKey: hrQK.punchLog(),
-		url: '/hr/punch-log',
-	});
-
-export const useHrEmployeesByUUID = <T>(uuid: string) =>
-	useTQuery<T>({
-		queryKey: hrQK.employeesByUUID(uuid),
-		url: `/hr/employee/${uuid}`,
 		enabled: !!uuid,
 	});
 
@@ -80,35 +59,4 @@ export const useHrUsersWithAccess = <T>() =>
 	useTQuery<T>({
 		queryKey: hrQK.userWithAccess(),
 		url: '/other/hr/users-can-access/value/label',
-	});
-
-export const useHrManualEntry = <T>(type?: string) =>
-	useTQuery<T>({
-		queryKey: hrQK.manualEntry(type),
-		url: type ? `/hr/manual-entry?type=${type}` : '/hr/manual-entry',
-	});
-
-export const useHrManualEntryByUUID = <T>(uuid: string) =>
-	useTQuery<T>({
-		queryKey: hrQK.manualEntryByUUID(uuid),
-		url: `/hr/manual-entry/${uuid}`,
-		enabled: !!uuid,
-	});
-export const useHrEmployeeFieldVisitInfoByUUID = <T>(uuid: string) =>
-	useTQuery<T>({
-		queryKey: hrQK.fieldVisitEmployeeInfoByUUID(uuid),
-		url: `/hr/manual-entry-details/by/${uuid}`,
-		enabled: !!uuid,
-	});
-
-export const useHrDeviceList = <T>() =>
-	useTQuery<T>({
-		queryKey: hrQK.deviceList(),
-		url: '/hr/device-list',
-	});
-export const useHrDeviceListByUUID = <T>(uuid: string) =>
-	useTQuery<T>({
-		queryKey: hrQK.deviceListByUUID(uuid),
-		url: `/hr/device-list/${uuid}`,
-		enabled: !!uuid,
 	});

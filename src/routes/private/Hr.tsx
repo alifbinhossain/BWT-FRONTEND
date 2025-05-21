@@ -22,6 +22,8 @@ const ManualEntry = lazy(() => import('@/pages/hr/manual-entry'));
 
 const DeviceList = lazy(() => import('@/pages/hr/device-list'));
 
+const PunchLog = lazy(() => import('@/pages/hr/punch-log'));
+
 const HrRoutes: IRoute[] = [
 	{
 		name: 'HR',
@@ -184,6 +186,13 @@ const HrRoutes: IRoute[] = [
 				path: '/hr/device-list',
 				element: <DeviceList />,
 				page_name: 'admin__device_list',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Punch Log',
+				path: '/hr/punch-log',
+				element: <PunchLog />,
+				page_name: 'admin__punch_log',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 		],
