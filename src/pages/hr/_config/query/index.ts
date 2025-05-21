@@ -75,15 +75,15 @@ export const useHrUsersWithAccess = <T>() =>
 		url: '/other/hr/users-can-access/value/label',
 	});
 
-export const useHrFieldVisit = <T>() =>
+export const useHrManualEntry = <T>(type?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.fieldVisit(),
-		url: '/hr/manual-entry?type=field_visit',
+		queryKey: hrQK.manualEntry(type),
+		url: type ? `/hr/manual-entry?type=${type}` : '/hr/manual-entry',
 	});
 
-export const useHrFieldVisitByUUID = <T>(uuid: string) =>
+export const useHrManualEntryByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.fieldVisitByUUID(uuid),
+		queryKey: hrQK.manualEntryByUUID(uuid),
 		url: `/hr/manual-entry/${uuid}`,
 		enabled: !!uuid,
 	});
@@ -91,5 +91,17 @@ export const useHrEmployeeFieldVisitInfoByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.fieldVisitEmployeeInfoByUUID(uuid),
 		url: `/hr/manual-entry-details/by/${uuid}`,
+		enabled: !!uuid,
+	});
+
+export const useHrDeviceList = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.deviceList(),
+		url: '/hr/device-list',
+	});
+export const useHrDeviceListByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.deviceListByUUID(uuid),
+		url: `/hr/device-list/${uuid}`,
 		enabled: !!uuid,
 	});

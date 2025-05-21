@@ -7,8 +7,8 @@ import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { fieldVisitColumns } from '../_config/columns';
-import { IFieldVisitTableData } from '../_config/columns/columns.type';
-import { useHrEmployeeFieldVisitInfoByUUID, useHrFieldVisit } from '../_config/query';
+import { IManualEntryTableData } from '../_config/columns/columns.type';
+import { useHrEmployeeFieldVisitInfoByUUID, useHrManualEntry } from '../_config/query';
 import { IFieldVisitEmployee } from '../_config/types';
 import EmployeeInformation from './employee-information';
 
@@ -18,11 +18,11 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 const FieldVisit = () => {
 	const navigate = useNavigate();
 
-	const { data, isLoading, url, deleteData, refetch } = useHrFieldVisit<IFieldVisitTableData[]>();
+	const { data, isLoading, url, deleteData, refetch } = useHrManualEntry<IManualEntryTableData[]>('field_visit');
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Field Visit', url, 'admin__field_visit'), [url]);
 
-	const [selectedFieldVisit, setSelectedFieldVisit] = useState<IFieldVisitTableData>();
+	const [selectedFieldVisit, setSelectedFieldVisit] = useState<IManualEntryTableData>();
 
 	const { data: employeeInfo } = useHrEmployeeFieldVisitInfoByUUID<IFieldVisitEmployee>(
 		selectedFieldVisit?.employee_uuid as string
@@ -30,7 +30,7 @@ const FieldVisit = () => {
 
 	const handleCreate = () => navigate('/hr/field-visit/add');
 
-	const handleUpdate = (row: Row<IFieldVisitTableData>) => {
+	const handleUpdate = (row: Row<IManualEntryTableData>) => {
 		navigate(`/hr/field-visit/${row.original.uuid}/update`);
 	};
 
@@ -42,7 +42,7 @@ const FieldVisit = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<IFieldVisitTableData>) => {
+	const handleDelete = (row: Row<IManualEntryTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
 			name: row?.original?.employee_uuid,
@@ -53,7 +53,7 @@ const FieldVisit = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IFieldVisitTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IManualEntryTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(

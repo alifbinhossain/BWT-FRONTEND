@@ -94,8 +94,8 @@ export type IEmployeeTableData = {
 	report_position: string;
 };
 
-//* Designation
-export interface IFieldVisitTableData {
+//* Manual Entry
+export interface IManualEntryTableData {
 	uuid: string;
 	employee_uuid: string;
 	employee_name: string;
@@ -113,4 +113,21 @@ export interface IFieldVisitTableData {
 	department_name: string;
 	designation_uuid: string;
 	designation_name: string;
+}
+
+//* Device List
+export interface IDeviceListTableData {
+	uuid: string;
+	id: number;
+	name: string;
+	identifier: string;
+	location: string;
+	connection_status: boolean;
+	phone_number: string;
+	description: string;
+	created_by: string;
+	created_by_name: string;
+	created_at: string;
+	updated_at: any;
+	remarks: string;
 }

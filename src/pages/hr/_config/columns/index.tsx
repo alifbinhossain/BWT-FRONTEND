@@ -2,6 +2,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
+import StatusButton from '@/components/buttons/status';
 import DateTime from '@/components/ui/date-time';
 import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
@@ -11,8 +12,9 @@ import { cn } from '@/lib/utils';
 import {
 	IDepartmentTableData,
 	IDesignationTableData,
+	IDeviceListTableData,
 	IEmployeeTableData,
-	IFieldVisitTableData,
+	IManualEntryTableData,
 	IUserTableData,
 } from './columns.type';
 
@@ -331,9 +333,9 @@ export const fieldVisitColumns = ({
 	selectedFieldVisit,
 	setSelectedFieldVisit,
 }: {
-	selectedFieldVisit: IFieldVisitTableData | undefined;
-	setSelectedFieldVisit: React.Dispatch<React.SetStateAction<IFieldVisitTableData | undefined>>;
-}): ColumnDef<IFieldVisitTableData>[] => [
+	selectedFieldVisit: IManualEntryTableData | undefined;
+	setSelectedFieldVisit: React.Dispatch<React.SetStateAction<IManualEntryTableData | undefined>>;
+}): ColumnDef<IManualEntryTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Name',
@@ -361,5 +363,71 @@ export const fieldVisitColumns = ({
 		header: 'Exit Time',
 		enableColumnFilter: false,
 		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+];
+
+export const manualEntryColumns = (): ColumnDef<IManualEntryTableData>[] => [
+	{
+		accessorKey: 'employee_name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'type',
+		header: 'Type',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'entry_time',
+		header: 'Entry Time',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'exit_time',
+		header: 'Exit Time',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+];
+
+export const deviceListColumns = (): ColumnDef<IDeviceListTableData>[] => [
+	{
+		accessorKey: 'identifier',
+		header: 'Identifier',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'name',
+		header: 'Name',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'location',
+		header: 'Location',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'connection_status',
+		header: 'Connection Status',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'phone_number',
+		header: 'Phone Number',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'description',
+		header: 'Description',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue<string>(),
 	},
 ];

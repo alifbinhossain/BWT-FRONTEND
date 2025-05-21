@@ -243,3 +243,10 @@ export const useOtherLeaveCategory = <T>() =>
 		queryKey: otherQK.leaveCategory(),
 		url: `/other/leave-category/value/label`,
 	});
+
+//* GET OTHER DEVICE LIST
+export const useOtherDeviceList = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.deviceList(),
+		url: `/other/device-list/value/label`,
+	});

@@ -101,6 +101,9 @@ const otherQK = {
 
 	//* Employees
 	employees: () => [...otherQK.all(), 'employees'],
+
+	//* Device List
+	deviceList: () => [...otherQK.all(), 'device-list'],
 };
 
 export default otherQK;
