@@ -147,3 +147,44 @@ export interface IPunchLogTableData {
 	updated_at: string;
 	remarks: string;
 }
+
+// apply leave log
+export type IApplyLeaveLogTableData = {
+	uuid: string;
+	employee_uuid: string;
+	employee_name: string;
+	leave_category_uuid: string;
+	leave_category_name: string;
+	year: number;
+	type: string;
+	from_date: string;
+	to_date: string;
+	reason: string;
+	file?: string | null;
+	approved: boolean;
+};
+
+// Manual entry log
+export type IManualEntryLogTableData = {
+	uuid: string;
+	employee_uuid: string;
+	employee_name: string;
+	type: string;
+	entry_time: string | null;
+	exit_time: string | null;
+	reason: string;
+	area: string | null;
+	device_list_uuid: string;
+	approved: boolean;
+};
+
+// Late approval
+// Manual entry log
+export type ILateApprovalTableData = {
+	uuid: string;
+	employee_uuid: string;
+	employee_name: string;
+	type: string;
+	reason: string;
+	approved: boolean;
+};
