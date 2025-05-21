@@ -114,3 +114,19 @@ export interface IFieldVisitTableData {
 	designation_uuid: string;
 	designation_name: string;
 }
+
+//* Punch log
+export interface IPunchLogTableData {
+	uuid: string;
+	employee_uuid: string;
+	employee_name: string;
+	device_list_uuid: string;
+	device_list_name: string;
+	punch_type: string;
+	punch_time: string;
+	created_by: string;
+	created_by_name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+}

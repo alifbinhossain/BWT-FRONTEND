@@ -1,3 +1,5 @@
+import { IParams } from '@/types';
+
 export const hrQK = {
 	all: () => ['admin'],
 
@@ -9,22 +11,10 @@ export const hrQK = {
 	designation: () => [...hrQK.all(), 'designation'],
 	designationByUUID: (uuid: string) => [...hrQK.designation(), uuid],
 
-	//* employee
-	employees: () => [...hrQK.all(), 'employees'],
-	employeesByUUID: (uuid: string) => [...hrQK.employees(), uuid],
-
-	//* Punch log
-	punchLog: () => [...hrQK.all(), 'punch-log'],
-
 	//* user
 	userDefault: () => [...hrQK.all(), 'user'],
 	user: (query: string) => [...hrQK.userDefault(), 'users', query],
 	userByUUID: (uuid: string) => [...hrQK.userDefault(), uuid],
 	userCanAccess: (uuid: string) => [...hrQK.userDefault(), 'can-access', uuid],
 	userWithAccess: () => [...hrQK.userDefault(), 'users-with-access'],
-
-	//* field visit
-	fieldVisit: () => [...hrQK.all(), 'field-visit'],
-	fieldVisitByUUID: (uuid: string) => [...hrQK.fieldVisit(), uuid],
-	fieldVisitEmployeeInfoByUUID: (uuid: string) => [...hrQK.fieldVisit(), 'employee-info', uuid],
 };

@@ -18,6 +18,8 @@ const FieldVisit = lazy(() => import('@/pages/hr/field-visit'));
 const FieldVisitAddOrUpdate = lazy(() => import('@/pages/hr/field-visit/add-or-update'));
 const FieldVisitDetails = lazy(() => import('@/pages/hr/field-visit/details'));
 
+const PunchLog = lazy(() => import('@/pages/hr/punch-log'));
+
 const HrRoutes: IRoute[] = [
 	{
 		name: 'HR',
@@ -165,6 +167,13 @@ const HrRoutes: IRoute[] = [
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 				],
+			},
+			{
+				name: 'Punch Log',
+				path: '/hr/punch-log',
+				element: <PunchLog />,
+				page_name: 'admin__punch_log',
+				actions: ['create', 'read', 'update', 'delete'],
 			},
 		],
 	},
