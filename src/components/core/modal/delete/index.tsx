@@ -20,18 +20,23 @@ const DeleteModal: React.FC<IDeleteModalProps> = ({
 	deleteData,
 	onClose,
 	needRefresh = false,
+	invalidateQueries,
 }) => {
 	const handleConfirm = async () => {
-		await deleteData.mutateAsync({
-			url: `${url}/${deleteItem?.id}`,
-			onClose: () => {
-				onClose?.();
-				setDeleteItem(null);
-				if (needRefresh) {
-					window.location.reload();
-				}
-			},
-		});
+		await deleteData
+			.mutateAsync({
+				url: `${url}/${deleteItem?.id}`,
+				onClose: () => {
+					onClose?.();
+					setDeleteItem(null);
+					if (needRefresh) {
+						window.location.reload();
+					}
+				},
+			})
+			.then(() => {
+				invalidateQueries?.();
+			});
 	};
 
 	return (

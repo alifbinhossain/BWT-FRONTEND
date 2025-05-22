@@ -24,7 +24,7 @@ const DeviceList = lazy(() => import('@/pages/hr/device-list'));
 const DeviceAllocate = lazy(() => import('@/pages/hr/device-list/allocate'));
 
 const PunchLog = lazy(() => import('@/pages/hr/punch-log'));
-const Log = lazy(() => import('@/pages/hr/Log'));
+const PendingApproval = lazy(() => import('@/pages/hr/pending-approval'));
 
 const HrRoutes: IRoute[] = [
 	{
@@ -206,10 +206,10 @@ const HrRoutes: IRoute[] = [
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
-				name: 'Log',
-				path: '/hr/log',
-				element: <Log />,
-				page_name: 'admin__log',
+				name: 'Pending Approval',
+				path: '/hr/pending-approval',
+				element: <PendingApproval />,
+				page_name: 'admin__pending_approval',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 		],

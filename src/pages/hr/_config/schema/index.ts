@@ -283,6 +283,7 @@ export const DEVICE_ALLOCATE_SCHEMA = z
 		entry: z.array(
 			z.object({
 				is_checked: z.boolean(),
+				uuid: STRING_OPTIONAL,
 				employee_uuid: STRING_OPTIONAL,
 				employee_name: STRING_OPTIONAL,
 				is_temporary_access: z.boolean(),
@@ -316,6 +317,7 @@ export const DEVICE_ALLOCATE_NULL: Partial<IDeviceAllocate> = {
 	entry: [
 		{
 			is_checked: false,
+			uuid: '',
 			employee_uuid: '',
 			employee_name: '',
 			is_temporary_access: false,

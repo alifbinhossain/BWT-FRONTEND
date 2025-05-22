@@ -57,6 +57,7 @@ export type FieldDef = {
 	isLoading?: boolean;
 	hidden?: boolean;
 	width?: string;
+	disabled?: boolean;
 } & (
 	| FieldText
 	| FieldNumber

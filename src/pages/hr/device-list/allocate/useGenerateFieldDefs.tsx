@@ -9,26 +9,31 @@ import { IFormSelectOption } from '@core/form/types';
 import { IDeviceAllocate } from '../../_config/schema';
 
 interface IGenerateFieldDefsProps {
+	remove: (index: any) => void;
 	watch?: UseFormWatch<IDeviceAllocate>;
 	form: any;
+	tab: string;
 }
 
-const useGenerateFieldDefs = ({ watch, form }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ remove, watch, form, tab }: IGenerateFieldDefsProps): FieldDef[] => {
 	return [
 		{
 			header: 'Check',
 			accessorKey: 'is_checked',
 			type: 'checkBox',
+			disabled: tab === 'allocated',
 		},
 		{
 			header: 'Employee',
 			accessorKey: 'employee_name',
 			type: 'text',
+			disabled: tab === 'allocated',
 		},
 		{
 			header: 'Temp Acc',
 			accessorKey: 'is_temporary_access',
 			type: 'checkBox',
+			disabled: tab === 'allocated',
 		},
 		{
 			header: 'From',
@@ -39,7 +44,9 @@ const useGenerateFieldDefs = ({ watch, form }: IGenerateFieldDefsProps): FieldDe
 					<FormField
 						control={form.control}
 						name={`entry.${index}.temporary_from_date`}
-						render={(props) => <CoreForm.DatePicker disableLabel {...props} />}
+						render={(props) => (
+							<CoreForm.DatePicker disableLabel disabled={tab === 'allocated'} {...props} />
+						)}
 					/>
 				);
 			},
@@ -53,19 +60,22 @@ const useGenerateFieldDefs = ({ watch, form }: IGenerateFieldDefsProps): FieldDe
 					<FormField
 						control={form.control}
 						name={`entry.${index}.temporary_to_date`}
-						render={(props) => <CoreForm.DatePicker disableLabel {...props} />}
+						render={(props) => (
+							<CoreForm.DatePicker disableLabel disabled={tab === 'allocated'} {...props} />
+						)}
 					/>
 				);
 			},
 		},
-		// {
-		// 	header: 'Actions',
-		// 	accessorKey: 'actions',
-		// 	type: 'custom',
-		// 	component: (index: number) => {
-		// 		return <FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />;
-		// 	},
-		// },
+		{
+			header: 'Actions',
+			accessorKey: 'actions',
+			type: 'custom',
+			hidden: tab === 'un-allocated',
+			component: (index: number) => {
+				return <FieldActionButton handleRemove={remove} index={index} />;
+			},
+		},
 	];
 };
 

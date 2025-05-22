@@ -60,6 +60,7 @@ export interface IDeleteModalProps {
 	>;
 	needRefresh?: boolean;
 	onClose?: () => void;
+	invalidateQueries?: () => void;
 }
 
 export interface IAddModalProps {
