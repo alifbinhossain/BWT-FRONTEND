@@ -2,7 +2,12 @@ import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { IPolicyTableData } from '../columns/columns.type';
+import {
+	IApplyLeaveTableData,
+	ICategoryTableData,
+	IConfigurationTableData,
+	IPolicyTableData,
+} from '../columns/columns.type';
 
 //* Policy
 
@@ -40,7 +45,7 @@ export interface ICategoryAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IPolicyTableData | null;
+	updatedData?: ICategoryTableData | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,
@@ -71,7 +76,38 @@ export interface IConfigurationAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IPolicyTableData | null;
+	updatedData?: IConfigurationTableData | null;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	updateData: UseMutationResult<
+		IResponse<any>,
+		AxiosError<IResponse<any>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+//* Configuration
+
+export interface IApplyLeaveAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: IApplyLeaveTableData | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	postData: UseMutationResult<
 		IResponse<any>,

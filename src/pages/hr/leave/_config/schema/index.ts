@@ -123,7 +123,7 @@ export const LEAVE_APPLY_NULL: Partial<ILeaveApply> = {
 	from_date: '',
 	to_date: '',
 	reason: '',
-	file: null,
+	file: undefined,
 	approved: false,
 	remarks: null,
 };

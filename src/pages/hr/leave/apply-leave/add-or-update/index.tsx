@@ -13,8 +13,8 @@ import { useOtherEmployees } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { useHrEmployeeFieldVisitInfoByUUID, useHrFieldVisit, useHrFieldVisitByUUID } from '../../_config/query';
-import { FIELD_VISIT_NULL, FIELD_VISIT_SCHEMA, IFieldVisit } from '../../_config/schema';
+import { useHrApplyLeave, useHrApplyLeaveByUUID } from '../../_config/query';
+import { ILeaveApply, LEAVE_APPLY_NULL, LEAVE_APPLY_SCHEMA } from '../../_config/schema';
 import { IFieldVisitEmployee } from '../../_config/types';
 import EmployeeInformation from '../employee-information';
 
@@ -24,17 +24,17 @@ const AddOrUpdate = () => {
 	const { uuid } = useParams();
 	const isUpdate = !!uuid;
 
-	const { updateData, postData } = useHrFieldVisit();
+	const { updateData, postData } = useHrApplyLeave();
 
-	const { data, invalidateQuery: invalidateFieldVisit } = useHrFieldVisitByUUID<IFieldVisit>(uuid as string);
+	const { data, invalidateQuery: invalidateFieldVisit } = useHrApplyLeaveByUUID<ILeaveApply>(uuid as string);
 
 	const { data: employees } = useOtherEmployees<IFormSelectOption[]>();
 
-	const form = useRHF(FIELD_VISIT_SCHEMA, FIELD_VISIT_NULL);
+	const form = useRHF(LEAVE_APPLY_SCHEMA, LEAVE_APPLY_NULL);
 
-	const { data: employeeInfo } = useHrEmployeeFieldVisitInfoByUUID<IFieldVisitEmployee>(
-		form.watch('employee_uuid') as string
-	);
+	// const { data: employeeInfo } = useHrEmployeeFieldVisitInfo<IFieldVisitEmployee>(
+	// 	form.watch('employee_uuid') as string
+	// );
 
 	useEffect(() => {
 		if (isUpdate && data) {
@@ -43,7 +43,7 @@ const AddOrUpdate = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
 
-	async function onSubmit(values: IFieldVisit) {
+	async function onSubmit(values: ILeaveApply) {
 		if (isUpdate) {
 			updateData
 				.mutateAsync({
