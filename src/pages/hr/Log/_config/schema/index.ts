@@ -78,13 +78,3 @@ export const EMPLOYEE_NULL: Partial<IEmployee> = {
 };
 
 export type IEmployee = z.infer<ReturnType<typeof EMPLOYEE_SCHEMA>>;
-
-export const EMPLOYEE_DEVICE_SCHEMA = z.object({
-	device_list_uuid: z.array(STRING_REQUIRED),
-});
-
-export const EMPLOYEE_DEVICE_NULL: Partial<IEmployeeDevice> = {
-	device_list_uuid: [],
-};
-
-export type IEmployeeDevice = z.infer<typeof EMPLOYEE_DEVICE_SCHEMA>;

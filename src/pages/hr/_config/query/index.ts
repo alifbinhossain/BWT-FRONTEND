@@ -34,11 +34,33 @@ export const useHrEmployees = <T>() =>
 		url: `/hr/employee`,
 	});
 
+// * Device permission
+export const useDevicePermission = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.devicePermission(),
+		url: `/hr/device-permission`,
+	});
+
+// ? LOGS
 // * Punch log
 export const useHrPunchLogs = <T>() =>
 	useTQuery<T>({
 		queryKey: hrQK.punchLog(),
 		url: '/hr/punch-log',
+	});
+
+// * Apply leave log
+export const useHrApplyLeaveLog = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.applyLeaveLog(),
+		url: '/hr/apply-leave',
+	});
+
+// * Manual entry log
+export const useHrManualEntryLog = <T>(query?: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.manualEntryLog(query),
+		url: query ? `/hr/manual-entry?${query}` : '/hr/manual-entry',
 	});
 
 export const useHrEmployeesByUUID = <T>(uuid: string) =>

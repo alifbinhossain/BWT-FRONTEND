@@ -2,6 +2,9 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 
+import { IFormSelectOption } from '@/components/core/form/types';
+
+import { useOtherDeviceList } from '@/lib/common-queries/other';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
@@ -10,6 +13,7 @@ import { useHrEmployees } from '../_config/query';
 import { employeeColumns } from './_config/columns';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
+const AddOrUpdateDevice = lazy(() => import('./add-or-update-device'));
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
@@ -25,6 +29,7 @@ const User = () => {
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+	const [isOpenDeviceModal, setIsOpenDeviceModal] = useState(false);
 
 	const handleCreate = () => {
 		setIsOpenAddModal(true);
@@ -67,8 +72,14 @@ const User = () => {
 		);
 	};
 
+	const [employeeData, setEmployeeData] = useState<IEmployeeTableData | null>(null);
+	const handleDevices = async (row: Row<IEmployeeTableData>) => {
+		setEmployeeData(row.original);
+		setIsOpenDeviceModal(true);
+	};
+
 	// Table Columns
-	const columns = employeeColumns();
+	const columns = employeeColumns({ handleDevices });
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -97,6 +108,18 @@ const User = () => {
 							url,
 							open: isOpenAddModal,
 							setOpen: setIsOpenAddModal,
+							updatedData,
+							setUpdatedData,
+							postData,
+							updateData,
+						}}
+					/>,
+					<AddOrUpdateDevice
+						{...{
+							url: '/hr/device-permission',
+							open: isOpenDeviceModal,
+							setOpen: setIsOpenDeviceModal,
+							employeeData,
 							updatedData,
 							setUpdatedData,
 							postData,

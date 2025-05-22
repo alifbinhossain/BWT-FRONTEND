@@ -1,4 +1,4 @@
-import { IEmployeeTableData, IManualEntryTableData } from '@/pages/hr/_config/columns/columns.type';
+import { IEmployeeTableData, IFieldVisitTableData } from '@/pages/hr/_config/columns/columns.type';
 import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -48,37 +48,6 @@ export interface IEmployeeAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IEmployeeTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-export interface IEmployeeDeviceAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	employeeData?: IEmployeeTableData | null;
 	updatedData?: IEmployeeTableData | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	postData: UseMutationResult<
