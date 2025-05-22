@@ -21,6 +21,7 @@ const FieldVisitDetails = lazy(() => import('@/pages/hr/field-visit/details'));
 const ManualEntry = lazy(() => import('@/pages/hr/manual-entry'));
 
 const DeviceList = lazy(() => import('@/pages/hr/device-list'));
+const DeviceAllocate = lazy(() => import('@/pages/hr/device-list/allocate'));
 
 const PunchLog = lazy(() => import('@/pages/hr/punch-log'));
 const Log = lazy(() => import('@/pages/hr/Log'));
@@ -190,6 +191,14 @@ const HrRoutes: IRoute[] = [
 				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
+				name: 'Device Allocate',
+				path: '/hr/device-allocate/:uuid',
+				element: <DeviceAllocate />,
+				page_name: 'admin__device_allocate',
+				actions: ['create', 'read', 'update', 'delete'],
+				hidden: true,
+			},
+			{
 				name: 'Punch Log',
 				path: '/hr/punch-log',
 				element: <PunchLog />,
@@ -203,7 +212,6 @@ const HrRoutes: IRoute[] = [
 				page_name: 'admin__log',
 				actions: ['create', 'read', 'update', 'delete'],
 			},
-			
 		],
 	},
 ];

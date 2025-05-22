@@ -10,12 +10,13 @@ export const hrQK = {
 	designationByUUID: (uuid: string) => [...hrQK.designation(), uuid],
 
 	//* employee
-	employees: () => [...hrQK.all(), 'employees'],
+	employees: (query?: string) => [...hrQK.all(), 'employees', query],
 	employeesByUUID: (uuid: string) => [...hrQK.employees(), uuid],
 
 	// * Device Permission
-	devicePermission: () => [...hrQK.all(), 'device-permission'],
+	devicePermission: (query?: string) => [...hrQK.all(), 'device-permission', query],
 	devicePermissionByUUID: (uuid: string) => [...hrQK.devicePermission(), uuid],
+	deviceAllocation: (uuid?: string) => [...hrQK.all(), 'allocation', uuid],
 
 	//* Punch log
 	punchLog: () => [...hrQK.all(), 'punch-log'],

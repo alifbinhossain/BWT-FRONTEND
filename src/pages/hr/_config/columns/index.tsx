@@ -3,6 +3,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
 import StatusButton from '@/components/buttons/status';
+import { Button } from '@/components/ui/button';
 import DateTime from '@/components/ui/date-time';
 import ReactSelect from '@/components/ui/react-select';
 import { Switch } from '@/components/ui/switch';
@@ -393,7 +394,11 @@ export const manualEntryColumns = (): ColumnDef<IManualEntryTableData>[] => [
 	},
 ];
 
-export const deviceListColumns = (): ColumnDef<IDeviceListTableData>[] => [
+export const deviceListColumns = ({
+	handleDevices,
+}: {
+	handleDevices: (row: Row<any>) => void;
+}): ColumnDef<IDeviceListTableData>[] => [
 	{
 		accessorKey: 'identifier',
 		header: 'Identifier',
@@ -429,5 +434,11 @@ export const deviceListColumns = (): ColumnDef<IDeviceListTableData>[] => [
 		header: 'Description',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue<string>(),
+	},
+	{
+		accessorKey: 'employee',
+		header: 'Employees',
+		enableColumnFilter: false,
+		cell: (info) => <Button onClick={() => handleDevices(info.row)}>Assign Employee</Button>,
 	},
 ];

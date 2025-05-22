@@ -6,6 +6,7 @@ import {
 	NUMBER_REQUIRED,
 	PASSWORD,
 	PHONE_NUMBER_REQUIRED,
+	STRING,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
 	STRING_REQUIRED,
@@ -275,3 +276,53 @@ export const DEVICE_LIST_NULL: Partial<IDeviceList> = {
 };
 
 export type IDeviceList = z.infer<typeof DEVICE_LIST_SCHEMA>;
+
+// * Device Allocate Schema
+export const DEVICE_ALLOCATE_SCHEMA = z
+	.object({
+		entry: z.array(
+			z.object({
+				is_checked: z.boolean(),
+				employee_uuid: STRING_OPTIONAL,
+				employee_name: STRING_OPTIONAL,
+				is_temporary_access: z.boolean(),
+				temporary_from_date: z.string().nullable(),
+				temporary_to_date: z.string().nullable(),
+			})
+		),
+	})
+	.superRefine((data, ctx) => {
+		data.entry.forEach((item, index) => {
+			if (item.is_temporary_access) {
+				if (!item.temporary_from_date) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'Required',
+						path: ['entry', index, 'temporary_from_date'],
+					});
+				}
+				if (!item.temporary_to_date) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'Required',
+						path: ['entry', index, 'temporary_to_date'],
+					});
+				}
+			}
+		});
+	});
+
+export const DEVICE_ALLOCATE_NULL: Partial<IDeviceAllocate> = {
+	entry: [
+		{
+			is_checked: false,
+			employee_uuid: '',
+			employee_name: '',
+			is_temporary_access: false,
+			temporary_from_date: null,
+			temporary_to_date: null,
+		},
+	],
+};
+
+export type IDeviceAllocate = z.infer<typeof DEVICE_ALLOCATE_SCHEMA>;
