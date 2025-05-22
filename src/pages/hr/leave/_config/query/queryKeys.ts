@@ -13,4 +13,8 @@ export const hrQK = {
 	//*Configuration
 	configuration: () => [...hrQK.all(), 'configuration'],
 	configurationByUUID: (uuid: string) => [...hrQK.configuration(), uuid],
+
+	//*Apply Leave
+	applyLeave: () => [...hrQK.all(), 'apply-leave'],
+	applyLeaveByUUID: (uuid: string) => [...hrQK.applyLeave(), uuid],
 };

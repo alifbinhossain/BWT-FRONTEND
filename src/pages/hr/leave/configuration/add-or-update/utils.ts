@@ -13,29 +13,21 @@ export const businessTypeOptions = [
 	},
 ];
 
-export const platformTypeOptions = [
+export const applicabilityOptions = [
 	{
-		label: "What's App",
-		value: 'whatsapp',
+		label: 'Both',
+		value: 'both',
 	},
 	{
-		label: 'YouTube',
-		value: 'youtube',
+		label: 'Male',
+		value: 'male',
 	},
 	{
-		label: 'Facebook',
-		value: 'facebook',
+		label: 'Female',
+		value: 'female',
 	},
 	{
-		label: 'Instagram',
-		value: 'instagram',
-	},
-	{
-		label: 'Person',
-		value: 'person',
-	},
-	{
-		label: 'None',
-		value: 'none',
+		label: 'Other',
+		value: 'other',
 	},
 ];

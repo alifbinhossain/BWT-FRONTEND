@@ -43,23 +43,34 @@ export const LEAVE_CONFIG_SCHEMA = z.object({
 	leave_policy_uuid: STRING_REQUIRED,
 	remarks: STRING_NULLABLE,
 	configuration_entry: z.array(
-		z.object({
-			uuid: STRING_OPTIONAL,
-			leave_category_uuid: STRING_REQUIRED,
-			number_of_leaves_to_provide_file: NUMBER_OPTIONAL,
-			maximum_number_of_allowed_leaves: NUMBER_DOUBLE_REQUIRED,
-			consecutive_days: NUMBER_DOUBLE_OPTIONAL,
-			maximum_number_of_leaves_to_carry: NUMBER_DOUBLE_OPTIONAL,
-			count_off_days_as_leaves: BOOLEAN_OPTIONAL,
-			enable_previous_day_selection: BOOLEAN_OPTIONAL,
-			maximum_number_of_leave_per_month: NUMBER_DOUBLE_OPTIONAL,
-			previous_date_selected_limit: NUMBER_DOUBLE_OPTIONAL,
-			applicability: z.enum(['both', 'male', 'female', 'other']),
-			eligible_after_joining: NUMBER_DOUBLE_OPTIONAL,
-			enable_pro_rata: BOOLEAN_OPTIONAL,
-			max_avail_time: BOOLEAN_OPTIONAL,
-			enable_earned_leave: BOOLEAN_OPTIONAL,
-		})
+		z
+			.object({
+				uuid: STRING_OPTIONAL,
+				leave_category_uuid: STRING_REQUIRED,
+				number_of_leaves_to_provide_file: NUMBER_OPTIONAL,
+				maximum_number_of_allowed_leaves: NUMBER_DOUBLE_REQUIRED,
+				consecutive_days: NUMBER_DOUBLE_OPTIONAL,
+				maximum_number_of_leaves_to_carry: NUMBER_DOUBLE_OPTIONAL,
+				count_off_days_as_leaves: BOOLEAN_OPTIONAL,
+				enable_previous_day_selection: BOOLEAN_OPTIONAL,
+				maximum_number_of_leave_per_month: NUMBER_DOUBLE_OPTIONAL,
+				previous_date_selected_limit: NUMBER_DOUBLE_OPTIONAL,
+				applicability: z.enum(['both', 'male', 'female', 'other']),
+				eligible_after_joining: NUMBER_DOUBLE_OPTIONAL,
+				enable_pro_rata: BOOLEAN_OPTIONAL,
+				max_avail_time: NUMBER_DOUBLE_OPTIONAL,
+				leave_carry_type: z.enum(['none', 'fixed_amount', 'percentage']),
+				enable_earned_leave: BOOLEAN_OPTIONAL,
+			})
+			.superRefine((value, ctx) => {
+				if (value.enable_previous_day_selection && !value.previous_date_selected_limit) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: 'Required',
+						path: ['previous_date_selected_limit'],
+					});
+				}
+			})
 	),
 });
 
@@ -81,10 +92,40 @@ export const LEAVE_CONFIG_NULL: Partial<ILeaveConfiguration> = {
 			applicability: 'both',
 			eligible_after_joining: 0,
 			enable_pro_rata: false,
-			max_avail_time: false,
+			leave_carry_type: 'fixed_amount',
+			max_avail_time: 0,
 			enable_earned_leave: false,
 		},
 	],
 };
 
 export type ILeaveConfiguration = z.infer<typeof LEAVE_CONFIG_SCHEMA>;
+
+//* Leave Apply
+export const LEAVE_APPLY_SCHEMA = z.object({
+	employee_uuid: STRING_REQUIRED,
+	leave_category_uuid: STRING_REQUIRED,
+	year: STRING_REQUIRED,
+	type: z.enum(['full', 'half']),
+	from_date: STRING_REQUIRED,
+	to_date: STRING_REQUIRED,
+	reason: STRING_REQUIRED,
+	file: STRING_OPTIONAL,
+	approved: BOOLEAN_OPTIONAL,
+	remarks: STRING_NULLABLE,
+});
+
+export const LEAVE_APPLY_NULL: Partial<ILeaveApply> = {
+	employee_uuid: '',
+	leave_category_uuid: '',
+	year: '',
+	type: 'full',
+	from_date: '',
+	to_date: '',
+	reason: '',
+	file: null,
+	approved: false,
+	remarks: null,
+};
+
+export type ILeaveApply = z.infer<typeof LEAVE_APPLY_SCHEMA>;
