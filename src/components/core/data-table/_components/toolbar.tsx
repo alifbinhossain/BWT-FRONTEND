@@ -66,7 +66,6 @@ export function TableToolbar() {
 		onClear,
 		isClear,
 		initialDateRange,
-		otherToolBarComponents,
 	} = useTable();
 
 	const column = table.getColumn('created_at');
@@ -133,7 +132,6 @@ export function TableToolbar() {
 						) : null
 					}
 				/>
-				{otherToolBarComponents}
 				{isFiltered && (
 					<Button
 						aria-label='Reset filters'
@@ -151,7 +149,15 @@ export function TableToolbar() {
 					option='export-csv'
 					render={() =>
 						isValid(startDate) &&
-						isValid(endDate) && <TableExportCSV start_date={startDate} end_date={endDate} />
+						isValid(endDate) && (
+							<TableExportCSV
+								table={table}
+								title={title}
+								isEntry={isEntry}
+								start_date={startDate}
+								end_date={endDate}
+							/>
+						)
 					}
 				/>
 			</div>
@@ -167,7 +173,8 @@ export function TableToolbar() {
 			endDate,
 			onClear,
 			isClear,
-			otherToolBarComponents,
+			isEntry,
+			title,
 		]
 	);
 
