@@ -30,7 +30,8 @@ export type IConfigurationEntryTableData = {
 	applicability: 'both' | 'male' | 'female' | 'other';
 	eligible_after_joining: number;
 	enable_pro_rata: boolean;
-	max_avail_time: boolean;
+	max_avail_time: number;
+	leave_category_name: string;
 	enable_earned_leave: boolean;
 };
 //*Configuration
@@ -39,6 +40,21 @@ export type IConfigurationTableData = {
 	name: string;
 	created_at: string;
 	updated_at: string;
-	remarks: string|null;
+	remarks: string | null;
 	configuration_entry: IConfigurationEntryTableData[];
+};
+//* Apply Leave 
+export type IApplyLeaveTableData = {
+	uuid: string;
+	employee_uuid: string;
+	employee_name: string;
+	leave_category_uuid: string;
+	leave_category_name: string;
+	leave_type: 'earned' | 'unpaid';
+	start_date: string;
+	end_date: string;
+	status: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
 };

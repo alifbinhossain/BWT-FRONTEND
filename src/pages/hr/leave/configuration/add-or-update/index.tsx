@@ -33,7 +33,6 @@ const AddOrUpdate = () => {
 		control: form.control,
 		name: 'configuration_entry',
 	});
-
 	useEffect(() => {
 		if (isUpdate && data) {
 			form.reset(data);
@@ -80,7 +79,7 @@ const AddOrUpdate = () => {
 					};
 
 					return postData.mutateAsync({
-						url: '/hr/configuration',
+						url: '/hr/configuration-entry',
 						newData: newData,
 						isOnCloseNeeded: false,
 					});
@@ -101,7 +100,7 @@ const AddOrUpdate = () => {
 				await Promise.all([info_promise, ...order_entry_promise])
 					.then(() => form.reset(LEAVE_CONFIG_NULL))
 					.then(() => {
-						navigate(`/hr/leave-configuration/${uuid}`);
+						navigate(`/hr/leave-configuration`);
 					});
 			} catch (err) {
 				console.error(`Error with Promise.all: ${err}`);
@@ -138,7 +137,7 @@ const AddOrUpdate = () => {
 		// Create purchase entries
 		const order_entry_entries = [...values.configuration_entry].map((item) => ({
 			...item,
-			info_uuid: configuration_uuid,
+			configuration_uuid: configuration_uuid,
 			uuid: nanoid(),
 			created_at,
 			created_by,
@@ -157,7 +156,7 @@ const AddOrUpdate = () => {
 			await Promise.all([info_promise, ...order_entry_entries_promise])
 				.then(() => form.reset(LEAVE_CONFIG_NULL))
 				.then(() => {
-					navigate(`/hr/leave-configuration/${configuration_uuid}`);
+					navigate(`hr/leave-configuration`);
 				});
 		} catch (err) {
 			console.error(`Error with Promise.all: ${err}`);
@@ -179,7 +178,8 @@ const AddOrUpdate = () => {
 			applicability: 'both',
 			eligible_after_joining: 0,
 			enable_pro_rata: false,
-			max_avail_time: false,
+			leave_carry_type: 'fixed_amount',
+			max_avail_time: 0,
 			enable_earned_leave: false,
 		});
 	};
@@ -220,6 +220,7 @@ const AddOrUpdate = () => {
 			enable_pro_rata: field.enable_pro_rata,
 			max_avail_time: field.max_avail_time,
 			enable_earned_leave: field.enable_earned_leave,
+			leave_carry_type: field.leave_carry_type,
 		});
 	};
 	const fieldDefs = useGenerateFieldDefs({

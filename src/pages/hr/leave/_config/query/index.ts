@@ -39,3 +39,17 @@ export const useHrConfigurationByUUID = <T>(uuid: string) =>
 		url: `/hr/configuration-entry-details/by/${uuid}`,
 		enabled: !!uuid,
 	});
+//* Apply Leave
+export const useHrApplyLeave = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.applyLeave(),
+		url: '/hr/apply-leave',
+	});
+export const useHrApplyLeaveByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.applyLeaveByUUID(uuid),
+		url: `/hr/apply-leave/${uuid}`,
+		enabled: !!uuid,
+	});
+	
+
