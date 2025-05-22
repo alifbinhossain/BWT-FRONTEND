@@ -8,7 +8,10 @@ import LateApproval from './late-approval';
 import ManualEntry from './manual-entry';
 
 const User = () => {
-	const pageInfo = useMemo(() => new PageInfo('Log', '/hr/log', 'admin__log'), []);
+	const pageInfo = useMemo(
+		() => new PageInfo('Pending Approval', '/hr/pending-approval', 'admin__pending_approval'),
+		[]
+	);
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

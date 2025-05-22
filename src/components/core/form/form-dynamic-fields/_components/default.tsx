@@ -69,6 +69,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																	unit={fieldDef.unit(fieldIndex)}
 																	disableLabel
 																	type={fieldDef.inputType}
+																	disabled={fieldDef.disabled}
 																	{...props}
 																/>
 															)}
@@ -84,6 +85,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																	type={'text'}
 																	disableLabel
 																	placeholder={fieldDef.placeholder}
+																	disabled={fieldDef.disabled}
 																	{...props}
 																/>
 															)}
@@ -99,6 +101,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																	type='number'
 																	disableLabel
 																	placeholder={fieldDef.placeholder}
+																	disabled={fieldDef.disabled}
 																	{...props}
 																/>
 															)}
@@ -112,6 +115,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																<CoreForm.Textarea
 																	disableLabel
 																	placeholder={fieldDef.placeholder}
+																	disabled={fieldDef.disabled}
 																	{...props}
 																/>
 															)}
@@ -128,6 +132,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																	options={fieldDef.options}
 																	placeholder={fieldDef.placeholder}
 																	disableLabel
+																	isDisabled={fieldDef.disabled}
 																	{...props}
 																/>
 															)}
@@ -144,6 +149,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																	options={fieldDef.options}
 																	placeholder={fieldDef.placeholder}
 																	disableLabel
+																	isDisabled={fieldDef.disabled}
 																	{...props}
 																/>
 															)}
@@ -158,6 +164,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 																	options={fieldDef.options}
 																	placeholder={fieldDef.placeholder}
 																	disableLabel
+																	isDisabled={fieldDef.disabled}
 																	{...props}
 																/>
 															)}
@@ -169,7 +176,11 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
 																<div className='flex w-full items-center justify-center'>
-																	<CoreForm.Checkbox disableLabel {...props} />
+																	<CoreForm.Checkbox
+																		disableLabel
+																		disabled={fieldDef.disabled}
+																		{...props}
+																	/>
 																</div>
 															)}
 														/>
