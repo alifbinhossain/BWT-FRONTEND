@@ -1,43 +1,63 @@
-import { IEmployeeTableData } from '@/pages/hr/_config/columns/columns.type';
+import { IDevicePermissionTableData, IEmployeeTableData } from '@/pages/hr/_config/columns/columns.type';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
+import { Button } from '@/components/ui/button';
 
-export const employeeColumns = (): ColumnDef<IEmployeeTableData>[] => [
-	{
-		accessorKey: 'status',
-		header: 'Status',
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
-	},
-	{
-		accessorKey: 'employee_id',
-		header: 'ID',
-	},
-	{
-		accessorKey: 'name',
-		header: 'Name',
-		enableColumnFilter: false,
-		cell: ({ cell, row }) => (
-			<div>
-				<p>{cell.getValue<string>() || 'N/A'}</p>
-				<span>
-					{row.original.designation_name && row.original.designation_name + ', '}
-					{row.original.department_name && row.original.department_name}
-				</span>
-			</div>
-		),
-	},
+export const employeeColumns = ({
+	handleDevices,
+}: {
+	handleDevices: (row: Row<any>) => void;
+}): ColumnDef<IEmployeeTableData>[] => {
+	return [
+		{
+			accessorKey: 'status',
+			header: 'Status',
+			cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+		},
+		{
+			accessorKey: 'employee_id',
+			header: 'ID',
+		},
+		{
+			accessorKey: 'name',
+			header: 'Name',
+			enableColumnFilter: false,
+			cell: ({ cell, row }) => (
+				<div>
+					<p>{cell.getValue<string>() || 'N/A'}</p>
+					<span>
+						{row.original.designation_name && row.original.designation_name + ', '}
+						{row.original.department_name && row.original.department_name}
+					</span>
+				</div>
+			),
+		},
 
+		{
+			accessorKey: 'shift_group_name',
+			header: 'Shift Group',
+		},
+		{
+			accessorKey: 'employment_type_name',
+			header: 'Employment Type',
+		},
+		{
+			accessorKey: 'workplace_name',
+			header: 'Workplace',
+		},
+		{
+			accessorKey: 'device',
+			header: 'Device',
+			enableColumnFilter: false,
+			cell: (info) => <Button onClick={() => handleDevices(info.row)}>Assign Device</Button>,
+		},
+	];
+};
+
+export const employeeDeviceColumn = (): ColumnDef<IDevicePermissionTableData>[] => [
 	{
-		accessorKey: 'shift_group_name',
-		header: 'Shift Group',
-	},
-	{
-		accessorKey: 'employment_type_name',
-		header: 'Employment Type',
-	},
-	{
-		accessorKey: 'workplace_name',
-		header: 'Workplace',
+		accessorKey: 'device_list_name',
+		header: 'Device Name',
 	},
 ];

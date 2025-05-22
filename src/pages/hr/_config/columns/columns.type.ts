@@ -132,6 +132,21 @@ export interface IDeviceListTableData {
 	remarks: string;
 }
 
+//* Device Permission
+export interface IDevicePermissionTableData {
+	uuid: string;
+	device_list_uuid: string;
+	device_list_name: string;
+	employee_uuid: string;
+	employee_name: string;
+	is_temporary_access: boolean;
+	temporary_from_date: string | null;
+	temporary_to_date: string | null;
+	rfid_access: boolean;
+	fingerprint_access: boolean;
+	face_access: boolean;
+}
+
 //* Punch log
 export interface IPunchLogTableData {
 	uuid: string;

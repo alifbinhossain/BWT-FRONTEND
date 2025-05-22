@@ -34,6 +34,13 @@ export const useHrEmployees = <T>() =>
 		url: `/hr/employee`,
 	});
 
+// * Device permission
+export const useDevicePermission = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.devicePermission(),
+		url: `/hr/device-permission`,
+	});
+
 // ? LOGS
 // * Punch log
 export const useHrPunchLogs = <T>() =>

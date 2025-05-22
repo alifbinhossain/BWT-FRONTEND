@@ -13,6 +13,10 @@ export const hrQK = {
 	employees: () => [...hrQK.all(), 'employees'],
 	employeesByUUID: (uuid: string) => [...hrQK.employees(), uuid],
 
+	// * Device Permission
+	devicePermission: () => [...hrQK.all(), 'device-permission'],
+	devicePermissionByUUID: (uuid: string) => [...hrQK.devicePermission(), uuid],
+
 	//* Punch log
 	punchLog: () => [...hrQK.all(), 'punch-log'],
 	applyLeaveLog: () => [...hrQK.all(), 'apply-leave-log'],
