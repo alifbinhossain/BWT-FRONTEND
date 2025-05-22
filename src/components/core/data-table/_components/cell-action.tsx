@@ -2,24 +2,27 @@ import { CellContext } from '@tanstack/react-table';
 import { SquarePen, Trash2 } from 'lucide-react';
 import usePage from '@/hooks/usePage';
 import useTable from '@/hooks/useTable';
+import useTableSSR from '@/hooks/useTableSSR';
 
 import { Button } from '@/components/ui/button';
 
 interface ITableCellActionProps<TData, TValue> {
 	info: CellContext<TData, TValue>;
+	isSSR?: boolean;
 }
 
-function TableCellAction<TData, TValue>({ info }: ITableCellActionProps<TData, TValue>) {
+function TableCellAction<TData, TValue>({ info, isSSR }: ITableCellActionProps<TData, TValue>) {
 	const row = info.row;
 	const { updateAccess, deleteAccess } = usePage();
 	const { handleUpdate, handleDelete } = useTable();
+	const { handleUpdate: handleUpdateSSR, handleDelete: handleDeleteSSR } = useTableSSR();
 
 	return (
 		<div className='flex w-full items-center justify-center gap-1'>
 			{updateAccess && (
 				<Button
 					aria-label='Edit Row'
-					onClick={() => handleUpdate?.(row)}
+					onClick={() => (isSSR ? handleUpdateSSR?.(row) : handleUpdate?.(row))}
 					size={'icon'}
 					variant={'ghost'}
 					className='rounded-full'
@@ -30,7 +33,7 @@ function TableCellAction<TData, TValue>({ info }: ITableCellActionProps<TData, T
 			{deleteAccess && (
 				<Button
 					aria-label='Delete Row'
-					onClick={() => handleDelete?.(row)}
+					onClick={() => (isSSR ? handleDeleteSSR?.(row) : handleDelete?.(row))}
 					size={'icon'}
 					variant={'ghost-destructive'}
 					className='rounded-full'
