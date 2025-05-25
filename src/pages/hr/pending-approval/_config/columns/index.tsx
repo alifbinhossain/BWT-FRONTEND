@@ -8,6 +8,7 @@ import {
 import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
+import { Button } from '@/components/ui/button';
 import DateTime from '@/components/ui/date-time';
 
 export const employeeColumns = (): ColumnDef<IEmployeeTableData>[] => [
@@ -72,7 +73,13 @@ export const punchLogColumns = (): ColumnDef<IPunchLogTableData>[] => [
 	},
 ];
 
-export const applyLeaveLogColumns = (): ColumnDef<IApplyLeaveLogTableData>[] => [
+export const applyLeaveLogColumns = ({
+	handleApprove,
+	handleReject,
+}: {
+	handleApprove: (row: Row<IApplyLeaveLogTableData>) => void;
+	handleReject: (row: Row<IApplyLeaveLogTableData>) => void;
+}): ColumnDef<IApplyLeaveLogTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Employee Name',
@@ -108,8 +115,24 @@ export const applyLeaveLogColumns = (): ColumnDef<IApplyLeaveLogTableData>[] => 
 		header: 'File',
 	},
 	{
-		accessorKey: 'approved',
+		accessorKey: 'approval',
 		header: 'Approved',
+	},
+	{
+		accessorKey: 'approve-reject',
+		header: 'Approve/Reject',
+		cell: (info) => {
+			return (
+				<span className='flex gap-2'>
+					<Button className='bg-teal-500' onClick={() => handleApprove(info.row)}>
+						Approve
+					</Button>
+					<Button className='bg-red-500' onClick={() => handleReject(info.row)}>
+						Reject
+					</Button>
+				</span>
+			);
+		},
 	},
 ];
 
@@ -145,7 +168,7 @@ export const manualEntryLogColumns = (): ColumnDef<IManualEntryLogTableData>[] =
 		header: 'Device',
 	},
 	{
-		accessorKey: 'approved',
+		accessorKey: 'approval',
 		header: 'Approved',
 	},
 ];
@@ -164,7 +187,7 @@ export const lateApprovalLogColumns = (): ColumnDef<ILateApprovalTableData>[] =>
 		header: 'Reason',
 	},
 	{
-		accessorKey: 'approved',
+		accessorKey: 'approval',
 		header: 'Approved',
 	},
 ];
