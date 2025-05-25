@@ -1,3 +1,4 @@
+import { getYear } from 'date-fns';
 import { z } from 'zod';
 
 import {
@@ -7,6 +8,7 @@ import {
 	NUMBER_DOUBLE_OPTIONAL,
 	NUMBER_DOUBLE_REQUIRED,
 	NUMBER_OPTIONAL,
+	NUMBER_REQUIRED,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
 	STRING_REQUIRED,
@@ -105,12 +107,15 @@ export type ILeaveConfiguration = z.infer<typeof LEAVE_CONFIG_SCHEMA>;
 export const LEAVE_APPLY_SCHEMA = z.object({
 	employee_uuid: STRING_REQUIRED,
 	leave_category_uuid: STRING_REQUIRED,
-	year: STRING_REQUIRED,
+	year: NUMBER_REQUIRED,
 	type: z.enum(['full', 'half']),
 	from_date: STRING_REQUIRED,
 	to_date: STRING_REQUIRED,
 	reason: STRING_REQUIRED,
-	file: STRING_OPTIONAL,
+	file: z
+		.instanceof(File)
+		.refine((file) => file?.size !== 0, 'Please upload an file')
+		.or(STRING_REQUIRED),
 	approved: BOOLEAN_OPTIONAL,
 	remarks: STRING_NULLABLE,
 });
@@ -118,12 +123,12 @@ export const LEAVE_APPLY_SCHEMA = z.object({
 export const LEAVE_APPLY_NULL: Partial<ILeaveApply> = {
 	employee_uuid: '',
 	leave_category_uuid: '',
-	year: '',
+	year: Number(getYear(new Date())),
 	type: 'full',
 	from_date: '',
 	to_date: '',
 	reason: '',
-	file: undefined,
+	file: new File([''], 'filename') as File,
 	approved: false,
 	remarks: null,
 };

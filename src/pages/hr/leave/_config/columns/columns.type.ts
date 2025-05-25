@@ -43,17 +43,20 @@ export type IConfigurationTableData = {
 	remarks: string | null;
 	configuration_entry: IConfigurationEntryTableData[];
 };
-//* Apply Leave 
+//* Apply Leave
 export type IApplyLeaveTableData = {
 	uuid: string;
 	employee_uuid: string;
 	employee_name: string;
 	leave_category_uuid: string;
 	leave_category_name: string;
-	leave_type: 'earned' | 'unpaid';
-	start_date: string;
-	end_date: string;
-	status: string;
+	year: number;
+	type: 'full' | 'half';
+	from_date: string;
+	to_date: string;
+	reason: string;
+	file: string;
+	approved: boolean;
 	created_at: string;
 	updated_at: string;
 	remarks: string;

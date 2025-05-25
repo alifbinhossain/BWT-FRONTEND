@@ -101,7 +101,7 @@ export interface IConfigurationAddOrUpdateProps {
 		any
 	>;
 }
-//* Configuration
+//* Apply Leave
 
 export interface IApplyLeaveAddOrUpdateProps {
 	url: string;
