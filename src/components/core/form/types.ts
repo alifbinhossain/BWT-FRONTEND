@@ -3,6 +3,7 @@ import React from 'react';
 import { CheckboxProps } from '@radix-ui/react-checkbox';
 import { OTPInputProps } from 'input-otp';
 import { DayPickerProps } from 'react-day-picker';
+import { DropzoneOptions } from 'react-dropzone';
 import { ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStateReturn } from 'react-hook-form';
 
 import { InputProps } from '@/components/ui/input';
@@ -176,4 +177,19 @@ export interface IFormAddEditWrapperProps {
 	form: UseFormReturn<any, any, undefined>;
 	onSubmit(values: any): void;
 	title?: string;
+}
+// * form-file-upload
+export interface FormFileUploadProps extends InputProps {
+	field: ControllerRenderProps<any, any>;
+	fieldState: ControllerFieldState;
+	formState: UseFormStateReturn<any>;
+	label?: string;
+	subLabel?: string;
+	placeholder?: string;
+	optional?: boolean;
+	disableLabel?: boolean;
+	options?: DropzoneOptions;
+	isUpdate?: boolean;
+	fileType?: 'image' | 'document' | 'all' | 'video' | 'audio';
+	errorText?: string;
 }

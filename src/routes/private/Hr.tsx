@@ -1,6 +1,10 @@
 import { lazy } from 'react';
 import { IRoute } from '@/types';
 
+
+
+
+
 const Employee = lazy(() => import('@/pages/hr/employee'));
 const Designation = lazy(() => import('@/pages/hr/settings/designation'));
 const Department = lazy(() => import('@/pages/hr/settings/department'));
@@ -12,6 +16,8 @@ const LeavePolicy = lazy(() => import('@/pages/hr/leave/policy'));
 const LeaveCategory = lazy(() => import('@/pages/hr/leave/categories'));
 const LeaveConfiguration = lazy(() => import('@/pages/hr/leave/configuration'));
 const LeaveConfigurationEntry = lazy(() => import('@/pages/hr/leave/configuration/add-or-update'));
+const LeaveApplyLeave = lazy(() => import('@/pages/hr/leave/apply-leave/'));
+const LeaveApplyLeaveEntry = lazy(() => import('@/pages/hr/leave/apply-leave/add-or-update'));
 const WorkPlace = lazy(() => import('@/pages/hr/settings/workplace'));
 
 const FieldVisit = lazy(() => import('@/pages/hr/field-visit'));
@@ -178,6 +184,29 @@ const HrRoutes: IRoute[] = [
 						element: <LeaveConfigurationEntry />,
 						hidden: true,
 						page_name: 'admin__leave_configuration_update',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Apply Leave',
+						path: '/hr/apply-leave',
+						element: <LeaveApplyLeave />,
+						page_name: 'admin__leave_apply_leave',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Apply Leave',
+						path: '/hr/apply-leave/add',
+						element: <LeaveApplyLeaveEntry />,
+						hidden: true,
+						page_name: 'admin__leave_apply_leave_entry',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Apply Leave Update',
+						path: '/hr/apply-leave/:uuid/update',
+						element: <LeaveApplyLeaveEntry />,
+						hidden: true,
+						page_name: 'admin__leave_apply_leave_update',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 				],

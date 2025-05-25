@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { fieldVisitColumns } from '../_config/columns';
-import { IFieldVisitTableData } from '../_config/columns/columns.type';
-import { useHrEmployeeFieldVisitInfoByUUID, useHrFieldVisit } from '../_config/query';
-import { IFieldVisitEmployee } from '../_config/types';
+import { applyLeaveColumns } from '../_config/columns';
+import { IApplyLeaveTableData } from '../_config/columns/columns.type';
+import { useHrApplyLeave, useHrApplyLeaveByUUID } from '../_config/query';
+import { IFieldVisitEmployee } from '../../_config/types';
 import EmployeeInformation from './employee-information';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -18,20 +18,20 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 const FieldVisit = () => {
 	const navigate = useNavigate();
 
-	const { data, isLoading, url, deleteData, refetch } = useHrFieldVisit<IFieldVisitTableData[]>();
+	const { data, isLoading, url, deleteData, refetch } = useHrApplyLeave<IApplyLeaveTableData[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('HR/Field Visit', url, 'admin__field_visit'), [url]);
+	const pageInfo = useMemo(() => new PageInfo('HR/Apply Leave', url, 'admin__leave_apply_leave'), [url]);
 
-	const [selectedFieldVisit, setSelectedFieldVisit] = useState<IFieldVisitTableData>();
+	const [selectedFieldVisit, setSelectedFieldVisit] = useState<IApplyLeaveTableData>();
 
-	const { data: employeeInfo } = useHrEmployeeFieldVisitInfoByUUID<IFieldVisitEmployee>(
+	const { data: employeeInfo } = useHrApplyLeaveByUUID<IFieldVisitEmployee>(
 		selectedFieldVisit?.employee_uuid as string
 	);
 
-	const handleCreate = () => navigate('/hr/field-visit/add');
+	const handleCreate = () => navigate('/hr/apply-leave/add');
 
-	const handleUpdate = (row: Row<IFieldVisitTableData>) => {
-		navigate(`/hr/field-visit/${row.original.uuid}/update`);
+	const handleUpdate = (row: Row<IApplyLeaveTableData>) => {
+		navigate(`/hr/apply-leave/${row.original.uuid}/update`);
 	};
 
 	// Delete Modal state
@@ -42,7 +42,7 @@ const FieldVisit = () => {
 	} | null>(null);
 
 	// Single Delete Handler
-	const handleDelete = (row: Row<IFieldVisitTableData>) => {
+	const handleDelete = (row: Row<IApplyLeaveTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
 			name: row?.original?.employee_uuid,
@@ -53,7 +53,7 @@ const FieldVisit = () => {
 	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
 
 	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IFieldVisitTableData>[]) => {
+	const handleDeleteAll = (rows: Row<IApplyLeaveTableData>[]) => {
 		const selectedRows = rows.map((row) => row.original);
 
 		setDeleteItems(
@@ -66,10 +66,10 @@ const FieldVisit = () => {
 	};
 
 	// Table Columns
-	const columns = fieldVisitColumns({ selectedFieldVisit, setSelectedFieldVisit });
+	const columns = applyLeaveColumns();
 
 	return (
-		<div className='grid grid-cols-2 gap-8'>
+		<div className='grid grid-cols-1 gap-8 xl:grid-cols-2'>
 			<div>
 				<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 					<TableProvider

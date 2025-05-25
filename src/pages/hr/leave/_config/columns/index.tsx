@@ -1,8 +1,9 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
+import DateTime from '@/components/ui/date-time';
 
-import { ICategoryTableData, IConfigurationTableData, IPolicyTableData } from './columns.type';
+import { IApplyLeaveTableData, ICategoryTableData, IConfigurationTableData, IPolicyTableData } from './columns.type';
 
 //* policy
 export const policyColumns = (): ColumnDef<IPolicyTableData>[] => [
@@ -107,7 +108,7 @@ export const configurationColumns = (): ColumnDef<IConfigurationTableData>[] => 
 	},
 ];
 //* Apply Leave
-export const applyLeaveColumns = (): ColumnDef<IPolicyTableData>[] => [
+export const applyLeaveColumns = (): ColumnDef<IApplyLeaveTableData>[] => [
 	{
 		accessorKey: 'index',
 		header: 'SL',
@@ -116,21 +117,35 @@ export const applyLeaveColumns = (): ColumnDef<IPolicyTableData>[] => [
 		size: 10,
 	},
 	{
-		accessorKey: 'name',
+		accessorKey: 'employee_name',
 		header: 'Name',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
 	},
 	{
 		accessorKey: 'leave_category_name',
-		header: 'Leave Category',
+		header: 'Category',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
 	},
 	{
-		accessorKey: 'maximum_number_of_allowed_leaves',
-		header: 'Number of Leaves',
+		accessorFn: (row) => {
+			return row.from_date + ' to ' + row.to_date;
+		},
+		header: 'Date Range',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
+		cell: (info) => (
+			<div>
+				<DateTime date={info.row.original.from_date as string} isTime={false} />
+				<span className='text-[0.7rem] font-semibold'> To</span>
+				<DateTime date={info.row.original.to_date as string} isTime={false} />
+			</div>
+		),
+	},
+	{
+		accessorKey: 'status',
+		header: 'Status',
+		enableColumnFilter: false,
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 ];
