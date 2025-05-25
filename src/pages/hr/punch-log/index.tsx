@@ -12,7 +12,6 @@ import { punchLogColumns } from './_config/columns';
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const User = () => {
 	const [status, setStatus] = useState<boolean | undefined>(undefined);
@@ -51,22 +50,6 @@ const User = () => {
 		});
 	};
 
-	// Delete All Item
-	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
-
-	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IPunchLogTableData>[]) => {
-		const selectedRows = rows.map((row) => row.original);
-
-		setDeleteItems(
-			selectedRows.map((row) => ({
-				id: row.uuid,
-				name: row.employee_name,
-				checked: true,
-			}))
-		);
-	};
-
 	// Table Columns
 	const columns = punchLogColumns();
 
@@ -77,19 +60,14 @@ const User = () => {
 				columns={columns}
 				data={data ?? []}
 				isLoading={isLoading}
-				advanceFilters={[
-					{
-						label: 'Status',
-						state: status,
-						onStateChange: handleChangeStatus,
-						clear: handleClearStatus,
-					},
-				]}
 				// handleCreate={handleCreate}
 				// handleUpdate={handleUpdate}
 				// handleDelete={handleDelete}
 				handleRefetch={refetch}
-				handleDeleteAll={handleDeleteAll}
+				defaultVisibleColumns={{
+					updated_at: false,
+					created_by_name: false,
+				}}
 			>
 				{/* {renderSuspenseModals([
 					<AddOrUpdate
@@ -111,15 +89,7 @@ const User = () => {
 							url,
 							deleteData,
 						}}
-					/>,
-					<DeleteAllModal
-						{...{
-							deleteItems,
-							setDeleteItems,
-							url,
-							deleteData,
-						}}
-					/>,
+					/>
 				])} */}
 			</TableProvider>
 		</PageProvider>
