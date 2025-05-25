@@ -53,7 +53,7 @@ export const useHrDeviceAllocation = <T>(uuid?: string) =>
 export const useHrPunchLogs = <T>() =>
 	useTQuery<T>({
 		queryKey: hrQK.punchLog(),
-		url: '/hr/punch-log',
+		url: '/hr/apply-leave',
 	});
 
 // * Apply leave log

@@ -2,7 +2,7 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 
-import { PageInfo } from '@/utils';
+import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { ILateApprovalTableData } from '../_config/columns/columns.type';
@@ -20,7 +20,7 @@ const Index = () => {
 	const handleClearStatus = () => setStatus(undefined);
 
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
-		useHrManualEntryLog<ILateApprovalTableData[]>('type=late_application');
+		useHrManualEntryLog<ILateApprovalTableData[]>('type=missing_punch');
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -64,6 +64,21 @@ const Index = () => {
 				checked: true,
 			}))
 		);
+	};
+
+	const handleApprove = async (row: Row<ILateApprovalTableData>) => {
+		const data = row.original;
+		await updateData.mutateAsync({
+			url: `/hr/apply-leave/${row.original.uuid}`,
+			updatedData: {
+				...data,
+				approval: 'approved',
+				updated_at: getDateTime(),
+			},
+		});
+	};
+	const handleReject = (row: Row<ILateApprovalTableData>) => {
+		console.log(row.original);
 	};
 
 	// Table Columns
