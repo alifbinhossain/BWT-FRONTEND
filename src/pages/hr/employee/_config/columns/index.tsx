@@ -3,6 +3,7 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import { Button } from '@/components/ui/button';
+import DateTime from '@/components/ui/date-time';
 
 export const employeeColumns = ({
 	handleDevices,
@@ -59,5 +60,20 @@ export const employeeDeviceColumn = (): ColumnDef<IDevicePermissionTableData>[] 
 	{
 		accessorKey: 'device_list_name',
 		header: 'Device Name',
+	},
+	{
+		accessorKey: 'is_temporary_access',
+		header: 'Temp Acc',
+		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'temporary_from_date',
+		header: 'From',
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'temporary_to_date',
+		header: 'To',
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 ];

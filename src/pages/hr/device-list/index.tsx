@@ -1,6 +1,7 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
+import { useNavigate } from 'react-router-dom';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
@@ -13,6 +14,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const DeviceList = () => {
+	const navigate = useNavigate();
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useHrDeviceList<IDeviceListTableData[]>();
 
@@ -47,8 +49,12 @@ const DeviceList = () => {
 		});
 	};
 
+	const handleDevices = async (row: Row<IDeviceListTableData>) => {
+		navigate(`/hr/device-allocate/${row.original.uuid}`);
+	};
+
 	// Table Columns
-	const columns = deviceListColumns();
+	const columns = deviceListColumns({ handleDevices });
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

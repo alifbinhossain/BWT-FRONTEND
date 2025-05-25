@@ -28,17 +28,24 @@ export const useHrCanAccess = <T>(uuid: string) =>
 	});
 
 // * Employee
-export const useHrEmployees = <T>() =>
+export const useHrEmployees = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.employees(),
-		url: `/hr/employee`,
+		queryKey: hrQK.employees(query),
+		url: query ? `/hr/employee?${query}` : `/hr/employee`,
 	});
 
 // * Device permission
-export const useDevicePermission = <T>() =>
+export const useDevicePermission = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.devicePermission(),
-		url: `/hr/device-permission`,
+		queryKey: hrQK.devicePermission(query),
+		url: query ? `/hr/device-permission?${query}` : `/hr/device-permission`,
+	});
+
+// * Device Allocare
+export const useHrDeviceAllocation = <T>(uuid?: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.deviceAllocation(uuid),
+		url: `/hr/device-permission-for-employee/by/${uuid}`,
 	});
 
 // ? LOGS

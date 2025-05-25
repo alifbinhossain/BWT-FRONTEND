@@ -40,7 +40,7 @@ const AddOrUpdateDevice: React.FC<IEmployeeDeviceAddOrUpdateProps> = ({
 		isLoading,
 		invalidateQuery,
 		deleteData,
-	} = useDevicePermission<IDevicePermissionTableData[]>();
+	} = useDevicePermission<IDevicePermissionTableData[]>(`employee_uuid=${employeeData?.uuid}`);
 	const { data: deviceList } = useOtherDeviceList<IFormSelectOption[]>();
 
 	const form = useRHF(EMPLOYEE_DEVICE_SCHEMA, EMPLOYEE_DEVICE_NULL);
@@ -77,6 +77,9 @@ const AddOrUpdateDevice: React.FC<IEmployeeDeviceAddOrUpdateProps> = ({
 			const entries = values.device_list_uuid.map((item) => ({
 				device_list_uuid: item,
 				employee_uuid: employeeData?.uuid,
+				is_temporary_access: values.is_temporary_access,
+				temporary_from_date: values.temporary_from_date,
+				temporary_to_date: values.temporary_to_date,
 				created_at: getDateTime(),
 				created_by: user?.uuid,
 				uuid: nanoid(),
@@ -131,6 +134,7 @@ const AddOrUpdateDevice: React.FC<IEmployeeDeviceAddOrUpdateProps> = ({
 							isLoading={isLoading}
 							handleDelete={handleDelete}
 							toolbarOptions={['export-csv', 'export-pdf', 'all-filter', 'date-range', 'refresh']}
+							defaultVisibleColumns={{ updated_at: false, remarks: false }}
 						>
 							{renderSuspenseModals([
 								<DeleteModal
@@ -148,16 +152,31 @@ const AddOrUpdateDevice: React.FC<IEmployeeDeviceAddOrUpdateProps> = ({
 			</Accordion>
 
 			<div className='grid grid-cols-2 gap-4'>
-				{/* <FormField
-					control={form.control}
-					name='device_list_uuid'
-					render={(props) => <CoreForm.Select label='Device' options={deviceList || []} {...props} />}
-				/> */}
 				<FormField
 					control={form.control}
 					name='device_list_uuid'
 					render={(props) => <CoreForm.MultiSelect label='Device' options={deviceList || []} {...props} />}
 				/>
+				<FormField
+					control={form.control}
+					name='is_temporary_access'
+					render={(props) => <CoreForm.Checkbox label='Temporary Access' {...props} />}
+				/>
+
+				{form.watch('is_temporary_access') && (
+					<>
+						<FormField
+							control={form.control}
+							name='temporary_from_date'
+							render={(props) => <CoreForm.DatePicker label='From' {...props} />}
+						/>
+						<FormField
+							control={form.control}
+							name='temporary_to_date'
+							render={(props) => <CoreForm.DatePicker label='To' {...props} />}
+						/>
+					</>
+				)}
 			</div>
 		</AddModal>
 	);

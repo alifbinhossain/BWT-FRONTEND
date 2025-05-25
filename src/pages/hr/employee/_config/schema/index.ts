@@ -79,12 +79,37 @@ export const EMPLOYEE_NULL: Partial<IEmployee> = {
 
 export type IEmployee = z.infer<ReturnType<typeof EMPLOYEE_SCHEMA>>;
 
-export const EMPLOYEE_DEVICE_SCHEMA = z.object({
-	device_list_uuid: z.array(STRING_REQUIRED),
-});
+export const EMPLOYEE_DEVICE_SCHEMA = z
+	.object({
+		device_list_uuid: z.array(STRING_REQUIRED).min(1, 'At least one device is required'),
+		is_temporary_access: z.boolean(),
+		temporary_from_date: z.string().nullable(),
+		temporary_to_date: z.string().nullable(),
+	})
+	.superRefine((data, ctx) => {
+		if (data.is_temporary_access) {
+			if (!data.temporary_from_date) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'From date is required',
+					path: ['temporary_from_date'],
+				});
+			}
+			if (!data.temporary_to_date) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'To date is required',
+					path: ['temporary_to_date'],
+				});
+			}
+		}
+	});
 
 export const EMPLOYEE_DEVICE_NULL: Partial<IEmployeeDevice> = {
 	device_list_uuid: [],
+	is_temporary_access: false,
+	temporary_from_date: null,
+	temporary_to_date: null,
 };
 
 export type IEmployeeDevice = z.infer<typeof EMPLOYEE_DEVICE_SCHEMA>;
