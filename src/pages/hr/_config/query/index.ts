@@ -50,17 +50,17 @@ export const useHrDeviceAllocation = <T>(uuid?: string) =>
 
 // ? LOGS
 // * Punch log
-export const useHrPunchLogs = <T>() =>
+export const useHrPunchLogs = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.punchLog(),
-		url: '/hr/apply-leave',
+		queryKey: hrQK.punchLog(query),
+		url: query ? `/hr/punch-log?${query}` : '/hr/punch-log',
 	});
 
 // * Apply leave log
-export const useHrApplyLeaveLog = <T>() =>
+export const useHrApplyLeaveLog = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.applyLeaveLog(),
-		url: '/hr/apply-leave',
+		queryKey: hrQK.applyLeaveLog(query),
+		url: query ? `/hr/apply-leave?${query}` : '/hr/apply-leave',
 	});
 
 // * Manual entry log

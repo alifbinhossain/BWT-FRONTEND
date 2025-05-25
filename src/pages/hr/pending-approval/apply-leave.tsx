@@ -3,10 +3,12 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 
 import { getDateTime, PageInfo } from '@/utils';
+import Formdata from '@/utils/formdata';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { IApplyLeaveLogTableData } from '../_config/columns/columns.type';
-import { useHrPunchLogs } from '../_config/query';
+import { useHrApplyLeaveLog } from '../_config/query';
+import { ILeaveApply } from '../leave/_config/schema';
 import { applyLeaveLogColumns } from './_config/columns';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
@@ -19,8 +21,8 @@ const Index = () => {
 	const handleChangeStatus = () => setStatus(!status);
 	const handleClearStatus = () => setStatus(undefined);
 
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
-		useHrPunchLogs<IApplyLeaveLogTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, imageUpdateData, refetch } =
+		useHrApplyLeaveLog<IApplyLeaveLogTableData[]>('approval=pending');
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -67,18 +69,27 @@ const Index = () => {
 	};
 
 	const handleApprove = async (row: Row<IApplyLeaveLogTableData>) => {
-		const data = row.original;
-		await updateData.mutateAsync({
+		const formData = Formdata({
+			approval: 'approved',
+			updated_at: getDateTime(),
+		});
+
+		await imageUpdateData.mutateAsync({
 			url: `/hr/apply-leave/${row.original.uuid}`,
-			updatedData: {
-				...data,
-				approval: 'approved',
-				updated_at: getDateTime(),
-			},
+			updatedData: formData,
 		});
 	};
-	const handleReject = (row: Row<IApplyLeaveLogTableData>) => {
-		console.log(row.original);
+
+	const handleReject = async (row: Row<IApplyLeaveLogTableData>) => {
+		const formData = Formdata({
+			approval: 'rejected',
+			updated_at: getDateTime(),
+		});
+
+		await imageUpdateData.mutateAsync({
+			url: `/hr/apply-leave/${row.original.uuid}`,
+			updatedData: formData,
+		});
 	};
 
 	// Table Columns

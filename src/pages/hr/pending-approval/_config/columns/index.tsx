@@ -136,7 +136,13 @@ export const applyLeaveLogColumns = ({
 	},
 ];
 
-export const manualEntryLogColumns = (): ColumnDef<IManualEntryLogTableData>[] => [
+export const manualEntryLogColumns = ({
+	handleApprove,
+	handleReject,
+}: {
+	handleApprove: (row: Row<IManualEntryLogTableData>) => void;
+	handleReject: (row: Row<IManualEntryLogTableData>) => void;
+}): ColumnDef<IManualEntryLogTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Employee Name',
@@ -171,9 +177,31 @@ export const manualEntryLogColumns = (): ColumnDef<IManualEntryLogTableData>[] =
 		accessorKey: 'approval',
 		header: 'Approved',
 	},
+	{
+		accessorKey: 'approve-reject',
+		header: 'Approve/Reject',
+		cell: (info) => {
+			return (
+				<span className='flex gap-2'>
+					<Button className='bg-teal-500' onClick={() => handleApprove(info.row)}>
+						Approve
+					</Button>
+					<Button className='bg-red-500' onClick={() => handleReject(info.row)}>
+						Reject
+					</Button>
+				</span>
+			);
+		},
+	},
 ];
 
-export const lateApprovalLogColumns = (): ColumnDef<ILateApprovalTableData>[] => [
+export const lateApprovalLogColumns = ({
+	handleApprove,
+	handleReject,
+}: {
+	handleApprove: (row: Row<ILateApprovalTableData>) => void;
+	handleReject: (row: Row<ILateApprovalTableData>) => void;
+}): ColumnDef<ILateApprovalTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Employee Name',
@@ -189,5 +217,21 @@ export const lateApprovalLogColumns = (): ColumnDef<ILateApprovalTableData>[] =>
 	{
 		accessorKey: 'approval',
 		header: 'Approved',
+	},
+	{
+		accessorKey: 'approve-reject',
+		header: 'Approve/Reject',
+		cell: (info) => {
+			return (
+				<span className='flex gap-2'>
+					<Button className='bg-teal-500' onClick={() => handleApprove(info.row)}>
+						Approve
+					</Button>
+					<Button className='bg-red-500' onClick={() => handleReject(info.row)}>
+						Reject
+					</Button>
+				</span>
+			);
+		},
 	},
 ];

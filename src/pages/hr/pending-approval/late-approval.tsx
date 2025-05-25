@@ -3,6 +3,7 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 
 import { getDateTime, PageInfo } from '@/utils';
+import Formdata from '@/utils/formdata';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { ILateApprovalTableData } from '../_config/columns/columns.type';
@@ -19,8 +20,9 @@ const Index = () => {
 	const handleChangeStatus = () => setStatus(!status);
 	const handleClearStatus = () => setStatus(undefined);
 
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
-		useHrManualEntryLog<ILateApprovalTableData[]>('type=missing_punch');
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrManualEntryLog<
+		ILateApprovalTableData[]
+	>('type=missing_punch&approval=pending');
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -67,22 +69,30 @@ const Index = () => {
 	};
 
 	const handleApprove = async (row: Row<ILateApprovalTableData>) => {
-		const data = row.original;
 		await updateData.mutateAsync({
-			url: `/hr/apply-leave/${row.original.uuid}`,
+			url: `/hr/manual-entry/${row.original.uuid}`,
 			updatedData: {
-				...data,
 				approval: 'approved',
 				updated_at: getDateTime(),
 			},
 		});
 	};
-	const handleReject = (row: Row<ILateApprovalTableData>) => {
-		console.log(row.original);
+
+	const handleReject = async (row: Row<ILateApprovalTableData>) => {
+		await updateData.mutateAsync({
+			url: `/hr/manual-entry/${row.original.uuid}`,
+			updatedData: {
+				approval: 'rejected',
+				updated_at: getDateTime(),
+			},
+		});
 	};
 
 	// Table Columns
-	const columns = lateApprovalLogColumns();
+	const columns = lateApprovalLogColumns({
+		handleApprove,
+		handleReject,
+	});
 
 	return (
 		<div>
