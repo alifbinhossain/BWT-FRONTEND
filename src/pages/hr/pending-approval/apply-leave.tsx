@@ -113,11 +113,16 @@ const Index = () => {
 						clear: handleClearStatus,
 					},
 				]}
-				// handleCreate={handleCreate}
-				// handleUpdate={handleUpdate}
-				// handleDelete={handleDelete}
 				handleRefetch={refetch}
-				handleDeleteAll={handleDeleteAll}
+				toolbarOptions={[
+					'export-csv',
+					'export-pdf',
+					'all-filter',
+					'date-range',
+					'refresh',
+					'advance-filter',
+					'other',
+				]}
 			>
 				{/* {renderSuspenseModals([
                     <AddOrUpdate
