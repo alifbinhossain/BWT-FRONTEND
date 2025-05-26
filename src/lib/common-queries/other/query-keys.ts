@@ -89,7 +89,7 @@ const otherQK = {
 	subDepartment: () => [...otherQK.all(), 'subDepartment'],
 
 	//* Leave Policy
-	leavePolicy: () => [...otherQK.all(), 'leavePolicy'],
+	leavePolicy: (query?: string) => [...otherQK.all(), 'leavePolicy', query],
 
 	//* Employment Type
 	employmentType: () => [...otherQK.all(), 'employmentType'],

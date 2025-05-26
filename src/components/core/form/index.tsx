@@ -16,6 +16,7 @@ import FormReactSelectCreate from './react-select-create';
 import FormSection from './section';
 import FormSelect from './select';
 import FormSubmit from './submit';
+import Switch from './switch';
 import FormTextarea from './textarea';
 
 const Form = {
@@ -33,6 +34,7 @@ const Form = {
 	DynamicFields: FormDynamicFields,
 	AddEditWrapper: FormAddEditWrapper,
 	ReactSelectCreate: FormReactSelectCreate,
+	Switch,
 	Phone,
 	Otp,
 	Gender,

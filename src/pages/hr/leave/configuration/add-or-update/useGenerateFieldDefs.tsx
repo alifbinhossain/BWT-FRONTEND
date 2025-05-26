@@ -2,6 +2,8 @@ import { UseFormWatch } from 'react-hook-form';
 
 import FieldActionButton from '@/components/buttons/field-action';
 import { IFormSelectOption } from '@/components/core/form/types';
+import { FormField } from '@/components/ui/form';
+import CoreForm from '@core/form';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 
 import { useOtherLeaveCategory } from '@/lib/common-queries/other';
@@ -16,7 +18,7 @@ interface IGenerateFieldDefsProps {
 	isProductReceived?: boolean;
 	form: any;
 }
-const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ form, copy, remove }: IGenerateFieldDefsProps): FieldDef[] => {
 	const { data: leaveCategoryOptions } = useOtherLeaveCategory<IFormSelectOption[]>();
 	return [
 		{
@@ -48,7 +50,16 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 		{
 			header: 'Count Off Days as Leaves',
 			accessorKey: 'count_off_days_as_leaves',
-			type: 'checkBox',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`configuration_entry.${index}.count_off_days_as_leaves`}
+						render={(props) => <CoreForm.Switch label='Count Off Days as Leaves' {...props} />}
+					/>
+				);
+			},
 		},
 		{
 			header: 'Maximum Number of Leave Per Month',
@@ -70,7 +81,16 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 		{
 			header: 'Enable Pro Rata',
 			accessorKey: 'enable_pro_rata',
-			type: 'checkBox',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`configuration_entry.${index}.enable_pro_rata`}
+						render={(props) => <CoreForm.Switch label='Enable Pro Rata' {...props} />}
+					/>
+				);
+			},
 		},
 		{
 			header: 'Max Available Time',
@@ -80,7 +100,16 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 		{
 			header: 'Enable Earned Leave',
 			accessorKey: 'enable_earned_leave',
-			type: 'checkBox',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`configuration_entry.${index}.enable_earned_leave`}
+						render={(props) => <CoreForm.Switch label='Enable Earned Leave' {...props} />}
+					/>
+				);
+			},
 		},
 		{
 			header: 'Number of Leaves to Provide File',
@@ -89,7 +118,7 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 		},
 		{
 			header: 'Leave Carry',
-			accessorKey: 'leave_carry_uuid',
+			accessorKey: 'leave_carry_type',
 			type: 'select',
 			options: leaveCarryTypeOptions || [],
 			placeholder: 'Select Leave Carry Type',
@@ -104,13 +133,46 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 		{
 			header: 'Enable Previous Day Selection',
 			accessorKey: 'enable_previous_day_selection',
-			type: 'checkBox',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`configuration_entry.${index}.enable_previous_day_selection`}
+						render={(props) => (
+							<CoreForm.Switch
+								label='Enable Previous Day Selection'
+								onCheckedChange={(value) =>
+									!value &&
+									form.setValue(`configuration_entry.${index}.previous_date_selected_limit`, 0)
+								}
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
 		},
 		{
 			header: 'Previous Date Selected Limit',
 			accessorKey: 'previous_date_selected_limit',
-			type: 'join-input-unit',
-			unit: (index: number) => 'Day(s)',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`configuration_entry.${index}.previous_date_selected_limit`}
+						render={(props) => (
+							<CoreForm.JoinInputUnit
+								unit='Day(s)'
+								label='Enable Previous Day Selection'
+								disabled={!form.watch(`configuration_entry.${index}.enable_previous_day_selection`)}
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
 		},
 		{
 			header: 'Remarks',

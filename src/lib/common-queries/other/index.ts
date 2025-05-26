@@ -225,10 +225,10 @@ export const useOtherShiftGroup = <T>() =>
 	});
 
 //* GET OTHER LEAVE POLICY
-export const useOtherLeavePolicy = <T>() =>
+export const useOtherLeavePolicy = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: otherQK.leavePolicy(),
-		url: `/other/leave-policy/value/label`,
+		queryKey: otherQK.leavePolicy(query),
+		url: query ? `/other/leave-policy/value/label?${query}` : `/other/leave-policy/value/label`,
 	});
 
 //* GET OTHER LEAVE EMPLOYEE

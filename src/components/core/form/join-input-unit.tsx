@@ -18,6 +18,7 @@ const FormJoinInputUnit: React.FC<FormJoinInputUnitProps> = ({
 	icon,
 	unit,
 	disableLabel,
+	disabled = false,
 }) => {
 	return (
 		<FormItem className='w-full space-y-1.5'>
@@ -33,7 +34,13 @@ const FormJoinInputUnit: React.FC<FormJoinInputUnitProps> = ({
 			<div className='bg-gradient flex h-10 items-center overflow-hidden rounded-md border border-input p-0.5'>
 				<FormControl className='h-8 flex-1'>
 					{type === 'password' ? (
-						<PasswordInput className={cn(className)} placeholder={placeholder} icon={icon} {...field} />
+						<PasswordInput
+							className={cn(className)}
+							placeholder={placeholder}
+							icon={icon}
+							disabled={disabled}
+							{...field}
+						/>
 					) : type === 'number' ? (
 						<Input
 							className={cn(className)}
@@ -43,9 +50,17 @@ const FormJoinInputUnit: React.FC<FormJoinInputUnitProps> = ({
 							onBlur={(e) => {
 								field.onChange(+e.target.value);
 							}}
+							disabled={disabled}
 						/>
 					) : (
-						<Input className={cn(className)} placeholder={placeholder} type={type} icon={icon} {...field} />
+						<Input
+							className={cn(className)}
+							placeholder={placeholder}
+							type={type}
+							icon={icon}
+							disabled={disabled}
+							{...field}
+						/>
 					)}
 				</FormControl>
 
