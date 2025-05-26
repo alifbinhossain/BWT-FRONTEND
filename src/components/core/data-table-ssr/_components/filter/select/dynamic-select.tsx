@@ -1,16 +1,21 @@
-import { ITableFilterOptionSSR } from '@/types';
+import { ITableFilterOptionSSR, ITableFilterOptionSSRSelectDynamic } from '@/types';
 import useTableFilter from '@/hooks/useTableFilter';
 import useTQuery from '@/hooks/useTQuery';
 
 import { IFormSelectOption } from '@/components/core/form/types';
 import ReactSelectAsync from '@/components/ui/react-select/react-select-async';
 
-function Select<T>({ label, accessor, apiUrl, isPin }: ITableFilterOptionSSR<T> & { isPin?: boolean }) {
+function DynamicSelect<T>({
+	accessor,
+	label,
+	isPin,
+	apiUrl,
+}: ITableFilterOptionSSR<T> & ITableFilterOptionSSRSelectDynamic & { isPin?: boolean }) {
 	const { addFilter, filters } = useTableFilter();
 
 	const { data } = useTQuery<IFormSelectOption[]>({
 		queryKey: [label, accessor.toString()],
-		url: apiUrl!,
+		url: apiUrl,
 	});
 
 	const promiseOptions = (inputValue: string) => {
@@ -42,4 +47,4 @@ function Select<T>({ label, accessor, apiUrl, isPin }: ITableFilterOptionSSR<T> 
 	);
 }
 
-export default Select;
+export default DynamicSelect;
