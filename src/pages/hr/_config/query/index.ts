@@ -1,9 +1,10 @@
-import { IParams } from '@/types';
+import { IPaginationQuery, IParams } from '@/types';
 import useTQuery from '@/hooks/useTQuery';
 
 import addUrlParams from '@/utils/routes/addUrlParams';
 
 import { hrQK } from './queryKeys';
+import addQueryParams from '@/utils/addQueryParams';
 
 // * User
 
@@ -115,6 +116,14 @@ export const useHrManualEntry = <T>(type?: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.manualEntry(type),
 		url: type ? `/hr/manual-entry?type=${type}` : '/hr/manual-entry',
+	});
+
+export const useHrManualEntry2 = <T>(pagination: IPaginationQuery, type?: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.manualEntry(type),
+		url: type
+			? addQueryParams(`/hr/manual-entry`, pagination, type)
+			: addQueryParams('/hr/manual-entry', pagination),
 	});
 
 export const useHrManualEntryByUUID = <T>(uuid: string) =>
