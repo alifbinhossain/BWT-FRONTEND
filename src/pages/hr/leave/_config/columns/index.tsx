@@ -1,7 +1,9 @@
-import { ColumnDef, Row } from '@tanstack/react-table';
+import { IStatus } from '@/types';
+import { ColumnDef } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import DateTime from '@/components/ui/date-time';
+import StatusBadge from '@/components/ui/status-badge';
 
 import { cn } from '@/lib/utils';
 
@@ -166,17 +168,7 @@ export const applyLeaveColumns = ({
 		header: 'Status',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const getStatusClassName = (statusString: string) => {
-				const status = statusString.toLowerCase();
-				if (status === 'pending') {
-					return 'bg-yellow-400 text-primary p-2 rounded';
-				} else if (status === 'rejected') {
-					return 'bg-red-400  text-primary p-2 rounded';
-				} else if (status === 'approved') {
-					return 'bg-green-400  text-primary p-2 rounded';
-				}
-			};
-			return <span className={getStatusClassName(info.getValue<string>())}>{info.getValue<string>()}</span>;
+			return <StatusBadge status={info.getValue<string>() as IStatus} />;
 		},
 	},
 ];

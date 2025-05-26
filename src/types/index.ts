@@ -141,3 +141,5 @@ export type IPagination = {
 	next_page: number | null;
 	prev_page: number | null;
 };
+
+export type IStatus = 'pending' | 'approved' | 'rejected';
