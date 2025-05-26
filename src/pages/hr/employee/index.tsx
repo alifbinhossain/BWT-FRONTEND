@@ -2,9 +2,6 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 
-import { IFormSelectOption } from '@/components/core/form/types';
-
-import { useOtherDeviceList } from '@/lib/common-queries/other';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
@@ -16,12 +13,8 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const AddOrUpdateDevice = lazy(() => import('./add-or-update-device'));
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const User = () => {
-	const [status, setStatus] = useState<boolean | undefined>(undefined);
-	const handleChangeStatus = () => setStatus(!status);
-	const handleClearStatus = () => setStatus(undefined);
 
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrEmployees<IEmployeeTableData[]>();
 
@@ -56,22 +49,6 @@ const User = () => {
 		});
 	};
 
-	// Delete All Item
-	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
-
-	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IEmployeeTableData>[]) => {
-		const selectedRows = rows.map((row) => row.original);
-
-		setDeleteItems(
-			selectedRows.map((row) => ({
-				id: row.uuid,
-				name: row.name,
-				checked: true,
-			}))
-		);
-	};
-
 	const [employeeData, setEmployeeData] = useState<IEmployeeTableData | null>(null);
 	const handleDevices = async (row: Row<IEmployeeTableData>) => {
 		setEmployeeData(row.original);
@@ -88,19 +65,17 @@ const User = () => {
 				columns={columns}
 				data={data ?? []}
 				isLoading={isLoading}
-				advanceFilters={[
-					{
-						label: 'Status',
-						state: status,
-						onStateChange: handleChangeStatus,
-						clear: handleClearStatus,
-					},
-				]}
 				handleCreate={handleCreate}
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
-				handleDeleteAll={handleDeleteAll}
+				defaultVisibleColumns={{
+					remarks: false,
+					updated_at: false,
+					created_by_name: false,
+					created_at: false,
+				}}
+				
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
@@ -131,14 +106,6 @@ const User = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url,
-							deleteData,
-						}}
-					/>,
-					<DeleteAllModal
-						{...{
-							deleteItems,
-							setDeleteItems,
 							url,
 							deleteData,
 						}}

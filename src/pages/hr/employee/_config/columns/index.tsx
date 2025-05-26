@@ -14,6 +14,7 @@ export const employeeColumns = ({
 		{
 			accessorKey: 'status',
 			header: 'Status',
+			enableColumnFilter: false,
 			cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 		},
 		{
@@ -37,7 +38,7 @@ export const employeeColumns = ({
 
 		{
 			accessorKey: 'shift_group_name',
-			header: 'Shift Group',
+			header: 'Shift',
 		},
 		{
 			accessorKey: 'employment_type_name',
