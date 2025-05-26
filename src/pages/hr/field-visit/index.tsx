@@ -1,16 +1,17 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { fieldVisitColumns } from '../_config/columns';
 import { IManualEntryTableData } from '../_config/columns/columns.type';
-import { useHrEmployeeFieldVisitInfoByUUID, useHrManualEntry } from '../_config/query';
+import { useHrEmployeeFieldVisitInfoByUUID, useHrManualEntry, useHrManualEntry2 } from '../_config/query';
 import { IFieldVisitEmployee } from '../_config/types';
 import EmployeeInformation from './employee-information';
+import { IPaginationQuery } from '@/types';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
@@ -18,7 +19,16 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 const FieldVisit = () => {
 	const navigate = useNavigate();
 
-	const { data, isLoading, url, deleteData, refetch } = useHrManualEntry<IManualEntryTableData[]>('field_visit');
+	const [searchParams] = useSearchParams();
+	const params = {} as IPaginationQuery;
+	searchParams.forEach((value, key) => ((params as any)[key] = value));
+
+	const { data, isLoading, url, deleteData, refetch } = useHrManualEntry2<IManualEntryTableData[]>(
+		params,
+		'type=field_visit'
+	);
+
+	// const { data, isLoading, url, deleteData, refetch } = useHrManualEntry<IManualEntryTableData[]>('field_visit');
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Field Visit', url, 'admin__field_visit'), [url]);
 

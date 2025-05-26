@@ -116,7 +116,7 @@ export const LEAVE_APPLY_SCHEMA = z.object({
 		.instanceof(File)
 		.refine((file) => file?.size !== 0, 'Please upload an file')
 		.or(STRING_REQUIRED),
-	approved: BOOLEAN_OPTIONAL,
+	approval: STRING_OPTIONAL.default('pending'),
 	remarks: STRING_NULLABLE,
 });
 
@@ -129,7 +129,7 @@ export const LEAVE_APPLY_NULL: Partial<ILeaveApply> = {
 	to_date: '',
 	reason: '',
 	file: new File([''], 'filename') as File,
-	approved: false,
+	approval: 'pending',
 	remarks: null,
 };
 

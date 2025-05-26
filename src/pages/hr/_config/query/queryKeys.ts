@@ -19,8 +19,8 @@ export const hrQK = {
 	deviceAllocation: (uuid?: string) => [...hrQK.all(), 'allocation', uuid],
 
 	//* Punch log
-	punchLog: () => [...hrQK.all(), 'punch-log'],
-	applyLeaveLog: () => [...hrQK.all(), 'apply-leave-log'],
+	punchLog: (query?: string) => [...hrQK.all(), 'punch-log', query],
+	applyLeaveLog: (query?: string) => [...hrQK.all(), 'apply-leave-log', query],
 	manualEntryLog: (query?: string) => [...hrQK.all(), 'manual-entry-log', query],
 
 	//* user

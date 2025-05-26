@@ -10,6 +10,9 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 import StatusButton from '@/components/buttons/status';
 import { Button } from '@/components/ui/button';
 import DateTime from '@/components/ui/date-time';
+import ReactSelect from '@/components/ui/react-select';
+import { Select } from '@/components/ui/select';
+import CoreForm from '@core/form';
 
 export const employeeColumns = (): ColumnDef<IEmployeeTableData>[] => [
 	{
@@ -76,9 +79,11 @@ export const punchLogColumns = (): ColumnDef<IPunchLogTableData>[] => [
 export const applyLeaveLogColumns = ({
 	handleApprove,
 	handleReject,
+	types,
 }: {
 	handleApprove: (row: Row<IApplyLeaveLogTableData>) => void;
 	handleReject: (row: Row<IApplyLeaveLogTableData>) => void;
+	types: { value: string; label: string }[];
 }): ColumnDef<IApplyLeaveLogTableData>[] => [
 	{
 		accessorKey: 'employee_name',
@@ -123,20 +128,32 @@ export const applyLeaveLogColumns = ({
 		header: 'Approve/Reject',
 		cell: (info) => {
 			return (
-				<span className='flex gap-2'>
-					<Button className='bg-teal-500' onClick={() => handleApprove(info.row)}>
-						Approve
-					</Button>
-					<Button className='bg-red-500' onClick={() => handleReject(info.row)}>
-						Reject
-					</Button>
-				</span>
+				<ReactSelect
+					options={types}
+					menuPortalTarget={document.body}
+					styles={{
+						menuPortal: (base) => ({ ...base, zIndex: 999 }),
+					}}
+					isClearable={false}
+					onChange={(value: any) => {
+						if (value.value === 'approved') handleApprove(info.row);
+						if (value.value === 'rejected') handleReject(info.row);
+					}}
+				/>
 			);
 		},
 	},
 ];
 
-export const manualEntryLogColumns = (): ColumnDef<IManualEntryLogTableData>[] => [
+export const manualEntryLogColumns = ({
+	handleApprove,
+	handleReject,
+	types,
+}: {
+	handleApprove: (row: Row<IManualEntryLogTableData>) => void;
+	handleReject: (row: Row<IManualEntryLogTableData>) => void;
+	types: { value: string; label: string }[];
+}): ColumnDef<IManualEntryLogTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Employee Name',
@@ -171,9 +188,37 @@ export const manualEntryLogColumns = (): ColumnDef<IManualEntryLogTableData>[] =
 		accessorKey: 'approval',
 		header: 'Approved',
 	},
+	{
+		accessorKey: 'approve-reject',
+		header: 'Approve/Reject',
+		cell: (info) => {
+			return (
+				<ReactSelect
+					options={types}
+					menuPortalTarget={document.body}
+					styles={{
+						menuPortal: (base) => ({ ...base, zIndex: 999 }),
+					}}
+					isClearable={false}
+					onChange={(value: any) => {
+						if (value.value === 'approved') handleApprove(info.row);
+						if (value.value === 'rejected') handleReject(info.row);
+					}}
+				/>
+			);
+		},
+	},
 ];
 
-export const lateApprovalLogColumns = (): ColumnDef<ILateApprovalTableData>[] => [
+export const lateApprovalLogColumns = ({
+	handleApprove,
+	handleReject,
+	types,
+}: {
+	handleApprove: (row: Row<ILateApprovalTableData>) => void;
+	handleReject: (row: Row<ILateApprovalTableData>) => void;
+	types: { value: string; label: string }[];
+}): ColumnDef<ILateApprovalTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Employee Name',
@@ -189,5 +234,25 @@ export const lateApprovalLogColumns = (): ColumnDef<ILateApprovalTableData>[] =>
 	{
 		accessorKey: 'approval',
 		header: 'Approved',
+	},
+	{
+		accessorKey: 'approve-reject',
+		header: 'Approve/Reject',
+		cell: (info) => {
+			return (
+				<ReactSelect
+					options={types}
+					menuPortalTarget={document.body}
+					styles={{
+						menuPortal: (base) => ({ ...base, zIndex: 999 }),
+					}}
+					isClearable={false}
+					onChange={(value: any) => {
+						if (value.value === 'approved') handleApprove(info.row);
+						if (value.value === 'rejected') handleReject(info.row);
+					}}
+				/>
+			);
+		},
 	},
 ];

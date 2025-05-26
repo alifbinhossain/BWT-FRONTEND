@@ -3,6 +3,7 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 
 import { getDateTime, PageInfo } from '@/utils';
+import Formdata from '@/utils/formdata';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { IManualEntryLogTableData } from '../_config/columns/columns.type';
@@ -19,8 +20,9 @@ const Index = () => {
 	const handleChangeStatus = () => setStatus(!status);
 	const handleClearStatus = () => setStatus(undefined);
 
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
-		useHrManualEntryLog<IManualEntryLogTableData[]>('type=manual_entry');
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrManualEntryLog<
+		IManualEntryLogTableData[]
+	>('type=manual_entry&approval=pending');
 
 	// Add/Update Modal state
 	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
@@ -67,22 +69,42 @@ const Index = () => {
 	};
 
 	const handleApprove = async (row: Row<IManualEntryLogTableData>) => {
-		const data = row.original;
 		await updateData.mutateAsync({
-			url: `/hr/apply-leave/${row.original.uuid}`,
+			url: `/hr/manual-entry/${row.original.uuid}`,
 			updatedData: {
-				...data,
 				approval: 'approved',
 				updated_at: getDateTime(),
 			},
 		});
 	};
-	const handleReject = (row: Row<IManualEntryLogTableData>) => {
-		console.log(row.original);
+
+	const handleReject = async (row: Row<IManualEntryLogTableData>) => {
+		await updateData.mutateAsync({
+			url: `/hr/manual-entry/${row.original.uuid}`,
+			updatedData: {
+				approval: 'rejected',
+				updated_at: getDateTime(),
+			},
+		});
 	};
 
+	const types = [
+		{
+			label: 'Approved',
+			value: 'approved',
+		},
+		{
+			label: 'Rejected',
+			value: 'rejected',
+		},
+	];
+	
 	// Table Columns
-	const columns = manualEntryLogColumns();
+	const columns = manualEntryLogColumns({
+		handleApprove,
+		handleReject,
+		types
+	});
 
 	return (
 		<div>
@@ -99,11 +121,16 @@ const Index = () => {
 						clear: handleClearStatus,
 					},
 				]}
-				// handleCreate={handleCreate}
-				// handleUpdate={handleUpdate}
-				// handleDelete={handleDelete}
 				handleRefetch={refetch}
-				handleDeleteAll={handleDeleteAll}
+				toolbarOptions={[
+					'export-csv',
+					'export-pdf',
+					'all-filter',
+					'date-range',
+					'refresh',
+					'advance-filter',
+					'other',
+				]}
 			>
 				{/* {renderSuspenseModals([
                     <AddOrUpdate

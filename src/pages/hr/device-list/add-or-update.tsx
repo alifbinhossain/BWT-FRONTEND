@@ -87,7 +87,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IDeviceListTableData>> = ({
 			<FormField
 				control={form.control}
 				name='identifier'
-				render={(props) => <CoreForm.Input type='number' {...props} />}
+				render={(props) => <CoreForm.Input type='number' label='Device Identifier' {...props} />}
 			/>
 			<FormField control={form.control} name='location' render={(props) => <CoreForm.Input {...props} />} />
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
