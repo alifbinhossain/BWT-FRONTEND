@@ -20,14 +20,12 @@ const FieldVisit = () => {
 	const navigate = useNavigate();
 
 	const [searchParams] = useSearchParams();
-	
+
 	const params = {} as IPaginationQuery;
 	searchParams.forEach((value, key) => ((params as any)[key] = value));
 
-	const { data, pagination, isLoading, url, deleteData, refetch } = useHrManualEntry2<IManualEntryTableData[]>(
-		params,
-		'type=field_visit'
-	);
+	const { data, pagination, isLoading, url, deleteData, refetch } =
+		useHrManualEntry2<IManualEntryTableData[]>(params);
 
 	// const { data, isLoading, url, deleteData, refetch } = useHrManualEntry<IManualEntryTableData[]>('field_visit');
 

@@ -1,4 +1,4 @@
-import { IParams } from '@/types';
+import { IPaginationQuery, IParams } from '@/types';
 
 export const hrQK = {
 	all: () => ['admin-leave'],
@@ -16,6 +16,7 @@ export const hrQK = {
 
 	//*Apply Leave
 	applyLeave: () => [...hrQK.all(), 'apply-leave'],
+	applyLeave2: (pagination: IPaginationQuery) => [...hrQK.all(), 'apply-leave', ...Object.values(pagination)],
 	applyLeaveByUUID: (uuid: string) => [...hrQK.applyLeave(), uuid],
 	employeeLeaveDetails: (employee_uuid: string, uuid: string) => [
 		...hrQK.all(),

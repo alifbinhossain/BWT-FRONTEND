@@ -1,4 +1,7 @@
+import { IPaginationQuery } from '@/types';
 import useTQuery from '@/hooks/useTQuery';
+
+import addQueryParams from '@/utils/addQueryParams';
 
 import { hrQK } from './queryKeys';
 
@@ -44,6 +47,11 @@ export const useHrApplyLeave = <T>() =>
 	useTQuery<T>({
 		queryKey: hrQK.applyLeave(),
 		url: '/hr/apply-leave',
+	});
+export const useHrApplyLeave2 = <T>(pagination: IPaginationQuery) =>
+	useTQuery<T>({
+		queryKey: hrQK.applyLeave2(pagination),
+		url: addQueryParams('/hr/v2/apply-leave/by/pagination', pagination),
 	});
 export const useHrApplyLeaveByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
