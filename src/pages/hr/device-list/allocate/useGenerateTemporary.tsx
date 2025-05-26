@@ -16,23 +16,27 @@ interface IGenerateFieldDefsProps {
 }
 
 const useGenerateFieldDefs = ({ remove, watch, form, tab }: IGenerateFieldDefsProps): FieldDef[] => {
+	const types = [
+		{
+			label: 'Permanent',
+			value: 'permanent',
+		},
+		{
+			label: 'Temporary',
+			value: 'temporary',
+		},
+	];
+
 	return [
 		{
 			header: 'Check',
 			accessorKey: 'is_checked',
 			type: 'checkBox',
-			disabled: tab === 'allocated',
 		},
 		{
 			header: 'Employee',
 			accessorKey: 'employee_name',
 			type: 'text',
-			disabled: tab === 'allocated',
-		},
-		{
-			header: 'Temp Acc',
-			accessorKey: 'is_temporary_access',
-			type: 'checkBox',
 			disabled: tab === 'allocated',
 		},
 		{
@@ -44,9 +48,7 @@ const useGenerateFieldDefs = ({ remove, watch, form, tab }: IGenerateFieldDefsPr
 					<FormField
 						control={form.control}
 						name={`entry.${index}.temporary_from_date`}
-						render={(props) => (
-							<CoreForm.DatePicker disableLabel disabled={tab === 'allocated'} {...props} />
-						)}
+						render={(props) => <CoreForm.DatePicker disableLabel {...props} />}
 					/>
 				);
 			},
@@ -60,9 +62,7 @@ const useGenerateFieldDefs = ({ remove, watch, form, tab }: IGenerateFieldDefsPr
 					<FormField
 						control={form.control}
 						name={`entry.${index}.temporary_to_date`}
-						render={(props) => (
-							<CoreForm.DatePicker disableLabel disabled={tab === 'allocated'} {...props} />
-						)}
+						render={(props) => <CoreForm.DatePicker disableLabel {...props} />}
 					/>
 				);
 			},

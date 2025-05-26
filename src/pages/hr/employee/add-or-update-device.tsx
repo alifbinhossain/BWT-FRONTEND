@@ -33,6 +33,17 @@ const AddOrUpdateDevice: React.FC<IEmployeeDeviceAddOrUpdateProps> = ({
 }) => {
 	const isUpdate = !!updatedData;
 
+	const types = [
+		{
+			label: 'Permanent',
+			value: 'permanent',
+		},
+		{
+			label: 'Temporary',
+			value: 'temporary',
+		},
+	];
+
 	const { user } = useAuth();
 	const { data } = useHrEmployeesByUUID(updatedData?.uuid as string);
 	const {
@@ -73,17 +84,17 @@ const AddOrUpdateDevice: React.FC<IEmployeeDeviceAddOrUpdateProps> = ({
 			});
 		} else {
 			// ADD NEW ITEM
-
 			const entries = values.device_list_uuid.map((item) => ({
 				device_list_uuid: item,
 				employee_uuid: employeeData?.uuid,
-				is_temporary_access: values.is_temporary_access,
+				permission_type: values.permission_type,
 				temporary_from_date: values.temporary_from_date,
 				temporary_to_date: values.temporary_to_date,
 				created_at: getDateTime(),
 				created_by: user?.uuid,
 				uuid: nanoid(),
 			}));
+
 			await postData
 				.mutateAsync({
 					url,
@@ -159,11 +170,22 @@ const AddOrUpdateDevice: React.FC<IEmployeeDeviceAddOrUpdateProps> = ({
 				/>
 				<FormField
 					control={form.control}
-					name='is_temporary_access'
-					render={(props) => <CoreForm.Checkbox label='Temporary Access' {...props} />}
+					name={`permission_type`}
+					render={(props) => (
+						<CoreForm.Select
+							options={types}
+							onChange={(value) => {
+								if (value === 'permanent') {
+									form.setValue(`temporary_from_date`, null);
+									form.setValue(`temporary_to_date`, null);
+								}
+							}}
+							{...props}
+						/>
+					)}
 				/>
 
-				{form.watch('is_temporary_access') && (
+				{form.watch('permission_type') === 'temporary' && (
 					<>
 						<FormField
 							control={form.control}

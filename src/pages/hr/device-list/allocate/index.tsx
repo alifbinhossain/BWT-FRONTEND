@@ -16,7 +16,9 @@ import { getDateTime, PageInfo } from '@/utils';
 import { IDevicePermissionTableData } from '../../_config/columns/columns.type';
 import { useDevicePermission, useHrDeviceAllocation } from '../../_config/query';
 import { DEVICE_ALLOCATE_NULL, DEVICE_ALLOCATE_SCHEMA, IDeviceAllocate } from '../../_config/schema';
-import useGenerateFieldDefs from './useGenerateFieldDefs';
+import useGeneratePermanent from './useGeneratePermanent';
+import useGenerateTemporary from './useGenerateTemporary';
+import useGenerateUnAllocated from './useGenerateUnAllocated';
 
 const DeviceList = () => {
 	const { user } = useAuth();
@@ -24,14 +26,22 @@ const DeviceList = () => {
 
 	const [tab, setTab] = useState('un-allocated');
 
+	const isUpdate = tab === 'temporary';
+
 	const pageInfo = useMemo(() => new PageInfo('HR/Device List', '/hr/device-allocate', 'admin__device_allocate'), []);
 
-	const { data, postData, deleteData, invalidateQuery } =
+	const { data, postData, updateData, deleteData, invalidateQuery } =
 		useHrDeviceAllocation<{ employee_uuid: string; employee_name: string }[]>(uuid);
 
 	const { data: allocatedDevices, invalidateQuery: allocatedDevicesInvalidateQuery } = useDevicePermission<
 		IDevicePermissionTableData[]
-	>(`device_list_uuid=${uuid}`);
+	>(
+		tab === 'permanent'
+			? `device_list_uuid=${uuid}&permission_type=permanent`
+			: tab === 'temporary'
+				? `device_list_uuid=${uuid}&permission_type=temporary`
+				: `device_list_uuid=${uuid}`
+	);
 
 	const form = useRHF(DEVICE_ALLOCATE_SCHEMA, DEVICE_ALLOCATE_NULL);
 
@@ -47,7 +57,7 @@ const DeviceList = () => {
 					is_checked: false,
 					employee_uuid: item.employee_uuid,
 					employee_name: item.employee_name,
-					is_temporary_access: false,
+					permission_type: 'permanent',
 					temporary_from_date: null,
 					temporary_to_date: null,
 				}));
@@ -59,7 +69,7 @@ const DeviceList = () => {
 					uuid: item.uuid,
 					employee_uuid: item.employee_uuid,
 					employee_name: item.employee_name,
-					is_temporary_access: item.is_temporary_access,
+					permission_type: item.permission_type,
 					temporary_from_date: item.temporary_from_date,
 					temporary_to_date: item.temporary_to_date,
 				}));
@@ -70,29 +80,53 @@ const DeviceList = () => {
 	}, [data, allocatedDevices, form, tab]);
 
 	const onSubmit = async (values: IDeviceAllocate) => {
-		const entries = values.entry
-			.filter((item) => item.is_checked)
-			.map((item) => ({
-				...item,
-				device_list_uuid: uuid,
-				created_at: getDateTime(),
-				created_by: user?.uuid,
-				uuid: nanoid(),
-			}));
+		const entries = values.entry.filter((item) => item.is_checked);
 
 		if (entries.length === 0) {
-			toast.error('Please select at least one employee');
+			toast.warning('Please select at least one employee');
 			return;
 		}
+
+		if (isUpdate) {
+			const updatedEntries = entries.map((item) => ({
+				...item,
+				updated_at: getDateTime(),
+			}));
+			
+			const updatePromises = updatedEntries.map(async (item) => {
+				await updateData.mutateAsync({
+					url: `/hr/device-permission/${item.uuid}`,
+					updatedData: item,
+				});
+			});
+
+			await Promise.all(updatePromises).then(() => {
+				invalidateQuery();
+				allocatedDevicesInvalidateQuery();
+			});
+
+			return;
+		}
+
+		const newEntries = entries.map((item) => ({
+			...item,
+			device_list_uuid: uuid,
+			created_at: getDateTime(),
+			created_by: user?.uuid,
+			uuid: nanoid(),
+		}));
+
 		await postData
 			.mutateAsync({
 				url: '/hr/device-permission',
-				newData: entries,
+				newData: newEntries,
 			})
 			.then(() => {
 				invalidateQuery();
 				allocatedDevicesInvalidateQuery();
 			});
+
+		return;
 	};
 
 	const [deleteItem, setDeleteItem] = useState<{
@@ -120,8 +154,11 @@ const DeviceList = () => {
 					<TabsTrigger value='un-allocated' onClick={() => setTab('un-allocated')}>
 						Un-Allocated users
 					</TabsTrigger>
-					<TabsTrigger value='allocated' onClick={() => setTab('allocated')}>
-						Allocated users
+					<TabsTrigger value='permanent-users' onClick={() => setTab('permanent')}>
+						Permanent users
+					</TabsTrigger>
+					<TabsTrigger value='temporary-users' onClick={() => setTab('temporary')}>
+						Temporary users
 					</TabsTrigger>
 				</TabsList>
 				<TabsContent value='un-allocated'>
@@ -130,7 +167,7 @@ const DeviceList = () => {
 							title='Un-Allocated Users'
 							form={form}
 							fieldName='entry'
-							fieldDefs={useGenerateFieldDefs({
+							fieldDefs={useGenerateUnAllocated({
 								remove: handleRemove,
 								watch: form.watch,
 								form,
@@ -140,13 +177,29 @@ const DeviceList = () => {
 						/>
 					</CoreForm.AddEditWrapper>
 				</TabsContent>
-				<TabsContent value='allocated'>
+				<TabsContent value='permanent-users'>
+					<CoreForm.AddEditWrapper title={' Add Purchase Entry'} form={form} onSubmit={onSubmit}>
+						<CoreForm.DynamicFields
+							title='Permanent Users'
+							form={form}
+							fieldName='entry'
+							fieldDefs={useGeneratePermanent({
+								remove: handleRemove,
+								watch: form.watch,
+								form,
+								tab,
+							})}
+							fields={fields}
+						/>
+					</CoreForm.AddEditWrapper>
+				</TabsContent>
+				<TabsContent value='temporary-users'>
 					<CoreForm.AddEditWrapper title={' Add Purchase Entry'} form={form} onSubmit={onSubmit}>
 						<CoreForm.DynamicFields
 							title='Allocated Users'
 							form={form}
 							fieldName='entry'
-							fieldDefs={useGenerateFieldDefs({
+							fieldDefs={useGenerateTemporary({
 								remove: handleRemove,
 								watch: form.watch,
 								form,

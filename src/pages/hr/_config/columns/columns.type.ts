@@ -139,7 +139,7 @@ export interface IDevicePermissionTableData {
 	device_list_name: string;
 	employee_uuid: string;
 	employee_name: string;
-	is_temporary_access: boolean;
+	permission_type: 'permanent' | 'temporary';
 	temporary_from_date: string | null;
 	temporary_to_date: string | null;
 	rfid_access: boolean;
