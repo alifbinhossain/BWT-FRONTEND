@@ -37,18 +37,8 @@ export const applyLeaveFilters: ITableFilterOptionSSR<ILeaveApply>[] = [
 		type: 'text',
 	},
 	{
-		accessor: 'from_date',
-		label: 'From Date',
-		type: 'date',
-	},
-	{
-		accessor: 'to_date',
-		label: 'To Date',
-		type: 'date',
-	},
-	{
 		accessor: 'approval',
 		label: 'Status',
-		type: 'date',
+		type: 'text',
 	},
 ];

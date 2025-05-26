@@ -32,6 +32,7 @@ export const hrQK = {
 
 	//* field visit
 	manualEntry: (type?: string) => [...hrQK.all(), 'manual-entry', type],
+	manualEntry2: () => [...hrQK.all(), 'manual-entry-2'],
 	manualEntryByUUID: (uuid: string) => [...hrQK.manualEntry(), uuid],
 	fieldVisitEmployeeInfoByUUID: (uuid: string) => [...hrQK.manualEntry(), 'employee-info', uuid],
 

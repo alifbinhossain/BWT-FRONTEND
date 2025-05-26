@@ -11,7 +11,7 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 import { applyLeaveColumns } from '../_config/columns';
 import { IApplyLeaveTableData } from '../_config/columns/columns.type';
 import { applyLeaveFilters } from '../_config/columns/facetedFilters';
-import { useHrApplyLeave, useHrEmployeeLeaveDetails } from '../_config/query';
+import { useHrApplyLeave2, useHrEmployeeLeaveDetails } from '../_config/query';
 import { ILeaveEmployee } from '../_config/types';
 import EmployeeInformation from './employee-information';
 import LeaveApplicationInformation from './leave_application_information';
@@ -26,7 +26,7 @@ const FieldVisit = () => {
 	const params = {} as IPaginationQuery;
 	searchParams.forEach((value, key) => ((params as any)[key] = value));
 
-	const { data, pagination, isLoading, url, deleteData, refetch } = useHrApplyLeave<IApplyLeaveTableData[]>();
+	const { data, pagination, isLoading, url, deleteData, refetch } = useHrApplyLeave2<IApplyLeaveTableData[]>(params);
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Apply Leave', url, 'admin__leave_apply_leave'), [url]);
 
@@ -78,7 +78,7 @@ const FieldVisit = () => {
 	const columns = applyLeaveColumns({ selectedFieldVisit, setSelectedFieldVisit });
 
 	return (
-		<div className='grid grid-cols-1 gap-8 xl:grid-cols-2'>
+		<div className='flex gap-2'>
 			<div>
 				<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 					<TableProviderSSR
@@ -94,6 +94,12 @@ const FieldVisit = () => {
 						handleDelete={handleDelete}
 						handleRefetch={refetch}
 						handleDeleteAll={handleDeleteAll}
+						defaultVisibleColumns={{
+							remarks: false,
+							updated_at: false,
+							created_by_name: false,
+							created_at: false,
+						}}
 						filterOptions={applyLeaveFilters}
 					>
 						{renderSuspenseModals([
@@ -117,7 +123,7 @@ const FieldVisit = () => {
 					</TableProviderSSR>
 				</PageProvider>
 			</div>
-			<div>
+			<div className='w-full rounded-md border bg-base-200 p-4'>
 				{employeeInfo ? (
 					<div>
 						<EmployeeInformation data={employeeInfo} />
@@ -125,7 +131,7 @@ const FieldVisit = () => {
 						<LeaveApplicationInformation data={employeeInfo} />
 					</div>
 				) : (
-					<div className='flex size-full items-center justify-center rounded-md border bg-base-200 p-4 text-center'>
+					<div className='flex w-full items-center justify-center rounded-md border bg-white p-4 text-center'>
 						<p>Select an employee to see their information</p>
 					</div>
 				)}

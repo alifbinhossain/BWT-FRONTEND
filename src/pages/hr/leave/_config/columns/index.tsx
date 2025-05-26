@@ -162,9 +162,21 @@ export const applyLeaveColumns = ({
 		),
 	},
 	{
-		accessorKey: 'status',
+		accessorKey: 'approval',
 		header: 'Status',
 		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+		cell: (info) => {
+			const getStatusClassName = (statusString: string) => {
+				const status = statusString.toLowerCase();
+				if (status === 'pending') {
+					return 'bg-yellow-400 text-primary p-2 rounded';
+				} else if (status === 'rejected') {
+					return 'bg-red-400  text-primary p-2 rounded';
+				} else if (status === 'approved') {
+					return 'bg-green-400  text-primary p-2 rounded';
+				}
+			};
+			return <span className={getStatusClassName(info.getValue<string>())}>{info.getValue<string>()}</span>;
+		},
 	},
 ];
