@@ -2,7 +2,13 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 
+
+
 import { IFormSelectOption } from '@/components/core/form/types';
+
+
+
+
 
 export type IAuthResponse = {
 	status: number;
@@ -22,6 +28,7 @@ export type IToast = {
 export type IResponse<T> = {
 	toast: IToast;
 	data: T;
+	pagination: IPagination;
 };
 
 export type IParams = {

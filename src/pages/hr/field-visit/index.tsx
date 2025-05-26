@@ -69,8 +69,8 @@ const FieldVisit = () => {
 	const columns = fieldVisitColumns({ selectedFieldVisit, setSelectedFieldVisit });
 
 	return (
-		<div className='grid grid-cols-2 gap-8'>
-			<div>
+		<div className='flex gap-4'>
+			<div className='flex-1'>
 				<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 					<TableProvider
 						title={pageInfo.getTitle()}
@@ -110,7 +110,7 @@ const FieldVisit = () => {
 					</TableProvider>
 				</PageProvider>
 			</div>
-			<div>
+			<div className='flex-1'>
 				{employeeInfo ? (
 					<EmployeeInformation data={employeeInfo} />
 				) : (
