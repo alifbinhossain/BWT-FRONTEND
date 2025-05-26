@@ -31,3 +31,17 @@ export const applicabilityOptions = [
 		value: 'other',
 	},
 ];
+export const leaveCarryTypeOptions = [
+	{
+		label: 'Fixed Amount',
+		value: 'fixed_amount',
+	},
+	{
+		label: 'Percentage',
+		value: 'percentage',
+	},
+	{
+		label: 'None',
+		value: 'none',
+	},
+];
