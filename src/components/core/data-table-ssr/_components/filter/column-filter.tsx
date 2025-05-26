@@ -42,7 +42,7 @@ function TableColumnFilter<T>({ option, isPin }: { option: ITableFilterOptionSSR
 				return <Input {...option} />;
 			case 'checkbox':
 				return <div className='flex items-center gap-2' />;
-			
+
 			default:
 				return <div className='flex items-center gap-2' />;
 		}
