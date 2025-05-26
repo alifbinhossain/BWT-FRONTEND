@@ -1,5 +1,6 @@
 import { lazy, useMemo, useState } from 'react';
-import { PageProvider, TableProvider } from '@/context';
+import { PageProvider, TableProvider, TableProviderSSR } from '@/context';
+import { IPaginationQuery } from '@/types';
 import { Row } from '@tanstack/react-table';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -11,7 +12,6 @@ import { IManualEntryTableData } from '../_config/columns/columns.type';
 import { useHrEmployeeFieldVisitInfoByUUID, useHrManualEntry, useHrManualEntry2 } from '../_config/query';
 import { IFieldVisitEmployee } from '../_config/types';
 import EmployeeInformation from './employee-information';
-import { IPaginationQuery } from '@/types';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
@@ -20,10 +20,11 @@ const FieldVisit = () => {
 	const navigate = useNavigate();
 
 	const [searchParams] = useSearchParams();
+	
 	const params = {} as IPaginationQuery;
 	searchParams.forEach((value, key) => ((params as any)[key] = value));
 
-	const { data, isLoading, url, deleteData, refetch } = useHrManualEntry2<IManualEntryTableData[]>(
+	const { data, pagination, isLoading, url, deleteData, refetch } = useHrManualEntry2<IManualEntryTableData[]>(
 		params,
 		'type=field_visit'
 	);
@@ -82,10 +83,11 @@ const FieldVisit = () => {
 		<div className='flex gap-4'>
 			<div className='flex-1'>
 				<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
-					<TableProvider
+					<TableProviderSSR
 						title={pageInfo.getTitle()}
 						columns={columns}
 						data={data ?? []}
+						pagination={pagination!}
 						isLoading={isLoading}
 						handleCreate={handleCreate}
 						handleUpdate={handleUpdate}
@@ -117,7 +119,7 @@ const FieldVisit = () => {
 								}}
 							/>,
 						])}
-					</TableProvider>
+					</TableProviderSSR>
 				</PageProvider>
 			</div>
 			<div className='flex-1'>
