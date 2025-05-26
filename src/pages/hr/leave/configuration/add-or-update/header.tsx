@@ -10,7 +10,7 @@ import { ILeaveConfiguration } from '../../_config/schema';
 
 const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 	const form = useFormContext<ILeaveConfiguration>();
-	const { data: LeaveOption } = useOtherLeavePolicy<IFormSelectOption[]>();
+	const { data: LeaveOption } = useOtherLeavePolicy<IFormSelectOption[]>('filteredConf=true');
 
 	return (
 		<CoreForm.Section title={isUpdate ? 'Edit Configuration' : ' Add New Configuration'} className='lg:grid-cols-2'>

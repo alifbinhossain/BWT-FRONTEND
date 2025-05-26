@@ -99,6 +99,7 @@ export interface FormJoinInputUnitProps extends InputProps {
 	icon?: React.ReactNode;
 	unit: string;
 	disableLabel?: boolean;
+	disabled?: boolean;
 }
 
 // * form-join-input-select
