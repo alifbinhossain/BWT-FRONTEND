@@ -62,9 +62,8 @@ export const employeeDeviceColumn = (): ColumnDef<IDevicePermissionTableData>[] 
 		header: 'Device Name',
 	},
 	{
-		accessorKey: 'is_temporary_access',
-		header: 'Temp Acc',
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+		accessorKey: 'permission_type',
+		header: 'Permission',
 	},
 	{
 		accessorKey: 'temporary_from_date',

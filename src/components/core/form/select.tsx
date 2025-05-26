@@ -12,6 +12,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 	isDisabled = false,
 	disableLabel,
 	valueType = 'string',
+	onChange = () => {},
 }) => {
 	return (
 		<FormItem className='w-full space-y-1.5'>
@@ -26,8 +27,10 @@ const FormSelect: React.FC<FormSelectProps> = ({
 					onValueChange={(value) => {
 						if (valueType === 'number') {
 							field.onChange(Number(value));
+							onChange(value);
 						} else {
 							field.onChange(value);
+							onChange(value);
 						}
 					}}
 					defaultValue={field.value}

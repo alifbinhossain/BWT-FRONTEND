@@ -37,6 +37,7 @@ export interface FormSelectProps {
 	isDisabled?: boolean;
 	disableLabel?: boolean;
 	valueType?: 'string' | 'number';
+	onChange?: (value: any) => void;
 }
 
 // * form-section
