@@ -34,13 +34,7 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 			options: leaveCategoryOptions || [],
 			placeholder: 'Select Leave Category',
 		},
-		{
-			header: 'Leave Carry',
-			accessorKey: 'leave_carry_uuid',
-			type: 'select',
-			options: leaveCarryTypeOptions || [],
-			placeholder: 'Select Leave Carry Type',
-		},
+
 		{
 			header: 'Maximum Number of Allowed Leaves',
 			accessorKey: 'maximum_number_of_allowed_leaves',
@@ -92,6 +86,13 @@ const useGenerateFieldDefs = ({ copy, remove }: IGenerateFieldDefsProps): FieldD
 			header: 'Number of Leaves to Provide File',
 			accessorKey: 'number_of_leaves_to_provide_file',
 			type: 'number',
+		},
+		{
+			header: 'Leave Carry',
+			accessorKey: 'leave_carry_uuid',
+			type: 'select',
+			options: leaveCarryTypeOptions || [],
+			placeholder: 'Select Leave Carry Type',
 		},
 		{
 			header: 'Maximum Number of Leaves to Carry',
