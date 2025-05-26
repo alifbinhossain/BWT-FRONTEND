@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
+import { differenceInDays, format } from 'date-fns';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
-import { IFieldVisitEmployee } from '@/pages/hr/_config/types';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 
+import { ShowLocalToast } from '@/components/others/toast';
 import { FormField } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 import CoreForm from '@core/form';
@@ -16,8 +17,19 @@ import Formdata from '@/utils/formdata';
 
 import { useHrApplyLeave, useHrApplyLeaveByUUID, useHrEmployeeLeaveDetails } from '../../_config/query';
 import { ILeaveApply, LEAVE_APPLY_NULL, LEAVE_APPLY_SCHEMA } from '../../_config/schema';
+import { ILeaveEmployee } from '../../_config/types';
 import EmployeeInformation from '../employee-information';
-import { type } from './utills';
+import LastFiveLeaveApplications from '../last_five_leave_applications';
+import { type } from './utils';
+
+interface ICustomEmployeeSelectOption extends IFormSelectOption {
+	policy: [
+		{
+			name: string;
+			balance: number;
+		},
+	];
+}
 
 const AddOrUpdate = () => {
 	const { user } = useAuth();
@@ -29,13 +41,16 @@ const AddOrUpdate = () => {
 
 	const { data, invalidateQuery: invalidateFieldVisit } = useHrApplyLeaveByUUID<ILeaveApply>(uuid as string);
 
-	const { data: employees } = useOtherEmployees<IFormSelectOption[]>();
-	const { data: LeaveCategoryOption } = useOtherLeaveCategory<IFormSelectOption[]>();
+	const { data: employees } = useOtherEmployees<ICustomEmployeeSelectOption[]>(`leave_policy_required=true`);
 
 	const form = useRHF(LEAVE_APPLY_SCHEMA, LEAVE_APPLY_NULL);
+	const { data: LeaveCategoryOption } = useOtherLeaveCategory<IFormSelectOption[]>(
+		`employee_uuid=${form.watch('employee_uuid')}`
+	);
 
-	const { data: employeeInfo } = useHrEmployeeLeaveDetails<IFieldVisitEmployee>(
-		form.watch('employee_uuid') as string
+	const { data: employeeInfo } = useHrEmployeeLeaveDetails<ILeaveEmployee>(
+		form.watch('employee_uuid') as string,
+		uuid as string
 	);
 
 	useEffect(() => {
@@ -46,6 +61,18 @@ const AddOrUpdate = () => {
 	}, [data, isUpdate]);
 
 	async function onSubmit(values: ILeaveApply) {
+		const format_from_date = values?.from_date ? format(values?.from_date, 'dd MMM yyyy') : '';
+		const format_to_date = values?.to_date ? format(values?.to_date, 'dd MMM yyyy') : '';
+		const days = differenceInDays(format_to_date, format_from_date) + 1;
+		const employee = employees?.find((e) => e.value === values?.employee_uuid);
+		const category = LeaveCategoryOption?.find((e) => e.value === values?.leave_category_uuid)?.label;
+		const balance = employee?.policy.find((e) => e.name === category)?.balance;
+		if (balance && balance < days) {
+			return ShowLocalToast({
+				type: 'error',
+				message: `You have ${balance} days of leave balance, but you want ${days} days of leave`,
+			});
+		}
 		const formData = Formdata<ILeaveApply>(values);
 		if (isUpdate) {
 			formData.append('updated_at', getDateTime());
@@ -58,7 +85,7 @@ const AddOrUpdate = () => {
 				.then((res) => {
 					if (res) {
 						invalidateFieldVisit();
-						navigate(`/hr/field-visit`);
+						navigate(`/hr/apply-leave`);
 					}
 				})
 				.catch((err) => {
@@ -78,7 +105,7 @@ const AddOrUpdate = () => {
 				.then((res) => {
 					if (res) {
 						invalidateFieldVisit();
-						navigate(`/hr/field-visit`);
+						navigate(`/hr/apply-leave`);
 					}
 				})
 				.catch((err) => {
@@ -94,6 +121,7 @@ const AddOrUpdate = () => {
 					title={isUpdate ? 'Edit Apply Leave' : 'Add Apply Leave'}
 					form={form}
 					onSubmit={onSubmit}
+					isSubmitDisable={data?.approval === 'approved'}
 				>
 					<div>
 						<h1 className='font-semibold'>Leave Application</h1>
@@ -102,22 +130,18 @@ const AddOrUpdate = () => {
 					<FormField
 						control={form.control}
 						name='year'
-						render={(props) => <CoreForm.Input label='Year' {...props} />}
+						render={(props) => (
+							<CoreForm.Input label='Year' disabled={data?.approval === 'approved'} {...props} />
+						)}
 					/>
 					<FormField
 						control={form.control}
 						name='employee_uuid'
 						render={(props) => (
-							<CoreForm.ReactSelect label='Employee' options={employees || []} {...props} />
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='leave_category_uuid'
-						render={(props) => (
 							<CoreForm.ReactSelect
-								label='Leave Category'
-								options={LeaveCategoryOption || []}
+								label='Employee'
+								options={employees || []}
+								isDisabled={data?.approval === 'approved'}
 								{...props}
 							/>
 						)}
@@ -125,37 +149,83 @@ const AddOrUpdate = () => {
 					<div className='grid grid-cols-2 gap-4'>
 						<FormField
 							control={form.control}
+							name='leave_category_uuid'
+							render={(props) => (
+								<CoreForm.ReactSelect
+									label='Leave Category'
+									options={LeaveCategoryOption || []}
+									isDisabled={data?.approval === 'approved'}
+									{...props}
+								/>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
 							name='type'
-							render={(props) => <CoreForm.ReactSelect label='Type' options={type || []} {...props} />}
+							render={(props) => (
+								<CoreForm.ReactSelect
+									label='Type'
+									options={type || []}
+									isDisabled={data?.approval === 'approved'}
+									{...props}
+								/>
+							)}
 						/>
 					</div>
-
-					<FormField
-						control={form.control}
-						name='from_date'
-						render={(props) => <CoreForm.DatePicker label='From Date' {...props} />}
-					/>
-					<FormField
-						control={form.control}
-						name='to_date'
-						render={(props) => <CoreForm.DatePicker label='To Date' {...props} />}
-					/>
+					<div className='grid grid-cols-2 gap-4'>
+						<FormField
+							control={form.control}
+							name='from_date'
+							render={(props) => (
+								<CoreForm.DatePicker
+									label='From Date'
+									disabled={data?.approval === 'approved'}
+									{...props}
+								/>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='to_date'
+							render={(props) => (
+								<CoreForm.DatePicker
+									label='To Date'
+									disabled={data?.approval === 'approved'}
+									{...props}
+								/>
+							)}
+						/>
+					</div>
 					<FormField
 						control={form.control}
 						name='reason'
-						render={(props) => <CoreForm.Textarea label='Reason' {...props} />}
+						render={(props) => (
+							<CoreForm.Textarea label='Reason' disabled={data?.approval === 'approved'} {...props} />
+						)}
 					/>
 					<FormField
 						control={form.control}
 						name='file'
-						render={(props) => <CoreForm.FileUpload fileType='document' isUpdate={isUpdate} {...props} />}
+						render={(props) => (
+							<CoreForm.FileUpload
+								fileType='document'
+								isUpdate={isUpdate}
+								disabled={data?.approval === 'approved'}
+								{...props}
+							/>
+						)}
 					/>
 				</CoreForm.AddEditWrapper>
 			</div>
 
 			<div className='colspan-1 xl:col-span-3'>
 				{employeeInfo ? (
-					<EmployeeInformation data={employeeInfo} />
+					<div>
+						<EmployeeInformation data={employeeInfo} />
+						<Separator className='my-4' />
+						<LastFiveLeaveApplications data={employeeInfo} />
+					</div>
 				) : (
 					<div className='flex size-full items-center justify-center rounded-md border bg-base-200 p-4 text-center'>
 						<p>Select an employee to see their information</p>

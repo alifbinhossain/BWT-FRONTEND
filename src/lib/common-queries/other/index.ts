@@ -232,16 +232,18 @@ export const useOtherLeavePolicy = <T>() =>
 	});
 
 //* GET OTHER LEAVE EMPLOYEE
-export const useOtherEmployees = <T>() =>
+export const useOtherEmployees = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: otherQK.employees(),
-		url: `/other/employee/value/label`,
+		queryKey: otherQK.employees(query),
+		url: query ? `/other/employee/value/label?${query}` : `/other/employee/value/label`,
+		enabled: query ? !!query : true,
 	});
 //* GET OTHER LEAVE CATEGORY
-export const useOtherLeaveCategory = <T>() =>
+export const useOtherLeaveCategory = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: otherQK.leaveCategory(),
-		url: `/other/leave-category/value/label`,
+		queryKey: otherQK.leaveCategory(query),
+		url: query ? `/other/leave-category/value/label?${query}` : `/other/leave-category/value/label`,
+		enabled: query ? !!query : true,
 	});
 
 //* GET OTHER DEVICE LIST

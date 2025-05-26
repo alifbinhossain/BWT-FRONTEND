@@ -17,6 +17,7 @@ import { useHrEmployeeFieldVisitInfoByUUID, useHrManualEntry, useHrManualEntryBy
 import { IManualEntry, MANUAL_ENTRY_NULL, MANUAL_ENTRY_SCHEMA } from '../../_config/schema';
 import { IFieldVisitEmployee } from '../../_config/types';
 import EmployeeInformation from '../employee-information';
+import { status } from '../utills';
 
 const AddOrUpdate = () => {
 	const { user } = useAuth();
@@ -111,6 +112,11 @@ const AddOrUpdate = () => {
 						)}
 					/>
 
+					<FormField
+						control={form.control}
+						name='approval'
+						render={(props) => <CoreForm.ReactSelect label='Status' options={status || []} {...props} />}
+					/>
 					<div className='grid grid-cols-2 gap-4'>
 						<FormField
 							control={form.control}

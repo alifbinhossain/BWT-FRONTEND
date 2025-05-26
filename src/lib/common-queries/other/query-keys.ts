@@ -97,10 +97,10 @@ const otherQK = {
 	//* Shift Group
 	shiftGroup: () => [...otherQK.all(), 'shiftGroup'],
 	//*leave category
-	leaveCategory: () => [...otherQK.all(), 'leaveCategory'],
+	leaveCategory: (query?: string) => [...otherQK.all(), 'leaveCategory', query],
 
 	//* Employees
-	employees: () => [...otherQK.all(), 'employees'],
+	employees: (query?: string) => [...otherQK.all(), 'employees', query],
 
 	//* Device List
 	deviceList: () => [...otherQK.all(), 'device-list'],

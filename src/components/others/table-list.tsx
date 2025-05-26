@@ -12,15 +12,21 @@ interface ITableListProps {
 	items: ITableListItems;
 	title?: string;
 	className?: string;
+	isSmallTitle?: boolean;
 }
 
-const TableList = ({ items, title, className }: ITableListProps) => {
+const TableList = ({ items, title, className, isSmallTitle = false }: ITableListProps) => {
 	return (
 		<div className={cn('h-full', className)}>
 			{title && (
-				<h4 className='border-b bg-base-200 px-6 py-2 text-lg font-medium capitalize leading-tight text-primary'>
-					{title}
-				</h4>
+				<div>
+					{!isSmallTitle && (
+						<h4 className='border-b bg-base-200 px-6 py-2 text-lg font-medium capitalize leading-tight text-primary'>
+							{title}
+						</h4>
+					)}
+					{isSmallTitle && <h2 className='font-semibold'>{title}</h2>}
+				</div>
 			)}
 			<div className='overflow-x-auto'>
 				<Table>

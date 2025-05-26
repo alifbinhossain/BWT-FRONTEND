@@ -1,10 +1,5 @@
 import { lazy } from 'react';
 import { IRoute } from '@/types';
-
-
-
-
-
 const Employee = lazy(() => import('@/pages/hr/employee'));
 const Designation = lazy(() => import('@/pages/hr/settings/designation'));
 const Department = lazy(() => import('@/pages/hr/settings/department'));
@@ -150,28 +145,28 @@ const HrRoutes: IRoute[] = [
 				name: 'Leave',
 				children: [
 					{
-						name: 'Leave Policy',
+						name: 'Policy',
 						path: '/hr/leave-policy',
 						element: <LeavePolicy />,
 						page_name: 'admin__leave_policy',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
-						name: 'Leave Categories',
+						name: 'Categories',
 						path: '/hr/leave-categories',
 						element: <LeaveCategory />,
 						page_name: 'admin__leave_categories',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
-						name: 'Leave Configuration',
+						name: 'Configuration',
 						path: '/hr/leave-configuration',
 						element: <LeaveConfiguration />,
 						page_name: 'admin__leave_configuration',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
-						name: 'Leave Configuration Entry',
+						name: 'Configuration Entry',
 						path: '/hr/leave-configuration/entry',
 						element: <LeaveConfigurationEntry />,
 						hidden: true,
@@ -179,7 +174,7 @@ const HrRoutes: IRoute[] = [
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
-						name: 'Leave Configuration Update',
+						name: 'Configuration Update',
 						path: '/hr/leave-configuration/:uuid/update',
 						element: <LeaveConfigurationEntry />,
 						hidden: true,
@@ -187,14 +182,14 @@ const HrRoutes: IRoute[] = [
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
-						name: 'Apply Leave',
+						name: 'Apply',
 						path: '/hr/apply-leave',
 						element: <LeaveApplyLeave />,
 						page_name: 'admin__leave_apply_leave',
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
-						name: 'Apply Leave',
+						name: 'Apply',
 						path: '/hr/apply-leave/add',
 						element: <LeaveApplyLeaveEntry />,
 						hidden: true,
@@ -202,7 +197,7 @@ const HrRoutes: IRoute[] = [
 						actions: ['create', 'read', 'update', 'delete'],
 					},
 					{
-						name: 'Apply Leave Update',
+						name: 'Apply Update',
 						path: '/hr/apply-leave/:uuid/update',
 						element: <LeaveApplyLeaveEntry />,
 						hidden: true,

@@ -17,5 +17,10 @@ export const hrQK = {
 	//*Apply Leave
 	applyLeave: () => [...hrQK.all(), 'apply-leave'],
 	applyLeaveByUUID: (uuid: string) => [...hrQK.applyLeave(), uuid],
-	employeeLeaveDetails: (uuid: string) => [...hrQK.all(), 'employee-leave-details', uuid],
+	employeeLeaveDetails: (employee_uuid: string, uuid: string) => [
+		...hrQK.all(),
+		'employee-leave-details',
+		employee_uuid,
+		uuid,
+	],
 };

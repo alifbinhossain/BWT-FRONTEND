@@ -1,7 +1,8 @@
 export type ColumnProps = {
 	accessoriesKey: string;
 	header: string;
-	type: any
+	type: any;
+	cell?: any;
 };
 export type TableProps = {
 	data: any;

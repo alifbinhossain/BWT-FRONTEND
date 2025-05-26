@@ -178,6 +178,7 @@ export interface IFormAddEditWrapperProps {
 	form: UseFormReturn<any, any, undefined>;
 	onSubmit(values: any): void;
 	title?: string;
+	isSubmitDisable?: boolean;
 }
 // * form-file-upload
 export interface FormFileUploadProps extends InputProps {

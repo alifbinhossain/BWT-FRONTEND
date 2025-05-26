@@ -88,6 +88,9 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 			form={form}
 			onSubmit={onSubmit}
 		>
+			{form.watch('type') === 'field_visit' && (
+				<FormField control={form.control} name='area' render={(props) => <CoreForm.Input {...props} />} />
+			)}
 			<FormField
 				control={form.control}
 				name='employee_uuid'
@@ -163,10 +166,6 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 			</div>
 
 			<FormField control={form.control} name='reason' render={(props) => <CoreForm.Textarea {...props} />} />
-
-			{form.watch('type') === 'field_visit' && (
-				<FormField control={form.control} name='area' render={(props) => <CoreForm.Input {...props} />} />
-			)}
 		</AddModal>
 	);
 };

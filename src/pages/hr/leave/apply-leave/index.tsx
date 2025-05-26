@@ -1,31 +1,40 @@
 import { lazy, useMemo, useState } from 'react';
-import { PageProvider, TableProvider } from '@/context';
+import { PageProvider, TableProviderSSR } from '@/context';
+import { IPaginationQuery } from '@/types';
+import { Separator } from '@radix-ui/react-select';
 import { Row } from '@tanstack/react-table';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { applyLeaveColumns } from '../_config/columns';
 import { IApplyLeaveTableData } from '../_config/columns/columns.type';
-import { useHrApplyLeave, useHrApplyLeaveByUUID } from '../_config/query';
-import { IFieldVisitEmployee } from '../../_config/types';
+import { applyLeaveFilters } from '../_config/columns/facetedFilters';
+import { useHrApplyLeave, useHrEmployeeLeaveDetails } from '../_config/query';
+import { ILeaveEmployee } from '../_config/types';
 import EmployeeInformation from './employee-information';
+import LeaveApplicationInformation from './leave_application_information';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const FieldVisit = () => {
 	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
 
-	const { data, isLoading, url, deleteData, refetch } = useHrApplyLeave<IApplyLeaveTableData[]>();
+	const params = {} as IPaginationQuery;
+	searchParams.forEach((value, key) => ((params as any)[key] = value));
+
+	const { data, pagination, isLoading, url, deleteData, refetch } = useHrApplyLeave<IApplyLeaveTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Apply Leave', url, 'admin__leave_apply_leave'), [url]);
 
 	const [selectedFieldVisit, setSelectedFieldVisit] = useState<IApplyLeaveTableData>();
 
-	const { data: employeeInfo } = useHrApplyLeaveByUUID<IFieldVisitEmployee>(
-		selectedFieldVisit?.employee_uuid as string
+	const { data: employeeInfo } = useHrEmployeeLeaveDetails<ILeaveEmployee>(
+		selectedFieldVisit?.employee_uuid as string,
+		selectedFieldVisit?.uuid as string
 	);
 
 	const handleCreate = () => navigate('/hr/apply-leave/add');
@@ -66,14 +75,17 @@ const FieldVisit = () => {
 	};
 
 	// Table Columns
-	const columns = applyLeaveColumns();
+	const columns = applyLeaveColumns({ selectedFieldVisit, setSelectedFieldVisit });
 
 	return (
 		<div className='grid grid-cols-1 gap-8 xl:grid-cols-2'>
 			<div>
 				<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
-					<TableProvider
+					<TableProviderSSR
+						start_date={params.start_date ? new Date(params.start_date) : undefined}
+						end_date={params.end_date ? new Date(params.end_date) : undefined}
 						title={pageInfo.getTitle()}
+						pagination={pagination!}
 						columns={columns}
 						data={data ?? []}
 						isLoading={isLoading}
@@ -82,12 +94,7 @@ const FieldVisit = () => {
 						handleDelete={handleDelete}
 						handleRefetch={refetch}
 						handleDeleteAll={handleDeleteAll}
-						defaultVisibleColumns={{
-							remarks: false,
-							updated_at: false,
-							created_by_name: false,
-							created_at: false,
-						}}
+						filterOptions={applyLeaveFilters}
 					>
 						{renderSuspenseModals([
 							<DeleteModal
@@ -107,12 +114,16 @@ const FieldVisit = () => {
 								}}
 							/>,
 						])}
-					</TableProvider>
+					</TableProviderSSR>
 				</PageProvider>
 			</div>
 			<div>
 				{employeeInfo ? (
-					<EmployeeInformation data={employeeInfo} />
+					<div>
+						<EmployeeInformation data={employeeInfo} />
+						<Separator className='my-4' />
+						<LeaveApplicationInformation data={employeeInfo} />
+					</div>
 				) : (
 					<div className='flex size-full items-center justify-center rounded-md border bg-base-200 p-4 text-center'>
 						<p>Select an employee to see their information</p>

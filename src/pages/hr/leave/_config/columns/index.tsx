@@ -3,6 +3,8 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 import StatusButton from '@/components/buttons/status';
 import DateTime from '@/components/ui/date-time';
 
+import { cn } from '@/lib/utils';
+
 import { IApplyLeaveTableData, ICategoryTableData, IConfigurationTableData, IPolicyTableData } from './columns.type';
 
 //* policy
@@ -53,22 +55,6 @@ export const configurationColumns = (): ColumnDef<IConfigurationTableData>[] => 
 		cell: (info) => info.getValue(),
 	},
 	{
-		accessorKey: 'maximum_number_of_allowed_leaves',
-		header: 'Number of Leaves',
-		enableColumnFilter: false,
-		cell: (info) => {
-			const data = info.row.original.configuration_entry.map((item) => item.maximum_number_of_allowed_leaves);
-			return data?.map((item, idx) => (
-				<div>
-					<span className='p-2' key={idx}>
-						{item}
-					</span>
-					<br />
-				</div>
-			));
-		},
-	},
-	{
 		accessorKey: 'leave_category_name',
 		header: 'Leave Category',
 		enableColumnFilter: false,
@@ -84,6 +70,23 @@ export const configurationColumns = (): ColumnDef<IConfigurationTableData>[] => 
 			));
 		},
 	},
+	{
+		accessorKey: 'maximum_number_of_allowed_leaves',
+		header: 'Number of Leaves',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const data = info.row.original.configuration_entry.map((item) => item.maximum_number_of_allowed_leaves);
+			return data?.map((item, idx) => (
+				<div>
+					<span className='p-2' key={idx}>
+						{item}
+					</span>
+					<br />
+				</div>
+			));
+		},
+	},
+
 	{
 		accessorKey: 'enable_earned_leave',
 		header: () => (
@@ -108,7 +111,13 @@ export const configurationColumns = (): ColumnDef<IConfigurationTableData>[] => 
 	},
 ];
 //* Apply Leave
-export const applyLeaveColumns = (): ColumnDef<IApplyLeaveTableData>[] => [
+export const applyLeaveColumns = ({
+	selectedFieldVisit,
+	setSelectedFieldVisit,
+}: {
+	selectedFieldVisit: IApplyLeaveTableData | undefined;
+	setSelectedFieldVisit: React.Dispatch<React.SetStateAction<IApplyLeaveTableData | undefined>>;
+}): ColumnDef<IApplyLeaveTableData>[] => [
 	{
 		accessorKey: 'index',
 		header: 'SL',
@@ -120,7 +129,17 @@ export const applyLeaveColumns = (): ColumnDef<IApplyLeaveTableData>[] => [
 		accessorKey: 'employee_name',
 		header: 'Name',
 		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
+		cell: (info) => (
+			<span
+				onClick={() => setSelectedFieldVisit(info.row.original)}
+				className={cn(
+					'cursor-pointer',
+					selectedFieldVisit?.uuid === info.row.original.uuid ? 'font-medium text-accent underline' : ''
+				)}
+			>
+				{info.getValue<string>()}
+			</span>
+		),
 	},
 	{
 		accessorKey: 'leave_category_name',

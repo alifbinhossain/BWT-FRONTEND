@@ -328,7 +328,6 @@ export function employeeColumns({
 		},
 	];
 }
-
 // Field Visit Columns
 export const fieldVisitColumns = ({
 	selectedFieldVisit,
@@ -346,7 +345,9 @@ export const fieldVisitColumns = ({
 				onClick={() => setSelectedFieldVisit(info.row.original)}
 				className={cn(
 					'cursor-pointer',
-					selectedFieldVisit?.uuid === info.row.original.uuid ? 'font-medium text-accent underline' : ''
+					selectedFieldVisit?.uuid === info.row.original.uuid
+						? 'font-medium text-accent underline'
+						: 'font-semibold text-primary underline'
 				)}
 			>
 				{info.getValue<string>()}
@@ -364,6 +365,24 @@ export const fieldVisitColumns = ({
 		header: 'Exit Time',
 		enableColumnFilter: false,
 		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'approval',
+		header: 'Status',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const getStatusClassName = (statusString: string) => {
+				const status = statusString.toLowerCase();
+				if (status === 'pending') {
+					return 'bg-yellow-400 text-primary p-2 rounded';
+				} else if (status === 'rejected') {
+					return 'bg-red-400  text-primary p-2 rounded';
+				} else if (status === 'approved') {
+					return 'bg-green-400  text-primary p-2 rounded';
+				}
+			};
+			return <span className={getStatusClassName(info.getValue<string>())}>{info.getValue<string>()}</span>;
+		},
 	},
 ];
 

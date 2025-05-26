@@ -52,6 +52,7 @@ const KanbanDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs' 
 													render={(props) => (
 														<CoreForm.JoinInputUnit
 															unit={fieldDef.unit(fieldIndex)}
+															label={fieldDef.header}
 															type={fieldDef.inputType}
 															{...props}
 														/>
