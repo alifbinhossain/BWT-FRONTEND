@@ -9,6 +9,7 @@ const FormTextarea: React.FC<FormTextareaProps> = ({
 	field,
 	label,
 	placeholder = 'Write here',
+	disabled = false,
 	optional = false,
 	className,
 	disableLabel,
@@ -23,6 +24,7 @@ const FormTextarea: React.FC<FormTextareaProps> = ({
 			<FormControl>
 				<Textarea
 					className={cn(className, 'min-w-48')}
+					disabled={disabled}
 					placeholder={placeholder}
 					{...field}
 					value={field.value === null ? '' : field.value}

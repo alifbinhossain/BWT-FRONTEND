@@ -5,9 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
-import { IFieldVisitEmployee } from '../../pages/hr/_config/types';
-
-const EmployeeProfile: React.FC<{ data: IFieldVisitEmployee }> = ({ data }) => {
+const EmployeeProfile: React.FC<{ data: any; children?: React.ReactNode }> = ({ data, children }) => {
 	return (
 		<div className='space-y-4'>
 			<h1 className='font-semibold'>Employee Information</h1>
@@ -74,6 +72,7 @@ const EmployeeProfile: React.FC<{ data: IFieldVisitEmployee }> = ({ data }) => {
 									<p className='text-sm font-medium'>{data.workplace_name || 'N/A'}</p>
 								</div>
 							</div>
+							{children}
 						</div>
 					</div>
 				</CardContent>

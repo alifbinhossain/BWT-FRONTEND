@@ -25,7 +25,6 @@ const TableWithoutTitleBackground: React.FC<TableProps> = ({ data, title, column
 								{data?.map((value: any, index: number) => (
 									<TableRow key={index} className={cn('h-11', index % 2 === 0 ? '' : 'bg-base')}>
 										{columns?.map((column) => {
-											console.log(column);
 											if (column.type === 'text') {
 												return (
 													<TableCell key={column.accessoriesKey}>
@@ -57,6 +56,9 @@ const TableWithoutTitleBackground: React.FC<TableProps> = ({ data, title, column
 														</div>
 													</TableCell>
 												);
+											}
+											if (column.type === 'custom') {
+												return <TableCell key={column.accessoriesKey}>{value.ceil}</TableCell>;
 											}
 											return null;
 										})}

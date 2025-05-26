@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useHrEmployeeFieldVisitInfoByUUID } from '@/pages/hr/_config/query';
-import { IFieldVisitEmployee } from '@/pages/hr/_config/types';
 import { useParams } from 'react-router-dom';
 
+import { ILeaveEmployee } from '../../_config/types';
 import EmployeeInformation from '../employee-information';
 
 const DetailsPage = () => {
 	const { uuid } = useParams();
 
-	const { data: employeeInfo, isLoading } = useHrEmployeeFieldVisitInfoByUUID<IFieldVisitEmployee>(uuid as string);
+	const { data: employeeInfo, isLoading } = useHrEmployeeFieldVisitInfoByUUID<ILeaveEmployee>(uuid as string);
 
 	useEffect(() => {
 		document.title = 'Apply Leave - Employee Details';
@@ -18,7 +18,7 @@ const DetailsPage = () => {
 		return <div>Loading...</div>;
 	}
 
-	return <EmployeeInformation data={employeeInfo || ({} as IFieldVisitEmployee)} />;
+	return <EmployeeInformation data={employeeInfo || ({} as ILeaveEmployee)} />;
 };
 
 export default DetailsPage;

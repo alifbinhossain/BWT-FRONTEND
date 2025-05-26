@@ -104,26 +104,29 @@ export const LEAVE_CONFIG_NULL: Partial<ILeaveConfiguration> = {
 export type ILeaveConfiguration = z.infer<typeof LEAVE_CONFIG_SCHEMA>;
 
 //* Leave Apply
-export const LEAVE_APPLY_SCHEMA = z.object({
-	employee_uuid: STRING_REQUIRED,
-	leave_category_uuid: STRING_REQUIRED,
-	year: NUMBER_REQUIRED,
-	type: z.enum(['full', 'half']),
-	from_date: STRING_REQUIRED,
-	to_date: STRING_REQUIRED,
-	reason: STRING_REQUIRED,
-	file: z
-		.instanceof(File)
-		.refine((file) => file?.size !== 0, 'Please upload an file')
-		.or(STRING_REQUIRED),
-	approved: BOOLEAN_OPTIONAL,
-	remarks: STRING_NULLABLE,
-});
+export const LEAVE_APPLY_SCHEMA = z
+	.object({
+		employee_uuid: STRING_REQUIRED,
+		leave_category_uuid: STRING_REQUIRED,
+		year: NUMBER_REQUIRED,
+		approval: z.enum(['approved', 'pending', 'rejected']),
+		type: z.enum(['full', 'half']),
+		from_date: STRING_REQUIRED,
+		to_date: STRING_REQUIRED,
+		reason: STRING_REQUIRED,
+		file: z
+			.instanceof(File)
+			.refine((file) => file?.size !== 0, 'Please upload an file')
+			.or(STRING_REQUIRED),
+		approved: BOOLEAN_OPTIONAL,
+		remarks: STRING_NULLABLE,
+	})
 
 export const LEAVE_APPLY_NULL: Partial<ILeaveApply> = {
 	employee_uuid: '',
 	leave_category_uuid: '',
 	year: Number(getYear(new Date())),
+	approval: 'pending',
 	type: 'full',
 	from_date: '',
 	to_date: '',

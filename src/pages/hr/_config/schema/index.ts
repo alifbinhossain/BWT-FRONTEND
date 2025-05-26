@@ -201,9 +201,10 @@ export type IResetPasswordSchema = z.infer<typeof RESET_PASSWORD_SCHEMA>;
 export const MANUAL_ENTRY_SCHEMA = z
 	.object({
 		employee_uuid: STRING_REQUIRED,
-		device_uuid: STRING_NULLABLE,
+		device_uuid: STRING_OPTIONAL,
 		entry_time: STRING_NULLABLE,
 		exit_time: STRING_NULLABLE,
+		approval: z.enum(['approved', 'pending', 'rejected']),
 		reason: STRING_REQUIRED,
 		area: STRING_NULLABLE,
 		type: z.enum(['field_visit', 'manual_entry', 'missing_punch']),
@@ -247,9 +248,10 @@ export const MANUAL_ENTRY_SCHEMA = z
 
 export const MANUAL_ENTRY_NULL: Partial<IManualEntry> = {
 	employee_uuid: '',
-	device_uuid: null,
+	device_uuid: undefined,
 	entry_time: '',
 	exit_time: '',
+	approval: 'pending',
 	reason: '',
 	area: null,
 };

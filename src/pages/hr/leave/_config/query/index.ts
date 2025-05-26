@@ -51,9 +51,9 @@ export const useHrApplyLeaveByUUID = <T>(uuid: string) =>
 		url: `/hr/apply-leave/${uuid}`,
 		enabled: !!uuid,
 	});
-export const useHrEmployeeLeaveDetails = <T>(uuid: string) =>
+export const useHrEmployeeLeaveDetails = <T>(employee_uuid: string, uuid: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.employeeLeaveDetails(uuid),
-		url: `/hr/employee-leave-information-details/by/${uuid}`,
-		enabled: !!uuid,
+		queryKey: hrQK.employeeLeaveDetails(employee_uuid, uuid),
+		url: `/hr/employee-leave-information-details/by/${employee_uuid}?apply_leave_uuid=${uuid}`,
+		enabled: !!uuid && !!employee_uuid,
 	});
