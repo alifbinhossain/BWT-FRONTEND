@@ -133,7 +133,6 @@ export const LEAVE_APPLY_NULL: Partial<ILeaveApply> = {
 	to_date: '',
 	reason: '',
 	file: new File([''], 'filename') as File,
-	approval: 'pending',
 	remarks: null,
 };
 
