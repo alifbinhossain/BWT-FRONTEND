@@ -92,10 +92,22 @@ const Index = () => {
 		});
 	};
 
+	const types = [
+		{
+			label: 'Approved',
+			value: 'approved',
+		},
+		{
+			label: 'Rejected',
+			value: 'rejected',
+		},
+	];
+
 	// Table Columns
 	const columns = applyLeaveLogColumns({
 		handleApprove,
 		handleReject,
+		types,
 	});
 
 	return (

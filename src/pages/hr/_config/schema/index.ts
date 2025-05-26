@@ -261,7 +261,7 @@ export type IManualEntry = z.infer<typeof MANUAL_ENTRY_SCHEMA>;
 export const DEVICE_LIST_SCHEMA = z.object({
 	name: STRING_REQUIRED,
 	identifier: NUMBER_REQUIRED,
-	location: STRING_NULLABLE,
+	location: STRING_REQUIRED,
 	connection_status: BOOLEAN_REQUIRED,
 	phone_number: STRING_NULLABLE,
 	description: STRING_NULLABLE,
@@ -270,7 +270,7 @@ export const DEVICE_LIST_SCHEMA = z.object({
 
 export const DEVICE_LIST_NULL: Partial<IDeviceList> = {
 	name: '',
-	location: null,
+	location: '',
 	connection_status: false,
 	phone_number: null,
 	description: null,

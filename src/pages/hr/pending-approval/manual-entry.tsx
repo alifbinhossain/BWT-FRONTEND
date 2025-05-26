@@ -88,10 +88,22 @@ const Index = () => {
 		});
 	};
 
+	const types = [
+		{
+			label: 'Approved',
+			value: 'approved',
+		},
+		{
+			label: 'Rejected',
+			value: 'rejected',
+		},
+	];
+	
 	// Table Columns
 	const columns = manualEntryLogColumns({
 		handleApprove,
 		handleReject,
+		types
 	});
 
 	return (

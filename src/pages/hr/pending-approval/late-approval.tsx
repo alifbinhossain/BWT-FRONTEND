@@ -88,16 +88,28 @@ const Index = () => {
 		});
 	};
 
+	const types = [
+		{
+			label: 'Approved',
+			value: 'approved',
+		},
+		{
+			label: 'Rejected',
+			value: 'rejected',
+		},
+	];
+
 	// Table Columns
 	const columns = lateApprovalLogColumns({
 		handleApprove,
 		handleReject,
+		types,
 	});
 
 	return (
 		<div>
 			<TableProvider
-				title={'Late Approval'}
+				title={'Late Approval/Missing Punch'}
 				columns={columns}
 				data={data ?? []}
 				isLoading={isLoading}
