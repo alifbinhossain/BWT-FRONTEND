@@ -226,5 +226,7 @@ export interface IFieldVisitEmployee extends IEmployeeTableData {
 	department_name: string;
 	designation_uuid: string;
 	designation_name: string;
+	created_by_designation: string;
+	created_by_department: string;
 	field_visit: IManualEntryTableData[];
 }

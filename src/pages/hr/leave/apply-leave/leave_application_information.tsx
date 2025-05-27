@@ -2,6 +2,8 @@ import { format } from 'date-fns';
 
 import TableList, { ITableListItems } from '@/components/others/table-list';
 
+import EmployeeProfile from '@/lib/component/profile';
+
 import { ILeaveEmployee } from '../_config/types';
 
 const LeaveApplicationInformation: React.FC<{ data: ILeaveEmployee }> = ({ data }) => {
@@ -27,6 +29,18 @@ const LeaveApplicationInformation: React.FC<{ data: ILeaveEmployee }> = ({ data 
 			},
 			{ label: 'Reason', value: leave_application_information.reason },
 			{ label: 'Status', value: leave_application_information.approval },
+			{
+				label: 'Applied By',
+				value: (
+					<EmployeeProfile
+						data={{
+							name: leave_application_information.created_by_name,
+							designation: leave_application_information.created_by_designation,
+							department: leave_application_information.created_by_department,
+						}}
+					/>
+				),
+			},
 		];
 	};
 	return (

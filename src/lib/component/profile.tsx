@@ -1,8 +1,8 @@
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import { IFieldVisitEmployee } from '../../pages/hr/_config/types';
 
-const EmployeeProfile: React.FC<{ data: IFieldVisitEmployee }> = ({ data }) => {
+const EmployeeProfile: React.FC<{ data: any }> = ({ data }) => {
 	return (
 		<div className='flex flex-col space-y-4'>
 			{/* Profile Section */}

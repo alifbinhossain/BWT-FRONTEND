@@ -156,6 +156,8 @@ export interface ILeaveEmployee extends IEmployeeTableData {
 		from_date: string;
 		created_at: string;
 		created_by: string;
+		created_by_designation: string;
+		created_by_department: string;
 		updated_at: string;
 		employee_name: string;
 		employee_uuid: string;

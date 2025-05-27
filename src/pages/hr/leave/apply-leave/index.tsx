@@ -123,7 +123,7 @@ const FieldVisit = () => {
 					</TableProviderSSR>
 				</PageProvider>
 			</div>
-			<div className='w-full rounded-md border bg-base-200 p-4'>
+			<div className='w-full rounded-md border bg-white p-4'>
 				{employeeInfo ? (
 					<div>
 						<EmployeeInformation data={employeeInfo} />
