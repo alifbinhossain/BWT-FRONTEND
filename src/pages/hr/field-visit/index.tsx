@@ -1,17 +1,20 @@
 import { lazy, useMemo, useState } from 'react';
-import { PageProvider, TableProvider, TableProviderSSR } from '@/context';
+import { PageProvider,TableProviderSSR } from '@/context';
 import { IPaginationQuery } from '@/types';
 import { Row } from '@tanstack/react-table';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { Separator } from '@/components/ui/separator';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { fieldVisitColumns } from '../_config/columns';
 import { IManualEntryTableData } from '../_config/columns/columns.type';
-import { useHrEmployeeFieldVisitInfoByUUID, useHrManualEntry, useHrManualEntry2 } from '../_config/query';
+import { useHrEmployeeFieldVisitInfoByUUID, useHrManualEntry2 } from '../_config/query';
 import { IFieldVisitEmployee } from '../_config/types';
 import EmployeeInformation from './employee-information';
+import FiledVisitInformation from './field_visit_information';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
@@ -34,7 +37,8 @@ const FieldVisit = () => {
 	const [selectedFieldVisit, setSelectedFieldVisit] = useState<IManualEntryTableData>();
 
 	const { data: employeeInfo } = useHrEmployeeFieldVisitInfoByUUID<IFieldVisitEmployee>(
-		selectedFieldVisit?.employee_uuid as string
+		selectedFieldVisit?.employee_uuid as string,
+		selectedFieldVisit?.uuid as string
 	);
 
 	const handleCreate = () => navigate('/hr/field-visit/add');
@@ -122,7 +126,11 @@ const FieldVisit = () => {
 			</div>
 			<div className='flex-1'>
 				{employeeInfo ? (
-					<EmployeeInformation data={employeeInfo} />
+					<div>
+						<EmployeeInformation data={employeeInfo} />
+						<Separator className='my-4' />
+						<FiledVisitInformation data={employeeInfo} />
+					</div>
 				) : (
 					<div className='flex size-full items-center justify-center rounded-md border bg-base-200 p-4 text-center'>
 						<p>Select an employee to see their information</p>

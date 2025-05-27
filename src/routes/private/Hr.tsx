@@ -17,7 +17,7 @@ const WorkPlace = lazy(() => import('@/pages/hr/settings/workplace'));
 
 const FieldVisit = lazy(() => import('@/pages/hr/field-visit'));
 const FieldVisitAddOrUpdate = lazy(() => import('@/pages/hr/field-visit/add-or-update'));
-const FieldVisitDetails = lazy(() => import('@/pages/hr/field-visit/details'));
+// const FieldVisitDetails = lazy(() => import('@/pages/hr/field-visit/details'));
 
 const ManualEntry = lazy(() => import('@/pages/hr/manual-entry'));
 
@@ -79,14 +79,14 @@ const HrRoutes: IRoute[] = [
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
 			},
-			{
-				name: 'Field Visit Details',
-				path: '/hr/field-visit/:uuid/details',
-				element: <FieldVisitDetails />,
-				page_name: 'admin__field_visit_details',
-				hidden: true,
-				actions: ['create', 'read', 'update', 'delete'],
-			},
+			// {
+			// 	name: 'Field Visit Details',
+			// 	path: '/hr/field-visit/:uuid/details',
+			// 	element: <FieldVisitDetails />,
+			// 	page_name: 'admin__field_visit_details',
+			// 	hidden: true,
+			// 	actions: ['create', 'read', 'update', 'delete'],
+			// },
 			{
 				name: 'Settings',
 				children: [

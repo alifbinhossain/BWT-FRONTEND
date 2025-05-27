@@ -102,7 +102,9 @@ export interface IManualEntryTableData {
 	type: string;
 	entry_time: string;
 	exit_time: string;
+	approval: boolean;
 	reason: string;
+	date_range: string;
 	area: string;
 	created_by: string;
 	created_by_name: string;

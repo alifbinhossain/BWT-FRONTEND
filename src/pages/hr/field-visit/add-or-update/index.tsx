@@ -17,24 +17,22 @@ import { useHrEmployeeFieldVisitInfoByUUID, useHrManualEntry, useHrManualEntryBy
 import { IManualEntry, MANUAL_ENTRY_NULL, MANUAL_ENTRY_SCHEMA } from '../../_config/schema';
 import { IFieldVisitEmployee } from '../../_config/types';
 import EmployeeInformation from '../employee-information';
-import { status } from '../utills';
+import LastFiveFiledVisit from '../last-five-filed-visit';
+import { status } from '../utils';
 
 const AddOrUpdate = () => {
 	const { user } = useAuth();
 	const navigate = useNavigate();
 	const { uuid } = useParams();
 	const isUpdate = !!uuid;
-
 	const { updateData, postData } = useHrManualEntry('field_visit');
-
 	const { data, invalidateQuery: invalidateFieldVisit } = useHrManualEntryByUUID<IManualEntry>(uuid as string);
-
 	const { data: employees } = useOtherEmployees<IFormSelectOption[]>();
-
 	const form = useRHF(MANUAL_ENTRY_SCHEMA, { ...MANUAL_ENTRY_NULL, type: 'field_visit' });
 
 	const { data: employeeInfo } = useHrEmployeeFieldVisitInfoByUUID<IFieldVisitEmployee>(
-		form.watch('employee_uuid') as string
+		form.watch('employee_uuid') as string,
+		uuid as string
 	);
 
 	useEffect(() => {
@@ -160,7 +158,11 @@ const AddOrUpdate = () => {
 
 			<div className='colspan-1 xl:col-span-3'>
 				{employeeInfo ? (
-					<EmployeeInformation data={employeeInfo} />
+					<div>
+						<EmployeeInformation data={employeeInfo} />
+						<Separator className='my-4' />
+						<LastFiveFiledVisit data={employeeInfo} />
+					</div>
 				) : (
 					<div className='flex size-full items-center justify-center rounded-md border bg-base-200 p-4 text-center'>
 						<p>Select an employee to see their information</p>

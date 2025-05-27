@@ -17,6 +17,7 @@ import { IManualEntryTableData } from '../_config/columns/columns.type';
 import { useHrManualEntryByUUID, useHrUsers } from '../_config/query';
 import { IManualEntry, MANUAL_ENTRY_NULL, MANUAL_ENTRY_SCHEMA } from '../_config/schema';
 import { IAddOrUpdateProps } from '../_config/types';
+import { status } from '../field-visit/utils';
 
 const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 	url,
@@ -31,12 +32,13 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 
 	const { user } = useAuth();
 	const { invalidateQuery: invalidateUserQuery } = useHrUsers();
-	const { data } = useHrManualEntryByUUID(updatedData?.uuid as string);
+	const { data } = useHrManualEntryByUUID<IManualEntry>(updatedData?.uuid as string);
 	const { data: employees } = useOtherEmployees<IFormSelectOption[]>();
 
 	const form = useRHF(MANUAL_ENTRY_SCHEMA, MANUAL_ENTRY_NULL);
 
 	const { data: deviceList } = useOtherDeviceList<IFormSelectOption[]>();
+	const disabled = data?.approval === 'approved' ? true : false;
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -89,14 +91,26 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 			onSubmit={onSubmit}
 		>
 			{form.watch('type') === 'field_visit' && (
-				<FormField control={form.control} name='area' render={(props) => <CoreForm.Input {...props} />} />
+				<FormField
+					control={form.control}
+					name='area'
+					render={(props) => <CoreForm.Input disabled={disabled} {...props} />}
+				/>
 			)}
 			<FormField
 				control={form.control}
 				name='employee_uuid'
-				render={(props) => <CoreForm.ReactSelect label='Employee' options={employees || []} {...props} />}
+				render={(props) => (
+					<CoreForm.ReactSelect label='Employee' options={employees || []} isDisabled={disabled} {...props} />
+				)}
 			/>
-
+			<FormField
+				control={form.control}
+				name='approval'
+				render={(props) => (
+					<CoreForm.ReactSelect label='Status' isDisabled={disabled} options={status || []} {...props} />
+				)}
+			/>
 			<FormField
 				control={form.control}
 				name='type'
@@ -116,6 +130,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 								value: 'missing_punch',
 							},
 						]}
+						isDisabled={disabled}
 						{...props}
 					/>
 				)}
@@ -125,7 +140,12 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 					control={form.control}
 					name='device_uuid'
 					render={(props) => (
-						<CoreForm.ReactSelect label='Select Device' options={deviceList || []} {...props} />
+						<CoreForm.ReactSelect
+							label='Select Device'
+							isDisabled={disabled}
+							options={deviceList || []}
+							{...props}
+						/>
 					)}
 				/>
 			)}
@@ -143,6 +163,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 										return isAfter(date, exitTime);
 									},
 								}}
+								disabled={disabled}
 								{...props}
 							/>
 						)}
@@ -159,13 +180,19 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 									return isBefore(date, entryDate);
 								},
 							}}
+							disabled={disabled}
 							{...props}
 						/>
 					)}
 				/>
 			</div>
 
-			<FormField control={form.control} name='reason' render={(props) => <CoreForm.Textarea {...props} />} />
+			<FormField
+				control={form.control}
+				name='reason'
+				disabled={disabled}
+				render={(props) => <CoreForm.Textarea {...props} />}
+			/>
 		</AddModal>
 	);
 };

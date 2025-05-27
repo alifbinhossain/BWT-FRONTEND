@@ -207,5 +207,24 @@ export interface IDesignationAddOrUpdateProps {
 export type usersWithAccess = { value: string; label: string; can_access: string };
 
 export interface IFieldVisitEmployee extends IEmployeeTableData {
+	uuid: string;
+	employee_uuid: string;
+	employee_name: string;
+	type: string;
+	entry_time: string;
+	exit_time: string;
+	approval: boolean;
+	reason: string;
+	date_range: string;
+	area: string;
+	created_by: string;
+	created_by_name: string;
+	created_at: string;
+	updated_at: string;
+	remarks: string;
+	department_uuid: string;
+	department_name: string;
+	designation_uuid: string;
+	designation_name: string;
 	field_visit: IManualEntryTableData[];
 }
