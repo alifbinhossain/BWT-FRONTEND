@@ -1,3 +1,4 @@
+import { IStatus } from '@/types';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
 import PageAssign from '@/components/buttons/page-assign';
@@ -6,6 +7,7 @@ import StatusButton from '@/components/buttons/status';
 import { Button } from '@/components/ui/button';
 import DateTime from '@/components/ui/date-time';
 import ReactSelect from '@/components/ui/react-select';
+import StatusBadge from '@/components/ui/status-badge';
 import { Switch } from '@/components/ui/switch';
 
 import { cn } from '@/lib/utils';
@@ -371,17 +373,7 @@ export const fieldVisitColumns = ({
 		header: 'Status',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const getStatusClassName = (statusString: string) => {
-				const status = statusString.toLowerCase();
-				if (status === 'pending') {
-					return 'bg-yellow-400 text-primary p-2 rounded';
-				} else if (status === 'rejected') {
-					return 'bg-red-400  text-primary p-2 rounded';
-				} else if (status === 'approved') {
-					return 'bg-green-400  text-primary p-2 rounded';
-				}
-			};
-			return <span className={getStatusClassName(info.getValue<string>())}>{info.getValue<string>()}</span>;
+			return <StatusBadge status={info.getValue<string>() as IStatus} />;
 		},
 	},
 ];
@@ -416,17 +408,7 @@ export const manualEntryColumns = (): ColumnDef<IManualEntryTableData>[] => [
 		header: 'Status',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const getStatusClassName = (statusString: string) => {
-				const status = statusString.toLowerCase();
-				if (status === 'pending') {
-					return 'bg-yellow-400 text-primary p-2 rounded';
-				} else if (status === 'rejected') {
-					return 'bg-red-400  text-primary p-2 rounded';
-				} else if (status === 'approved') {
-					return 'bg-green-400  text-primary p-2 rounded';
-				}
-			};
-			return <span className={getStatusClassName(info.getValue<string>())}>{info.getValue<string>()}</span>;
+			return <StatusBadge status={info.getValue<string>() as IStatus} />;
 		},
 	},
 ];

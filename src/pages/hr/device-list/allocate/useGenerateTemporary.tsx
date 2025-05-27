@@ -36,7 +36,7 @@ const useGenerateFieldDefs = ({ remove, watch, form, tab }: IGenerateFieldDefsPr
 		{
 			header: 'Employee',
 			accessorKey: 'employee_name',
-			type: 'text',
+			type: 'readOnly',
 			disabled: tab === 'allocated',
 		},
 		{

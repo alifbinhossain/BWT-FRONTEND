@@ -29,6 +29,7 @@ const AddOrUpdate = () => {
 	const { data, invalidateQuery: invalidateFieldVisit } = useHrManualEntryByUUID<IManualEntry>(uuid as string);
 	const { data: employees } = useOtherEmployees<IFormSelectOption[]>();
 	const form = useRHF(MANUAL_ENTRY_SCHEMA, { ...MANUAL_ENTRY_NULL, type: 'field_visit' });
+	const disabled = data?.approval === 'approved' || data?.approval === 'rejected' ? true : false;
 
 	const { data: employeeInfo } = useHrEmployeeFieldVisitInfoByUUID<IFieldVisitEmployee>(
 		form.watch('employee_uuid') as string,
@@ -106,14 +107,26 @@ const AddOrUpdate = () => {
 						control={form.control}
 						name='employee_uuid'
 						render={(props) => (
-							<CoreForm.ReactSelect label='Employee' options={employees || []} {...props} />
+							<CoreForm.ReactSelect
+								label='Employee'
+								options={employees || []}
+								isDisabled={disabled}
+								{...props}
+							/>
 						)}
 					/>
 
 					<FormField
 						control={form.control}
 						name='approval'
-						render={(props) => <CoreForm.ReactSelect label='Status' options={status || []} {...props} />}
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Status'
+								isDisabled={disabled}
+								options={status || []}
+								{...props}
+							/>
+						)}
 					/>
 					<div className='grid grid-cols-2 gap-4'>
 						<FormField
@@ -127,6 +140,7 @@ const AddOrUpdate = () => {
 											return isAfter(date, exitTime);
 										},
 									}}
+									disabled={disabled}
 									{...props}
 								/>
 							)}
@@ -142,6 +156,7 @@ const AddOrUpdate = () => {
 											return isBefore(date, entryDate);
 										},
 									}}
+									disabled={disabled}
 									{...props}
 								/>
 							)}
@@ -150,9 +165,13 @@ const AddOrUpdate = () => {
 					<FormField
 						control={form.control}
 						name='reason'
-						render={(props) => <CoreForm.Textarea {...props} />}
+						render={(props) => <CoreForm.Textarea disabled={disabled} {...props} />}
 					/>
-					<FormField control={form.control} name='area' render={(props) => <CoreForm.Input {...props} />} />
+					<FormField
+						control={form.control}
+						name='area'
+						render={(props) => <CoreForm.Input disabled={disabled} {...props} />}
+					/>
 				</CoreForm.AddEditWrapper>
 			</div>
 

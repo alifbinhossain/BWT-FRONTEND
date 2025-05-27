@@ -247,8 +247,9 @@ export const useOtherLeaveCategory = <T>(query?: string) =>
 	});
 
 //* GET OTHER DEVICE LIST
-export const useOtherDeviceList = <T>() =>
+export const useOtherDeviceList = <T>(query?: string) =>
 	useTQuery<T>({
 		queryKey: otherQK.deviceList(),
-		url: `/other/device-list/value/label`,
+		url: `${query ? `/other/device-list/value/label?${query}` : `/other/device-list/value/label`}`,
+		enabled: query ? !!query : true,
 	});
