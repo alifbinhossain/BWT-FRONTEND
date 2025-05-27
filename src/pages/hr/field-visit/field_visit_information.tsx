@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import TableList, { ITableListItems } from '@/components/others/table-list';
 
 import { IFieldVisitEmployee } from '../_config/types';
+import EmployeeProfile from '@/lib/component/profile';
 
 const FiledVisitInformation: React.FC<{ data: IFieldVisitEmployee }> = ({ data }) => {
 	const format_from_date = format(data.start_date, 'dd MMM yyyy');
@@ -30,6 +31,18 @@ const FiledVisitInformation: React.FC<{ data: IFieldVisitEmployee }> = ({ data }
 			},
 			{ label: 'Reason', value: data.reason },
 			{ label: 'Status', value: data.approval },
+			{
+				label: 'Applied By',
+				value: (
+					<EmployeeProfile
+						data={{
+							name: data.created_by_name,
+							designation: data.created_by_designation,
+							department: data.created_by_department,
+						}}
+					/>
+				),
+			},
 		];
 	};
 	return (
