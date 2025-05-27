@@ -2,13 +2,9 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 
-
-
 import { IFormSelectOption } from '@/components/core/form/types';
 
-
-
-
+export * from './table-filter-ssr';
 
 export type IAuthResponse = {
 	status: number;
@@ -127,14 +123,6 @@ export interface IDefaultAddOrUpdateProps {
 	>;
 }
 
-export type ITableFilterOptionSSR<T> = {
-	accessor: keyof T;
-	label: string;
-	type: 'select' | 'checkbox' | 'radio' | 'date-range' | 'date' | 'text';
-	apiUrl?: string;
-	isPinned?: boolean;
-};
-
 export type IPaginationQuery = {
 	page: string;
 	limit: string;
@@ -153,3 +141,5 @@ export type IPagination = {
 	next_page: number | null;
 	prev_page: number | null;
 };
+
+export type IStatus = 'pending' | 'approved' | 'rejected';

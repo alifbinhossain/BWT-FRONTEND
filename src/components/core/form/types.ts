@@ -99,6 +99,7 @@ export interface FormJoinInputUnitProps extends InputProps {
 	icon?: React.ReactNode;
 	unit: string;
 	disableLabel?: boolean;
+	disabled?: boolean;
 }
 
 // * form-join-input-select
@@ -129,6 +130,20 @@ export interface FormInputProps extends InputProps {
 	optional?: boolean;
 	icon?: React.ReactNode;
 	disableLabel?: boolean;
+}
+
+// * form-switch
+export interface FormSwitchProps extends CheckboxProps {
+	field: ControllerRenderProps<any, any>;
+	fieldState: ControllerFieldState;
+	formState: UseFormStateReturn<any>;
+	label?: string;
+	placeholder?: string;
+	optional?: boolean;
+	icon?: React.ReactNode;
+	disableLabel?: boolean;
+	labelClassName?: string;
+	isBoxed?: boolean;
 }
 
 // * form-phone
