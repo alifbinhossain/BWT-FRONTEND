@@ -34,7 +34,12 @@ export const hrQK = {
 	manualEntry: (type?: string) => [...hrQK.all(), 'manual-entry', type],
 	manualEntry2: () => [...hrQK.all(), 'manual-entry-2'],
 	manualEntryByUUID: (uuid: string) => [...hrQK.manualEntry(), uuid],
-	fieldVisitEmployeeInfoByUUID: (uuid: string) => [...hrQK.manualEntry(), 'employee-info', uuid],
+	fieldVisitEmployeeInfoByUUID: (uuid: string, field_visit_uuid: string) => [
+		...hrQK.manualEntry(),
+		'employee-info',
+		uuid,
+		field_visit_uuid,
+	],
 
 	deviceList: () => [...hrQK.all(), 'device-list'],
 	deviceListByUUID: (uuid: string) => [...hrQK.deviceList(), uuid],

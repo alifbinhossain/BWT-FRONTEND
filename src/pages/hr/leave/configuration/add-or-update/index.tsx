@@ -156,7 +156,7 @@ const AddOrUpdate = () => {
 			await Promise.all([info_promise, ...order_entry_entries_promise])
 				.then(() => form.reset(LEAVE_CONFIG_NULL))
 				.then(() => {
-					navigate(`hr/leave-configuration`);
+					navigate(`/hr/leave-configuration`);
 				});
 		} catch (err) {
 			console.error(`Error with Promise.all: ${err}`);
