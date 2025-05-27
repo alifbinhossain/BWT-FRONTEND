@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { status } from '@/pages/hr/field-visit/utils';
 import { differenceInDays, format } from 'date-fns';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
@@ -42,6 +43,7 @@ const AddOrUpdate = () => {
 	const { data, invalidateQuery: invalidateFieldVisit } = useHrApplyLeaveByUUID<ILeaveApply>(uuid as string);
 
 	const { data: employees } = useOtherEmployees<ICustomEmployeeSelectOption[]>(`leave_policy_required=true`);
+	const disabled = data?.approval === 'approved'|| data?.approval === 'rejected' ? true : false;
 
 	const form = useRHF(LEAVE_APPLY_SCHEMA, LEAVE_APPLY_NULL);
 	const { data: LeaveCategoryOption } = useOtherLeaveCategory<IFormSelectOption[]>(
@@ -130,9 +132,7 @@ const AddOrUpdate = () => {
 					<FormField
 						control={form.control}
 						name='year'
-						render={(props) => (
-							<CoreForm.Input label='Year' disabled={data?.approval === 'approved'} {...props} />
-						)}
+						render={(props) => <CoreForm.Input label='Year' disabled={disabled} {...props} />}
 					/>
 					<FormField
 						control={form.control}
@@ -140,8 +140,20 @@ const AddOrUpdate = () => {
 						render={(props) => (
 							<CoreForm.ReactSelect
 								label='Employee'
+								isDisabled={disabled}
 								options={employees || []}
-								isDisabled={data?.approval === 'approved'}
+								{...props}
+							/>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='approval'
+						render={(props) => (
+							<CoreForm.ReactSelect
+								label='Status'
+								isDisabled={disabled}
+								options={status || []}
 								{...props}
 							/>
 						)}
@@ -153,8 +165,8 @@ const AddOrUpdate = () => {
 							render={(props) => (
 								<CoreForm.ReactSelect
 									label='Leave Category'
+									isDisabled={disabled}
 									options={LeaveCategoryOption || []}
-									isDisabled={data?.approval === 'approved'}
 									{...props}
 								/>
 							)}
@@ -167,7 +179,7 @@ const AddOrUpdate = () => {
 								<CoreForm.ReactSelect
 									label='Type'
 									options={type || []}
-									isDisabled={data?.approval === 'approved'}
+									isDisabled={disabled}
 									{...props}
 								/>
 							)}
@@ -177,32 +189,18 @@ const AddOrUpdate = () => {
 						<FormField
 							control={form.control}
 							name='from_date'
-							render={(props) => (
-								<CoreForm.DatePicker
-									label='From Date'
-									disabled={data?.approval === 'approved'}
-									{...props}
-								/>
-							)}
+							render={(props) => <CoreForm.DatePicker label='From Date' disabled={disabled} {...props} />}
 						/>
 						<FormField
 							control={form.control}
 							name='to_date'
-							render={(props) => (
-								<CoreForm.DatePicker
-									label='To Date'
-									disabled={data?.approval === 'approved'}
-									{...props}
-								/>
-							)}
+							render={(props) => <CoreForm.DatePicker label='To Date' disabled={disabled} {...props} />}
 						/>
 					</div>
 					<FormField
 						control={form.control}
 						name='reason'
-						render={(props) => (
-							<CoreForm.Textarea label='Reason' disabled={data?.approval === 'approved'} {...props} />
-						)}
+						render={(props) => <CoreForm.Textarea label='Reason' disabled={disabled} {...props} />}
 					/>
 					<FormField
 						control={form.control}
@@ -211,7 +209,7 @@ const AddOrUpdate = () => {
 							<CoreForm.FileUpload
 								fileType='document'
 								isUpdate={isUpdate}
-								disabled={data?.approval === 'approved'}
+								disabled={disabled}
 								{...props}
 							/>
 						)}

@@ -38,7 +38,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<IManualEntryTableData>> = ({
 	const form = useRHF(MANUAL_ENTRY_SCHEMA, MANUAL_ENTRY_NULL);
 
 	const { data: deviceList } = useOtherDeviceList<IFormSelectOption[]>();
-	const disabled = data?.approval === 'approved' ? true : false;
+	const disabled = data?.approval === 'approved'|| data?.approval === 'rejected' ? true : false;
 
 	const onClose = () => {
 		setUpdatedData?.(null);
