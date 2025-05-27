@@ -52,7 +52,7 @@ const AddOrUpdateDevice: React.FC<IEmployeeDeviceAddOrUpdateProps> = ({
 		invalidateQuery,
 		deleteData,
 	} = useDevicePermission<IDevicePermissionTableData[]>(`employee_uuid=${employeeData?.uuid}`);
-	const { data: deviceList } = useOtherDeviceList<IFormSelectOption[]>();
+	const { data: deviceList } = useOtherDeviceList<IFormSelectOption[]>(`employee_uuid=${employeeData?.uuid}`);
 
 	const form = useRHF(EMPLOYEE_DEVICE_SCHEMA, EMPLOYEE_DEVICE_NULL);
 
