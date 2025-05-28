@@ -18,6 +18,8 @@ import FormSelect from './select';
 import FormSubmit from './submit';
 import Switch from './switch';
 import FormTextarea from './textarea';
+import TimePicker from './time-picker';
+
 
 const Form = {
 	Input: FormInput,
@@ -40,6 +42,7 @@ const Form = {
 	Gender,
 	DateTimePicker,
 	FileUpload,
+	TimePicker,
 };
 
 export default Form;

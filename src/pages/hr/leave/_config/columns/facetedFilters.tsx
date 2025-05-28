@@ -43,6 +43,7 @@ export const applyLeaveFilters: ITableFilterOptionSSR<ILeaveApply>[] = [
 		label: 'Status',
 		type: 'select',
 		mode: 'static',
+		isPinned: true,
 		options: [
 			{
 				label: 'Pending',

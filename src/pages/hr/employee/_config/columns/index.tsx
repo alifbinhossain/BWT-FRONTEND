@@ -22,7 +22,7 @@ export const employeeColumns = ({
 			header: 'ID',
 		},
 		{
-			accessorKey: 'name',
+			accessorKey: 'employee_name',
 			header: 'Name',
 			enableColumnFilter: false,
 			cell: ({ cell, row }) => (

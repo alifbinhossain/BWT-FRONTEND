@@ -30,7 +30,7 @@ const FiledVisitInformation: React.FC<{ data: IFieldVisitEmployee }> = ({ data }
 				value: format_to_date,
 			},
 			{ label: 'Reason', value: data.reason },
-			{ label: 'Status', value: data.approval },
+			{ label: 'Status', value: data.approval},
 			{
 				label: 'Applied By',
 				value: (

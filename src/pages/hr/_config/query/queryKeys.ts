@@ -1,3 +1,5 @@
+import { IPaginationQuery } from '@/types';
+
 export const hrQK = {
 	all: () => ['admin'],
 
@@ -32,7 +34,7 @@ export const hrQK = {
 
 	//* field visit
 	manualEntry: (type?: string) => [...hrQK.all(), 'manual-entry', type],
-	manualEntry2: () => [...hrQK.all(), 'manual-entry-2'],
+	manualEntry2: (pagination: IPaginationQuery) => [...hrQK.all(), 'manual-entry-2', pagination],
 	manualEntryByUUID: (uuid: string) => [...hrQK.manualEntry(), uuid],
 	fieldVisitEmployeeInfoByUUID: (uuid: string, field_visit_uuid: string) => [
 		...hrQK.manualEntry(),
