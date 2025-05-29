@@ -42,9 +42,11 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 	const { data: leavePolicies } = useOtherLeavePolicy<IFormSelectOption[]>();
 	const { data: employmentTypes } = useOtherEmploymentType<IFormSelectOption[]>();
 	const { data: shiftGroups } = useOtherShiftGroup<IFormSelectOption[]>();
-	const { data: usersOptions } = useOtherUserByQuery<IFormSelectOption[]>('?filteredUser=true');
 
 	const form = useRHF(EMPLOYEE_SCHEMA(isUpdate) as any, EMPLOYEE_NULL);
+	const { data: usersOptions } = useOtherUserByQuery<IFormSelectOption[]>(
+		`${isUpdate ? `?user_uuid=${form.watch('user_uuid')}` : `?filteredUser=true`}`
+	);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -106,6 +108,7 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 							label='User'
 							options={usersOptions!}
 							placeholder='Select User'
+							isDisabled={isUpdate}
 							{...props}
 						/>
 					)}

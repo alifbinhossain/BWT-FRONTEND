@@ -19,7 +19,17 @@ export interface FormTextareaProps extends TextareaProps {
 	optional?: boolean;
 	disableLabel?: boolean;
 }
-
+export interface Color {
+	h: number;
+	s: number;
+	v: number;
+	r: number;
+	g: number;
+	b: number;
+	a: number;
+	hex: string;
+	rgba: string;
+}
 // * form-select
 export interface IFormSelectOption {
 	label: string | number;

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
@@ -23,10 +23,10 @@ const AddOrUpdate: React.FC<IShiftsAddOrUpdateProps> = ({
 	updateData,
 }) => {
 	const isUpdate = !!updatedData;
-
 	const { user } = useAuth();
 	const { invalidateQuery: invalidateUserQuery } = useHrShifts();
 	const { data } = useHrShiftsByUUID<IShift>(updatedData?.uuid as string);
+	const [color, setColor] = useState({});
 
 	const form = useRHF(SHIFT_SCHEMA, SHIFT_NULL);
 
@@ -76,7 +76,6 @@ const AddOrUpdate: React.FC<IShiftsAddOrUpdateProps> = ({
 			open={open}
 			setOpen={onClose}
 			title={isUpdate ? 'Update Shift' : 'Add Shift'}
-			isSmall={true}
 			form={form}
 			onSubmit={onSubmit}
 		>
@@ -100,11 +99,11 @@ const AddOrUpdate: React.FC<IShiftsAddOrUpdateProps> = ({
 				/>
 				<FormField
 					control={form.control}
-					name='color'
-					render={(props) => <CoreForm.Input label='Color' {...props} />}
+					name='initial'
+					render={(props) => <CoreForm.Input label='Initial' {...props} />}
 				/>
 			</div>
-			<div className='grid grid-cols-6 gap-4'>
+			<div className='grid grid-cols-2 gap-4'>
 				<FormField
 					control={form.control}
 					name='start_time'
@@ -118,7 +117,7 @@ const AddOrUpdate: React.FC<IShiftsAddOrUpdateProps> = ({
 				<FormField
 					control={form.control}
 					name='late_time'
-					render={(props) => <CoreForm.TimePicker label='Late Time' {...props} />}
+					render={(props) => <CoreForm.TimePicker label='Late After' {...props} />}
 				/>
 				<FormField
 					control={form.control}
@@ -136,7 +135,18 @@ const AddOrUpdate: React.FC<IShiftsAddOrUpdateProps> = ({
 					render={(props) => <CoreForm.TimePicker label='Break Time End' {...props} />}
 				/>
 			</div>
-
+			<div className='grid grid-cols-2 gap-4'>
+				<FormField
+					control={form.control}
+					name='first_half_absent'
+					render={(props) => <CoreForm.Switch label='First Half Absent' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='color'
+					render={(props) => <CoreForm.Input label='color' {...props} />}
+				/>
+			</div>
 			<FormField
 				control={form.control}
 				name='remarks'

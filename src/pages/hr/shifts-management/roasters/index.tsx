@@ -59,7 +59,7 @@ const ManualEntry = () => {
 				// handleUpdate={handleUpdate}
 				// handleDelete={handleDelete}
 				handleRefetch={refetch}
-				defaultVisibleColumns={{ created_at: false, updated_at: false, created_by_name: false, actions: false }}
+				defaultVisibleColumns={{updated_at: false, created_by_name: false, actions: false }}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

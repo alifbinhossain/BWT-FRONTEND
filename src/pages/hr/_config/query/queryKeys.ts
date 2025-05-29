@@ -34,7 +34,7 @@ export const hrQK = {
 
 	//* field visit
 	manualEntry: (type?: string) => [...hrQK.all(), 'manual-entry', type],
-	manualEntry2: (pagination: IPaginationQuery) => [...hrQK.all(), 'manual-entry-2', pagination],
+	manualEntry2: (pagination: IPaginationQuery) => [...hrQK.all(), 'manual-entry-2', ...Object.values(pagination)],
 	manualEntryByUUID: (uuid: string) => [...hrQK.manualEntry(), uuid],
 	fieldVisitEmployeeInfoByUUID: (uuid: string, field_visit_uuid: string) => [
 		...hrQK.manualEntry(),

@@ -20,7 +20,6 @@ import Switch from './switch';
 import FormTextarea from './textarea';
 import TimePicker from './time-picker';
 
-
 const Form = {
 	Input: FormInput,
 	Textarea: FormTextarea,

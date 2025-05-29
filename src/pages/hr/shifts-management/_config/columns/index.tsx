@@ -3,8 +3,6 @@ import { ColumnDef } from '@tanstack/react-table';
 import StatusButton from '@/components/buttons/status';
 import DateTime from '@/components/ui/date-time';
 
-import { cn } from '@/lib/utils';
-
 import { IRoasterColumnsType, IShiftsColumnsType, IShiftsGroupColumnsType } from './columns.type';
 
 //* policy
@@ -80,17 +78,18 @@ export const shiftsColumns = (): ColumnDef<IShiftsColumnsType>[] => [
 		size: 10,
 	},
 	{
+		accessorKey: 'color',
+		header: 'Color',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue(),
+		size: 10,
+	},
+	{
 		accessorKey: 'default_shift',
 		header: 'Default Shift',
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 		size: 10,
-	},
-	{
-		accessorKey: 'color',
-		header: 'Color',
-		enableColumnFilter: false,
-		cell: (info) => info.getValue(),
 	},
 	{
 		accessorKey: 'status',
@@ -171,5 +170,19 @@ export const roasterColumns = (): ColumnDef<IRoasterColumnsType>[] => [
 		header: 'Shift Group',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),
+	},
+	{
+		accessorKey: 'effective_date',
+		header: 'Effective Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as string} isTime={false} />,
+		size: 10,
+	},
+	{
+		accessorKey: 'off_days',
+		header: 'Off Days',
+		enableColumnFilter: false,
+		cell: (info) => (info.getValue() as string[])?.join(', '),
+		size: 40,
 	},
 ];

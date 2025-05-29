@@ -6,6 +6,7 @@ import { BOOLEAN_REQUIRED, STRING_NULLABLE, STRING_REQUIRED } from '@/utils/vali
 //* Shift Schema
 export const SHIFT_SCHEMA = z.object({
 	name: STRING_REQUIRED,
+	initial: STRING_REQUIRED,
 	start_time: STRING_REQUIRED,
 	end_time: STRING_REQUIRED,
 	late_time: STRING_REQUIRED,
@@ -13,6 +14,7 @@ export const SHIFT_SCHEMA = z.object({
 	first_half_end: STRING_REQUIRED,
 	break_time_end: STRING_REQUIRED,
 	default_shift: BOOLEAN_REQUIRED,
+	first_half_absent: BOOLEAN_REQUIRED,
 	color: STRING_REQUIRED,
 	status: BOOLEAN_REQUIRED,
 	remarks: STRING_NULLABLE,
@@ -20,6 +22,7 @@ export const SHIFT_SCHEMA = z.object({
 
 export const SHIFT_NULL: Partial<IShift> = {
 	name: '',
+	initial: '',
 	start_time: '',
 	end_time: '',
 	late_time: '',
@@ -27,6 +30,7 @@ export const SHIFT_NULL: Partial<IShift> = {
 	first_half_end: '',
 	break_time_end: '',
 	default_shift: false,
+	first_half_absent: false,
 	color: '',
 	status: false,
 	remarks: '',
