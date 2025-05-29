@@ -9,29 +9,27 @@ import {
 	STRING_REQUIRED,
 } from '@/utils/validators';
 
-export const EMPLOYEE_SCHEMA = (isUpdate: boolean) => {
-	const baseSchema = z.object({
-		user_uuid: STRING_REQUIRED,
-		employee_id: STRING_REQUIRED,
-		gender: GENDER,
-		start_date: STRING_NULLABLE,
-		end_date: STRING_NULLABLE,
-		workplace_uuid: STRING_NULLABLE,
-		sub_department_uuid: STRING_NULLABLE,
-		report_position: STRING_NULLABLE,
-		rfid: STRING_NULLABLE,
-		primary_display_text: STRING_NULLABLE,
-		secondary_display_text: STRING_NULLABLE,
-		leave_policy_uuid: STRING_NULLABLE,
-		employment_type_uuid: STRING_NULLABLE,
-		shift_group_uuid: STRING_NULLABLE,
-	});
-
-	return baseSchema;
-};
+export const EMPLOYEE_SCHEMA = z.object({
+	user_uuid: STRING_REQUIRED,
+	employee_id: STRING_REQUIRED,
+	gender: GENDER,
+	start_date: STRING_NULLABLE,
+	end_date: STRING_NULLABLE,
+	workplace_uuid: STRING_NULLABLE,
+	designation_uuid: STRING_NULLABLE,
+	department_uuid: STRING_NULLABLE,
+	sub_department_uuid: STRING_NULLABLE,
+	report_position: STRING_NULLABLE,
+	rfid: STRING_NULLABLE,
+	primary_display_text: STRING_NULLABLE,
+	secondary_display_text: STRING_NULLABLE,
+	leave_policy_uuid: STRING_NULLABLE,
+	employment_type_uuid: STRING_NULLABLE,
+	shift_group_uuid: STRING_NULLABLE,
+});
 
 export const EMPLOYEE_NULL: Partial<IEmployee> = {
-	user_uuid: '',
+  user_uuid: '',
 	employee_id: '',
 	gender: 'male',
 	start_date: null,

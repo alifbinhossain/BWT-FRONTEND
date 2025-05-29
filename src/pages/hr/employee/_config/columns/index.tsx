@@ -37,6 +37,11 @@ export const employeeColumns = ({
 		},
 
 		{
+			accessorKey: 'email',
+			header: 'Email',
+		},
+
+		{
 			accessorKey: 'shift_group_name',
 			header: 'Shift',
 		},

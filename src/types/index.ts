@@ -42,6 +42,7 @@ export type IUser = {
 	uuid: string;
 	name: string;
 	department: string;
+	employee_uuid: string;
 };
 
 export type IRoute = RouteObject & {

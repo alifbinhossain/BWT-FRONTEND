@@ -110,6 +110,12 @@ const otherQK = {
 	shiftGroups: (query?: string) => [...otherQK.all(), 'shiftGroups', query],
 	//*Roaster
 	roaster: (query?: string) => [...otherQK.all(), 'roaster', query],
+
+	//* Line Manager
+	lineManager: () => [...otherQK.all(), 'line-manager'],
+
+	//* HR Manager
+	hrManager: () => [...otherQK.all(), 'hr-manager'],
 };
 
 export default otherQK;

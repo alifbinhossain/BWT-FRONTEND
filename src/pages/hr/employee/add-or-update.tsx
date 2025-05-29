@@ -118,6 +118,7 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 					name='employee_id'
 					render={(props) => <CoreForm.Input label='Employee ID' {...props} />}
 				/>
+
 				<FormField control={form.control} name='gender' render={(props) => <CoreForm.Gender {...props} />} />
 			</div>
 
@@ -127,7 +128,7 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 						Advance Options
 					</AccordionTrigger>
 					<AccordionContent className='pt-4'>
-						<div className='grid grid-cols-2 gap-4'>
+						<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
 							<FormField
 								control={form.control}
 								name='start_date'
