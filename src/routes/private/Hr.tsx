@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import { IRoute } from '@/types';
+
 const Employee = lazy(() => import('@/pages/hr/employee'));
 const Designation = lazy(() => import('@/pages/hr/settings/designation'));
 const Department = lazy(() => import('@/pages/hr/settings/department'));
@@ -14,19 +15,16 @@ const LeaveConfigurationEntry = lazy(() => import('@/pages/hr/leave/configuratio
 const LeaveApplyLeave = lazy(() => import('@/pages/hr/leave/apply-leave/'));
 const LeaveApplyLeaveEntry = lazy(() => import('@/pages/hr/leave/apply-leave/add-or-update'));
 const WorkPlace = lazy(() => import('@/pages/hr/settings/workplace'));
-
 const FieldVisit = lazy(() => import('@/pages/hr/field-visit'));
 const FieldVisitAddOrUpdate = lazy(() => import('@/pages/hr/field-visit/add-or-update'));
-// const FieldVisitDetails = lazy(() => import('@/pages/hr/field-visit/details'));
-
 const ManualEntry = lazy(() => import('@/pages/hr/manual-entry'));
-
 const DeviceList = lazy(() => import('@/pages/hr/device-list'));
 const DeviceAllocate = lazy(() => import('@/pages/hr/device-list/allocate'));
-
 const PunchLog = lazy(() => import('@/pages/hr/punch-log'));
 const PendingApproval = lazy(() => import('@/pages/hr/pending-approval'));
-
+const Shift = lazy(() => import('@/pages/hr/shifts-management/shifts'));
+const ShiftsGroups = lazy(() => import('@/pages/hr/shifts-management/shifts-groups'));
+const Roasters = lazy(() => import('@/pages/hr/shifts-management/roasters'));
 const HrRoutes: IRoute[] = [
 	{
 		name: 'HR',
@@ -79,14 +77,6 @@ const HrRoutes: IRoute[] = [
 				hidden: true,
 				actions: ['create', 'read', 'update', 'delete'],
 			},
-			// {
-			// 	name: 'Field Visit Details',
-			// 	path: '/hr/field-visit/:uuid/details',
-			// 	element: <FieldVisitDetails />,
-			// 	page_name: 'admin__field_visit_details',
-			// 	hidden: true,
-			// 	actions: ['create', 'read', 'update', 'delete'],
-			// },
 			{
 				name: 'Settings',
 				children: [
@@ -138,6 +128,32 @@ const HrRoutes: IRoute[] = [
 						element: <SpecialDays />,
 						page_name: 'admin__special_holiday',
 						actions: ['create', 'read', 'update', 'delete'],
+					},
+				],
+			},
+			{
+				name: 'Shift Management',
+				children: [
+					{
+						name: 'Shifts',
+						path: '/hr/shifts',
+						element: <Shift />,
+						page_name: 'admin__shifts',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Shifts Groups',
+						path: '/hr/shifts-groups',
+						element: <ShiftsGroups />,
+						page_name: 'admin__shifts_groups',
+						actions: ['create', 'read', 'update', 'delete'],
+					},
+					{
+						name: 'Roasters',
+						path: '/hr/roasters',
+						element: <Roasters />,
+						page_name: 'admin__shifts_roasters',
+						actions: ['read', 'update', 'delete'],
 					},
 				],
 			},

@@ -29,14 +29,12 @@ export const EMPLOYEE_SCHEMA = z.object({
 });
 
 export const EMPLOYEE_NULL: Partial<IEmployee> = {
+  user_uuid: '',
 	employee_id: '',
 	gender: 'male',
-
 	start_date: null,
 	end_date: null,
 	workplace_uuid: null,
-	designation_uuid: null,
-	department_uuid: null,
 	sub_department_uuid: null,
 	report_position: null,
 	rfid: null,

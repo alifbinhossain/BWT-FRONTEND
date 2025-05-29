@@ -104,6 +104,12 @@ const otherQK = {
 
 	//* Device List
 	deviceList: () => [...otherQK.all(), 'device-list'],
+	//* Shifts
+	shifts: (query?: string) => [...otherQK.all(), 'shifts', query],
+	//* Shift Groups
+	shiftGroups: (query?: string) => [...otherQK.all(), 'shiftGroups', query],
+	//*Roaster
+	roaster: (query?: string) => [...otherQK.all(), 'roaster', query],
 
 	//* Line Manager
 	lineManager: () => [...otherQK.all(), 'line-manager'],

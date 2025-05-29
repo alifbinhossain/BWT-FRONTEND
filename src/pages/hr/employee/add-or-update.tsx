@@ -9,13 +9,11 @@ import { IFormSelectOption } from '@core/form/types';
 import { AddModal } from '@core/modal';
 
 import {
-	useOtherDepartment,
-	useOtherDesignation,
 	useOtherEmploymentType,
 	useOtherLeavePolicy,
 	useOtherShiftGroup,
 	useOtherSubDepartment,
-	useOtherUser,
+	useOtherUserByQuery,
 	useOtherWorkplace,
 } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
@@ -39,16 +37,16 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useHrEmployeesByUUID(updatedData?.uuid as string);
 
-	const { data: users } = useOtherUser<IFormSelectOption[]>();
-	const { data: departments } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: subDepartments } = useOtherSubDepartment<IFormSelectOption[]>();
-	const { data: designations } = useOtherDesignation<IFormSelectOption[]>();
 	const { data: workplaces } = useOtherWorkplace<IFormSelectOption[]>();
 	const { data: leavePolicies } = useOtherLeavePolicy<IFormSelectOption[]>();
 	const { data: employmentTypes } = useOtherEmploymentType<IFormSelectOption[]>();
 	const { data: shiftGroups } = useOtherShiftGroup<IFormSelectOption[]>();
 
-	const form = useRHF(EMPLOYEE_SCHEMA, EMPLOYEE_NULL);
+	const form = useRHF(EMPLOYEE_SCHEMA(isUpdate) as any, EMPLOYEE_NULL);
+	const { data: usersOptions } = useOtherUserByQuery<IFormSelectOption[]>(
+		`${isUpdate ? `?user_uuid=${form.watch('user_uuid')}` : `?filteredUser=true`}`
+	);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -101,16 +99,24 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 			onSubmit={onSubmit}
 			containerClassName='space-y-6'
 		>
-			<div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+			<div className='grid grid-cols-2 gap-4'>
 				<FormField
 					control={form.control}
 					name='user_uuid'
-					render={(props) => <CoreForm.Select label='Select User' options={users || []} {...props} />}
+					render={(props) => (
+						<CoreForm.ReactSelect
+							label='User'
+							options={usersOptions!}
+							placeholder='Select User'
+							isDisabled={isUpdate}
+							{...props}
+						/>
+					)}
 				/>
 				<FormField
 					control={form.control}
 					name='employee_id'
-					render={(props) => <CoreForm.Input {...props} />}
+					render={(props) => <CoreForm.Input label='Employee ID' {...props} />}
 				/>
 
 				<FormField control={form.control} name='gender' render={(props) => <CoreForm.Gender {...props} />} />
@@ -135,25 +141,25 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 									<CoreForm.Select label='Workplace' options={workplaces || []} {...props} />
 								)}
 							/>
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name='designation_uuid'
 								render={(props) => (
 									<CoreForm.Select label='Designation' options={designations || []} {...props} />
 								)}
-							/>
+							/> */}
 							<FormField
 								control={form.control}
 								name='report_position'
 								render={(props) => <CoreForm.Input {...props} />}
 							/>
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name='department_uuid'
 								render={(props) => (
 									<CoreForm.Select label='Department' options={departments || []} {...props} />
 								)}
-							/>
+							/> */}
 							<FormField
 								control={form.control}
 								name='rfid'
