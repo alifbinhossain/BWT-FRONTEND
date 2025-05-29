@@ -81,7 +81,7 @@ export type IEmployeeTableData = {
 	created_at: string;
 	updated_at: string;
 	remarks: string;
-	name: string;
+	employee_name: string;
 	email: string;
 	pass: string;
 	designation_uuid: string;

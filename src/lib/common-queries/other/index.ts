@@ -253,3 +253,17 @@ export const useOtherDeviceList = <T>(query?: string) =>
 		url: `${query ? `/other/device-list/value/label?${query}` : `/other/device-list/value/label`}`,
 		enabled: query ? !!query : true,
 	});
+
+//* GET OTHER LINE MANAGERS
+export const useOtherLineManager = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.lineManager(),
+		url: `/other/employee/value/label?is_line_manager=true`,
+	});
+
+//* GET OTHER HR MANAGERS
+export const useOtherHrManager = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.hrManager(),
+		url: `/other/employee/value/label?is_hr=true`,
+	});

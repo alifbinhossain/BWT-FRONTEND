@@ -15,6 +15,7 @@ import {
 	useOtherLeavePolicy,
 	useOtherShiftGroup,
 	useOtherSubDepartment,
+	useOtherUser,
 	useOtherWorkplace,
 } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
@@ -38,6 +39,7 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useHrEmployeesByUUID(updatedData?.uuid as string);
 
+	const { data: users } = useOtherUser<IFormSelectOption[]>();
 	const { data: departments } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: subDepartments } = useOtherSubDepartment<IFormSelectOption[]>();
 	const { data: designations } = useOtherDesignation<IFormSelectOption[]>();
@@ -46,7 +48,7 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 	const { data: employmentTypes } = useOtherEmploymentType<IFormSelectOption[]>();
 	const { data: shiftGroups } = useOtherShiftGroup<IFormSelectOption[]>();
 
-	const form = useRHF(EMPLOYEE_SCHEMA(isUpdate) as any, EMPLOYEE_NULL);
+	const form = useRHF(EMPLOYEE_SCHEMA, EMPLOYEE_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -99,25 +101,19 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 			onSubmit={onSubmit}
 			containerClassName='space-y-6'
 		>
-			<div className='grid grid-cols-2 gap-4'>
-				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
+			<div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+				<FormField
+					control={form.control}
+					name='user_uuid'
+					render={(props) => <CoreForm.Select label='Select User' options={users || []} {...props} />}
+				/>
 				<FormField
 					control={form.control}
 					name='employee_id'
 					render={(props) => <CoreForm.Input {...props} />}
 				/>
-				<FormField control={form.control} name='email' render={(props) => <CoreForm.Input {...props} />} />
-				<FormField
-					control={form.control}
-					name='pass'
-					render={(props) => <CoreForm.Input type='password' label='Password' {...props} />}
-				/>
+
 				<FormField control={form.control} name='gender' render={(props) => <CoreForm.Gender {...props} />} />
-				<FormField
-					control={form.control}
-					name='confirm_pass'
-					render={(props) => <CoreForm.Input type='password' label='Confirm Password' {...props} />}
-				/>
 			</div>
 
 			<Accordion type='single' collapsible>
@@ -126,7 +122,7 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 						Advance Options
 					</AccordionTrigger>
 					<AccordionContent className='pt-4'>
-						<div className='grid grid-cols-2 gap-4'>
+						<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
 							<FormField
 								control={form.control}
 								name='start_date'
