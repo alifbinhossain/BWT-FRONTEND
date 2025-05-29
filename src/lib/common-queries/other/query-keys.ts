@@ -104,6 +104,12 @@ const otherQK = {
 
 	//* Device List
 	deviceList: () => [...otherQK.all(), 'device-list'],
+
+	//* Line Manager
+	lineManager: () => [...otherQK.all(), 'line-manager'],
+
+	//* HR Manager
+	hrManager: () => [...otherQK.all(), 'hr-manager'],
 };
 
 export default otherQK;

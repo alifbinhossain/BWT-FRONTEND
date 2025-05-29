@@ -15,7 +15,6 @@ const AddOrUpdateDevice = lazy(() => import('./add-or-update-device'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const User = () => {
-
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrEmployees<IEmployeeTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Admin/Employee', url, 'admin__employee'), [url]);
@@ -45,7 +44,7 @@ const User = () => {
 	const handleDelete = (row: Row<IEmployeeTableData>) => {
 		setDeleteItem({
 			id: row?.original?.uuid,
-			name: row?.original?.name,
+			name: row?.original?.employee_name,
 		});
 	};
 
@@ -75,7 +74,6 @@ const User = () => {
 					created_by_name: false,
 					created_at: false,
 				}}
-				
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate
