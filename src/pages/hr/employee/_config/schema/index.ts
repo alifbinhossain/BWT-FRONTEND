@@ -29,7 +29,7 @@ export const EMPLOYEE_SCHEMA = z.object({
 });
 
 export const EMPLOYEE_NULL: Partial<IEmployee> = {
-  user_uuid: '',
+	user_uuid: '',
 	employee_id: '',
 	gender: 'male',
 	start_date: null,
@@ -45,7 +45,7 @@ export const EMPLOYEE_NULL: Partial<IEmployee> = {
 	shift_group_uuid: null,
 };
 
-export type IEmployee = z.infer<ReturnType<typeof EMPLOYEE_SCHEMA>>;
+export type IEmployee = z.infer<typeof EMPLOYEE_SCHEMA>;
 
 export const EMPLOYEE_DEVICE_SCHEMA = z
 	.object({
