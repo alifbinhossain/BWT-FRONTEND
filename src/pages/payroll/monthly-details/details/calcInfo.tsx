@@ -56,9 +56,7 @@ const CalcInfo: React.FC<{ data: IMonthlyDetailsTableData }> = ({ data }) => {
 
 			<Card className='w-96 overflow-hidden shadow-sm'>
 				<CardContent className='p-4'>
-					<h2 className='mb-3 flex justify-between rounded-md px-2 py-1 font-semibold'>
-						Calculation Information
-					</h2>
+					<h2 className='mb-3 flex justify-between rounded-md px-2 py-1 font-semibold'>Net Payable</h2>
 
 					<div className='text-sm'>
 						<p className='flex justify-between rounded-md px-2 py-1'>
