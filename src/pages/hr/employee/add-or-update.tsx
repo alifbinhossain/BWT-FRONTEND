@@ -120,6 +120,13 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 				/>
 
 				<FormField control={form.control} name='gender' render={(props) => <CoreForm.Gender {...props} />} />
+				<FormField
+					control={form.control}
+					name='joining_amount'
+					render={(props) => (
+						<CoreForm.JoinInputUnit unit='Tk' type='number' label='Joining Amount' {...props} />
+					)}
+				/>
 			</div>
 
 			<Accordion type='single' collapsible>
@@ -217,13 +224,6 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 								name='shift_group_uuid'
 								render={(props) => (
 									<CoreForm.Select label='Shift Group' options={shiftGroups || []} {...props} />
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name='joining_amount'
-								render={(props) => (
-									<CoreForm.JoinInputUnit unit='Tk' type='number' label='Joining Amount' {...props} />
 								)}
 							/>
 						</div>

@@ -5,6 +5,7 @@ import {
 	GENDER,
 	NUMBER_DOUBLE,
 	NUMBER_DOUBLE_OPTIONAL,
+	NUMBER_DOUBLE_REQUIRED,
 	PASSWORD,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
@@ -28,7 +29,7 @@ export const EMPLOYEE_SCHEMA = z.object({
 	leave_policy_uuid: STRING_NULLABLE,
 	employment_type_uuid: STRING_NULLABLE,
 	shift_group_uuid: STRING_NULLABLE,
-		joining_amount: NUMBER_DOUBLE_OPTIONAL,
+	joining_amount: NUMBER_DOUBLE_REQUIRED.min(1, 'Joining amount must be greater than 0'),
 });
 
 export const EMPLOYEE_NULL: Partial<IEmployee> = {
