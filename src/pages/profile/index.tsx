@@ -8,12 +8,8 @@ import EnrollEmployee from './_components/enroll-employee';
 import Leave from './_components/leave';
 import PendingApprovals from './_components/pending-approvals';
 import ProfileInformation from './_components/profile-information';
+import { INavigationTabsProps } from './_components/profile-provider';
 import Roaster from './_components/roaster';
-
-interface INavigationTabsProps {
-	title: string;
-	content: React.ReactNode;
-}
 
 const navigationItems: INavigationTabsProps[] = [
 	{
