@@ -3,7 +3,7 @@ import { useHrEmployeesByUUID } from '@/pages/hr/_config/query';
 import useAuth from '@/hooks/useAuth';
 
 import { IEmployeeDetails } from '../../config/types';
-import { addressData, documentsData, educationData } from './_config/data';
+import { documentsData } from './_config/data';
 import { sidebarItems } from './_config/sidebar-items';
 import { ActionsSidebar } from './action-sidebar';
 import { AddressInformation } from './address-information';
@@ -46,10 +46,10 @@ const ProfileInformation = () => {
 					{currentTab === 'Personal & Contact Info' && (
 						<PersonalContactInfo data={data!} updateData={updateData} />
 					)}
-					{currentTab === 'Address' && <AddressInformation data={addressData} />}
+					{currentTab === 'Address' && <AddressInformation employee_id={data!.uuid} />}
 					{currentTab === 'Change Password' && <ChangePassword />}
 					{currentTab === 'Employment History' && <EmploymentHistory employee_id={data!.uuid} />}
-					{currentTab === 'Education History' && <EducationHistory data={educationData} />}
+					{currentTab === 'Education History' && <EducationHistory employee_id={data!.uuid} />}
 					{currentTab === 'Employee Documents' && <EmployeeDocuments data={documentsData} />}
 					{currentTab === 'Notification Settings' && <NotificationSettings />}
 				</Content>
