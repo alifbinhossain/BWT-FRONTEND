@@ -66,6 +66,7 @@ export function TableToolbar() {
 		onClear,
 		isClear,
 		initialDateRange,
+		otherToolBarComponents,
 	} = useTable();
 
 	const column = table.getColumn('created_at');
@@ -160,6 +161,7 @@ export function TableToolbar() {
 						)
 					}
 				/>
+				<ToolbarComponent option='other' render={() => otherToolBarComponents} />
 			</div>
 		),
 		[
@@ -175,6 +177,7 @@ export function TableToolbar() {
 			isClear,
 			isEntry,
 			title,
+			otherToolBarComponents,
 		]
 	);
 
