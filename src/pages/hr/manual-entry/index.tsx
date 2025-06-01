@@ -2,19 +2,43 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 
+import { ToolbarComponent } from '@/components/core/data-table/_components/toolbar';
+import ReactSelect from '@/components/ui/react-select';
+
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { manualEntryColumns } from '../_config/columns';
 import { IManualEntryTableData } from '../_config/columns/columns.type';
 import { useHrManualEntry } from '../_config/query';
+import { status } from '../field-visit/utils';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const ManualEntry = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
-		useHrManualEntry<IManualEntryTableData[]>();
+	const [type, setType] = useState('all');
+	const status = [
+		{
+			value: 'all',
+			label: 'All',
+		},
+		{
+			value: 'pending',
+			label: 'Pending',
+		},
+		{
+			value: 'approved',
+			label: 'Approved',
+		},
+		{
+			value: 'rejected',
+			label: 'Rejected',
+		},
+	];
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useHrManualEntry<
+		IManualEntryTableData[]
+	>(`${type === 'all' ? '' : `approval=${type}`}`);
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Manual Entry', url, 'admin__manual_entry'), [url]);
 
@@ -61,6 +85,24 @@ const ManualEntry = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
+				otherToolBarComponents={
+					<ToolbarComponent
+						option='other'
+						render={() => (
+							<ReactSelect
+								options={status || []}
+								value={status?.find((option) => option.value === type)}
+								menuPortalTarget={document.body}
+								styles={{
+									menuPortal: (base) => ({ ...base, zIndex: 999 }),
+								}}
+								onChange={(e: any) => {
+									setType(e?.value);
+								}}
+							/>
+						)}
+					/>
+				}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

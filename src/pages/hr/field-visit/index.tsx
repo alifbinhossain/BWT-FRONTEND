@@ -1,5 +1,5 @@
 import { lazy, useMemo, useState } from 'react';
-import { PageProvider,TableProviderSSR } from '@/context';
+import { PageProvider, TableProviderSSR } from '@/context';
 import { IPaginationQuery } from '@/types';
 import { Row } from '@tanstack/react-table';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -11,26 +11,22 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { fieldVisitColumns } from '../_config/columns';
 import { IManualEntryTableData } from '../_config/columns/columns.type';
+import { filedVisitFilters } from '../_config/columns/facetedFilters';
 import { useHrEmployeeFieldVisitInfoByUUID, useHrManualEntry2 } from '../_config/query';
 import { IFieldVisitEmployee } from '../_config/types';
 import EmployeeInformation from './employee-information';
 import FiledVisitInformation from './field_visit_information';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const FieldVisit = () => {
 	const navigate = useNavigate();
-
 	const [searchParams] = useSearchParams();
 
 	const params = {} as IPaginationQuery;
 	searchParams.forEach((value, key) => ((params as any)[key] = value));
-
 	const { data, pagination, isLoading, url, deleteData, refetch } =
 		useHrManualEntry2<IManualEntryTableData[]>(params);
-
-	// const { data, isLoading, url, deleteData, refetch } = useHrManualEntry<IManualEntryTableData[]>('field_visit');
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Field Visit', url, 'admin__field_visit'), [url]);
 
@@ -62,22 +58,6 @@ const FieldVisit = () => {
 		});
 	};
 
-	// Delete All Item
-	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
-
-	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<IManualEntryTableData>[]) => {
-		const selectedRows = rows.map((row) => row.original);
-
-		setDeleteItems(
-			selectedRows.map((row) => ({
-				id: row.uuid,
-				name: row.employee_uuid,
-				checked: true,
-			}))
-		);
-	};
-
 	// Table Columns
 	const columns = fieldVisitColumns({ selectedFieldVisit, setSelectedFieldVisit });
 
@@ -95,27 +75,19 @@ const FieldVisit = () => {
 						handleUpdate={handleUpdate}
 						handleDelete={handleDelete}
 						handleRefetch={refetch}
-						handleDeleteAll={handleDeleteAll}
 						defaultVisibleColumns={{
 							remarks: false,
 							updated_at: false,
 							created_by_name: false,
 							created_at: false,
 						}}
+						filterOptions={filedVisitFilters}
 					>
 						{renderSuspenseModals([
 							<DeleteModal
 								{...{
 									deleteItem,
 									setDeleteItem,
-									url: '/hr/manual-entry',
-									deleteData,
-								}}
-							/>,
-							<DeleteAllModal
-								{...{
-									deleteItems,
-									setDeleteItems,
 									url: '/hr/manual-entry',
 									deleteData,
 								}}

@@ -112,15 +112,16 @@ export const useHrUsersWithAccess = <T>() =>
 		url: '/other/hr/users-can-access/value/label',
 	});
 
-export const useHrManualEntry = <T>(type?: string) =>
+export const useHrManualEntry = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.manualEntry(type),
-		url: type ? `/hr/manual-entry?type=${type}` : '/hr/manual-entry',
+		queryKey: hrQK.manualEntry(query),
+		url: query ? `/hr/manual-entry?${query}` : '/hr/manual-entry',
+		enabled: query ? !!query : true,
 	});
 
 export const useHrManualEntry2 = <T>(pagination: IPaginationQuery) =>
 	useTQuery<T>({
-		queryKey: hrQK.manualEntry2(),
+		queryKey: hrQK.manualEntry2(pagination),
 		url: addQueryParams('/hr/v2/manual-entry/by/pagination', pagination),
 	});
 

@@ -9,12 +9,11 @@ import { IFormSelectOption } from '@core/form/types';
 import { AddModal } from '@core/modal';
 
 import {
-	useOtherDepartment,
-	useOtherDesignation,
 	useOtherEmploymentType,
 	useOtherLeavePolicy,
 	useOtherShiftGroup,
 	useOtherSubDepartment,
+	useOtherUserByQuery,
 	useOtherWorkplace,
 } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
@@ -38,15 +37,16 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useHrEmployeesByUUID(updatedData?.uuid as string);
 
-	const { data: departments } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: subDepartments } = useOtherSubDepartment<IFormSelectOption[]>();
-	const { data: designations } = useOtherDesignation<IFormSelectOption[]>();
 	const { data: workplaces } = useOtherWorkplace<IFormSelectOption[]>();
 	const { data: leavePolicies } = useOtherLeavePolicy<IFormSelectOption[]>();
 	const { data: employmentTypes } = useOtherEmploymentType<IFormSelectOption[]>();
 	const { data: shiftGroups } = useOtherShiftGroup<IFormSelectOption[]>();
 
-	const form = useRHF(EMPLOYEE_SCHEMA(isUpdate) as any, EMPLOYEE_NULL);
+	const form = useRHF(EMPLOYEE_SCHEMA as any, EMPLOYEE_NULL);
+	const { data: usersOptions } = useOtherUserByQuery<IFormSelectOption[]>(
+		`${isUpdate ? `?user_uuid=${form.watch('user_uuid')}` : `?filteredUser=true`}`
+	);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -100,24 +100,26 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 			containerClassName='space-y-6'
 		>
 			<div className='grid grid-cols-2 gap-4'>
-				<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
+				<FormField
+					control={form.control}
+					name='user_uuid'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							label='User'
+							options={usersOptions!}
+							placeholder='Select User'
+							isDisabled={isUpdate}
+							{...props}
+						/>
+					)}
+				/>
 				<FormField
 					control={form.control}
 					name='employee_id'
-					render={(props) => <CoreForm.Input {...props} />}
+					render={(props) => <CoreForm.Input label='Employee ID' {...props} />}
 				/>
-				<FormField control={form.control} name='email' render={(props) => <CoreForm.Input {...props} />} />
-				<FormField
-					control={form.control}
-					name='pass'
-					render={(props) => <CoreForm.Input type='password' label='Password' {...props} />}
-				/>
+
 				<FormField control={form.control} name='gender' render={(props) => <CoreForm.Gender {...props} />} />
-				<FormField
-					control={form.control}
-					name='confirm_pass'
-					render={(props) => <CoreForm.Input type='password' label='Confirm Password' {...props} />}
-				/>
 			</div>
 
 			<Accordion type='single' collapsible>
@@ -126,7 +128,7 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 						Advance Options
 					</AccordionTrigger>
 					<AccordionContent className='pt-4'>
-						<div className='grid grid-cols-2 gap-4'>
+						<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
 							<FormField
 								control={form.control}
 								name='start_date'
@@ -139,25 +141,25 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 									<CoreForm.Select label='Workplace' options={workplaces || []} {...props} />
 								)}
 							/>
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name='designation_uuid'
 								render={(props) => (
 									<CoreForm.Select label='Designation' options={designations || []} {...props} />
 								)}
-							/>
+							/> */}
 							<FormField
 								control={form.control}
 								name='report_position'
 								render={(props) => <CoreForm.Input {...props} />}
 							/>
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name='department_uuid'
 								render={(props) => (
 									<CoreForm.Select label='Department' options={departments || []} {...props} />
 								)}
-							/>
+							/> */}
 							<FormField
 								control={form.control}
 								name='rfid'

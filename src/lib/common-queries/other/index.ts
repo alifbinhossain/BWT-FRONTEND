@@ -253,3 +253,32 @@ export const useOtherDeviceList = <T>(query?: string) =>
 		url: `${query ? `/other/device-list/value/label?${query}` : `/other/device-list/value/label`}`,
 		enabled: query ? !!query : true,
 	});
+//* GET OTHER SHIFTS
+export const useOtherShifts = <T>(query?: string) =>
+	useTQuery<T>({
+		queryKey: otherQK.shifts(query),
+		url: `${query ? `/other/shifts/value/label?${query}` : `/other/shift/value/label`}`,
+		enabled: query ? !!query : true,
+	});
+//* GET OTHER ROASTER 
+export const useOtherRoaster = <T>(query?: string) =>
+	useTQuery<T>({
+		queryKey: otherQK.roaster(query),
+		url: `${query ? `/other/roaster/value/label?${query}` : `/other/roaster/value/label`}`,
+		enabled: query ? !!query : true,
+	});
+
+
+//* GET OTHER LINE MANAGERS
+export const useOtherLineManager = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.lineManager(),
+		url: `/other/employee/value/label?is_line_manager=true`,
+	});
+
+//* GET OTHER HR MANAGERS
+export const useOtherHrManager = <T>() =>
+	useTQuery<T>({
+		queryKey: otherQK.hrManager(),
+		url: `/other/employee/value/label?is_hr=true`,
+	});
