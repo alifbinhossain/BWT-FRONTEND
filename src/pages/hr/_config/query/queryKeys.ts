@@ -15,6 +15,21 @@ export const hrQK = {
 	employees: (query?: string) => [...hrQK.all(), 'employees', query],
 	employeesByUUID: (uuid: string) => [...hrQK.employees(), uuid],
 
+	//* employee history
+	employeeHistory: () => [...hrQK.all(), 'employee-history'],
+	employeeHistoryByUUID: (uuid: string) => [...hrQK.employeeHistory(), uuid],
+	employeeHistoryByEmployeeUUID: (uuid: string) => [...hrQK.employeeHistory(), 'employee', uuid],
+
+	//* employee education
+	employeeEducation: () => [...hrQK.all(), 'employee-education'],
+	employeeEducationByUUID: (uuid: string) => [...hrQK.employeeEducation(), uuid],
+	employeeEducationByEmployeeUUID: (uuid: string) => [...hrQK.employeeEducation(), 'employee', uuid],
+
+	//* employee address
+	employeeAddress: () => [...hrQK.all(), 'employee-address'],
+	employeeAddressByUUID: (uuid: string) => [...hrQK.employeeAddress(), uuid],
+	employeeAddressByEmployeeUUID: (uuid: string) => [...hrQK.employeeAddress(), 'employee', uuid],
+
 	// * Device Permission
 	devicePermission: (query?: string) => [...hrQK.all(), 'device-permission', query],
 	devicePermissionByUUID: (uuid: string) => [...hrQK.devicePermission(), uuid],
@@ -31,6 +46,7 @@ export const hrQK = {
 	userByUUID: (uuid: string) => [...hrQK.userDefault(), uuid],
 	userCanAccess: (uuid: string) => [...hrQK.userDefault(), 'can-access', uuid],
 	userWithAccess: () => [...hrQK.userDefault(), 'users-with-access'],
+	userPassword: (uuid: string) => [...hrQK.userDefault(), 'password', uuid],
 
 	//* field visit
 	manualEntry: (type?: string) => [...hrQK.all(), 'manual-entry', type],

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useHrEmployeesByUUID } from '@/pages/hr/_config/query';
-import useAuth from '@/hooks/useAuth';
+import { IResponse } from '@/types';
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import useRHF from '@/hooks/useRHF';
 
 import { FormField } from '@/components/ui/form';
@@ -20,34 +21,26 @@ import {
 } from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
 
+import { IEmployeeDetails } from '../../config/types';
 import { GENERAL_INFO_NULL, GENERAL_INFO_SCHEMA, IGeneralInfo } from './_config/schema';
 
-export interface EmployeeData {
-	name: string;
-	id: string;
-	email: string;
-	department: string;
-	subDepartment: string;
-	designation: string;
-	employmentType: string;
-	shiftGroup: string;
-	gender: string;
-	primaryText: string;
-	secondaryText: string;
-	rfid: string;
-	reportPosition: string;
-	leavePolicy: string;
-	joiningDate: string;
-	endDate: string;
-	workplace: string;
-	lineManager: string;
-	hrManager: string;
-}
-
-export function GeneralInformation() {
-	const { user } = useAuth();
-	const { data, updateData } = useHrEmployeesByUUID(user?.employee_uuid as string);
-
+export function GeneralInformation({
+	data,
+	updateData,
+}: {
+	data: IEmployeeDetails;
+	updateData: UseMutationResult<
+		IResponse<IEmployeeDetails>,
+		AxiosError<IResponse<IEmployeeDetails>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}) {
 	const { data: departments } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: subDepartments } = useOtherSubDepartment<IFormSelectOption[]>();
 	const { data: designations } = useOtherDesignation<IFormSelectOption[]>();
@@ -71,7 +64,7 @@ export function GeneralInformation() {
 		console.log({ values });
 		// UPDATE ITEM
 		await updateData.mutateAsync({
-			url: `/hr/employee/${user?.employee_uuid}`,
+			url: `/hr/employee/${data?.uuid}`,
 			updatedData: {
 				...values,
 				updated_at: getDateTime(),

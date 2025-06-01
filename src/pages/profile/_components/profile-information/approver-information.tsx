@@ -1,26 +1,19 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-interface ApproverData {
-	firstLeaveApprover: string;
-	secondLeaveApprover: string;
-	firstLateApprover: string;
-	secondLateApprover: string;
-	firstManualEntryApprover: string;
-	secondManualEntryApprover: string;
-}
+import { IEmployeeDetails } from '../../config/types';
 
 interface ApproverInformationProps {
-	data: ApproverData;
+	data: IEmployeeDetails;
 }
 
 const ApproverInformation = ({ data }: ApproverInformationProps) => {
 	const approvers = [
-		{ role: 'First Leave Approver', name: data.firstLeaveApprover },
-		{ role: 'Second Leave Approver', name: data.secondLeaveApprover },
-		{ role: 'First Late Approver', name: data.firstLateApprover },
-		{ role: 'Second Late Approver', name: data.secondLateApprover },
-		{ role: 'First Manual Entry Approver', name: data.firstManualEntryApprover },
-		{ role: 'Second Manual Entry Approver', name: data.secondManualEntryApprover },
+		{ role: 'First Leave Approver', name: data.first_leave_approver_name },
+		{ role: 'Second Leave Approver', name: data.second_leave_approver_name },
+		{ role: 'First Late Approver', name: data.first_late_approver_name },
+		{ role: 'Second Late Approver', name: data.second_late_approver_name },
+		{ role: 'First Manual Entry Approver', name: data.first_manual_entry_approver_name },
+		{ role: 'Second Manual Entry Approver', name: data.second_manual_entry_approver_name },
 	];
 	return (
 		<Table className='border-b'>

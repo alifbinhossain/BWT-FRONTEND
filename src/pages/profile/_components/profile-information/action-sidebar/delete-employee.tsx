@@ -1,13 +1,38 @@
+import { useState } from 'react';
+import { useHrEmployeesByUUID } from '@/pages/hr/_config/query';
 import { Trash2 } from 'lucide-react';
+import useAuth from '@/hooks/useAuth';
 
+import { DeleteModal } from '@/components/core/modal';
 import { Button } from '@/components/ui/button';
 
 const DeleteEmployee = () => {
+	const { user } = useAuth();
+	const { deleteData } = useHrEmployeesByUUID(user?.employee_uuid as string);
+	const [deleteItem, setDeleteItem] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
+
 	return (
-		<Button variant={'outline'} className={`h-auto w-full justify-start px-4 py-2`}>
-			<Trash2 className='mr-1 size-4' />
-			<span className='text-sm'>Delete Employee</span>
-		</Button>
+		<>
+			<Button
+				onClick={() => setDeleteItem({ id: user?.employee_uuid as string, name: user?.name as string })}
+				variant={'outline'}
+				className={`h-auto w-full justify-start px-4 py-2`}
+			>
+				<Trash2 className='mr-1 size-4' />
+				<span className='text-sm'>Delete Employee</span>
+			</Button>
+			<DeleteModal
+				{...{
+					deleteItem,
+					setDeleteItem,
+					url: '/hr/employee',
+					deleteData,
+				}}
+			/>
+		</>
 	);
 };
 

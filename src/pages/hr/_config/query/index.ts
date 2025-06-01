@@ -1,8 +1,7 @@
-import { IPaginationQuery, IParams } from '@/types';
+import { IPaginationQuery } from '@/types';
 import useTQuery from '@/hooks/useTQuery';
 
 import addQueryParams from '@/utils/addQueryParams';
-import addUrlParams from '@/utils/routes/addUrlParams';
 
 import { hrQK } from './queryKeys';
 
@@ -28,11 +27,81 @@ export const useHrCanAccess = <T>(uuid: string) =>
 		enabled: !!uuid,
 	});
 
+export const useHrPassword = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.userPassword(uuid),
+		url: `/hr/user/password/${uuid}`,
+		enabled: !!uuid,
+	});
+
 // * Employee
 export const useHrEmployees = <T>(query?: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.employees(query),
 		url: query ? `/hr/employee?${query}` : `/hr/employee`,
+	});
+
+// * Employee History
+export const useHrEmployeeHistory = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeHistory(),
+		url: '/hr/employee-history',
+	});
+
+export const useHrEmployeeHistoryByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeHistoryByUUID(uuid),
+		url: `/hr/employee-history/${uuid}`,
+		enabled: !!uuid,
+	});
+
+export const useHrEmployeeHistoryByEmployeeUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeHistoryByEmployeeUUID(uuid),
+		url: `/hr/employee-history/by/${uuid}`,
+		enabled: !!uuid,
+	});
+
+// * Employee Education
+export const useHrEmployeeEducation = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeEducation(),
+		url: '/hr/employee-education',
+	});
+
+export const useHrEmployeeEducationByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeHistoryByUUID(uuid),
+		url: `/hr/employee-education/${uuid}`,
+		enabled: !!uuid,
+	});
+
+export const useHrEmployeeEducationByEmployeeUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeHistoryByEmployeeUUID(uuid),
+		url: `/hr/employee-education/by/${uuid}`,
+		enabled: !!uuid,
+	});
+
+// * Employee Address
+export const useHrEmployeeAddress = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeAddress(),
+		url: '/hr/employee-education',
+	});
+
+export const useHrEmployeeAddressByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeAddressByUUID(uuid),
+		url: `/hr/employee-education/${uuid}`,
+		enabled: !!uuid,
+	});
+
+export const useHrEmployeeAddressByEmployeeUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeAddressByEmployeeUUID(uuid),
+		url: `/hr/employee-education/by/${uuid}`,
+		enabled: !!uuid,
 	});
 
 // * Device permission

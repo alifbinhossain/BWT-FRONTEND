@@ -1,45 +1,105 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { IResponse } from '@/types';
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import useRHF from '@/hooks/useRHF';
 
-import { Label } from '@/components/ui/label';
+import { FormField } from '@/components/ui/form';
+import CoreForm from '@core/form';
 
-interface PersonalContactData {
-	fatherName: string;
-	motherName: string;
-	bloodGroup: string;
-	dateOfBirth: string;
-	nationalId: string;
-	officePhone: string;
-	homePhone: string;
-	personalPhone: string;
-}
+import { getDateTime } from '@/utils';
 
-interface PersonalContactInfoProps {
-	data: PersonalContactData;
-}
+import { IEmployeeDetails } from '../../config/types';
+import { IPersonalContactInfo, PERSONAL_CONTACT_INFO_NULL, PERSONAL_CONTACT_INFO_SCHEMA } from './_config/schema';
 
-const PersonalContactInfo: React.FC<PersonalContactInfoProps> = ({ data }) => {
-	const fields = [
-		{ label: "Father's Name", value: data.fatherName },
-		{ label: "Mother's Name", value: data.motherName },
-		{ label: 'Blood Group', value: data.bloodGroup },
-		{ label: 'Date of Birth', value: data.dateOfBirth },
-		{ label: 'National ID', value: data.nationalId },
-		{ label: 'Office Phone', value: data.officePhone },
-		{ label: 'Home Phone', value: data.homePhone },
-		{ label: 'Personal Phone', value: data.personalPhone },
-	];
+export function PersonalContactInfo({
+	data,
+	updateData,
+}: {
+	data: IEmployeeDetails;
+	updateData: UseMutationResult<
+		IResponse<IEmployeeDetails>,
+		AxiosError<IResponse<IEmployeeDetails>, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}) {
+	const form = useRHF(PERSONAL_CONTACT_INFO_SCHEMA, PERSONAL_CONTACT_INFO_NULL);
+
+	useEffect(() => {
+		if (data) {
+			form.reset(data);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data]);
+
+	async function onSubmit(values: IPersonalContactInfo) {
+		// UPDATE ITEM
+		await updateData.mutateAsync({
+			url: `/hr/employee/${data?.uuid}`,
+			updatedData: {
+				...values,
+				updated_at: getDateTime(),
+			},
+			isOnCloseNeeded: false,
+		});
+	}
+
 	return (
-		<div className='grid grid-cols-1 gap-6 px-4 py-2 md:grid-cols-2'>
-			{fields.map((field) => (
-				<div key={field.label} className='space-y-2'>
-					<Label className='text-sm font-medium text-gray-600'>{field.label}</Label>
-					<div className='rounded-md border bg-gray-50 p-3 text-sm text-primary'>
-						{field.value || 'Not Set'}
-					</div>
+		<div className='px-4 py-4'>
+			<CoreForm.AddEditWrapper form={form} onSubmit={onSubmit}>
+				<div className='grid w-full grid-cols-2 gap-4'>
+					<FormField
+						name='father_name'
+						control={form.control}
+						render={(props) => <CoreForm.Input label={`Father's Name`} {...props} />}
+					/>
+					<FormField
+						control={form.control}
+						name='mother_name'
+						render={(props) => <CoreForm.Input label={`Mother's Name`} {...props} />}
+					/>
+					<FormField
+						name='blood_group'
+						control={form.control}
+						render={(props) => <CoreForm.Input {...props} />}
+					/>
+
+					<FormField
+						control={form.control}
+						name='dob'
+						render={(props) => <CoreForm.DatePicker label='Date of Birth' {...props} />}
+					/>
+
+					<FormField
+						control={form.control}
+						name='national_id'
+						render={(props) => <CoreForm.Input label='National ID' {...props} />}
+					/>
+
+					<FormField
+						control={form.control}
+						name='office_phone'
+						render={(props) => <CoreForm.Input label='Office Phone' {...props} />}
+					/>
+
+					<FormField
+						control={form.control}
+						name='home_phone'
+						render={(props) => <CoreForm.Input label='Home Phone' {...props} />}
+					/>
+					<FormField
+						control={form.control}
+						name='personal_phone'
+						render={(props) => <CoreForm.Input label='Personal Phone' {...props} />}
+					/>
 				</div>
-			))}
+			</CoreForm.AddEditWrapper>
 		</div>
 	);
-};
-
-export default PersonalContactInfo;
+}
