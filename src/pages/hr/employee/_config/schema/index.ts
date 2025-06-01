@@ -3,6 +3,8 @@ import { z } from 'zod';
 import {
 	FORTUNE_ZIP_EMAIL_PATTERN,
 	GENDER,
+	NUMBER_DOUBLE,
+	NUMBER_DOUBLE_OPTIONAL,
 	PASSWORD,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
@@ -26,6 +28,7 @@ export const EMPLOYEE_SCHEMA = z.object({
 	leave_policy_uuid: STRING_NULLABLE,
 	employment_type_uuid: STRING_NULLABLE,
 	shift_group_uuid: STRING_NULLABLE,
+		joining_amount: NUMBER_DOUBLE_OPTIONAL,
 });
 
 export const EMPLOYEE_NULL: Partial<IEmployee> = {
@@ -43,6 +46,7 @@ export const EMPLOYEE_NULL: Partial<IEmployee> = {
 	leave_policy_uuid: null,
 	employment_type_uuid: null,
 	shift_group_uuid: null,
+	joining_amount: 0,
 };
 
 export type IEmployee = z.infer<typeof EMPLOYEE_SCHEMA>;

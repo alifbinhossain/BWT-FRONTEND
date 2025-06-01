@@ -162,6 +162,7 @@ export function TableToolbar() {
 						)
 					}
 				/>
+				<ToolbarComponent option='other' render={() => otherToolBarComponents} />
 			</div>
 		),
 		[

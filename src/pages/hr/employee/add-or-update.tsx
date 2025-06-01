@@ -219,6 +219,13 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 									<CoreForm.Select label='Shift Group' options={shiftGroups || []} {...props} />
 								)}
 							/>
+							<FormField
+								control={form.control}
+								name='joining_amount'
+								render={(props) => (
+									<CoreForm.JoinInputUnit unit='Tk' type='number' label='Joining Amount' {...props} />
+								)}
+							/>
 						</div>
 					</AccordionContent>
 				</AccordionItem>
