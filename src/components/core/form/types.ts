@@ -48,6 +48,7 @@ export interface FormSelectProps {
 	disableLabel?: boolean;
 	valueType?: 'string' | 'number';
 	onChange?: (value: any) => void;
+	isLoading?: boolean;
 }
 
 // * form-section
@@ -77,6 +78,7 @@ export interface FormReactSelectProps {
 	isMulti?: boolean;
 	menuPortalTarget?: any;
 	valueType?: 'string' | 'number';
+	isLoading?: boolean;
 }
 
 // * form-multi-select

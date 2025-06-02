@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { useHrEmployeesByUUID } from '@/pages/hr/_config/query';
 import { Trash2 } from 'lucide-react';
-import useAuth from '@/hooks/useAuth';
+import useProfile from '@/hooks/useProfile';
 
 import { DeleteModal } from '@/components/core/modal';
 import { Button } from '@/components/ui/button';
 
 const DeleteEmployee = () => {
-	const { user } = useAuth();
-	const { deleteData } = useHrEmployeesByUUID(user?.employee_uuid as string);
+	const { user, deleteProfileData } = useProfile();
 	const [deleteItem, setDeleteItem] = useState<{
 		id: string;
 		name: string;
@@ -29,7 +27,7 @@ const DeleteEmployee = () => {
 					deleteItem,
 					setDeleteItem,
 					url: '/hr/employee',
-					deleteData,
+					deleteData: deleteProfileData,
 				}}
 			/>
 		</>

@@ -2,6 +2,7 @@ import { IDevicePermissionTableData, IEmployeeTableData } from '@/pages/hr/_conf
 import { ColumnDef, Row } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
+import { LinkOnly } from '@/components/others/link';
 import { Button } from '@/components/ui/button';
 import DateTime from '@/components/ui/date-time';
 
@@ -20,6 +21,7 @@ export const employeeColumns = ({
 		{
 			accessorKey: 'employee_id',
 			header: 'ID',
+			cell: (info) => <LinkOnly title={info.getValue<string>()} uri={`/profile/${info.row.original.uuid}`} />,
 		},
 		{
 			accessorKey: 'employee_name',

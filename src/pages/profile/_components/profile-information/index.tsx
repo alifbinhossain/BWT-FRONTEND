@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { useHrEmployeesByUUID } from '@/pages/hr/_config/query';
-import useAuth from '@/hooks/useAuth';
+import useProfile from '@/hooks/useProfile';
 
-import { IEmployeeDetails } from '../../config/types';
-import { documentsData } from './_config/data';
 import { sidebarItems } from './_config/sidebar-items';
 import { ActionsSidebar } from './action-sidebar';
 import { AddressInformation } from './address-information';
-import ApproverInformation from './approver-information';
+import { ApproverInformation } from './approver-information';
 import { ChangePassword } from './change-password';
 import Content from './content';
 import { EducationHistory } from './education-history';
@@ -24,10 +21,12 @@ const ProfileInformation = () => {
 	const handleTabClick = (label: string) => {
 		setCurrentTab(label);
 	};
-	const { user } = useAuth();
-	const { data, updateData, isLoading } = useHrEmployeesByUUID<IEmployeeDetails>(user?.employee_uuid as string);
+
+	const { profileData, updateProfileData, isLoading } = useProfile();
 
 	if (isLoading) return <div>Loading...</div>;
+
+	if (!profileData) return <div>Something went wrong</div>;
 
 	return (
 		<div className='grid h-full grid-cols-5 gap-4'>
@@ -36,21 +35,23 @@ const ProfileInformation = () => {
 					sidebarItems={sidebarItems}
 					currentTab={currentTab}
 					handleTabClick={handleTabClick}
-					employeeName='John Doe'
+					employeeName={profileData.employee_name}
 				/>
 				<Content title={currentTab}>
 					{currentTab === 'General Information' && (
-						<GeneralInformation data={data!} updateData={updateData} />
+						<GeneralInformation data={profileData} updateData={updateProfileData} />
 					)}
-					{currentTab === 'Approver Information' && <ApproverInformation data={data!} />}
+					{currentTab === 'Approver Information' && (
+						<ApproverInformation data={profileData} updateData={updateProfileData} />
+					)}
 					{currentTab === 'Personal & Contact Info' && (
-						<PersonalContactInfo data={data!} updateData={updateData} />
+						<PersonalContactInfo data={profileData} updateData={updateProfileData} />
 					)}
-					{currentTab === 'Address' && <AddressInformation employee_id={data!.uuid} />}
+					{currentTab === 'Address' && <AddressInformation employee_id={profileData.uuid} />}
 					{currentTab === 'Change Password' && <ChangePassword />}
-					{currentTab === 'Employment History' && <EmploymentHistory employee_id={data!.uuid} />}
-					{currentTab === 'Education History' && <EducationHistory employee_id={data!.uuid} />}
-					{currentTab === 'Employee Documents' && <EmployeeDocuments data={documentsData} />}
+					{currentTab === 'Employment History' && <EmploymentHistory employee_id={profileData.uuid} />}
+					{currentTab === 'Education History' && <EducationHistory employee_id={profileData.uuid} />}
+					{currentTab === 'Employee Documents' && <EmployeeDocuments employee_id={profileData.uuid} />}
 					{currentTab === 'Notification Settings' && <NotificationSettings />}
 				</Content>
 			</div>

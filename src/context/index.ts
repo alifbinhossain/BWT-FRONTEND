@@ -1,6 +1,7 @@
 import AuthProvider from './AuthContext';
 import LayoutProvider from './LayoutContext';
 import PageProvider from './PageContext';
+import ProfileProvider from './ProfileContext';
 import SidebarProvider from './SidebarContext';
 import TableProvider from './TableContext';
 import TableProviderSSR from './TableContextSSR';
@@ -14,4 +15,5 @@ export {
 	TableProvider,
 	TableProviderSSR,
 	TableFilterProvider,
+	ProfileProvider,
 };

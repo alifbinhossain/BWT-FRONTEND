@@ -43,7 +43,7 @@ const AddOrUpdate = () => {
 	const { data, invalidateQuery: invalidateFieldVisit } = useHrApplyLeaveByUUID<ILeaveApply>(uuid as string);
 
 	const { data: employees } = useOtherEmployees<ICustomEmployeeSelectOption[]>(`leave_policy_required=true`);
-	const disabled = data?.approval === 'approved'|| data?.approval === 'rejected' ? true : false;
+	const disabled = data?.approval === 'approved' || data?.approval === 'rejected' ? true : false;
 
 	const form = useRHF(LEAVE_APPLY_SCHEMA, LEAVE_APPLY_NULL);
 	const { data: LeaveCategoryOption } = useOtherLeaveCategory<IFormSelectOption[]>(
