@@ -2,6 +2,7 @@ import { isArray } from 'lodash';
 
 import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import ReactSelect from '@/components/ui/react-select';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { FormReactSelectProps, IFormSelectOption } from './types';
 
@@ -16,6 +17,7 @@ const FormReactSelect: React.FC<FormReactSelectProps> = ({
 	isMulti = false,
 	menuPortalTarget,
 	valueType = 'string',
+	isLoading = false,
 }) => {
 	return (
 		<FormItem className='w-full space-y-1.5'>
@@ -26,57 +28,61 @@ const FormReactSelect: React.FC<FormReactSelectProps> = ({
 				</FormLabel>
 			)}
 			<FormControl>
-				<ReactSelect
-					className='min-w-48'
-					isMulti={isMulti}
-					options={options}
-					isDisabled={isDisabled}
-					placeholder={placeholder}
-					menuPortalTarget={menuPortalTarget}
-					{...field}
-					value={
-						isMulti
-							? isArray(field.value)
-								? field.value.map((item: any) => {
-										return options.find((option: IFormSelectOption) => option.value === item);
-									})
-								: []
-							: options?.filter((item: IFormSelectOption) => item.value === field.value)
-					}
-					// value={() => {
-					// 	if (!isMulti) {
-					// 		return options.filter((item: IFormSelectOption) => item.value === field.value);
-					// 	}
-					// 	if (isArray(field.value)) {
-					// 		return field.value.map((item: any) => {
-					// 			return options.find((option: IFormSelectOption) => option.value === item);
-					// 		});
-					// 	}
+				{isLoading ? (
+					<Skeleton className='bg-gradient h-10 w-full rounded-md border border-input' />
+				) : (
+					<ReactSelect
+						className='min-w-48'
+						isMulti={isMulti}
+						options={options}
+						isDisabled={isDisabled}
+						placeholder={placeholder}
+						menuPortalTarget={menuPortalTarget}
+						{...field}
+						value={
+							isMulti
+								? isArray(field.value)
+									? field.value.map((item: any) => {
+											return options.find((option: IFormSelectOption) => option.value === item);
+										})
+									: []
+								: options?.filter((item: IFormSelectOption) => item.value === field.value)
+						}
+						// value={() => {
+						// 	if (!isMulti) {
+						// 		return options.filter((item: IFormSelectOption) => item.value === field.value);
+						// 	}
+						// 	if (isArray(field.value)) {
+						// 		return field.value.map((item: any) => {
+						// 			return options.find((option: IFormSelectOption) => option.value === item);
+						// 		});
+						// 	}
 
-					// 	return [];
-					// }}
-					onChange={(option: any) => {
-						if (option === null) {
-							if (isMulti) {
-								field.onChange([]);
-							} else {
-								field.onChange('');
+						// 	return [];
+						// }}
+						onChange={(option: any) => {
+							if (option === null) {
+								if (isMulti) {
+									field.onChange([]);
+								} else {
+									field.onChange('');
+								}
+								return;
 							}
-							return;
-						}
-						if (isMulti) {
-							field.onChange(option.map((item: any) => item.value));
+							if (isMulti) {
+								field.onChange(option.map((item: any) => item.value));
 
-							return;
-						}
+								return;
+							}
 
-						if (valueType === 'number') {
-							field.onChange(Number(option.value));
-						} else {
-							field.onChange(option.value);
-						}
-					}}
-				/>
+							if (valueType === 'number') {
+								field.onChange(Number(option.value));
+							} else {
+								field.onChange(option.value);
+							}
+						}}
+					/>
+				)}
 			</FormControl>
 			<FormMessage />
 		</FormItem>

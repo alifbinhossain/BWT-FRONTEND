@@ -8,6 +8,7 @@ import { AddModal, DeleteModal } from '@/components/core/modal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { FormField } from '@/components/ui/form';
+import { Skeleton } from '@/components/ui/skeleton';
 import CoreForm from '@core/form';
 
 import nanoid from '@/lib/nanoid';
@@ -28,14 +29,14 @@ export function EducationHistory({ employee_id }: { employee_id: string }) {
 	} | null>(null);
 
 	const { user } = useAuth();
-	const { data, postData, updateData, deleteData, invalidateQuery } =
+	const { data, isLoading, postData, updateData, deleteData } =
 		useHrEmployeeEducationByEmployeeUUID<IEmployeeEducationDetails[]>(employee_id);
 
 	const form = useRHF(EMPLOYEE_EDUCATION_SCHEMA, EMPLOYEE_EDUCATION_NULL);
 
 	const onClose = () => {
 		form.reset(EMPLOYEE_EDUCATION_NULL);
-		setOpen((prev) => !prev);
+		setOpen(false);
 	};
 
 	async function onSubmit(values: IEmployeeEducation) {
@@ -55,6 +56,7 @@ export function EducationHistory({ employee_id }: { employee_id: string }) {
 				url,
 				newData: {
 					...values,
+					employee_uuid: employee_id,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
 					uuid: nanoid(),
@@ -73,7 +75,6 @@ export function EducationHistory({ employee_id }: { employee_id: string }) {
 		setCurrentRecord(null);
 		form.reset(EMPLOYEE_EDUCATION_NULL);
 		setOpen(true);
-		invalidateQuery();
 	}
 
 	// Handle edit button click
@@ -91,6 +92,17 @@ export function EducationHistory({ employee_id }: { employee_id: string }) {
 		});
 	}
 
+	if (isLoading) {
+		return (
+			<div className='space-y-4 px-4 py-4'>
+				<div className='flex justify-end'>
+					<Skeleton className='h-9 w-24 border' />
+				</div>
+				<Skeleton className='h-[200px] w-full border' />
+			</div>
+		);
+	}
+
 	return (
 		<div className='space-y-4 px-4 py-4'>
 			{data && data?.length > 0 && (
@@ -101,7 +113,7 @@ export function EducationHistory({ employee_id }: { employee_id: string }) {
 				</div>
 			)}
 
-			<div>
+			<div className='space-y-4'>
 				{!data || data?.length === 0 ? (
 					<Card className='border border-gray-200'>
 						<CardContent className='py-12 text-center'>
@@ -117,27 +129,17 @@ export function EducationHistory({ employee_id }: { employee_id: string }) {
 							<CardHeader className='pb-3'>
 								<div className='flex items-start justify-between'>
 									<div>
-										<h3 className='text-lg font-medium text-gray-900'>
+										<h3 className='text-lg font-medium capitalize text-gray-900'>
 											{index + 1}. {record.degree_name}
 										</h3>
 									</div>
 									<div className='flex gap-2'>
-										<Button
-											variant='outline'
-											size='sm'
-											onClick={() => handleEdit(record)}
-											className='gap-1 bg-teal-500 text-white hover:bg-teal-600'
-										>
-											<Edit className='h-4 w-4' />
+										<Button variant='gradient' size='sm' onClick={() => handleEdit(record)}>
+											<Edit className='size-4' />
 											Edit
 										</Button>
-										<Button
-											onClick={() => handleDelete(record)}
-											variant='outline'
-											size='sm'
-											className='gap-1 bg-red-600 text-white hover:bg-red-700'
-										>
-											<Trash2 className='h-4 w-4' />
+										<Button onClick={() => handleDelete(record)} variant='destructive' size='sm'>
+											<Trash2 className='size-4' />
 											Delete
 										</Button>
 									</div>
@@ -196,7 +198,7 @@ export function EducationHistory({ employee_id }: { employee_id: string }) {
 					<FormField
 						control={form.control}
 						name={`year_of_passing`}
-						render={(props) => <CoreForm.Input label='Year' {...props} />}
+						render={(props) => <CoreForm.Input type='number' label='Year' {...props} />}
 					/>
 					<FormField
 						control={form.control}
@@ -215,7 +217,6 @@ export function EducationHistory({ employee_id }: { employee_id: string }) {
 					onClose: () => {
 						onClose?.();
 						setDeleteItem(null);
-						invalidateQuery();
 					},
 				}}
 			/>

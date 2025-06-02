@@ -19,8 +19,6 @@ export const EMPLOYEE_SCHEMA = z.object({
 	start_date: STRING_NULLABLE,
 	end_date: STRING_NULLABLE,
 	workplace_uuid: STRING_NULLABLE,
-	designation_uuid: STRING_NULLABLE,
-	department_uuid: STRING_NULLABLE,
 	sub_department_uuid: STRING_NULLABLE,
 	report_position: STRING_NULLABLE,
 	rfid: STRING_NULLABLE,

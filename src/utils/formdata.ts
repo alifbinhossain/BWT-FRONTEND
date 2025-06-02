@@ -10,7 +10,7 @@ const Formdata = <T extends Record<string, any>>(data: T) => {
 		}
 	});
 
-	return formData;
+	return formData as unknown as FormData & T;
 };
 
 export default Formdata;

@@ -71,14 +71,14 @@ export const useHrEmployeeEducation = <T>() =>
 
 export const useHrEmployeeEducationByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.employeeHistoryByUUID(uuid),
+		queryKey: hrQK.employeeEducationByUUID(uuid),
 		url: `/hr/employee-education/${uuid}`,
 		enabled: !!uuid,
 	});
 
 export const useHrEmployeeEducationByEmployeeUUID = <T>(uuid: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.employeeHistoryByEmployeeUUID(uuid),
+		queryKey: hrQK.employeeEducationByEmployeeUUID(uuid),
 		url: `/hr/employee-education/by/${uuid}`,
 		enabled: !!uuid,
 	});
@@ -87,20 +87,41 @@ export const useHrEmployeeEducationByEmployeeUUID = <T>(uuid: string) =>
 export const useHrEmployeeAddress = <T>() =>
 	useTQuery<T>({
 		queryKey: hrQK.employeeAddress(),
-		url: '/hr/employee-education',
+		url: '/hr/employee-address',
 	});
 
 export const useHrEmployeeAddressByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.employeeAddressByUUID(uuid),
-		url: `/hr/employee-education/${uuid}`,
+		url: `/hr/employee-address/${uuid}`,
 		enabled: !!uuid,
 	});
 
 export const useHrEmployeeAddressByEmployeeUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.employeeAddressByEmployeeUUID(uuid),
-		url: `/hr/employee-education/by/${uuid}`,
+		url: `/hr/employee-address/by/${uuid}`,
+		enabled: !!uuid,
+	});
+
+// * Employee Documents
+export const useHrEmployeeDocuments = <T>() =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeDocuments(),
+		url: '/hr/employee-document',
+	});
+
+export const useHrEmployeeDocumentsByUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeDocumentsByUUID(uuid),
+		url: `/hr/employee-document/${uuid}`,
+		enabled: !!uuid,
+	});
+
+export const useHrEmployeeDocumentsByEmployeeUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeDocumentsByEmployeeUUID(uuid),
+		url: `/hr/employee-document/by/${uuid}`,
 		enabled: !!uuid,
 	});
 
@@ -200,6 +221,14 @@ export const useHrManualEntryByUUID = <T>(uuid: string) =>
 		url: `/hr/manual-entry/${uuid}`,
 		enabled: !!uuid,
 	});
+
+export const useHrManualEntryByEmployeeUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.manualEntryByEmployeeUUID(uuid),
+		url: `/hr/manual-entry/by/${uuid}`,
+		enabled: !!uuid,
+	});
+
 export const useHrEmployeeFieldVisitInfoByUUID = <T>(uuid: string, field_visit_uuid: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.fieldVisitEmployeeInfoByUUID(uuid, field_visit_uuid),

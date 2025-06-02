@@ -9,6 +9,7 @@ import { AddModal, DeleteModal } from '@/components/core/modal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { FormField } from '@/components/ui/form';
+import { Skeleton } from '@/components/ui/skeleton';
 import CoreForm from '@core/form';
 
 import nanoid from '@/lib/nanoid';
@@ -29,14 +30,14 @@ export function EmploymentHistory({ employee_id }: { employee_id: string }) {
 	} | null>(null);
 
 	const { user } = useAuth();
-	const { data, postData, updateData, deleteData, invalidateQuery } =
+	const { data, postData, updateData, deleteData, isLoading } =
 		useHrEmployeeHistoryByEmployeeUUID<IEmployee[]>(employee_id);
 
 	const form = useRHF(EMPLOYMENT_HISTORY_SCHEMA, EMPLOYMENT_HISTORY_NULL);
 
 	const onClose = () => {
 		form.reset(EMPLOYMENT_HISTORY_NULL);
-		setOpen((prev) => !prev);
+		setOpen(false);
 	};
 
 	async function onSubmit(values: IEmploymentHistory) {
@@ -56,6 +57,7 @@ export function EmploymentHistory({ employee_id }: { employee_id: string }) {
 				url,
 				newData: {
 					...values,
+					employee_uuid: employee_id,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
 					uuid: nanoid(),
@@ -74,7 +76,6 @@ export function EmploymentHistory({ employee_id }: { employee_id: string }) {
 		setCurrentRecord(null);
 		form.reset(EMPLOYMENT_HISTORY_NULL);
 		setOpen(true);
-		invalidateQuery();
 	}
 
 	// Handle edit button click
@@ -92,6 +93,17 @@ export function EmploymentHistory({ employee_id }: { employee_id: string }) {
 		});
 	}
 
+	if (isLoading) {
+		return (
+			<div className='space-y-4 px-4 py-4'>
+				<div className='flex justify-end'>
+					<Skeleton className='h-9 w-24 border' />
+				</div>
+				<Skeleton className='h-[200px] w-full border' />
+			</div>
+		);
+	}
+
 	return (
 		<div className='space-y-4 px-4 py-4'>
 			{data && data?.length > 0 && (
@@ -102,7 +114,7 @@ export function EmploymentHistory({ employee_id }: { employee_id: string }) {
 				</div>
 			)}
 
-			<div>
+			<div className='space-y-4'>
 				{!data || data?.length === 0 ? (
 					<Card className='border border-gray-200'>
 						<CardContent className='py-12 text-center'>
@@ -113,31 +125,23 @@ export function EmploymentHistory({ employee_id }: { employee_id: string }) {
 						</CardContent>
 					</Card>
 				) : (
-					data.map((record, index: number) => (
+					data?.map((record, index: number) => (
 						<Card key={index} className='border border-gray-200'>
 							<CardHeader className='pb-3'>
 								<div className='flex items-start justify-between'>
 									<div>
-										<h3 className='text-lg font-medium text-gray-900'>{record.designation}</h3>
+										<h3 className='text-lg font-medium capitalize text-gray-900'>
+											{record.designation}
+										</h3>
 										<p className='text-gray-600'>{record.company_name}</p>
 									</div>
 									<div className='flex gap-2'>
-										<Button
-											variant='outline'
-											size='sm'
-											onClick={() => handleEdit(record)}
-											className='gap-1'
-										>
-											<Edit className='h-4 w-4' />
+										<Button variant='gradient' size='sm' onClick={() => handleEdit(record)}>
+											<Edit className='size-4' />
 											Edit
 										</Button>
-										<Button
-											onClick={() => handleDelete(record)}
-											variant='outline'
-											size='sm'
-											className='gap-1 text-red-600 hover:text-red-700'
-										>
-											<Trash2 className='h-4 w-4' />
+										<Button onClick={() => handleDelete(record)} variant='destructive' size='sm'>
+											<Trash2 className='size-4' />
 											Delete
 										</Button>
 									</div>
@@ -151,7 +155,9 @@ export function EmploymentHistory({ employee_id }: { employee_id: string }) {
 									</div>
 									<div>
 										<label className='text-sm font-medium text-gray-700'>Start Date</label>
-										<p className='text-gray-900'>{formatDate(record.start_date, 'dd-MMM-yyyy')}</p>
+										<p className='text-gray-900'>
+											{record?.start_date && formatDate(record.start_date, 'dd-MMM-yyyy')}
+										</p>
 									</div>
 									<div>
 										<label className='text-sm font-medium text-gray-700'>Location</label>
@@ -238,7 +244,6 @@ export function EmploymentHistory({ employee_id }: { employee_id: string }) {
 					onClose: () => {
 						onClose?.();
 						setDeleteItem(null);
-						invalidateQuery();
 					},
 				}}
 			/>

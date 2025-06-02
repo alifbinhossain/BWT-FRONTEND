@@ -11,6 +11,7 @@ import { API_IMAGE_URL } from '@/lib/secret';
 
 import { FormFileUploadProps } from '../types';
 import { DocumentPreview, ImagePreview, VideoPreview } from './previews';
+import AllPreview from './previews/all';
 
 const FormFileUpload: React.FC<FormFileUploadProps> = ({
 	field,
@@ -112,7 +113,7 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 						{fileType === 'image' && <ImagePreview preview={preview} />}
 						{fileType === 'video' && <VideoPreview preview={preview} />}
 						{fileType === 'document' && <DocumentPreview preview={preview} />}
-
+						{fileType === 'all' && <AllPreview preview={preview} />}
 						<Input disabled={disabled} {...getInputProps()} type='file' className='hidden' />
 					</label>
 				</div>

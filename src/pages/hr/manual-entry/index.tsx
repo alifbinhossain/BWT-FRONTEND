@@ -11,7 +11,6 @@ import renderSuspenseModals from '@/utils/renderSuspenseModals';
 import { manualEntryColumns } from '../_config/columns';
 import { IManualEntryTableData } from '../_config/columns/columns.type';
 import { useHrManualEntry } from '../_config/query';
-import { status } from '../field-visit/utils';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));

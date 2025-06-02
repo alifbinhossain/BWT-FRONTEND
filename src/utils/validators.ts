@@ -124,3 +124,19 @@ export const ORDER_NUMBER_NOT_REQUIRED = STRING()
 	.optional();
 
 export const GENDER = z.enum(['male', 'female', 'other']);
+
+export const DOCUMENT_TYPE = z.enum([
+	'ssc',
+	'hsc',
+	'bachelor',
+	'master',
+	'passport',
+	'national_id',
+	'driving_license',
+	'other',
+]);
+
+export const FILE = z
+	.instanceof(File)
+	.refine((file) => file?.size !== 0, 'Please upload an file')
+	.or(STRING_REQUIRED);

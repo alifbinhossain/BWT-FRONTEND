@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 import {
 	BOOLEAN_REQUIRED,
+	DOCUMENT_TYPE,
+	FILE,
 	FORTUNE_ZIP_EMAIL_PATTERN,
 	GENDER,
 	NUMBER_REQUIRED,
@@ -87,6 +89,27 @@ export const PERSONAL_CONTACT_INFO_NULL: Partial<IPersonalContactInfo> = {
 
 export type IPersonalContactInfo = z.infer<typeof PERSONAL_CONTACT_INFO_SCHEMA>;
 
+//* PERSONAL CONTACT INFO SCHEMA
+export const APPROVER_SCHEMA = z.object({
+	first_leave_approver_uuid: STRING_NULLABLE,
+	second_leave_approver_uuid: STRING_NULLABLE,
+	first_late_approver_uuid: STRING_NULLABLE,
+	second_late_approver_uuid: STRING_NULLABLE,
+	first_manual_entry_approver_uuid: STRING_NULLABLE,
+	second_manual_entry_approver_uuid: STRING_NULLABLE,
+});
+
+export const APPROVER_NULL: Partial<IApprover> = {
+	first_leave_approver_uuid: null,
+	second_leave_approver_uuid: null,
+	first_late_approver_uuid: null,
+	second_late_approver_uuid: null,
+	first_manual_entry_approver_uuid: null,
+	second_manual_entry_approver_uuid: null,
+};
+
+export type IApprover = z.infer<typeof APPROVER_SCHEMA>;
+
 //* EMPLOYMENT HISTORY SCHEMA
 export const EMPLOYMENT_HISTORY_SCHEMA = z.object({
 	company_name: STRING_REQUIRED,
@@ -117,7 +140,7 @@ export const EMPLOYEE_EDUCATION_SCHEMA = z.object({
 	degree_name: STRING_REQUIRED,
 	institute: STRING_REQUIRED,
 	board: STRING_REQUIRED,
-	year_of_passing: STRING_REQUIRED,
+	year_of_passing: NUMBER_REQUIRED,
 	grade: STRING_REQUIRED,
 });
 
@@ -125,7 +148,6 @@ export const EMPLOYEE_EDUCATION_NULL: Partial<IEmployeeEducation> = {
 	degree_name: '',
 	institute: '',
 	board: '',
-	year_of_passing: '',
 	grade: '',
 };
 
@@ -147,6 +169,21 @@ export const EMPLOYEE_ADDRESS_NULL: Partial<IEmployeeAddress> = {
 };
 
 export type IEmployeeAddress = z.infer<typeof EMPLOYEE_ADDRESS_SCHEMA>;
+
+//* EMPLOYEE DOCUMENT SCHEMA
+export const EMPLOYEE_DOCUMENT_SCHEMA = z.object({
+	document_type: DOCUMENT_TYPE,
+	description: STRING_REQUIRED,
+	file: FILE,
+});
+
+export const EMPLOYEE_DOCUMENT_NULL: Partial<IEmployeeDocument> = {
+	file: new File([''], 'filename') as File,
+	document_type: 'ssc',
+	description: '',
+};
+
+export type IEmployeeDocument = z.infer<typeof EMPLOYEE_DOCUMENT_SCHEMA>;
 
 //* CHANGE PASSWORD SCHEMA
 export const CHANGE_PASSWORD_SCHEMA = z

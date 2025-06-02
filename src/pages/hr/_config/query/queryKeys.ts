@@ -30,6 +30,11 @@ export const hrQK = {
 	employeeAddressByUUID: (uuid: string) => [...hrQK.employeeAddress(), uuid],
 	employeeAddressByEmployeeUUID: (uuid: string) => [...hrQK.employeeAddress(), 'employee', uuid],
 
+	//* employee document
+	employeeDocuments: () => [...hrQK.all(), 'employee-document'],
+	employeeDocumentsByUUID: (uuid: string) => [...hrQK.employeeDocuments(), uuid],
+	employeeDocumentsByEmployeeUUID: (uuid: string) => [...hrQK.employeeDocuments(), 'employee', uuid],
+
 	// * Device Permission
 	devicePermission: (query?: string) => [...hrQK.all(), 'device-permission', query],
 	devicePermissionByUUID: (uuid: string) => [...hrQK.devicePermission(), uuid],
@@ -52,6 +57,7 @@ export const hrQK = {
 	manualEntry: (type?: string) => [...hrQK.all(), 'manual-entry', type],
 	manualEntry2: (pagination: IPaginationQuery) => [...hrQK.all(), 'manual-entry-2', ...Object.values(pagination)],
 	manualEntryByUUID: (uuid: string) => [...hrQK.manualEntry(), uuid],
+	manualEntryByEmployeeUUID: (uuid: string) => [...hrQK.manualEntry(), 'by-employee', uuid],
 	fieldVisitEmployeeInfoByUUID: (uuid: string, field_visit_uuid: string) => [
 		...hrQK.manualEntry(),
 		'employee-info',

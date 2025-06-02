@@ -41,15 +41,16 @@ export function GeneralInformation({
 		any
 	>;
 }) {
-	const { data: departments } = useOtherDepartment<IFormSelectOption[]>();
-	const { data: subDepartments } = useOtherSubDepartment<IFormSelectOption[]>();
-	const { data: designations } = useOtherDesignation<IFormSelectOption[]>();
-	const { data: workplaces } = useOtherWorkplace<IFormSelectOption[]>();
-	const { data: leavePolicies } = useOtherLeavePolicy<IFormSelectOption[]>();
-	const { data: employmentTypes } = useOtherEmploymentType<IFormSelectOption[]>();
-	const { data: shiftGroups } = useOtherShiftGroup<IFormSelectOption[]>();
-	const { data: lineManagers } = useOtherLineManager<IFormSelectOption[]>();
-	const { data: hrManagers } = useOtherHrManager<IFormSelectOption[]>();
+	const { data: departments, isLoading: isLoadingDepartments } = useOtherDepartment<IFormSelectOption[]>();
+	const { data: subDepartments, isLoading: isLoadingSubDepartments } = useOtherSubDepartment<IFormSelectOption[]>();
+	const { data: designations, isLoading: isLoadingDesignations } = useOtherDesignation<IFormSelectOption[]>();
+	const { data: workplaces, isLoading: isLoadingWorkplaces } = useOtherWorkplace<IFormSelectOption[]>();
+	const { data: leavePolicies, isLoading: isLoadingLeavePolicies } = useOtherLeavePolicy<IFormSelectOption[]>();
+	const { data: employmentTypes, isLoading: isLoadingEmploymentTypes } =
+		useOtherEmploymentType<IFormSelectOption[]>();
+	const { data: shiftGroups, isLoading: isLoadingShiftGroups } = useOtherShiftGroup<IFormSelectOption[]>();
+	const { data: lineManagers, isLoading: isLoadingLineManagers } = useOtherLineManager<IFormSelectOption[]>();
+	const { data: hrManagers, isLoading: isLoadingHrManagers } = useOtherHrManager<IFormSelectOption[]>();
 
 	const form = useRHF(GENERAL_INFO_SCHEMA, GENERAL_INFO_NULL);
 
@@ -98,42 +99,67 @@ export function GeneralInformation({
 						control={form.control}
 						name='department_uuid'
 						render={(props) => (
-							<CoreForm.Select label='Department' options={departments || []} {...props} />
+							<CoreForm.Select
+								isLoading={isLoadingDepartments}
+								label='Department'
+								options={departments || []}
+								{...props}
+							/>
 						)}
 					/>
 					<FormField
 						control={form.control}
 						name='sub_department_uuid'
 						render={(props) => (
-							<CoreForm.Select label='Sub Department' options={subDepartments || []} {...props} />
+							<CoreForm.Select
+								isLoading={isLoadingSubDepartments}
+								label='Sub Department'
+								options={subDepartments || []}
+								{...props}
+							/>
 						)}
 					/>
 					<FormField
 						control={form.control}
 						name='designation_uuid'
 						render={(props) => (
-							<CoreForm.Select label='Designation' options={designations || []} {...props} />
+							<CoreForm.Select
+								isLoading={isLoadingDesignations}
+								label='Designation'
+								options={designations || []}
+								{...props}
+							/>
 						)}
 					/>
 					<FormField
 						control={form.control}
 						name='employment_type_uuid'
 						render={(props) => (
-							<CoreForm.Select label='Employment Type' options={employmentTypes || []} {...props} />
+							<CoreForm.Select
+								isLoading={isLoadingEmploymentTypes}
+								label='Employment Type'
+								options={employmentTypes || []}
+								{...props}
+							/>
 						)}
 					/>
 					<FormField
 						control={form.control}
 						name='shift_group_uuid'
 						render={(props) => (
-							<CoreForm.Select label='Shift Group' options={shiftGroups || []} {...props} />
+							<CoreForm.Select
+								isLoading={isLoadingShiftGroups}
+								label='Shift Group'
+								options={shiftGroups || []}
+								{...props}
+							/>
 						)}
 					/>
 
 					<FormField
 						control={form.control}
 						name='gender'
-						render={(props) => <CoreForm.Gender {...props} />}
+						render={(props) => <CoreForm.Gender isLoading={isLoadingDesignations} {...props} />}
 					/>
 
 					<FormField
@@ -163,7 +189,12 @@ export function GeneralInformation({
 						control={form.control}
 						name='leave_policy_uuid'
 						render={(props) => (
-							<CoreForm.Select label='Leave Policy' options={leavePolicies || []} {...props} />
+							<CoreForm.Select
+								isLoading={isLoadingLeavePolicies}
+								label='Leave Policy'
+								options={leavePolicies || []}
+								{...props}
+							/>
 						)}
 					/>
 
@@ -182,19 +213,38 @@ export function GeneralInformation({
 					<FormField
 						control={form.control}
 						name='workplace_uuid'
-						render={(props) => <CoreForm.Select label='Workplace' options={workplaces || []} {...props} />}
+						render={(props) => (
+							<CoreForm.Select
+								isLoading={isLoadingWorkplaces}
+								label='Workplace'
+								options={workplaces || []}
+								{...props}
+							/>
+						)}
 					/>
 					<FormField
 						control={form.control}
 						name='line_manager_uuid'
 						render={(props) => (
-							<CoreForm.Select label='Line Manager' options={lineManagers || []} {...props} />
+							<CoreForm.Select
+								isLoading={isLoadingLineManagers}
+								label='Line Manager'
+								options={lineManagers || []}
+								{...props}
+							/>
 						)}
 					/>
 					<FormField
 						control={form.control}
 						name='hr_manager_uuid'
-						render={(props) => <CoreForm.Select label='HR Manager' options={hrManagers || []} {...props} />}
+						render={(props) => (
+							<CoreForm.Select
+								isLoading={isLoadingHrManagers}
+								label='HR Manager'
+								options={hrManagers || []}
+								{...props}
+							/>
+						)}
 					/>
 				</div>
 			</CoreForm.AddEditWrapper>
