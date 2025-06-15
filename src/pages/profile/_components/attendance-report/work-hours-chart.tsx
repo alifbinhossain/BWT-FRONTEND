@@ -128,7 +128,7 @@ export default function WorkHoursChart() {
 	const efficiency = totalExpectedHours > 0 ? Math.round((totalWorkedHours / totalExpectedHours) * 100) : 0;
 
 	return (
-		<div className='w-full space-y-6 p-6'>
+		<div className='w-full space-y-6'>
 			{/* Header */}
 			<div className='text-left'>
 				<h1 className='text-2xl font-semibold text-slate-800'>Work Hours Dashboard</h1>
