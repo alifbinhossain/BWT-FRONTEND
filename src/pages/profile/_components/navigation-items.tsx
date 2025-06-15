@@ -10,6 +10,7 @@ export const navigationItems = [
 	{
 		title: 'Profile Information',
 		content: <ProfileInformation />,
+		// content: <AttendanceReport />,
 	},
 	{
 		title: 'Attendance Report',
