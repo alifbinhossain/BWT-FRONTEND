@@ -1,5 +1,4 @@
 import { API_IMAGE_URL } from '@/lib/secret';
-import { cn } from '@/lib/utils';
 
 import { ButtonProps, buttonVariants } from '../ui/button';
 

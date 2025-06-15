@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC } from 'react';
+import React, { useEffect, useRef, useState, type FC } from 'react';
 import { Calendar as CalendarIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -31,6 +31,12 @@ export interface DateRangePickerProps {
 	showCompare?: boolean;
 
 	onClear?: () => void;
+
+	isModal?: boolean;
+
+	isMobile?: boolean;
+
+	className?: string;
 }
 
 const formatDate = (date: Date, locale: string = 'en-us'): string => {
@@ -94,7 +100,8 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 	locale = 'en-US',
 	showCompare = false,
 	onClear,
-}): JSX.Element => {
+	isMobile,
+}): React.ReactNode => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [range, setRange] = useState<DateRange>({
@@ -113,8 +120,8 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 	);
 
 	// Refs to store the values of range and rangeCompare when the date picker is opened
-	const openedRangeRef = useRef<DateRange | undefined>();
-	const openedRangeCompareRef = useRef<DateRange | undefined>();
+	const openedRangeRef = useRef<DateRange | undefined>(undefined);
+	const openedRangeCompareRef = useRef<DateRange | undefined>(undefined);
 
 	const [selectedPreset, setSelectedPreset] = useState<string | undefined>(undefined);
 
@@ -308,7 +315,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 		preset: string;
 		label: string;
 		isSelected: boolean;
-	}): JSX.Element => (
+	}): React.ReactNode => (
 		<Button
 			aria-label={label}
 			size={'sm'}
@@ -350,9 +357,9 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 			}}
 		>
 			<PopoverTrigger asChild>
-				<Button aria-label='Open date range picker' size={'sm'} variant='gradient'>
+				<Button aria-label='Open date range picker' size={isMobile ? 'icon' : 'sm'} variant='gradient'>
 					<CalendarIcon className='size-4' />
-					<div className='text-right'>
+					<div className={cn('text-right', isMobile && 'hidden')}>
 						<div>
 							<div>{`${formatDate(range.from, locale)}${
 								range.to != null ? ' - ' + formatDate(range.to, locale) : ''
