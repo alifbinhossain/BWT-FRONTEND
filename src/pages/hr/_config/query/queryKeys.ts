@@ -42,6 +42,7 @@ export const hrQK = {
 
 	//* Punch log
 	punchLog: (query?: string) => [...hrQK.all(), 'punch-log', query],
+	punchLogByEmployeeUUID: (uuid: string) => [...hrQK.all(), 'punch-log', 'by-employee', uuid],
 	applyLeaveLog: (query?: string) => [...hrQK.all(), 'apply-leave-log', query],
 	manualEntryLog: (query?: string) => [...hrQK.all(), 'manual-entry-log', query],
 	punchLateByEmployeeUUID: (uuid: string) => [...hrQK.all(), 'punch-late', 'by-employee', uuid],

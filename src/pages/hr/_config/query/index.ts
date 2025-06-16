@@ -147,6 +147,14 @@ export const useHrPunchLogs = <T>(query?: string) =>
 		url: query ? `/hr/punch-log?${query}` : '/hr/punch-log',
 	});
 
+// * Punch log by employee uuid
+export const useHrPunchLogsByEmployeeUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.punchLogByEmployeeUUID(uuid),
+		url: `/hr/punch-log?employee_uuid=${uuid}`,
+		enabled: !!uuid,
+	});
+
 // * Apply leave log
 export const useHrApplyLeaveLog = <T>(query?: string) =>
 	useTQuery<T>({
