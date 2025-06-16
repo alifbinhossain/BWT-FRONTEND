@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { IToolbarOptions } from '@/types';
-import { Column, ColumnDef, Table } from '@tanstack/react-table';
+import { Column, Table } from '@tanstack/react-table';
 import { DateRange } from 'react-day-picker';
 
 interface TStartEndDate {
@@ -25,14 +24,6 @@ export type TTableDateRange<T> = TStartEndDate & {
 	isModal?: boolean;
 	isMobile?: boolean;
 };
-
-export interface IDataTableEntryProps<TData, TValue> {
-	title: string;
-	columns: ColumnDef<TData, TValue>[];
-	data: TData[];
-	toolbarOptions?: 'none' | IToolbarOptions[];
-	defaultVisibleColumns?: any;
-}
 
 interface TDefaultColumn<TData, TValue> {
 	column: Column<TData, TValue>;

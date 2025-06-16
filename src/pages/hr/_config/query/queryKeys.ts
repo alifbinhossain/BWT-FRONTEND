@@ -42,10 +42,17 @@ export const hrQK = {
 
 	//* Punch log
 	punchLog: (query?: string) => [...hrQK.all(), 'punch-log', query],
-	punchLogByEmployeeUUID: (uuid: string) => [...hrQK.all(), 'punch-log', 'by-employee', uuid],
-	applyLeaveLog: (query?: string) => [...hrQK.all(), 'apply-leave-log', query],
-	manualEntryLog: (query?: string) => [...hrQK.all(), 'manual-entry-log', query],
-	punchLateByEmployeeUUID: (uuid: string) => [...hrQK.all(), 'punch-late', 'by-employee', uuid],
+	punchLogPerDayByEmployeeUUID: (uuid: string, query: string) => [
+		...hrQK.punchLog(),
+		'per-day',
+		'by-employee',
+		uuid,
+		query,
+	],
+	punchLogByEmployeeUUID: (uuid: string) => [...hrQK.punchLog(), 'punch-log', 'by-employee', uuid],
+	applyLeaveLog: (query?: string) => [...hrQK.punchLog(), 'apply-leave-log', query],
+	manualEntryLog: (query?: string) => [...hrQK.punchLog(), 'manual-entry-log', query],
+	punchLateByEmployeeUUID: (uuid: string) => [...hrQK.punchLog(), 'punch-late', 'by-employee', uuid],
 
 	//* user
 	userDefault: () => [...hrQK.all(), 'user'],

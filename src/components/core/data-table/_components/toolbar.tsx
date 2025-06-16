@@ -7,6 +7,7 @@ import { ChevronDown, CirclePlus, SearchIcon } from 'lucide-react';
 import usePage from '@/hooks/usePage';
 import useTable from '@/hooks/useTable';
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import DebouncedInput from '@/components/ui/debounce-input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -312,30 +313,62 @@ export function TableToolbar() {
 
 	if (isEntry) {
 		return (
-			<div className='flex items-center justify-between overflow-hidden rounded-t-md bg-primary px-4 py-3'>
-				<div className='flex items-center justify-between gap-4'>
+			<Accordion type='single' collapsible className='w-full' defaultValue='item-1'>
+				<AccordionItem value='item-1' className='rounded-t-md bg-gradient-to-r from-secondary to-primary'>
+					<AccordionTrigger className='border-b border-border/20 px-4 py-2.5 text-lg font-semibold capitalize leading-none text-primary-foreground md:text-xl'>
+						{title}
+					</AccordionTrigger>
+					<AccordionContent className='flex items-center justify-between gap-4 px-4 py-2.5'>
+						{toolbarOptions === 'none' ? null : (
+							<div className={cn('flex items-center justify-between')}>
+								{renderLeftSection()}
+								{renderRightSection()}
+							</div>
+						)}
+
+						<DebouncedInput
+							icon={<SearchIcon className={cn('size-5 text-white/50')} />}
+							value={globalFilterValue ?? ''}
+							onChange={setGlobalFilter}
+							className={cn('bg-gradient-accent h-10 w-full border-accent/10 lg:max-w-[300px]')}
+							placeholder='Search...'
+							autoFocus={false}
+						/>
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+		);
+		return (
+			<div className='overflow-hidden rounded-t-md bg-primary'>
+				<div className='px-4 pt-3'>
 					<TableTitle
 						title={title}
 						subtitle={subtitle}
 						titleClassName={
-							'text-lg font-semibold capitalize leading-tight text-primary-foreground md:text-2xl'
+							'text-lg font-semibold capitalize leading-none text-primary-foreground md:text-2xl p-0 m-0'
 						}
 					/>
+				</div>
+
+				<Separator className='mb-2.5 mt-1 bg-border/15' />
+
+				<div className='flex items-center justify-between gap-4 px-4 pb-3'>
 					{toolbarOptions === 'none' ? null : (
 						<div className={cn('flex items-center justify-between')}>
 							{renderLeftSection()}
 							{renderRightSection()}
 						</div>
 					)}
+
+					<DebouncedInput
+						icon={<SearchIcon className={cn('size-5 text-white/50')} />}
+						value={globalFilterValue ?? ''}
+						onChange={setGlobalFilter}
+						className={cn('bg-gradient-accent h-10 w-full border-accent/10 lg:max-w-[300px]')}
+						placeholder='Search...'
+						autoFocus={false}
+					/>
 				</div>
-				<DebouncedInput
-					icon={<SearchIcon className={cn('size-5 text-white/50')} />}
-					value={globalFilterValue ?? ''}
-					onChange={setGlobalFilter}
-					className={cn('bg-gradient-accent h-10 w-full border-accent/10 lg:max-w-[300px]')}
-					placeholder='Search...'
-					autoFocus={false}
-				/>
 			</div>
 		);
 	}

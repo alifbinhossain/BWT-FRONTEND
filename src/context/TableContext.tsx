@@ -75,7 +75,7 @@ interface ITableContext<TData> {
 
 export const TableContext = createContext({} as ITableContext<any>);
 
-interface ITableProviderProps<TData, TValue> {
+export interface ITableProviderProps<TData, TValue> {
 	title: string;
 	subtitle?: string;
 	isEntry?: boolean;

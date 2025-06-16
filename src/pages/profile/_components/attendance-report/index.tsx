@@ -1,5 +1,6 @@
 import useProfile from '@/hooks/useProfile';
 
+import AttendanceTable from './attendance-table';
 import FieldVisit from './field-visit';
 import ManualEntry from './manual-entry';
 import PunchLogs from './punch-logs';
@@ -13,6 +14,7 @@ const AttendanceReport = () => {
 	return (
 		<div className='h-full space-y-6 overflow-auto'>
 			<WorkHoursChart />
+			<AttendanceTable employeeId={profileData?.uuid as string} />
 			<PunchLogs employeeId={profileData?.uuid as string} />
 			<FieldVisit employeeId={profileData?.uuid as string} />
 			<ManualEntry employeeId={profileData?.uuid as string} />
