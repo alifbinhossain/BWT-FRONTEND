@@ -1,5 +1,5 @@
 import { IEmployeeTableData, IPunchLogTableData } from '@/pages/hr/_config/columns/columns.type';
-import { ColumnDef, Row } from '@tanstack/react-table';
+import { ColumnDef } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
 import DateTime from '@/components/ui/date-time';
