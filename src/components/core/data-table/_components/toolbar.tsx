@@ -318,7 +318,7 @@ export function TableToolbar() {
 						title={title}
 						subtitle={subtitle}
 						titleClassName={
-							'text-2xl font-semibold capitalize leading-tight text-primary-foreground md:text-3xl'
+							'text-lg font-semibold capitalize leading-tight text-primary-foreground md:text-2xl'
 						}
 					/>
 					{toolbarOptions === 'none' ? null : (
@@ -327,7 +327,7 @@ export function TableToolbar() {
 							{renderRightSection()}
 						</div>
 					)}
-				</div>{' '}
+				</div>
 				<DebouncedInput
 					icon={<SearchIcon className={cn('size-5 text-white/50')} />}
 					value={globalFilterValue ?? ''}

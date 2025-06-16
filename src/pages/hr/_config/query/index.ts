@@ -222,10 +222,10 @@ export const useHrManualEntryByUUID = <T>(uuid: string) =>
 		enabled: !!uuid,
 	});
 
-export const useHrManualEntryByEmployeeUUID = <T>(uuid: string) =>
+export const useHrManualEntryByEmployeeUUID = <T>(uuid: string, type?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.manualEntryByEmployeeUUID(uuid),
-		url: `/hr/manual-entry/by/${uuid}`,
+		queryKey: hrQK.manualEntryByEmployeeUUID(uuid, type),
+		url: type ? `/hr/manual-entry/by/${uuid}?type=${type}` : `/hr/manual-entry/by/${uuid}`,
 		enabled: !!uuid,
 	});
 
