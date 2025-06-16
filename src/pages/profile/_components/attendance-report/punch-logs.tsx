@@ -15,7 +15,7 @@ const PunchLogs: React.FC<{
 
 	return (
 		<div>
-			<DataTableEntry title='Attendance Logs' data={data || []} columns={columns} />
+			<DataTableEntry title='Punch Logs' data={data || []} columns={columns} enableDefaultColumns={false} />
 		</div>
 	);
 };

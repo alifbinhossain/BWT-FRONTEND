@@ -1,15 +1,12 @@
-import { IEmployeeTableData, IManualEntryTableData } from '@/pages/hr/_config/columns/columns.type';
-import { IProcessTableData } from '@/pages/work/_config/columns/columns.type';
+import { IManualEntryTableData } from '@/pages/hr/_config/columns/columns.type';
 import { IStatus } from '@/types';
-import { ColumnDef, Row } from '@tanstack/react-table';
+import { ColumnDef } from '@tanstack/react-table';
 
-import PageAssign from '@/components/buttons/page-assign';
-import ResetPassword from '@/components/buttons/reset-password';
-import StatusButton from '@/components/buttons/status';
-import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import StatusBadge from '@/components/ui/status-badge';
-import { Switch } from '@/components/ui/switch';
+import TimeDifference from '@/components/ui/time-difference';
+
+import { IPunchLogsPerDayTableData } from './columns.type';
 
 // Field Visit Columns
 export const fieldVisitColumns = (): ColumnDef<IManualEntryTableData>[] => [
@@ -40,6 +37,34 @@ export const fieldVisitColumns = (): ColumnDef<IManualEntryTableData>[] => [
 		},
 	},
 ];
+// Punch Log Per Day Columns
+export const punchLogPerDayColumns = (): ColumnDef<IPunchLogsPerDayTableData>[] => [
+	{
+		accessorKey: 'punch_date',
+		header: 'Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'entry_time',
+		header: 'Entry Time',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} onlyTime />,
+	},
+	{
+		accessorKey: 'exit_time',
+		header: 'Exit Time',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} onlyTime />,
+	},
+	{
+		accessorKey: 'duration_hours',
+		header: 'Hours',
+		enableColumnFilter: false,
+		cell: ({ row }) => <TimeDifference earlierDate={row.original.entry_time} laterDate={row.original.exit_time} />,
+	},
+];
+
 // Manual Entry Columns
 export const manualEntryColumns = (): ColumnDef<IManualEntryTableData>[] => [
 	{

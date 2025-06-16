@@ -11,6 +11,7 @@ const DataTableEntry = <TData, TValue>(
 		| 'defaultVisibleColumns'
 		| 'otherToolBarComponents'
 		| 'handleRefetch'
+		| 'enableDefaultColumns'
 	>
 ) => {
 	return <TableProvider isEntry enableRowSelection={false} {...props} />;
