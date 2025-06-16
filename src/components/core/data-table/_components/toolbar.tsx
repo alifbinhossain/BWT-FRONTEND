@@ -88,6 +88,9 @@ export function TableToolbar() {
 	// Memoize the callback for setting global filter
 	const setGlobalFilter = useCallback((value: string | number) => table.setGlobalFilter(value), [table]);
 
+	// Check if the date range is valid
+	const validDateRange = isValid(startDate) && isValid(endDate);
+
 	/**
 	 * Renders the left section of the toolbar
 	 */
@@ -124,16 +127,18 @@ export function TableToolbar() {
 						<PopoverContent className='flex flex-col gap-2'>
 							<ToolbarComponent
 								option='date-range'
-								render={() => (
-									<TableDateRange
-										table={table}
-										start_date={startDate}
-										end_date={endDate}
-										onUpdate={onUpdate}
-										onClear={onClear}
-										isClear={isClear}
-									/>
-								)}
+								render={() =>
+									validDateRange && (
+										<TableDateRange
+											table={table}
+											start_date={startDate}
+											end_date={endDate}
+											onUpdate={onUpdate}
+											onClear={onClear}
+											isClear={isClear}
+										/>
+									)
+								}
 							/>
 							<ToolbarComponent
 								option='view'
@@ -167,12 +172,12 @@ export function TableToolbar() {
 							/>
 						</PopoverContent>
 					</Popover>
-					<Separator orientation='vertical' className='h-6' />
+
+					{validDateRange && <Separator orientation='vertical' className='h-6' />}
 					<ToolbarComponent
 						option='export-csv'
 						render={() =>
-							isValid(startDate) &&
-							isValid(endDate) && (
+							validDateRange && (
 								<TableExportCSV
 									table={table}
 									title={title}
@@ -197,16 +202,18 @@ export function TableToolbar() {
 					<ToolbarComponent option='view' render={() => <TableViewOptions table={table} />} />
 					<ToolbarComponent
 						option='date-range'
-						render={() => (
-							<TableDateRange
-								table={table}
-								start_date={startDate}
-								end_date={endDate}
-								onUpdate={onUpdate}
-								onClear={onClear}
-								isClear={isClear}
-							/>
-						)}
+						render={() =>
+							validDateRange && (
+								<TableDateRange
+									table={table}
+									start_date={startDate}
+									end_date={endDate}
+									onUpdate={onUpdate}
+									onClear={onClear}
+									isClear={isClear}
+								/>
+							)
+						}
 					/>
 					{otherToolBarComponents}
 					<ToolbarComponent
@@ -244,13 +251,12 @@ export function TableToolbar() {
 							<Cross2Icon className='size-4' />
 						</Button>
 					)}
-					<Separator orientation='vertical' className='h-6' />
+					{validDateRange && <Separator orientation='vertical' className='h-6' />}
 
 					<ToolbarComponent
 						option='export-csv'
 						render={() =>
-							isValid(startDate) &&
-							isValid(endDate) && (
+							validDateRange && (
 								<TableExportCSV
 									table={table}
 									title={title}
@@ -279,6 +285,7 @@ export function TableToolbar() {
 			title,
 			otherToolBarComponents,
 			isSmallDevice,
+			validDateRange,
 		]
 	);
 
