@@ -2,18 +2,16 @@
 
 import { useState } from 'react';
 import { useHrEmployeeAttendanceReportByEmployeeUUID } from '@/pages/hr/_config/query';
-import { differenceInDays, format, subDays } from 'date-fns';
-import { BarChart3, CalendarIcon, Clock, Eye, RotateCcw, Search } from 'lucide-react';
+import { format, subDays } from 'date-fns';
+import { BarChart3, CalendarIcon, Clock, Eye, RotateCcw, TrendingUp } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
 import { Bar, CartesianGrid, ComposedChart, Line, XAxis, YAxis } from 'recharts';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { Separator } from '@/components/ui/separator';
 
 import { colors } from '@/config/tailwind';
@@ -33,16 +31,10 @@ export default function WorkHoursChart({ employeeId }: { employeeId: string }) {
 		to: new Date(),
 	};
 	const [dateRange, setDateRange] = useState<DateRange>(defaultDateRange);
-	const [selectedDateRange, setSelectedDateRange] = useState<{ from_date: Date; to_date: Date }>({
-		from_date: dateRange.from!,
-		to_date: dateRange.to!,
-	});
-
-	const [selectedPeriod, setSelectedPeriod] = useState<string | undefined>('week1');
 
 	const { data, isLoading } = useHrEmployeeAttendanceReportByEmployeeUUID<IAttendanceReportTableData[]>(
 		employeeId,
-		`from_date=${format(selectedDateRange.from_date!, 'yyyy-MM-dd')}&to_date=${format(selectedDateRange.to_date!, 'yyyy-MM-dd')}`
+		`from_date=${format(dateRange.from!, 'yyyy-MM-dd')}&to_date=${format(dateRange.to!, 'yyyy-MM-dd')}`
 	);
 
 	// const [selectedDateRange, setSelectedDateRange] = useState({ start: 0, end: 14 });
@@ -91,33 +83,7 @@ export default function WorkHoursChart({ employeeId }: { employeeId: string }) {
 		}));
 	};
 
-	const handleDateRangePreset = (preset: string) => {
-		switch (preset) {
-			case 'week1':
-				setSelectedPeriod('week1');
-				setDateRange({ from: subDays(new Date(), 7), to: new Date() });
-				break;
-			case 'week2':
-				setSelectedPeriod('week2');
-				setDateRange({ from: subDays(new Date(), 14), to: new Date() });
-				break;
-			case 'all':
-				setSelectedPeriod('all');
-				setDateRange({ from: subDays(new Date(), 14), to: new Date() });
-				break;
-		}
-	};
-
-	const handleSearch = () => {
-		setSelectedPeriod(undefined);
-		setSelectedDateRange({
-			from_date: dateRange.from!,
-			to_date: dateRange.to!,
-		});
-	};
-
 	const handleReset = () => {
-		setSelectedPeriod(undefined);
 		setDateRange(defaultDateRange);
 		setChartVisibility({
 			expectedHours: true,
@@ -133,63 +99,73 @@ export default function WorkHoursChart({ employeeId }: { employeeId: string }) {
 
 	return (
 		<div className='w-full space-y-6'>
-			{/* Header */}
-			<div className='text-left'>
-				<h1 className='text-2xl font-semibold text-slate-800'>Work Hours Dashboard</h1>
-				<p className='mt-1 text-sm text-slate-500'>
-					Track your productivity with interactive controls • {efficiency}% efficiency
-				</p>
+			{/* Compact Header */}
+			<div className='rounded-lg border p-4'>
+				<div className='flex flex-col justify-between gap-4 lg:flex-row lg:items-center'>
+					<div className='flex items-center gap-3'>
+						<div className='rounded-lg bg-accent p-2'>
+							<BarChart3 className='h-5 w-5 text-white' />
+						</div>
+						<div>
+							<h1 className='text-xl font-semibold text-slate-800'>Work Hours Dashboard</h1>
+							<p className='text-sm text-slate-600'>Track productivity and performance metrics</p>
+						</div>
+					</div>
+					<div className='flex flex-wrap items-center gap-2 lg:gap-4'>
+						<div className='flex items-center gap-3'>
+							<Badge variant='outline' className='border-teal-200 bg-teal-50 text-teal-700'>
+								<Clock className='mr-1 size-3' />
+								{totalExpectedHours}h Expected
+							</Badge>
+							<Badge variant='outline' className='border-cyan-200 bg-cyan-50 text-cyan-700'>
+								<TrendingUp className='mr-1 size-3' />
+								{totalWorkedHours}h Worked
+							</Badge>
+							<Badge
+								variant='outline'
+								className={cn(
+									'font-medium',
+									efficiency >= 80
+										? 'border-green-200 bg-green-50 text-green-700'
+										: efficiency >= 60
+											? 'border-yellow-200 bg-yellow-50 text-yellow-700'
+											: 'border-red-200 bg-red-50 text-red-700'
+								)}
+							>
+								{efficiency}% Efficiency
+							</Badge>
+						</div>
+						<Button variant='secondary' size='xs' onClick={handleReset}>
+							<RotateCcw className='size-4' />
+							Reset
+						</Button>
+					</div>
+				</div>
 			</div>
 
-			{/* Clean Controls Section */}
-			<Card className='border shadow-sm'>
-				<CardContent className='p-6'>
-					<div className='flex flex-col gap-6 lg:flex-row'>
+			{/* Controls Section */}
+			<Card className='border-slate-200 shadow-sm'>
+				<CardContent className='p-4'>
+					<div className='flex flex-col gap-4 lg:flex-row'>
 						{/* Date Range Section */}
-						<div className='flex-1'>
-							<div className='mb-3 flex items-center gap-2'>
-								<CalendarIcon className='size-4 text-accent' />
-								<span className='text-sm font-medium text-slate-700'>Date Range Filter</span>
+						<div>
+							<div className='mb-2 flex items-center gap-2'>
+								<CalendarIcon className='h-4 w-4 text-cyan-600' />
+								<span className='text-sm font-medium text-slate-700'>Date Range</span>
 							</div>
 							<div className='flex gap-2'>
-								<Popover>
-									<PopoverTrigger asChild>
-										<Button
-											variant='outline'
-											className={cn(
-												'flex-1 justify-start border-slate-300 text-left font-normal',
-												!dateRange && 'text-muted-foreground'
-											)}
-										>
-											<CalendarIcon className='mr-2 h-4 w-4' />
-											{dateRange?.from ? (
-												dateRange.to ? (
-													<>
-														{format(dateRange.from, 'dd-MMM-yyyy')} to{' '}
-														{format(dateRange.to, 'dd-MMM-yyyy')}
-													</>
-												) : (
-													format(dateRange.from, 'dd-MMM-yyyy')
-												)
-											) : (
-												<span>Pick a date range</span>
-											)}
-										</Button>
-									</PopoverTrigger>
-									<PopoverContent className='w-auto p-0' align='start'>
-										<Calendar
-											mode='range'
-											defaultMonth={dateRange?.from}
-											selected={dateRange}
-											onSelect={(range) => range && setDateRange(range)}
-											numberOfMonths={2}
-										/>
-									</PopoverContent>
-								</Popover>
-								<Button variant={'accent'} onClick={handleSearch}>
-									<Search className='mr-2 size-4' />
-									Search
-								</Button>
+								<DateRangePicker
+									className='h-9 w-80 justify-start'
+									initialDateFrom={dateRange?.from}
+									initialDateTo={dateRange?.to}
+									align={'center'}
+									onUpdate={({ range }) => {
+										setDateRange(range);
+									}}
+									onClear={() => {
+										setDateRange(defaultDateRange);
+									}}
+								/>
 							</div>
 						</div>
 
@@ -197,9 +173,9 @@ export default function WorkHoursChart({ employeeId }: { employeeId: string }) {
 
 						{/* Chart Visibility Section */}
 						<div className='flex-1'>
-							<div className='mb-3 flex items-center gap-2'>
-								<Eye className='h-4 w-4 text-accent' />
-								<span className='text-sm font-medium text-slate-700'>Chart Visibility</span>
+							<div className='mb-2 flex items-center gap-2'>
+								<Eye className='h-4 w-4 text-teal-600' />
+								<span className='text-sm font-medium text-slate-700'>Chart Elements</span>
 							</div>
 							<div className='flex gap-3'>
 								<Button
@@ -262,58 +238,6 @@ export default function WorkHoursChart({ employeeId }: { employeeId: string }) {
 									Trend
 								</Button>
 							</div>
-						</div>
-
-						<Separator orientation='vertical' className='hidden h-16 lg:block' />
-
-						{/* Quick Actions Section */}
-						<div className='flex-1'>
-							<div className='mb-3 flex items-center gap-2'>
-								<BarChart3 className='h-4 w-4 text-slate-600' />
-								<span className='text-sm font-medium text-slate-700'>Quick Actions</span>
-							</div>
-							<div className='flex gap-2'>
-								<Select value={selectedPeriod} onValueChange={handleDateRangePreset}>
-									<SelectTrigger className='flex-1'>
-										<SelectValue placeholder='Select Period' />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem value='week1'>Week 1</SelectItem>
-										<SelectItem value='week2'>Week 2</SelectItem>
-										<SelectItem value='all'>All Days</SelectItem>
-									</SelectContent>
-								</Select>
-								<Button variant='default' onClick={handleReset}>
-									<RotateCcw className='mr-2 size-4' />
-									Reset
-								</Button>
-							</div>
-						</div>
-					</div>
-
-					{/* Statistics Row */}
-					<div className='mt-6 flex items-center justify-between border-t border-slate-200 pt-4'>
-						<div className='flex items-center gap-6 text-sm'>
-							<div className='flex items-center gap-2'>
-								<Clock className='h-4 w-4 text-slate-500' />
-								<span className='text-slate-600'>
-									Period: {differenceInDays(dateRange.to!, dateRange.from!)} days
-								</span>
-							</div>
-							<div className='flex items-center gap-4'>
-								<Badge variant='outline' className='border-teal-200 text-teal-700'>
-									Expected: {totalExpectedHours}h
-								</Badge>
-								<Badge variant='outline' className='border-cyan-200 text-cyan-700'>
-									Worked: {totalWorkedHours}h
-								</Badge>
-								<Badge variant='outline' className='border-slate-200 text-slate-700'>
-									Efficiency: {efficiency}%
-								</Badge>
-							</div>
-						</div>
-						<div className='text-xs text-slate-500'>
-							{format(dateRange.from!, 'dd MMM yyyy')} - {format(dateRange.to!, 'dd MMM yyyy')}
 						</div>
 					</div>
 				</CardContent>

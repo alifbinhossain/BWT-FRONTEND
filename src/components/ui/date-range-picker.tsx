@@ -101,6 +101,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 	showCompare = false,
 	onClear,
 	isMobile,
+	className,
 }): React.ReactNode => {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -357,7 +358,12 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 			}}
 		>
 			<PopoverTrigger asChild>
-				<Button aria-label='Open date range picker' size={isMobile ? 'icon' : 'sm'} variant='gradient'>
+				<Button
+					aria-label='Open date range picker'
+					size={isMobile ? 'icon' : 'sm'}
+					variant='gradient'
+					className={cn(className)}
+				>
 					<CalendarIcon className='size-4' />
 					<div className={cn('text-right', isMobile && 'hidden')}>
 						<div>
