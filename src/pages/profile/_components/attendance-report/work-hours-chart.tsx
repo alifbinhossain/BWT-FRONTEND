@@ -122,15 +122,13 @@ export default function WorkHoursChart({ employeeId }: { employeeId: string }) {
 								{totalWorkedHours}h Worked
 							</Badge>
 							<Badge
-								variant='outline'
-								className={cn(
-									'font-medium',
+								variant={
 									efficiency >= 80
-										? 'border-green-200 bg-green-50 text-green-700'
+										? 'outline-success'
 										: efficiency >= 60
-											? 'border-yellow-200 bg-yellow-50 text-yellow-700'
-											: 'border-red-200 bg-red-50 text-red-700'
-								)}
+											? 'outline-warning'
+											: 'outline-destructive'
+								}
 							>
 								{efficiency}% Efficiency
 							</Badge>
