@@ -8,13 +8,16 @@ interface IDateTimeProps {
 	date: Date | null | undefined | string;
 	isDate?: boolean;
 	isTime?: boolean;
+	onlyTime?: boolean;
 }
 
-const DateTime: React.FC<IDateTimeProps> = ({ date, isDate = true, isTime = true }) => {
+const DateTime: React.FC<IDateTimeProps> = ({ date, isDate = true, isTime = true, onlyTime = false }) => {
 	if (!date) return null;
 
 	const customizedDate = format(new Date(date), 'dd/MM/yy');
 	const customizedTime = format(new Date(date), 'h:mm a');
+
+	if (onlyTime) return <Body value={customizedTime} />;
 
 	return (
 		<div className='flex flex-col'>

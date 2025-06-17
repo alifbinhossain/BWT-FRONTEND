@@ -15,6 +15,23 @@ export const hrQK = {
 	employees: (query?: string) => [...hrQK.all(), 'employees', query],
 	employeesByUUID: (uuid: string) => [...hrQK.employees(), uuid],
 
+	//* employee attendance report
+	employeeAttendanceReportByEmployeeUUID: (uuid: string, query: string) => [
+		...hrQK.all(),
+		'employee-attendance-report',
+		uuid,
+		'by',
+		query,
+	],
+	//* employee summary report
+	employeeSummaryReportByEmployeeUUID: (uuid: string, query: string) => [
+		...hrQK.all(),
+		'employee-summary-report',
+		uuid,
+		'by',
+		query,
+	],
+
 	//* employee history
 	employeeHistory: () => [...hrQK.all(), 'employee-history'],
 	employeeHistoryByUUID: (uuid: string) => [...hrQK.employeeHistory(), uuid],
@@ -42,9 +59,24 @@ export const hrQK = {
 
 	//* Punch log
 	punchLog: (query?: string) => [...hrQK.all(), 'punch-log', query],
-	applyLeaveLog: (query?: string) => [...hrQK.all(), 'apply-leave-log', query],
-	manualEntryLog: (query?: string) => [...hrQK.all(), 'manual-entry-log', query],
-	punchLateByEmployeeUUID: (uuid: string) => [...hrQK.all(), 'punch-late', 'by-employee', uuid],
+	punchLogPerDayByEmployeeUUID: (uuid: string, query: string) => [
+		...hrQK.punchLog(),
+		'per-day',
+		'by-employee',
+		uuid,
+		query,
+	],
+	punchLogByEmployeeUUID: (uuid: string) => [...hrQK.punchLog(), 'punch-log', 'by-employee', uuid],
+	applyLeaveLog: (query?: string) => [...hrQK.punchLog(), 'apply-leave-log', query],
+	manualEntryLog: (query?: string) => [...hrQK.punchLog(), 'manual-entry-log', query],
+	punchLateByEmployeeUUID: (uuid: string) => [...hrQK.punchLog(), 'punch-late', 'by-employee', uuid],
+	punchLateEntriesByEmployeeUUID: (uuid: string, query: string) => [
+		...hrQK.punchLog(),
+		'late-entries',
+		'by-employee',
+		uuid,
+		query,
+	],
 
 	//* user
 	userDefault: () => [...hrQK.all(), 'user'],
@@ -58,7 +90,7 @@ export const hrQK = {
 	manualEntry: (type?: string) => [...hrQK.all(), 'manual-entry', type],
 	manualEntry2: (pagination: IPaginationQuery) => [...hrQK.all(), 'manual-entry-2', ...Object.values(pagination)],
 	manualEntryByUUID: (uuid: string) => [...hrQK.manualEntry(), uuid],
-	manualEntryByEmployeeUUID: (uuid: string) => [...hrQK.manualEntry(), 'by-employee', uuid],
+	manualEntryByEmployeeUUID: (uuid: string, type?: string) => [...hrQK.manualEntry(), 'by-employee', uuid, type],
 	fieldVisitEmployeeInfoByUUID: (uuid: string, field_visit_uuid: string) => [
 		...hrQK.manualEntry(),
 		'employee-info',

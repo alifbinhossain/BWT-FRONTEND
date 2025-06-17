@@ -1,25 +1,21 @@
 import { TableProvider } from '@/context';
+import { ITableProviderProps } from '@/context/TableContext';
 
-import { IDataTableEntryProps } from './types';
-
-const DataTableEntry = <TData, TValue>({
-	title,
-	columns,
-	data,
-	toolbarOptions,
-	defaultVisibleColumns,
-}: IDataTableEntryProps<TData, TValue>) => {
-	return (
-		<TableProvider
-			title={title}
-			columns={columns}
-			defaultVisibleColumns={defaultVisibleColumns}
-			data={data}
-			enableRowSelection={false}
-			toolbarOptions={toolbarOptions}
-			isEntry
-		/>
-	);
+const DataTableEntry = <TData, TValue>(
+	props: Pick<
+		ITableProviderProps<TData, TValue>,
+		| 'title'
+		| 'columns'
+		| 'data'
+		| 'toolbarOptions'
+		| 'defaultVisibleColumns'
+		| 'otherToolBarComponents'
+		| 'handleRefetch'
+		| 'enableDefaultColumns'
+		| 'isLoading'
+	>
+) => {
+	return <TableProvider isEntry enableRowSelection={false} {...props} />;
 };
 
 export default DataTableEntry;

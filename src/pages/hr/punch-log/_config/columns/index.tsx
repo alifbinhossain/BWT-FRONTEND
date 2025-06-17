@@ -1,7 +1,8 @@
 import { IEmployeeTableData, IPunchLogTableData } from '@/pages/hr/_config/columns/columns.type';
-import { ColumnDef, Row } from '@tanstack/react-table';
+import { ColumnDef } from '@tanstack/react-table';
 
 import StatusButton from '@/components/buttons/status';
+import DateTime from '@/components/ui/date-time';
 
 export const employeeColumns = (): ColumnDef<IEmployeeTableData>[] => [
 	{
@@ -44,12 +45,14 @@ export const employeeColumns = (): ColumnDef<IEmployeeTableData>[] => [
 
 export const punchLogColumns = (): ColumnDef<IPunchLogTableData>[] => [
 	{
-		accessorKey: 'employee_id',
-		header: 'ID',
+		accessorKey: 'punch_time',
+		header: 'Date',
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
-		accessorKey: 'employee_name',
-		header: 'Employee Name',
+		accessorKey: 'punch_time',
+		header: 'Punch Time',
+		cell: (info) => <DateTime date={info.getValue() as Date} onlyTime />,
 	},
 	{
 		accessorKey: 'device_list_name',
@@ -58,9 +61,5 @@ export const punchLogColumns = (): ColumnDef<IPunchLogTableData>[] => [
 	{
 		accessorKey: 'punch_type',
 		header: 'Punch Type',
-	},
-	{
-		accessorKey: 'punch_time',
-		header: 'Punch Time',
 	},
 ];

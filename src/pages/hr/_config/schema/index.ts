@@ -1,4 +1,3 @@
-import { permission } from 'process';
 import { z } from 'zod';
 
 import {
@@ -8,7 +7,6 @@ import {
 	NUMBER_REQUIRED,
 	PASSWORD,
 	PHONE_NUMBER_REQUIRED,
-	STRING,
 	STRING_NULLABLE,
 	STRING_OPTIONAL,
 	STRING_REQUIRED,

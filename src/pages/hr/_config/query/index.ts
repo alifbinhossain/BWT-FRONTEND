@@ -147,6 +147,22 @@ export const useHrPunchLogs = <T>(query?: string) =>
 		url: query ? `/hr/punch-log?${query}` : '/hr/punch-log',
 	});
 
+// * Punch log per day
+export const useHrPunchLogsPerDay = <T>(uuid: string, query: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.punchLogPerDayByEmployeeUUID(uuid, query),
+		url: `/hr/punch-log-per-day/by/${uuid}?${query}`,
+		enabled: !!uuid && !!query,
+	});
+
+// * Punch log by employee uuid
+export const useHrPunchLogsByEmployeeUUID = <T>(uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.punchLogByEmployeeUUID(uuid),
+		url: `/hr/punch-log?employee_uuid=${uuid}`,
+		enabled: !!uuid,
+	});
+
 // * Apply leave log
 export const useHrApplyLeaveLog = <T>(query?: string) =>
 	useTQuery<T>({
@@ -159,6 +175,22 @@ export const useHrManualEntryLog = <T>(query?: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.manualEntryLog(query),
 		url: query ? `/hr/manual-entry?${query}` : '/hr/manual-entry',
+	});
+
+// * Employee Attendance Report
+export const useHrEmployeeAttendanceReportByEmployeeUUID = <T>(uuid: string, query: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeAttendanceReportByEmployeeUUID(uuid, query),
+		url: `/hr/employee-attendance-report/by/${uuid}?${query}`,
+		enabled: !!uuid && !!query,
+	});
+
+// * Employee Summary Report
+export const useHrEmployeeSummaryReportByEmployeeUUID = <T>(uuid: string, query: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeSummaryReportByEmployeeUUID(uuid, query),
+		url: `/hr/employee-summary-report/by/${uuid}?${query}`,
+		enabled: !!uuid && !!query,
 	});
 
 export const useHrEmployeesByUUID = <T>(uuid: string) =>
@@ -222,10 +254,10 @@ export const useHrManualEntryByUUID = <T>(uuid: string) =>
 		enabled: !!uuid,
 	});
 
-export const useHrManualEntryByEmployeeUUID = <T>(uuid: string) =>
+export const useHrManualEntryByEmployeeUUID = <T>(uuid: string, type?: string) =>
 	useTQuery<T>({
-		queryKey: hrQK.manualEntryByEmployeeUUID(uuid),
-		url: `/hr/manual-entry/by/${uuid}`,
+		queryKey: hrQK.manualEntryByEmployeeUUID(uuid, type),
+		url: type ? `/hr/manual-entry/by/${uuid}?type=${type}` : `/hr/manual-entry/by/${uuid}`,
 		enabled: !!uuid,
 	});
 
@@ -253,4 +285,11 @@ export const useHrPunchLateByEmployeeUUID = <T>(uuid: string) =>
 		queryKey: hrQK.punchLateByEmployeeUUID(uuid),
 		url: `/hr/punch-late-log/by/${uuid}`,
 		enabled: !!uuid,
+	});
+
+export const useHrLateEntriesByEmployeeUUID = <T>(uuid: string, query: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.punchLateEntriesByEmployeeUUID(uuid, query),
+		url: `/hr/punch-late-log-per-day/by/${uuid}?${query}`,
+		enabled: !!uuid && !!query,
 	});

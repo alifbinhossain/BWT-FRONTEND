@@ -3,10 +3,11 @@ import { IToolbarOptions } from '@/types';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { useMediaQuery } from '@uidotdev/usehooks';
 import { isValid } from 'date-fns';
-import { ChevronDown, CirclePlus, SearchIcon } from 'lucide-react';
+import { ChevronDown, CirclePlus, Filter as Funnel, SearchIcon } from 'lucide-react';
 import usePage from '@/hooks/usePage';
 import useTable from '@/hooks/useTable';
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import DebouncedInput from '@/components/ui/debounce-input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -87,6 +88,9 @@ export function TableToolbar() {
 	// Memoize the callback for setting global filter
 	const setGlobalFilter = useCallback((value: string | number) => table.setGlobalFilter(value), [table]);
 
+	// Check if the date range is valid
+	const validDateRange = isValid(startDate) && isValid(endDate);
+
 	/**
 	 * Renders the left section of the toolbar
 	 */
@@ -123,16 +127,18 @@ export function TableToolbar() {
 						<PopoverContent className='flex flex-col gap-2'>
 							<ToolbarComponent
 								option='date-range'
-								render={() => (
-									<TableDateRange
-										table={table}
-										start_date={startDate}
-										end_date={endDate}
-										onUpdate={onUpdate}
-										onClear={onClear}
-										isClear={isClear}
-									/>
-								)}
+								render={() =>
+									validDateRange && (
+										<TableDateRange
+											table={table}
+											start_date={startDate}
+											end_date={endDate}
+											onUpdate={onUpdate}
+											onClear={onClear}
+											isClear={isClear}
+										/>
+									)
+								}
 							/>
 							<ToolbarComponent
 								option='view'
@@ -166,12 +172,12 @@ export function TableToolbar() {
 							/>
 						</PopoverContent>
 					</Popover>
-					<Separator orientation='vertical' className='h-6' />
+
+					{validDateRange && <Separator orientation='vertical' className='h-6' />}
 					<ToolbarComponent
 						option='export-csv'
 						render={() =>
-							isValid(startDate) &&
-							isValid(endDate) && (
+							validDateRange && (
 								<TableExportCSV
 									table={table}
 									title={title}
@@ -196,16 +202,18 @@ export function TableToolbar() {
 					<ToolbarComponent option='view' render={() => <TableViewOptions table={table} />} />
 					<ToolbarComponent
 						option='date-range'
-						render={() => (
-							<TableDateRange
-								table={table}
-								start_date={startDate}
-								end_date={endDate}
-								onUpdate={onUpdate}
-								onClear={onClear}
-								isClear={isClear}
-							/>
-						)}
+						render={() =>
+							validDateRange && (
+								<TableDateRange
+									table={table}
+									start_date={startDate}
+									end_date={endDate}
+									onUpdate={onUpdate}
+									onClear={onClear}
+									isClear={isClear}
+								/>
+							)
+						}
 					/>
 					{otherToolBarComponents}
 					<ToolbarComponent
@@ -243,13 +251,12 @@ export function TableToolbar() {
 							<Cross2Icon className='size-4' />
 						</Button>
 					)}
-					<Separator orientation='vertical' className='h-6' />
+					{validDateRange && <Separator orientation='vertical' className='h-6' />}
 
 					<ToolbarComponent
 						option='export-csv'
 						render={() =>
-							isValid(startDate) &&
-							isValid(endDate) && (
+							validDateRange && (
 								<TableExportCSV
 									table={table}
 									title={title}
@@ -278,6 +285,7 @@ export function TableToolbar() {
 			title,
 			otherToolBarComponents,
 			isSmallDevice,
+			validDateRange,
 		]
 	);
 
@@ -312,31 +320,34 @@ export function TableToolbar() {
 
 	if (isEntry) {
 		return (
-			<div className='flex items-center justify-between overflow-hidden rounded-t-md bg-primary px-4 py-3'>
-				<div className='flex items-center justify-between gap-4'>
-					<TableTitle
-						title={title}
-						subtitle={subtitle}
-						titleClassName={
-							'text-2xl font-semibold capitalize leading-tight text-primary-foreground md:text-3xl'
-						}
-					/>
-					{toolbarOptions === 'none' ? null : (
-						<div className={cn('flex items-center justify-between')}>
-							{renderLeftSection()}
-							{renderRightSection()}
-						</div>
-					)}
-				</div>{' '}
-				<DebouncedInput
-					icon={<SearchIcon className={cn('size-5 text-white/50')} />}
-					value={globalFilterValue ?? ''}
-					onChange={setGlobalFilter}
-					className={cn('bg-gradient-accent h-10 w-full border-accent/10 lg:max-w-[300px]')}
-					placeholder='Search...'
-					autoFocus={false}
-				/>
-			</div>
+			<Accordion type='single' collapsible className='w-full'>
+				<AccordionItem value='item-1' className='rounded-t-md bg-gradient-to-r from-secondary to-primary'>
+					<AccordionTrigger
+						Icon={Funnel}
+						iconClassName='size-5'
+						className='border-b border-border/20 px-4 py-2 text-lg font-semibold capitalize leading-none text-primary-foreground md:text-xl [&[data-state=open]>svg]:rotate-0'
+					>
+						{title}
+					</AccordionTrigger>
+					<AccordionContent className='flex items-center justify-between gap-4 px-4 py-2.5'>
+						{toolbarOptions === 'none' ? null : (
+							<div className={cn('flex items-center justify-between')}>
+								{renderLeftSection()}
+								{renderRightSection()}
+							</div>
+						)}
+
+						<DebouncedInput
+							icon={<SearchIcon className={cn('size-5 text-white/50')} />}
+							value={globalFilterValue ?? ''}
+							onChange={setGlobalFilter}
+							className={cn('bg-gradient-accent h-10 w-full border-accent/10 lg:max-w-[300px]')}
+							placeholder='Search...'
+							autoFocus={false}
+						/>
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
 		);
 	}
 
