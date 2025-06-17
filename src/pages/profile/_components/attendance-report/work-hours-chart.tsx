@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { format } from 'date-fns';
+import { useHrEmployeeAttendanceReportByEmployeeUUID } from '@/pages/hr/_config/query';
+import { differenceInDays, format, subDays } from 'date-fns';
 import { BarChart3, CalendarIcon, Clock, Eye, RotateCcw, Search } from 'lucide-react';
 import type { DateRange } from 'react-day-picker';
 import { Bar, CartesianGrid, ComposedChart, Line, XAxis, YAxis } from 'recharts';
@@ -18,45 +19,51 @@ import { Separator } from '@/components/ui/separator';
 import { colors } from '@/config/tailwind';
 import { cn } from '@/lib/utils';
 
+import { IAttendanceReportTableData } from './_config/columns/columns.type';
+
 interface IChartData {
 	date: Date;
 	expectedHours: number;
 	hoursWorked: number;
 }
 
-export default function WorkHoursChart() {
-	const [dateRange, setDateRange] = useState<DateRange | undefined>({
-		from: new Date(2025, 4, 31), // May 31, 2025
-		to: new Date(2025, 5, 15), // June 15, 2025
+export default function WorkHoursChart({ employeeId }: { employeeId: string }) {
+	const defaultDateRange: DateRange = {
+		from: subDays(new Date(), 30),
+		to: new Date(),
+	};
+	const [dateRange, setDateRange] = useState<DateRange>(defaultDateRange);
+	const [selectedDateRange, setSelectedDateRange] = useState<{ from_date: Date; to_date: Date }>({
+		from_date: dateRange.from!,
+		to_date: dateRange.to!,
 	});
-	const [selectedDateRange, setSelectedDateRange] = useState({ start: 0, end: 14 });
+
+	const [selectedPeriod, setSelectedPeriod] = useState<string | undefined>('week1');
+
+	const { data, isLoading } = useHrEmployeeAttendanceReportByEmployeeUUID<IAttendanceReportTableData[]>(
+		employeeId,
+		`from_date=${format(selectedDateRange.from_date!, 'yyyy-MM-dd')}&to_date=${format(selectedDateRange.to_date!, 'yyyy-MM-dd')}`
+	);
+
+	// const [selectedDateRange, setSelectedDateRange] = useState({ start: 0, end: 14 });
 	const [chartVisibility, setChartVisibility] = useState({
 		expectedHours: true,
 		hoursWorked: true,
 		hoursWorkedLine: true,
 	});
 
+	if (isLoading) return <div>Loading...</div>;
+
 	// Chart data following the exact IChartData interface
-	const allChartData: IChartData[] = [
-		{ date: new Date(2025, 5, 1), expectedHours: 10, hoursWorked: 8 },
-		{ date: new Date(2025, 5, 2), expectedHours: 12, hoursWorked: 8 },
-		{ date: new Date(2025, 5, 3), expectedHours: 12, hoursWorked: 8 },
-		{ date: new Date(2025, 5, 4), expectedHours: 9, hoursWorked: 8 },
-		{ date: new Date(2025, 5, 5), expectedHours: 0, hoursWorked: 0 },
-		{ date: new Date(2025, 5, 6), expectedHours: 0, hoursWorked: 0 },
-		{ date: new Date(2025, 5, 7), expectedHours: 0, hoursWorked: 0 },
-		{ date: new Date(2025, 5, 8), expectedHours: 0, hoursWorked: 0 },
-		{ date: new Date(2025, 5, 9), expectedHours: 0, hoursWorked: 0 },
-		{ date: new Date(2025, 5, 10), expectedHours: 0, hoursWorked: 0 },
-		{ date: new Date(2025, 5, 11), expectedHours: 0, hoursWorked: 0 },
-		{ date: new Date(2025, 5, 12), expectedHours: 0, hoursWorked: 0 },
-		{ date: new Date(2025, 5, 13), expectedHours: 0, hoursWorked: 0 },
-		{ date: new Date(2025, 5, 14), expectedHours: 8, hoursWorked: 6 },
-		{ date: new Date(2025, 5, 15), expectedHours: 8, hoursWorked: 7 },
-	];
+	const allChartData: IChartData[] =
+		data?.map((item) => ({
+			expectedHours: item.expected_hours,
+			hoursWorked: item.hours_worked,
+			date: new Date(item.punch_date),
+		})) || ({} as any);
 
 	// Transform data for chart display with formatted dates
-	const transformedChartData = allChartData.slice(selectedDateRange.start, selectedDateRange.end + 1).map((item) => ({
+	const transformedChartData = allChartData.map((item) => ({
 		...item,
 		dateFormatted: format(item.date, 'dd MMM'),
 		dateKey: format(item.date, 'yyyy-MM-dd'),
@@ -87,33 +94,31 @@ export default function WorkHoursChart() {
 	const handleDateRangePreset = (preset: string) => {
 		switch (preset) {
 			case 'week1':
-				setSelectedDateRange({ start: 0, end: 6 });
+				setSelectedPeriod('week1');
+				setDateRange({ from: subDays(new Date(), 7), to: new Date() });
 				break;
 			case 'week2':
-				setSelectedDateRange({ start: 7, end: 14 });
+				setSelectedPeriod('week2');
+				setDateRange({ from: subDays(new Date(), 14), to: new Date() });
 				break;
 			case 'all':
-				setSelectedDateRange({ start: 0, end: 14 });
+				setSelectedPeriod('all');
+				setDateRange({ from: subDays(new Date(), 14), to: new Date() });
 				break;
 		}
 	};
 
 	const handleSearch = () => {
-		console.log('Searching for date range:', dateRange);
-		if (dateRange?.from && dateRange?.to) {
-			const filteredData = allChartData.filter(
-				(item) => item.date >= dateRange.from! && item.date <= dateRange.to!
-			);
-			console.log('Filtered data:', filteredData);
-		}
+		setSelectedPeriod(undefined);
+		setSelectedDateRange({
+			from_date: dateRange.from!,
+			to_date: dateRange.to!,
+		});
 	};
 
 	const handleReset = () => {
-		setSelectedDateRange({ start: 0, end: 14 });
-		setDateRange({
-			from: new Date(2025, 4, 31),
-			to: new Date(2025, 5, 15),
-		});
+		setSelectedPeriod(undefined);
+		setDateRange(defaultDateRange);
 		setChartVisibility({
 			expectedHours: true,
 			hoursWorked: true,
@@ -122,9 +127,8 @@ export default function WorkHoursChart() {
 	};
 
 	// Calculate statistics from current data
-	const currentData = allChartData.slice(selectedDateRange.start, selectedDateRange.end + 1);
-	const totalExpectedHours = currentData.reduce((sum, item) => sum + item.expectedHours, 0);
-	const totalWorkedHours = currentData.reduce((sum, item) => sum + item.hoursWorked, 0);
+	const totalExpectedHours = transformedChartData.reduce((sum, item) => sum + item.expectedHours, 0);
+	const totalWorkedHours = transformedChartData.reduce((sum, item) => sum + item.hoursWorked, 0);
 	const efficiency = totalExpectedHours > 0 ? Math.round((totalWorkedHours / totalExpectedHours) * 100) : 0;
 
 	return (
@@ -174,11 +178,10 @@ export default function WorkHoursChart() {
 									</PopoverTrigger>
 									<PopoverContent className='w-auto p-0' align='start'>
 										<Calendar
-											initialFocus
 											mode='range'
 											defaultMonth={dateRange?.from}
 											selected={dateRange}
-											onSelect={setDateRange}
+											onSelect={(range) => range && setDateRange(range)}
 											numberOfMonths={2}
 										/>
 									</PopoverContent>
@@ -270,7 +273,7 @@ export default function WorkHoursChart() {
 								<span className='text-sm font-medium text-slate-700'>Quick Actions</span>
 							</div>
 							<div className='flex gap-2'>
-								<Select onValueChange={handleDateRangePreset}>
+								<Select value={selectedPeriod} onValueChange={handleDateRangePreset}>
 									<SelectTrigger className='flex-1'>
 										<SelectValue placeholder='Select Period' />
 									</SelectTrigger>
@@ -294,7 +297,7 @@ export default function WorkHoursChart() {
 							<div className='flex items-center gap-2'>
 								<Clock className='h-4 w-4 text-slate-500' />
 								<span className='text-slate-600'>
-									Period: {selectedDateRange.end - selectedDateRange.start + 1} days
+									Period: {differenceInDays(dateRange.to!, dateRange.from!)} days
 								</span>
 							</div>
 							<div className='flex items-center gap-4'>
@@ -310,8 +313,7 @@ export default function WorkHoursChart() {
 							</div>
 						</div>
 						<div className='text-xs text-slate-500'>
-							{format(currentData[0]?.date || new Date(), 'dd MMM yyyy')} -{' '}
-							{format(currentData[currentData.length - 1]?.date || new Date(), 'dd MMM yyyy')}
+							{format(dateRange.from!, 'dd MMM yyyy')} - {format(dateRange.to!, 'dd MMM yyyy')}
 						</div>
 					</div>
 				</CardContent>

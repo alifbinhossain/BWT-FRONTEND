@@ -13,7 +13,7 @@ const AttendanceReport = () => {
 
 	return (
 		<div className='h-full space-y-6 overflow-auto'>
-			<WorkHoursChart />
+			<WorkHoursChart employeeId={profileData?.uuid as string} />
 			<AttendanceTable employeeId={profileData?.uuid as string} />
 			<PunchLogs employeeId={profileData?.uuid as string} />
 			<FieldVisit employeeId={profileData?.uuid as string} />

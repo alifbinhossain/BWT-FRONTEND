@@ -15,6 +15,15 @@ export const hrQK = {
 	employees: (query?: string) => [...hrQK.all(), 'employees', query],
 	employeesByUUID: (uuid: string) => [...hrQK.employees(), uuid],
 
+	//* employee attendance report
+	employeeAttendanceReportByEmployeeUUID: (uuid: string, query: string) => [
+		...hrQK.all(),
+		'employee-attendance-report',
+		uuid,
+		'by',
+		query,
+	],
+
 	//* employee history
 	employeeHistory: () => [...hrQK.all(), 'employee-history'],
 	employeeHistoryByUUID: (uuid: string) => [...hrQK.employeeHistory(), uuid],

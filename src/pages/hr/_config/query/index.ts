@@ -177,6 +177,14 @@ export const useHrManualEntryLog = <T>(query?: string) =>
 		url: query ? `/hr/manual-entry?${query}` : '/hr/manual-entry',
 	});
 
+// * Employee Attendance Report
+export const useHrEmployeeAttendanceReportByEmployeeUUID = <T>(uuid: string, query: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeAttendanceReportByEmployeeUUID(uuid, query),
+		url: `/hr/employee-attendance-report/by/${uuid}?${query}`,
+		enabled: !!uuid && !!query,
+	});
+
 export const useHrEmployeesByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.employeesByUUID(uuid),
