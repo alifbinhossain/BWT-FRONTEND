@@ -16,7 +16,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 			<div className={cn(inputClass, 'items-center gap-2', className)}>
 				{icon && iconPosition === 'left' && icon}
 				<input
-					autoFocus
 					type={type}
 					className='w-full bg-transparent focus:outline-none focus:ring-0'
 					ref={ref}

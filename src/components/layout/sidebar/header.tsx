@@ -7,6 +7,8 @@ import BrandLogo from '@/components/others/brand-logo';
 import TooltipWrapper from '@/components/others/tooltip-wrapper';
 import { buttonVariants } from '@/components/ui/button';
 
+import Search from './search';
+
 const SidebarHeader = () => {
 	const { setSidebarOpen } = useLayout();
 	const { setIsCloseAll } = useSidebar();
@@ -26,7 +28,8 @@ const SidebarHeader = () => {
 				</button>
 			</div>
 
-			<div className='flex justify-end px-2 py-2'>
+			<div className='flex justify-between px-2 py-2'>
+				<Search />
 				<TooltipWrapper message='Collapse Folders'>
 					<motion.button
 						aria-label='Collapse Folders'

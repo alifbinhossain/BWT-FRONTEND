@@ -51,30 +51,36 @@ const childVariants = {
 
 const SidebarFolder: React.FC<IRoute> = (props) => {
 	//* Destructure props
-	const { path, name, children, disableCollapse } = props;
+	const { path, name, children, disableCollapse, page_name } = props;
 
 	const {
 		path: { pathname },
 		isCloseAll,
 		setIsCloseAll,
+		openRoutes,
+		setOpenRoutes,
 	} = useSidebar();
 
 	//* State for folder openness
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(!!openRoutes.find((route) => route.name === name));
 
 	//* Check if the current route matches the folder's path
 	const routeMatch = useMemo(() => confirmRouteMatch(props, pathname), [props, pathname]);
 
 	//* Update folder state based on route match and close-all state
 	useEffect(() => {
+		if (isCloseAll) {
+			return setIsOpen(false);
+		}
+
 		if (routeMatch === true && !isCloseAll) {
 			setIsOpen(true);
 		}
 
-		if (isCloseAll) {
-			setIsOpen(false);
+		if (!isCloseAll && !!openRoutes.find((route) => route.name === name)) {
+			setIsOpen(true);
 		}
-	}, [path, isCloseAll, routeMatch]);
+	}, [path, isCloseAll, routeMatch, openRoutes, name, page_name]);
 
 	//* If the folder is disabled from collapsing, render the file component
 	if (disableCollapse) {
@@ -93,6 +99,12 @@ const SidebarFolder: React.FC<IRoute> = (props) => {
 	const handleClick = () => {
 		setIsOpen((prev) => !prev);
 		setIsCloseAll(false);
+
+		if (isOpen) {
+			setOpenRoutes((prev) => prev.filter((route) => route.path !== path && route.name !== name));
+		} else {
+			setOpenRoutes((prev) => [...prev, props]);
+		}
 	};
 
 	return (
