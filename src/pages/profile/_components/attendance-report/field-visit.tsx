@@ -10,13 +10,11 @@ const FieldVisit: React.FC<{
 }> = ({ employeeId }) => {
 	const { data, isLoading } = useHrManualEntryByEmployeeUUID<IManualEntryTableData[]>(employeeId, 'field_visit');
 
-	if (isLoading) return <div>Loading...</div>;
-
 	const columns = fieldVisitColumns();
 
 	return (
 		<div>
-			<DataTableEntry title='Field Visit' data={data || []} columns={columns} />
+			<DataTableEntry title='Field Visit' data={data || []} columns={columns} isLoading={isLoading} />
 		</div>
 	);
 };

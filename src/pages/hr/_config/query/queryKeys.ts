@@ -23,6 +23,14 @@ export const hrQK = {
 		'by',
 		query,
 	],
+	//* employee summary report
+	employeeSummaryReportByEmployeeUUID: (uuid: string, query: string) => [
+		...hrQK.all(),
+		'employee-summary-report',
+		uuid,
+		'by',
+		query,
+	],
 
 	//* employee history
 	employeeHistory: () => [...hrQK.all(), 'employee-history'],
@@ -62,6 +70,13 @@ export const hrQK = {
 	applyLeaveLog: (query?: string) => [...hrQK.punchLog(), 'apply-leave-log', query],
 	manualEntryLog: (query?: string) => [...hrQK.punchLog(), 'manual-entry-log', query],
 	punchLateByEmployeeUUID: (uuid: string) => [...hrQK.punchLog(), 'punch-late', 'by-employee', uuid],
+	punchLateEntriesByEmployeeUUID: (uuid: string, query: string) => [
+		...hrQK.punchLog(),
+		'late-entries',
+		'by-employee',
+		uuid,
+		query,
+	],
 
 	//* user
 	userDefault: () => [...hrQK.all(), 'user'],

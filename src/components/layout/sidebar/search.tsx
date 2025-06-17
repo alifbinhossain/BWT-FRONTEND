@@ -6,9 +6,11 @@ import useSidebar from '@/hooks/useSidebar';
 import DebouncedInput from '@/components/ui/debounce-input';
 
 const Search = () => {
-	const { setRoutes, setOpenRoutes } = useSidebar();
+	const { setRoutes, setOpenRoutes, setIsCloseAll } = useSidebar();
 
 	const handleSearch = (searchTerm: string, routes: IRoute[] = []): IRoute[] => {
+		setIsCloseAll(false);
+
 		const lowerCaseTerm = searchTerm.toLowerCase().trim();
 
 		// If there's no search term, return the original array.

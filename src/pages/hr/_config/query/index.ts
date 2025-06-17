@@ -185,6 +185,14 @@ export const useHrEmployeeAttendanceReportByEmployeeUUID = <T>(uuid: string, que
 		enabled: !!uuid && !!query,
 	});
 
+// * Employee Summary Report
+export const useHrEmployeeSummaryReportByEmployeeUUID = <T>(uuid: string, query: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.employeeSummaryReportByEmployeeUUID(uuid, query),
+		url: `/hr/employee-summary-report/by/${uuid}?${query}`,
+		enabled: !!uuid && !!query,
+	});
+
 export const useHrEmployeesByUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.employeesByUUID(uuid),
@@ -277,4 +285,11 @@ export const useHrPunchLateByEmployeeUUID = <T>(uuid: string) =>
 		queryKey: hrQK.punchLateByEmployeeUUID(uuid),
 		url: `/hr/punch-late-log/by/${uuid}`,
 		enabled: !!uuid,
+	});
+
+export const useHrLateEntriesByEmployeeUUID = <T>(uuid: string, query: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.punchLateEntriesByEmployeeUUID(uuid, query),
+		url: `/hr/punch-late-log-per-day/by/${uuid}?${query}`,
+		enabled: !!uuid && !!query,
 	});

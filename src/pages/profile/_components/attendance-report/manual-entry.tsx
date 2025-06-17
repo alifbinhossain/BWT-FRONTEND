@@ -10,13 +10,11 @@ const ManualEntry: React.FC<{
 }> = ({ employeeId }) => {
 	const { data, isLoading } = useHrManualEntryByEmployeeUUID<IManualEntryTableData[]>(employeeId);
 
-	if (isLoading) return <div>Loading...</div>;
-
 	const columns = manualEntryColumns();
 
 	return (
 		<div>
-			<DataTableEntry title='Manual Entry' data={data || []} columns={columns} />
+			<DataTableEntry title='Manual Entry' data={data || []} columns={columns} isLoading={isLoading} />
 		</div>
 	);
 };

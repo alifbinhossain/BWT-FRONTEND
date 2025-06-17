@@ -9,13 +9,17 @@ const PunchLogs: React.FC<{
 }> = ({ employeeId }) => {
 	const { data, isLoading } = useHrPunchLogsByEmployeeUUID<IPunchLogTableData[]>(employeeId);
 
-	if (isLoading) return <div>Loading...</div>;
-
 	const columns = punchLogColumns();
 
 	return (
 		<div>
-			<DataTableEntry title='Punch Logs' data={data || []} columns={columns} enableDefaultColumns={false} />
+			<DataTableEntry
+				title='Punch Logs'
+				data={data || []}
+				columns={columns}
+				isLoading={isLoading}
+				enableDefaultColumns={false}
+			/>
 		</div>
 	);
 };
