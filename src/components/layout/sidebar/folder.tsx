@@ -58,11 +58,10 @@ const SidebarFolder: React.FC<IRoute> = (props) => {
 		isCloseAll,
 		setIsCloseAll,
 		openRoutes,
-		setOpenRoutes,
 	} = useSidebar();
 
 	//* State for folder openness
-	const [isOpen, setIsOpen] = useState(!!openRoutes.find((route) => route.name === name));
+	const [isOpen, setIsOpen] = useState(false);
 
 	//* Check if the current route matches the folder's path
 	const routeMatch = useMemo(() => confirmRouteMatch(props, pathname), [props, pathname]);
@@ -73,12 +72,12 @@ const SidebarFolder: React.FC<IRoute> = (props) => {
 			return setIsOpen(false);
 		}
 
-		if (routeMatch === true && !isCloseAll) {
+		if (!isCloseAll && !!openRoutes.find((route) => route.name === name && route.page_name === page_name)) {
 			setIsOpen(true);
-		}
-
-		if (!isCloseAll && !!openRoutes.find((route) => route.name === name)) {
+		} else if (routeMatch === true && !isCloseAll) {
 			setIsOpen(true);
+		} else {
+			setIsOpen(false);
 		}
 	}, [path, isCloseAll, routeMatch, openRoutes, name, page_name]);
 
@@ -99,12 +98,6 @@ const SidebarFolder: React.FC<IRoute> = (props) => {
 	const handleClick = () => {
 		setIsOpen((prev) => !prev);
 		setIsCloseAll(false);
-
-		if (isOpen) {
-			setOpenRoutes((prev) => prev.filter((route) => route.path !== path && route.name !== name));
-		} else {
-			setOpenRoutes((prev) => [...prev, props]);
-		}
 	};
 
 	return (
