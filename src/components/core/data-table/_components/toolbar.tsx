@@ -3,7 +3,7 @@ import { IToolbarOptions } from '@/types';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { useMediaQuery } from '@uidotdev/usehooks';
 import { isValid } from 'date-fns';
-import { ChevronDown, CirclePlus, SearchIcon } from 'lucide-react';
+import { ChevronDown, CirclePlus, Filter as Funnel, SearchIcon } from 'lucide-react';
 import usePage from '@/hooks/usePage';
 import useTable from '@/hooks/useTable';
 
@@ -320,9 +320,13 @@ export function TableToolbar() {
 
 	if (isEntry) {
 		return (
-			<Accordion type='single' collapsible className='w-full' defaultValue='item-1'>
+			<Accordion type='single' collapsible className='w-full'>
 				<AccordionItem value='item-1' className='rounded-t-md bg-gradient-to-r from-secondary to-primary'>
-					<AccordionTrigger className='border-b border-border/20 px-4 py-2 text-lg font-semibold capitalize leading-none text-primary-foreground md:text-xl'>
+					<AccordionTrigger
+						Icon={Funnel}
+						iconClassName='size-5'
+						className='border-b border-border/20 px-4 py-2 text-lg font-semibold capitalize leading-none text-primary-foreground md:text-xl [&[data-state=open]>svg]:rotate-0'
+					>
 						{title}
 					</AccordionTrigger>
 					<AccordionContent className='flex items-center justify-between gap-4 px-4 py-2.5'>
