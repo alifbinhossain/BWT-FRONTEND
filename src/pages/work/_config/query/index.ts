@@ -1,9 +1,6 @@
 import useTQuery from '@/hooks/useTQuery';
 
-
-
 import { workQK } from './queryKeys';
-
 
 // * Problem
 export const useWorkProblems = <T>() =>
@@ -20,10 +17,10 @@ export const useWorkProblemsByUUID = <T>(uuid: string) =>
 	});
 
 //* Order
-export const useWorkInfo = <T>() =>
+export const useWorkInfo = <T>(query?: string) =>
 	useTQuery<T>({
-		queryKey: workQK.info(),
-		url: '/work/info',
+		queryKey: workQK.info(query ? query : ''),
+		url: query ? `/work/info?${query}` : '/work/info',
 	});
 
 export const useWorkInfoByUUID = <T>(uuid: string) =>

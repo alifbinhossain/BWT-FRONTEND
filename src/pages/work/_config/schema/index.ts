@@ -34,6 +34,10 @@ export const ORDER_SCHEMA = z
 		serial_no: STRING_OPTIONAL,
 		problems_uuid: STRING_ARRAY,
 		problem_statement: STRING_REQUIRED,
+		qc_problems_uuid: STRING_ARRAY_OPTIONAL,
+		qc_problem_statement: STRING_NULLABLE,
+		delivery_problems_uuid: STRING_ARRAY_OPTIONAL,
+		delivery_problem_statement: STRING_NULLABLE,
 		accessories: STRING_ARRAY_OPTIONAL,
 		warehouse_uuid: STRING_NULLABLE,
 		rack_uuid: STRING_NULLABLE,
@@ -71,6 +75,8 @@ export const REPAIR_SCHEMA = z
 		uuid: STRING_OPTIONAL,
 		is_transferred_for_qc: BOOLEAN_OPTIONAL.default(false),
 		is_ready_for_delivery: BOOLEAN_OPTIONAL.default(false),
+		repairing_problems_uuid: STRING_ARRAY,
+		repairing_problem_statement: STRING_OPTIONAL,
 		repair_product_transfer: BOOLEAN_OPTIONAL.default(false),
 		product_transfer: z.array(
 			z.object({

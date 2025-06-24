@@ -231,6 +231,7 @@ const AddOrUpdate = () => {
 		const field = form.watch('order_entry')[index];
 		append({
 			is_diagnosis_need: field.is_diagnosis_need,
+			brand_uuid: field.brand_uuid,
 			model_uuid: field.model_uuid,
 			serial_no: field.serial_no,
 			quantity: field.quantity,

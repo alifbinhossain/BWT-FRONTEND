@@ -62,7 +62,6 @@ export function GeneralInformation({
 	}, [data]);
 
 	async function onSubmit(values: IGeneralInfo) {
-		console.log({ values });
 		// UPDATE ITEM
 		await updateData.mutateAsync({
 			url: `/hr/employee/${data?.uuid}`,

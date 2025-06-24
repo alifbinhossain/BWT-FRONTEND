@@ -66,7 +66,7 @@ const Order = () => {
 				{renderSuspenseModals([
 					<AddOrUpdate
 						{...{
-							url,
+							url: 'work/order',
 							open: isOpenAddModal,
 							setOpen: setIsOpenAddModal,
 							updatedData,

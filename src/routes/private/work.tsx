@@ -17,6 +17,10 @@ import RepairingEntry from '@/pages/work/repairing/add-or-update';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
 
+
+
+
+
 const User = lazy(() => import('@/pages/hr/user'));
 
 const workRoutes: IRoute[] = [
@@ -108,7 +112,14 @@ const workRoutes: IRoute[] = [
 				path: '/work/repairing',
 				element: <Repairing />,
 				page_name: 'work__repairing',
-				actions: ['read', 'update', 'click_transfer_qc', 'click_transfer_delivery', 'click_order_transfer'],
+				actions: [
+					'read',
+					'update',
+					'click_transfer_qc',
+					'click_transfer_delivery',
+					'click_order_transfer',
+					'click_trx',
+				],
 			},
 			{
 				name: 'Repairing Update',

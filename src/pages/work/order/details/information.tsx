@@ -7,6 +7,7 @@ import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
 import { Switch } from '@/components/ui/switch';
 
+import { getDateTime } from '@/utils';
 import { formatDateTable } from '@/utils/formatDate';
 
 import { IOrderTableData } from '../../_config/columns/columns.type';
@@ -79,7 +80,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				label: 'Problems',
 				value: (
 					<div className='flex flex-wrap gap-1'>
-						{(data.problems_name as string[])?.map((item, index) => (
+						{(data.order_problems_name as string[])?.map((item, index) => (
 							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
 								{item?.replace(/_/g, ' ')}
 							</span>
@@ -179,7 +180,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				label: 'Problem',
 				value: (
 					<div className='flex flex-wrap gap-1'>
-						{(data?.diagnosis?.problems_name as string[])?.map((item, index) => (
+						{(data?.diagnosis?.diagnosis_problems_name as string[])?.map((item, index) => (
 							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
 								{item?.replace(/_/g, ' ')}
 							</span>
@@ -250,6 +251,7 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			url: `/work/order/${data?.uuid}`,
 			updatedData: {
 				is_ready_for_delivery: !data?.is_ready_for_delivery,
+				ready_for_delivery_date: data.is_ready_for_delivery ? null : getDateTime(),
 			},
 			isOnCloseNeeded: false,
 		});

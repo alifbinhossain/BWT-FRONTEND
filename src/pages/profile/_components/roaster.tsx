@@ -13,7 +13,7 @@ const Roaster = () => {
 	const daysOfMonth = getDaysInMonth(getDateTime());
 	const { user } = useAuth();
 	const { data } = useHRRoasterByEmployeeUUID(user?.employee_uuid as string, 5, 2025);
-	console.log(data);
+	
 
 	interface timeDetails {
 		date: string;
