@@ -142,6 +142,8 @@ export type IInfoTableData = {
 	updated_at: string;
 	is_product_received: boolean;
 	received_date: string;
+	delivered_count: number;
+	order_count: number;
 	order_entry: IOrderTableData[];
 };
 

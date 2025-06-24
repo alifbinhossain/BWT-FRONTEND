@@ -61,6 +61,11 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 			);
 		},
 	},
+	{
+		accessorFn: (row) => row.delivered_count + '/' + row.order_count,
+		header: 'Count',
+		enableColumnFilter: false,
+	},
 	// {
 	// 	accessorKey: 'user_phone',
 	// 	header: 'Phone Number',
