@@ -104,10 +104,16 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					/>
 				)}
 			/>
+			
 			<FormField
 				control={form.control}
 				name='delivery_problem_statement'
 				render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+			/>
+			<FormField
+				control={form.control}
+				name='bill_amount'
+				render={(props) => <CoreForm.Input type='number' label='Bill Amount' {...props} />}
 			/>
 			<FormField
 				control={form.control}

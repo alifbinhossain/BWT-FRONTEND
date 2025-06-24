@@ -905,6 +905,12 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
+		accessorKey: 'bill_amount',
+		header: 'Bill Amount',
+		size: 40,
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'order_id',
 		header: 'Order ID',
 		enableColumnFilter: false,
