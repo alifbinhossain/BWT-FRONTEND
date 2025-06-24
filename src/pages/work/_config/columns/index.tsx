@@ -1,25 +1,20 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { User } from 'lucide-react';
 
+
+
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
+
+
 import { Location, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
-import {
-	IAccessoriesTableData,
-	IDiagnosisTableData,
-	IInfoTableData,
-	IOrderTableData,
-	IProblemsTableData,
-	IProcessTableData,
-	ISectionTableData,
-	ITransferTableData,
-	IZoneTableData,
-} from './columns.type';
+import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
+
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -62,22 +57,6 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		},
 	},
 	{
-		accessorFn: (row) => row.delivered_count + '/' + row.order_count,
-		header: 'Count',
-		enableColumnFilter: false,
-	},
-	// {
-	// 	accessorKey: 'user_phone',
-	// 	header: 'Phone Number',
-	// 	enableColumnFilter: false,
-	// },
-	{
-		accessorKey: 'submitted_by',
-		header: 'Submitted By',
-		enableColumnFilter: false,
-		cell: (info) => <span className='capitalize'>{info.getValue() as string}</span>,
-	},
-	{
 		accessorKey: 'is_product_received',
 		size: 32,
 		header: () => (
@@ -94,6 +73,23 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		header: 'Receive Date',
 		enableColumnFilter: false,
 		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorFn: (row) => row.delivered_count + '/' + row.order_count,
+		header: 'Delivered',
+		enableColumnFilter: false,
+	},
+	// {
+	// 	accessorKey: 'user_phone',
+	// 	header: 'Phone Number',
+	// 	enableColumnFilter: false,
+	// },
+
+	{
+		accessorKey: 'submitted_by',
+		header: 'Submitted By',
+		enableColumnFilter: false,
+		cell: (info) => <span className='capitalize'>{info.getValue() as string}</span>,
 	},
 ];
 //* Order Columns
@@ -198,7 +194,7 @@ export const orderColumnsForDetails = ({
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
-		header: 'Problem',
+		header: 'Order Problem',
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {
@@ -392,7 +388,7 @@ export const orderColumns = ({
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const { info_uuid, user_name } = info.row.original;
+			const { info_uuid, user_name, user_phone } = info.row.original;
 			return (
 				<div className='flex flex-col gap-2'>
 					<CustomLink
@@ -400,10 +396,7 @@ export const orderColumns = ({
 						label={info.getValue() as string}
 						openInNewTab={true}
 					/>
-					<div className='flex gap-2'>
-						<User className='size-4' />
-						<div className='flex-1'>{user_name}</div>
-					</div>
+					<UserNamePhone user_name={user_name} phone={user_phone} />
 				</div>
 			);
 		},
@@ -432,7 +425,7 @@ export const orderColumns = ({
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
-		header: 'Problem',
+		header: 'Order Problem',
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {
@@ -536,7 +529,7 @@ export const QCColumns = ({
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const { info_uuid, user_name } = info.row.original;
+			const { info_uuid, user_name, user_phone } = info.row.original;
 			return (
 				<div className='flex flex-col gap-2'>
 					<CustomLink
@@ -544,10 +537,7 @@ export const QCColumns = ({
 						label={info.getValue() as string}
 						openInNewTab={true}
 					/>
-					<div className='flex gap-2'>
-						<User size={14} />
-						{user_name}
-					</div>
+					<UserNamePhone user_name={user_name} phone={user_phone} />
 				</div>
 			);
 		},
@@ -575,7 +565,7 @@ export const QCColumns = ({
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
-		header: 'Problem',
+		header: 'Order Problem',
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {
@@ -743,7 +733,7 @@ export const RepairingColumns = ({
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const { info_uuid, user_name } = info.row.original;
+			const { info_uuid, user_name, user_phone } = info.row.original;
 			return (
 				<div className='flex flex-col gap-2'>
 					<CustomLink
@@ -751,12 +741,29 @@ export const RepairingColumns = ({
 						label={info.getValue() as string}
 						openInNewTab={true}
 					/>
-					<div className='flex gap-2'>
-						<User size={14} />
-						{user_name}
-					</div>
+					<UserNamePhone user_name={user_name} phone={user_phone} />
 				</div>
 			);
+		},
+	},
+	{
+		id: 'action_trx',
+		header: () => (
+			<>
+				Section <br />
+				Transfer
+			</>
+		),
+		cell: (info) => (
+			<Transfer
+				onClick={() => handleAgainstTrx?.(info?.row)}
+				disabled={!info.row.original.is_proceed_to_repair}
+			/>
+		),
+		size: 40,
+		meta: {
+			hidden: !actionTrxAccess,
+			disableFullFilter: true,
 		},
 	},
 	// {
@@ -813,7 +820,7 @@ export const RepairingColumns = ({
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
-		header: 'Problem',
+		header: 'Order Problem',
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {
@@ -888,23 +895,15 @@ export const RepairingColumns = ({
 			);
 		},
 	},
-	{
-		id: 'action_trx',
-		header: 'Section Transfer',
-		cell: (info) => (
-			<Transfer
-				onClick={() => handleAgainstTrx?.(info?.row)}
-				disabled={!info.row.original.is_proceed_to_repair}
-			/>
-		),
-		size: 40,
-		meta: {
-			hidden: !actionTrxAccess,
-			disableFullFilter: true,
-		},
-	},
 ];
 export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
+	{
+		accessorKey: 'ready_for_delivery_date',
+		header: 'Ready Date',
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
 	{
 		accessorKey: 'order_id',
 		header: 'Order ID',
@@ -926,7 +925,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const { info_uuid, user_name } = info.row.original;
+			const { info_uuid, user_name, user_phone } = info.row.original;
 			return (
 				<div className='flex flex-col gap-2'>
 					<CustomLink
@@ -934,10 +933,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 						label={info.getValue() as string}
 						openInNewTab={true}
 					/>
-					<div className='flex gap-2'>
-						<User size={14} />
-						{user_name}
-					</div>
+					<UserNamePhone user_name={user_name} phone={user_phone} />
 				</div>
 			);
 		},
@@ -965,7 +961,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
-		header: 'Problem',
+		header: 'Order Problem',
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {
@@ -1073,13 +1069,6 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 			);
 		},
 	},
-	{
-		accessorKey: 'ready_for_delivery_date',
-		header: 'Ready Delivery Date',
-		size: 40,
-		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
-	},
 ];
 //* Diagnosis Columns
 export const diagnosisColumns = ({
@@ -1116,7 +1105,7 @@ export const diagnosisColumns = ({
 		header: 'Info ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const { info_uuid, user_name } = info.row.original;
+			const { info_uuid, user_name, user_phone } = info.row.original;
 			return (
 				<div className='flex flex-col gap-2'>
 					<CustomLink
@@ -1124,10 +1113,7 @@ export const diagnosisColumns = ({
 						label={info.getValue() as string}
 						openInNewTab={true}
 					/>
-					<div className='flex gap-2'>
-						<User size={14} />
-						{user_name}
-					</div>
+					<UserNamePhone user_name={user_name} phone={user_phone} />
 				</div>
 			);
 		},
@@ -1143,9 +1129,9 @@ export const diagnosisColumns = ({
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {
-			const { problem_statement } = info.row.original;
+			const { order_problem_statement } = info.row.original;
 
-			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+			return <Problem problems_name={info.getValue() as string} problem_statement={order_problem_statement} />;
 		},
 	},
 	{
@@ -1210,18 +1196,18 @@ export const diagnosisColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
-	{
-		id: 'action_trx',
-		header: 'Section Transfer',
-		cell: (info) => (
-			<Transfer onClick={() => handleAgainstTrx(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
-		),
-		size: 40,
-		meta: {
-			hidden: !actionTrxAccess,
-			disableFullFilter: true,
-		},
-	},
+	// {
+	// 	id: 'action_trx',
+	// 	header: 'Section Transfer',
+	// 	cell: (info) => (
+	// 		<Transfer onClick={() => handleAgainstTrx(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
+	// 	),
+	// 	size: 40,
+	// 	meta: {
+	// 		hidden: !actionTrxAccess,
+	// 		disableFullFilter: true,
+	// 	},
+	// },
 ];
 //* Section Columns
 export const sectionColumns = (): ColumnDef<ISectionTableData>[] => [
@@ -1272,7 +1258,7 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
-		header: 'Problem',
+		header: 'Order Problem',
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {

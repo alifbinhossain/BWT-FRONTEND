@@ -17,11 +17,12 @@ export type IDiagnosisTableData = {
 	info_uuid: string;
 	order_id: string;
 	user_name: string;
+	user_phone:string
 	engineer_uuid: string;
 	problems_uuid: string[];
 	diagnosis_problems_name: string[];
 	order_problems_name: string[];
-
+	order_problem_statement: string;
 	problem_statement: string;
 	customer_problem_statement: string;
 	status: 'pending' | 'rejected' | 'accepted' | 'not_repairable';
