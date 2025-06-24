@@ -144,7 +144,7 @@ export const UserNamePhone = ({ user_name, phone }: { user_name: string; phone: 
 				</div>
 				<div className='flex items-start gap-2'>
 					<Phone className='size-4' />
-					<span className='text-[.6rem] capitalize'>{phone}</span>
+					<span className='text-[.8rem] capitalize'>{phone}</span>
 				</div>
 			</div>
 		</div>
