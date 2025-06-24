@@ -11,9 +11,10 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { IFormSelectOption } from '@/components/core/form/types';
 import { ShowLocalToast } from '@/components/others/toast';
 
-import { useOtherProduct, useOtherWarehouse } from '@/lib/common-queries/other';
+import { useOtherProblem, useOtherProduct, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -32,6 +33,7 @@ const AddOrUpdate = () => {
 	const navigate = useNavigate();
 	const { data: productOptions, invalidateQuery: invalidateQueryOtherProduct } =
 		useOtherProduct<ICustomProductsSelectOption[]>(`?is_quantity=true`);
+	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
 	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
 		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { data, updateData, postData, deleteData } = useWorkOrderByUUID<IOrderTableData>(uuid as string);
@@ -252,6 +254,25 @@ const AddOrUpdate = () => {
 					</div>
 				}
 			>
+				<FormField
+					control={form.control}
+					name='repairing_problems_uuid'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							isMulti
+							label='Problems'
+							menuPortalTarget={document.body}
+							options={problemOption!}
+							placeholder='Select Problems'
+							{...props}
+						/>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='repairing_problem_statement'
+					render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+				/>
 				<FormField
 					control={form.control}
 					name='remarks'

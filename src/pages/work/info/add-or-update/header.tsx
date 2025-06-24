@@ -137,7 +137,7 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 					</div>
 				)}
 
-				{isNewCustomer && (
+				{isNewCustomer && !isUser && form.watch('business_type') !==undefined && (
 					<>
 						<FormField
 							control={form.control}

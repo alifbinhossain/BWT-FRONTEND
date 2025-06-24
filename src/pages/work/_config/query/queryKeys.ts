@@ -1,9 +1,5 @@
 import { orderBy } from 'lodash';
 
-
-
-
-
 export const workQK = {
 	all: () => ['work'],
 
@@ -11,7 +7,7 @@ export const workQK = {
 	problem: () => [...workQK.all(), 'problem'],
 	problemByUUID: (uuid: string) => [...workQK.problem(), uuid],
 	//*info
-	info: () => [...workQK.all(), 'info'],
+	info: (query?: string) => [...workQK.all(), 'info', query ? query : ''],
 	infoByUUID: (uuid: string) => [...workQK.info(), uuid],
 	infoByDetails: (uuid: string) => [...workQK.info(), 'infoByDetails', uuid],
 	infoOrderByDetails: (uuid: string) => [...workQK.info(), 'infoOrderByDetails', uuid],

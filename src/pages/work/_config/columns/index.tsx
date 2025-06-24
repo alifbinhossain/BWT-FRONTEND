@@ -7,7 +7,7 @@ import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-import { Location, Problem, Product, TableForColumn } from '../utils/component';
+import { Location, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
 import {
 	IAccessoriesTableData,
@@ -48,15 +48,29 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		},
 	},
 	{
-		accessorKey: 'user_name',
+		accessorFn: (row) => row.user_name + ' - ' + row.user_phone,
 		header: 'Customer',
 		enableColumnFilter: false,
+		cell: (info) => {
+			const { user_name, user_phone } = info.row.original;
+
+			return (
+				<div className='flex items-center gap-2'>
+					<UserNamePhone user_name={user_name} phone={user_phone} />
+				</div>
+			);
+		},
 	},
 	{
-		accessorKey: 'user_phone',
-		header: 'Phone Number',
+		accessorFn: (row) => row.delivered_count + '/' + row.order_count,
+		header: 'Count',
 		enableColumnFilter: false,
 	},
+	// {
+	// 	accessorKey: 'user_phone',
+	// 	header: 'Phone Number',
+	// 	enableColumnFilter: false,
+	// },
 	{
 		accessorKey: 'submitted_by',
 		header: 'Submitted By',
@@ -179,7 +193,7 @@ export const orderColumnsForDetails = ({
 	},
 	{
 		accessorFn: (row) => {
-			return row.problems_name
+			return row.order_problems_name
 				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
@@ -191,6 +205,74 @@ export const orderColumnsForDetails = ({
 			const { problem_statement } = info.row.original;
 
 			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.diagnosis_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Diagnosis Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { diagnosis_problem_statement } = info.row.original;
+
+			return (
+				<Problem problems_name={info.getValue() as string} problem_statement={diagnosis_problem_statement} />
+			);
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.repairing_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Repairing Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { repairing_problem_statement } = info.row.original;
+
+			return (
+				<Problem problems_name={info.getValue() as string} problem_statement={repairing_problem_statement} />
+			);
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.qc_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'QC Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { qc_problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={qc_problem_statement} />;
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.delivery_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Delivery Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { delivery_problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={delivery_problem_statement} />;
 		},
 	},
 	{
@@ -345,7 +427,7 @@ export const orderColumns = ({
 	},
 	{
 		accessorFn: (row) => {
-			return row.problems_name
+			return row.order_problems_name
 				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
@@ -488,7 +570,7 @@ export const QCColumns = ({
 	},
 	{
 		accessorFn: (row) => {
-			return row.problems_name
+			return row.order_problems_name
 				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
@@ -500,6 +582,58 @@ export const QCColumns = ({
 			const { problem_statement } = info.row.original;
 
 			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.diagnosis_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Diagnosis Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { diagnosis_problem_statement } = info.row.original;
+
+			return (
+				<Problem problems_name={info.getValue() as string} problem_statement={diagnosis_problem_statement} />
+			);
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.repairing_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Repairing Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { repairing_problem_statement } = info.row.original;
+
+			return (
+				<Problem problems_name={info.getValue() as string} problem_statement={repairing_problem_statement} />
+			);
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.qc_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'QC Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { qc_problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={qc_problem_statement} />;
 		},
 	},
 	{
@@ -538,11 +672,15 @@ export const RepairingColumns = ({
 	haveDeliveryAccess,
 	handelQCStatusChange,
 	haveQCAccess,
+	actionTrxAccess,
+	handleAgainstTrx,
 }: {
 	handelDeliveryStatusChange?: (row: Row<any>) => void;
 	haveDeliveryAccess?: boolean;
 	handelQCStatusChange?: (row: Row<any>) => void;
 	haveQCAccess?: boolean;
+	actionTrxAccess?: boolean;
+	handleAgainstTrx?: (row: Row<any>) => void;
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_transferred_for_qc',
@@ -670,7 +808,7 @@ export const RepairingColumns = ({
 	},
 	{
 		accessorFn: (row) => {
-			return row.problems_name
+			return row.order_problems_name
 				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
@@ -682,6 +820,42 @@ export const RepairingColumns = ({
 			const { problem_statement } = info.row.original;
 
 			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.diagnosis_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Diagnosis Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { diagnosis_problem_statement } = info.row.original;
+
+			return (
+				<Problem problems_name={info.getValue() as string} problem_statement={diagnosis_problem_statement} />
+			);
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.repairing_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Repairing Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { repairing_problem_statement } = info.row.original;
+
+			return (
+				<Problem problems_name={info.getValue() as string} problem_statement={repairing_problem_statement} />
+			);
 		},
 	},
 	{
@@ -712,6 +886,21 @@ export const RepairingColumns = ({
 					box_name={box_name}
 				/>
 			);
+		},
+	},
+	{
+		id: 'action_trx',
+		header: 'Section Transfer',
+		cell: (info) => (
+			<Transfer
+				onClick={() => handleAgainstTrx?.(info?.row)}
+				disabled={!info.row.original.is_proceed_to_repair}
+			/>
+		),
+		size: 40,
+		meta: {
+			hidden: !actionTrxAccess,
+			disableFullFilter: true,
 		},
 	},
 ];
@@ -771,7 +960,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 	},
 	{
 		accessorFn: (row) => {
-			return row.problems_name
+			return row.order_problems_name
 				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
@@ -783,6 +972,74 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 			const { problem_statement } = info.row.original;
 
 			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.diagnosis_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Diagnosis Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { diagnosis_problem_statement } = info.row.original;
+
+			return (
+				<Problem problems_name={info.getValue() as string} problem_statement={diagnosis_problem_statement} />
+			);
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.repairing_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Repairing Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { repairing_problem_statement } = info.row.original;
+
+			return (
+				<Problem problems_name={info.getValue() as string} problem_statement={repairing_problem_statement} />
+			);
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.qc_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'QC Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { qc_problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={qc_problem_statement} />;
+		},
+	},
+	{
+		accessorFn: (row) => {
+			return row.delivery_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Delivery Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { delivery_problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={delivery_problem_statement} />;
 		},
 	},
 	{
@@ -815,6 +1072,13 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 				/>
 			);
 		},
+	},
+	{
+		accessorKey: 'ready_for_delivery_date',
+		header: 'Ready Delivery Date',
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 ];
 //* Diagnosis Columns
@@ -870,12 +1134,12 @@ export const diagnosisColumns = ({
 	},
 	{
 		accessorFn: (row) => {
-			return row.problems_name
+			return row.order_problems_name
 				.map((item) => item)
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
-		header: 'Problem',
+		header: 'Order Problem',
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {
@@ -884,6 +1148,23 @@ export const diagnosisColumns = ({
 			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
 		},
 	},
+	{
+		accessorFn: (row) => {
+			return row.diagnosis_problems_name
+				.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Diagnosis Problem',
+		enableColumnFilter: false,
+		size: 180,
+		cell: (info) => {
+			const { problem_statement } = info.row.original;
+
+			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
+	},
+
 	{
 		accessorKey: 'status',
 		header: 'Status',

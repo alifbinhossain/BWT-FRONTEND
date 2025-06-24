@@ -45,9 +45,7 @@ const AddOrUpdate: React.FC<IEmployeeAddOrUpdateProps> = ({
 
 	const form = useRHF(EMPLOYEE_SCHEMA as any, EMPLOYEE_NULL);
 
-	console.log({
-		error: form.formState.errors,
-	});
+	
 	const { data: usersOptions } = useOtherUserByQuery<IFormSelectOption[]>(
 		`${isUpdate ? `?user_uuid=${form.watch('user_uuid')}` : `?filteredUser=true`}`
 	);

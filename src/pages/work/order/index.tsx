@@ -60,22 +60,24 @@ const Order = () => {
 
 	const handleProceedToRepair = async (row: Row<IOrderTableData>) => {
 		const is_proceed_to_repair = !row?.original?.is_proceed_to_repair;
+		const is_diagnosis_need = false;
 		const updated_at = getDateTime();
 
 		await updateData.mutateAsync({
 			url: `/work/order/${row?.original?.uuid}`,
-			updatedData: { is_proceed_to_repair, updated_at },
+			updatedData: { is_proceed_to_repair, is_diagnosis_need, updated_at },
 		});
 		invalidateDiagnosis();
 		invalidateRepairing();
 	};
 	const handelDiagnosisStatusChange = async (row: Row<IOrderTableData>) => {
 		const is_diagnosis_need = !row?.original?.is_diagnosis_need;
+		const is_proceed_to_repair = false;
 		const updated_at = getDateTime();
 
 		await updateData.mutateAsync({
 			url: `/work/order/${row?.original?.uuid}`,
-			updatedData: { is_diagnosis_need, updated_at },
+			updatedData: { is_diagnosis_need, is_proceed_to_repair, updated_at },
 		});
 		invalidateDiagnosis();
 		invalidateRepairing();

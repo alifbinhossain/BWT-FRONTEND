@@ -5,9 +5,11 @@ import {
 	House,
 	MapPin,
 	MessageSquareMore,
+	Phone,
 	Pin,
 	Ruler,
 	SquareMenu,
+	User,
 	Warehouse,
 } from 'lucide-react';
 
@@ -129,6 +131,22 @@ export const Location = ({ branch_name, warehouse_name, rack_name, floor_name, b
 					</span>
 				</div>
 			)}
+		</div>
+	);
+};
+export const UserNamePhone = ({ user_name, phone }: { user_name: string; phone: string }) => {
+	return (
+		<div className='relative flex flex-1 flex-shrink-0 items-center gap-2'>
+			<div className='flex flex-col items-start'>
+				<div className='flex items-start gap-2'>
+					<User className='size-4' />
+					<span className='truncate capitalize'>{user_name}</span>
+				</div>
+				<div className='flex items-start gap-2'>
+					<Phone className='size-4' />
+					<span className='text-[.6rem] capitalize'>{phone}</span>
+				</div>
+			</div>
 		</div>
 	);
 };

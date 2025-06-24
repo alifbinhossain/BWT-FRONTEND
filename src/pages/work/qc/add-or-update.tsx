@@ -9,6 +9,9 @@ import { AddModal } from '@core/modal';
 
 import '@/lib/common-queries/other';
 
+import { IFormSelectOption } from '@/components/core/form/types';
+
+import { useOtherProblem } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -29,8 +32,11 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useWorkOrderByUUID<IOrderTableData>(updatedData?.uuid as string);
 	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
+	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
+	
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
+	
 
 	// Reset form values when data is updated
 	useEffect(() => {
@@ -97,6 +103,25 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					render={(props) => <CoreForm.Checkbox label='Transfer QC' {...props} />}
 				/>
 			</div>
+			<FormField
+				control={form.control}
+				name='qc_problems_uuid'
+				render={(props) => (
+					<CoreForm.ReactSelect
+						isMulti
+						label='Problems'
+						
+						options={problemOption!}
+						placeholder='Select Problems'
+						{...props}
+					/>
+				)}
+			/>
+			<FormField
+				control={form.control}
+				name='qc_problem_statement'
+				render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+			/>
 
 			<FormField
 				control={form.control}
