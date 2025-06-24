@@ -53,7 +53,7 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		enableColumnFilter: false,
 		cell: (info) => {
 			const { user_name, user_phone } = info.row.original;
-			
+
 			return (
 				<div className='flex items-center gap-2'>
 					<UserNamePhone user_name={user_name} phone={user_phone} />
@@ -1067,6 +1067,13 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 				/>
 			);
 		},
+	},
+	{
+		accessorKey: 'ready_for_delivery_date',
+		header: 'Ready Delivery Date',
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 ];
 //* Diagnosis Columns
