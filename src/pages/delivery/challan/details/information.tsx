@@ -64,6 +64,10 @@ const Information: React.FC<{ data: IChallanTableData }> = ({ data }) => {
 				label: 'Payment Method',
 				value: data.payment_method,
 			},
+			{
+				label: 'Delivery Branch',
+				value: data.branch_name,
+			},
 		];
 	};
 

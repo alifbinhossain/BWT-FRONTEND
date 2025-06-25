@@ -66,7 +66,7 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 								},
 								{
 									table: {
-										widths: [60, '*'],
+										widths: [80, '*'],
 										body: [
 											[
 												{
@@ -110,6 +110,17 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 												},
 												{
 													text: '',
+													fontSize: DEFAULT_FONT_SIZE - 2,
+												},
+											],
+											[
+												{
+													text: 'Challan Branch:',
+													bold: true,
+													fontSize: DEFAULT_FONT_SIZE - 2,
+												},
+												{
+													text: data?.branch_name,
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],

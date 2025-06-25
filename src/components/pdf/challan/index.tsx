@@ -19,6 +19,7 @@ export default function Index(data: IChallanTableData, user: any) {
 	const node = [
 		getTable('index', '#', 'center'),
 		getTable('description', 'Product Name'),
+		getTable('accessories_name', 'Accessories'),
 		getTable('quantity', 'Qty', 'right'),
 		getTable('unit', 'Unit'),
 	];
@@ -113,7 +114,7 @@ export default function Index(data: IChallanTableData, user: any) {
 			{
 				table: {
 					headerRows: 1,
-					widths: [15, '*', 50, 30],
+					widths: [15, '*', 150, 50, 30],
 					body: [
 						node.map((col) => ({
 							text: col.name,
@@ -124,7 +125,12 @@ export default function Index(data: IChallanTableData, user: any) {
 						})),
 						...(data?.challan_entries || []).map((item, index) =>
 							node.map((nodeItem) => ({
-								text: nodeItem.field === 'index' ? index + 1 : (item as any)[nodeItem.field],
+								text:
+									nodeItem.field === 'index'
+										? index + 1
+										: nodeItem.field === 'accessories'
+											? item.accessories_name.join(', ')
+											: (item as any)[nodeItem.field],
 								style: nodeItem.cellStyle,
 								fontSize: DEFAULT_FONT_SIZE - 2,
 								alignment: nodeItem.alignment,

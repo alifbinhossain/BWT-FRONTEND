@@ -9,7 +9,7 @@ import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
 
 export default function Index(data: IChallanTableData, user: any) {
-	const headerHeight = 140;
+	const headerHeight = 150;
 	const footerHeight = 20;
 	let grand_total = 0;
 	data?.challan_entries?.forEach((item) => {
@@ -21,6 +21,7 @@ export default function Index(data: IChallanTableData, user: any) {
 	const node = [
 		getTable('index', '#', 'center'),
 		getTable('description', 'Product Name'),
+		getTable('accessories_name', 'Accessories'),
 		getTable('quantity', 'Qty', 'right'),
 		getTable('unit', 'Unit'),
 		getTable('bill_amount', 'Amount', 'right'),
@@ -116,7 +117,7 @@ export default function Index(data: IChallanTableData, user: any) {
 			{
 				table: {
 					headerRows: 1,
-					widths: [15, '*', 50, 30, 40],
+					widths: [15, '*', 150, 50, 30, 40],
 					body: [
 						node.map((col) => ({
 							text: col.name,
@@ -127,7 +128,12 @@ export default function Index(data: IChallanTableData, user: any) {
 						})),
 						...(data?.challan_entries || []).map((item, index) =>
 							node.map((nodeItem) => ({
-								text: nodeItem.field === 'index' ? index + 1 : (item as any)[nodeItem.field],
+								text:
+									nodeItem.field === 'index'
+										? index + 1
+										: nodeItem.field === 'accessories'
+											? item.accessories_name.join(', ')
+											: (item as any)[nodeItem.field],
 								style: nodeItem.cellStyle,
 								fontSize: DEFAULT_FONT_SIZE - 2,
 								alignment: nodeItem.alignment,
@@ -140,8 +146,9 @@ export default function Index(data: IChallanTableData, user: any) {
 								fontSize: DEFAULT_FONT_SIZE - 2,
 								alignment: 'right',
 								bold: true,
-								colSpan: 4,
+								colSpan: 5,
 							},
+							{},
 							{},
 							{},
 							{},
@@ -150,9 +157,8 @@ export default function Index(data: IChallanTableData, user: any) {
 								style: 'tableCell',
 								fontSize: DEFAULT_FONT_SIZE - 2,
 								alignment: 'right',
-								
-							}
-						]
+							},
+						],
 					],
 				},
 			},
