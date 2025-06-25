@@ -13,9 +13,14 @@ const DataTableEntry = <TData, TValue>(
 		| 'handleRefetch'
 		| 'enableDefaultColumns'
 		| 'isLoading'
-	>
+	> & { children?: React.ReactNode }
 ) => {
-	return <TableProvider isEntry enableRowSelection={false} {...props} />;
+	const { children, ...rest } = props;
+	return (
+		<TableProvider isEntry enableRowSelection={false} {...rest}>
+			{children}
+		</TableProvider>
+	);
 };
 
 export default DataTableEntry;

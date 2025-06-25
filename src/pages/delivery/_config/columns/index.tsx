@@ -2,11 +2,16 @@ import { Product } from '@/pages/work/_config/utils/component';
 import { ProductName } from '@/pages/work/_config/utils/function';
 import { ColumnDef } from '@tanstack/react-table';
 
+
+
 import StatusButton from '@/components/buttons/status';
 import { CustomLink } from '@/components/others/link';
 import { Switch } from '@/components/ui/switch';
 
+
+
 import { IChallanEntryTableData, IChallanTableData, ICourierTableData, IVehicleTableData } from './columns.type';
+
 
 //* Vehicle Columns
 export const vehicleColumns = (): ColumnDef<IVehicleTableData>[] => [
@@ -146,6 +151,11 @@ export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 	{
 		accessorKey: 'quantity',
 		header: 'Quantity',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'bill_amount',
+		header: 'Bill Amount',
 		enableColumnFilter: false,
 	},
 ];

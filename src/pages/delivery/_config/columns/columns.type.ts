@@ -26,6 +26,7 @@ export type IChallanEntryTableData = {
 	order_uuid: string;
 	info_uuid: string;
 	unit: string;
+	bill_amount: number;
 	remarks: string;
 };
 //* Challan
