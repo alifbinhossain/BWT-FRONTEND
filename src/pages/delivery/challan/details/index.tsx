@@ -6,7 +6,7 @@ import { IChallanTableData } from '../../_config/columns/columns.type';
 import { useDeliveryChallanByUUID } from '../../_config/query'; // TODO: replace with details query
 
 import ChallanPdf from '../../../../components/pdf/challan';
-import ChallanBIllPdf from '../../../../components/pdf/challan copy';
+import ChallanBIllPdf from '../../../../components/pdf/challan-bill';
 import EntryTable from './entry-table';
 import Information from './information';
 

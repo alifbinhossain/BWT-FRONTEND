@@ -158,4 +158,15 @@ export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 		header: 'Bill Amount',
 		enableColumnFilter: false,
 	},
+	{
+		accessorFn: (row) => {
+			return row.accessories_name
+				?.map((item) => item)
+				.join(', ')
+				.replace(/_/g, ' ');
+		},
+		header: 'Accessories',
+		enableColumnFilter: false,
+		cell: (info) => info.getValue() as string,
+	},
 ];

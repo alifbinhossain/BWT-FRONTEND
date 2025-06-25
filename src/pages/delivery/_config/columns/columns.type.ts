@@ -25,6 +25,8 @@ export type IChallanEntryTableData = {
 	serial_no: string;
 	order_uuid: string;
 	info_uuid: string;
+	accessories: string[];
+	accessories_name: string[];
 	unit: string;
 	bill_amount: number;
 	remarks: string;
@@ -33,6 +35,7 @@ export type IChallanEntryTableData = {
 export type IChallanTableData = {
 	challan_no: string;
 	location: string;
+	branch_name: string;
 	zone_name: string;
 	phone_no: string;
 	payment_method: 'cash';
