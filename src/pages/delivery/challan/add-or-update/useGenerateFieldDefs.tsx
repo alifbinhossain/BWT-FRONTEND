@@ -67,6 +67,16 @@ const useGenerateFieldDefs = ({ entry, remove, watch, add }: IGenerateFieldDefsP
 			},
 		},
 		{
+			header: 'Bill amount',
+			accessorKey: 'bill_amount',
+			type: 'custom',
+			component: (index: number) => {
+				const orderId = watch ? String(watch(`${entry}.${index}.bill_amount` as any)) : '';
+
+				return <span>{orderId}</span>;
+			},
+		},
+		{
 			header: 'Remarks',
 			accessorKey: 'remarks',
 			type: 'textarea',
