@@ -128,6 +128,8 @@ export type IRepair = z.infer<typeof REPAIR_SCHEMA>;
 const ORDER_SCHEMA_FOR_INFO = (ORDER_SCHEMA as any)._def.schema.omit({
 	is_transferred_for_qc: true,
 	is_ready_for_delivery: true,
+	delivery_problem_statement: true,
+	qc_problem_statement: true,
 });
 export const INFO_SCHEMA = z
 	.object({
