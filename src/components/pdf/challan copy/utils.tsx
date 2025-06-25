@@ -70,7 +70,7 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 										body: [
 											[
 												{
-													text: 'Challan',
+													text: 'Bill',
 													fontSize: DEFAULT_FONT_SIZE + 2,
 													bold: true,
 													style: 'header',
