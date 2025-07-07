@@ -119,6 +119,14 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				),
 			},
 			{
+				label: 'Home Repair',
+				value: <StatusButton value={data.is_home_repair as boolean} />,
+			},
+			{
+				label: 'Challan Needed',
+				value: <StatusButton value={data.is_challan_needed as boolean} />,
+			},
+			{
 				label: 'Transfer For QC',
 				value: (
 					<Switch

@@ -19,6 +19,7 @@ import {
 } from '@/lib/common-queries/other';
 
 import { IInfo } from '../../_config/schema';
+import Location from './location';
 import ModelFilter from './model-filter';
 
 interface IGenerateFieldDefsProps {
@@ -33,10 +34,6 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 	const [brand, setBrand] = useState([]);
 
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
-	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
-	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
-	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
-	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
 	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
 	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
 
@@ -66,6 +63,18 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 							name={`order_entry.${index}.is_proceed_to_repair`}
 							render={(props) => <CoreForm.Checkbox label='Proceed to Repair' {...props} />}
 						/>
+						<FormField
+							control={form.control}
+							name={`order_entry.${index}.is_home_repair`}
+							render={(props) => <CoreForm.Checkbox label='Home Repair' {...props} />}
+						/>
+						{form.watch(`order_entry.${index}.is_home_repair`) && (
+							<FormField
+								control={form.control}
+								name={`order_entry.${index}.is_challan_needed`}
+								render={(props) => <CoreForm.Checkbox label='Challan Needed' {...props} />}
+							/>
+						)}
 					</div>
 				);
 			},
@@ -116,6 +125,29 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 			type: 'number',
 		},
 		{
+			header: 'Cost',
+			accessorKey: 'cost',
+			type: 'custom',
+			component: (index: number) => {
+				if (form.watch(`order_entry.${index}.is_home_repair`)) {
+					return (
+						<div className='flex gap-2'>
+							<FormField
+								control={form.control}
+								name={`order_entry.${index}.proposed_cost`}
+								render={(props) => <CoreForm.Input label='Proposed Cost' type='number' {...props} />}
+							/>
+							<FormField
+								control={form.control}
+								name={`order_entry.${index}.bill_amount`}
+								render={(props) => <CoreForm.Input label='Bill Amount' type='number' {...props} />}
+							/>
+						</div>
+					);
+				}
+			},
+		},
+		{
 			header: 'Accessories',
 			accessorKey: 'accessories',
 			type: 'multiSelect',
@@ -144,35 +176,15 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 		{
 			header: 'Warehouse',
 			accessorKey: 'warehouse_uuid',
-			type: 'select',
-			options: warehouseOptions || [],
-			placeholder: 'Select Warehouse',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<Location form={form} index={index} />
+				);
+			},
 			hidden: !isProductReceived,
 		},
-		{
-			header: 'Rack',
-			accessorKey: 'rack_uuid',
-			type: 'select',
-			options: rackOption || [],
-			placeholder: 'Select Rack',
-			hidden: !isProductReceived,
-		},
-		{
-			header: 'Floor',
-			accessorKey: 'floor_uuid',
-			type: 'select',
-			options: floorOption || [],
-			placeholder: 'Select Floor',
-			hidden: !isProductReceived,
-		},
-		{
-			header: 'Box',
-			accessorKey: 'box_uuid',
-			type: 'select',
-			options: boxOption || [],
-			placeholder: 'Select Box',
-			hidden: !isProductReceived,
-		},
+
 		{
 			header: 'Remarks',
 			accessorKey: 'remarks',

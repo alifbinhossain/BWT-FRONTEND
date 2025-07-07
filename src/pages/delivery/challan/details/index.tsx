@@ -14,7 +14,9 @@ const DetailsPage = () => {
 	const { uuid } = useParams();
 	const { user } = useAuth();
 	const { data, isLoading } = useDeliveryChallanByUUID<IChallanTableData>(uuid as string);
-
+	const fullURL = window.location.href;
+	const slice = fullURL.split('w');
+	const baseURl = slice[0];
 	useEffect(() => {
 		document.title = 'Challan Details';
 	}, []);
@@ -22,15 +24,18 @@ const DetailsPage = () => {
 	const [data3, setData2] = useState('');
 
 	useEffect(() => {
-		if (data && user) {
-			ChallanPdf(data, user)?.getDataUrl((dataUrl) => {
-				setData(dataUrl);
-			});
-			ChallanBIllPdf(data, user)?.getDataUrl((dataUrl) => {
-				setData2(dataUrl);
-			});
-		}
-	}, [data, user]);
+		const generatePdf = async () => {
+			if (data && user) {
+				(await ChallanPdf(data, user, baseURl))?.getDataUrl((dataUrl) => {
+					setData(dataUrl);
+				});
+				(await ChallanBIllPdf(data, user, baseURl))?.getDataUrl((dataUrl) => {
+					setData2(dataUrl);
+				});
+			}
+		};
+		generatePdf();
+	}, [data, user, baseURl]);
 	if (isLoading) return <div>Loading...</div>;
 
 	return (
