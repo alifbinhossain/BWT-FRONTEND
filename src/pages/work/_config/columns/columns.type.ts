@@ -17,10 +17,12 @@ export type IDiagnosisTableData = {
 	info_uuid: string;
 	order_id: string;
 	user_name: string;
+	user_phone:string
 	engineer_uuid: string;
 	problems_uuid: string[];
-	problems_name: string[];
-
+	diagnosis_problems_name: string[];
+	order_problems_name: string[];
+	order_problem_statement: string;
 	problem_statement: string;
 	customer_problem_statement: string;
 	status: 'pending' | 'rejected' | 'accepted' | 'not_repairable';
@@ -80,14 +82,23 @@ export type IOrderTableData = {
 	product: string;
 	accessoriesString: string;
 	problems_uuid: string[];
-	problems_name: string[];
+	order_problems_name: string[];
+	diagnosis_problems_name: string[];
+	repairing_problems_name: string[];
+	qc_problems_name: string[];
+	delivery_problems_name: string[];
 	problem_statement: string;
+	diagnosis_problem_statement: string;
+	repairing_problem_statement: string;
+	qc_problem_statement: string;
+	delivery_problem_statement: string;
 	accessories: string[];
 	accessories_name: string[];
 	info_uuid: string;
 	info_id: string;
 	is_transferred_for_qc: boolean;
 	is_ready_for_delivery: boolean;
+	ready_for_delivery_date: string;
 	is_diagnosis_need: boolean;
 	branch_name: string;
 	warehouse_uuid: string;
@@ -132,6 +143,8 @@ export type IInfoTableData = {
 	updated_at: string;
 	is_product_received: boolean;
 	received_date: string;
+	delivered_count: number;
+	order_count: number;
 	order_entry: IOrderTableData[];
 };
 

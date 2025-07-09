@@ -41,6 +41,7 @@ export const CHALLAN_SCHEMA = z
 	.object({
 		customer_uuid: STRING_REQUIRED,
 		challan_type: z.enum(['customer_pickup', 'employee_delivery', 'courier_delivery', 'vehicle_delivery']),
+		branch_uuid: STRING_REQUIRED,
 		employee_uuid: STRING_NULLABLE,
 		payment_method: z.enum(['cash', 'due']),
 		vehicle_uuid: STRING_NULLABLE,
@@ -93,6 +94,7 @@ export const CHALLAN_SCHEMA = z
 	});
 export const CHALLAN_NULL: Partial<IChallan> = {
 	customer_uuid: '',
+	branch_uuid: '',
 	challan_type: undefined,
 	employee_uuid: null,
 	payment_method: 'cash',

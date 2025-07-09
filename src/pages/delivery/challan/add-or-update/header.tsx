@@ -4,7 +4,7 @@ import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
-import { useOtherCourier, useOtherUserByQuery, useOtherVehicle } from '@/lib/common-queries/other';
+import { useOtherBranch, useOtherCourier, useOtherUserByQuery, useOtherVehicle } from '@/lib/common-queries/other';
 
 import { IChallan } from '../../_config/schema';
 
@@ -17,6 +17,7 @@ const Header = ({ challan_uuid }: { challan_uuid: string }) => {
 	const { data: vehicleOption } = useOtherVehicle<IFormSelectOption[]>();
 	const { data: employeeOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=employee&designation=delivery');
 	const { data: courierOption } = useOtherCourier<IFormSelectOption[]>();
+	const { data: branchOption } = useOtherBranch<IFormSelectOption[]>();
 	const paymentMethodOptions = [
 		{ value: 'cash', label: 'Cash' },
 		{ value: 'due', label: 'Due' },
@@ -58,6 +59,19 @@ const Header = ({ challan_uuid }: { challan_uuid: string }) => {
 						placeholder='Select Customer'
 						options={customerOption!}
 						isDisabled={challan_uuid ? true : false}
+						{...props}
+					/>
+				)}
+			/>
+			<FormField
+				control={form.control}
+				name='branch_uuid'
+				render={(props) => (
+					<CoreForm.ReactSelect
+						menuPortalTarget={document.body}
+						label='Challan Branch'
+						placeholder='Select Branch'
+						options={branchOption!}
 						{...props}
 					/>
 				)}

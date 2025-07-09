@@ -9,7 +9,9 @@ import { AddModal } from '@core/modal';
 
 import '@/lib/common-queries/other'; // useOtherBox,
 
+import { IFormSelectOption } from '@/components/core/form/types';
 
+import { useOtherProblem } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
@@ -30,6 +32,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
 	const { data } = useWorkOrderByUUID<IOrderTableData>(updatedData?.uuid as string);
+	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
 
 	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
 
@@ -88,6 +91,30 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			isSmall={true}
 			onSubmit={onSubmit}
 		>
+			<FormField
+				control={form.control}
+				name='delivery_problems_uuid'
+				render={(props) => (
+					<CoreForm.ReactSelect
+						isMulti
+						label='Problems'
+						options={problemOption!}
+						placeholder='Select Problems'
+						{...props}
+					/>
+				)}
+			/>
+			
+			<FormField
+				control={form.control}
+				name='delivery_problem_statement'
+				render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+			/>
+			<FormField
+				control={form.control}
+				name='bill_amount'
+				render={(props) => <CoreForm.Input type='number' label='Bill Amount' {...props} />}
+			/>
 			<FormField
 				control={form.control}
 				name='remarks'

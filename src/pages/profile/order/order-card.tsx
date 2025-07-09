@@ -158,7 +158,7 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				<div className='mb-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs'>
 					<div>
 						<span className='mb-0.5 block text-slate-500'>Problems</span>
-						<span>{data.problems_name.join(', ').replace(/_/g, ' ')}</span>
+						<span>{data.order_problems_name.join(', ').replace(/_/g, ' ')}</span>
 					</div>
 					<div>
 						<span className='mb-0.5 block text-xs font-medium text-slate-600'>Statement</span>

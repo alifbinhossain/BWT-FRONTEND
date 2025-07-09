@@ -31,9 +31,14 @@ export const ORDER_SCHEMA = z
 		model_uuid: STRING_REQUIRED,
 		model_id: STRING_OPTIONAL,
 		quantity: NUMBER_DOUBLE_REQUIRED,
+		bill_amount: NUMBER_DOUBLE_OPTIONAL.default(0),
 		serial_no: STRING_OPTIONAL,
 		problems_uuid: STRING_ARRAY,
 		problem_statement: STRING_REQUIRED,
+		qc_problems_uuid: STRING_ARRAY_OPTIONAL,
+		qc_problem_statement: STRING_NULLABLE,
+		delivery_problems_uuid: STRING_ARRAY_OPTIONAL,
+		delivery_problem_statement: STRING_NULLABLE,
 		accessories: STRING_ARRAY_OPTIONAL,
 		warehouse_uuid: STRING_NULLABLE,
 		rack_uuid: STRING_NULLABLE,
@@ -51,6 +56,7 @@ export const ORDER_NULL: Partial<IOrder> = {
 	is_transferred_for_qc: false,
 	is_ready_for_delivery: false,
 	is_proceed_to_repair: false,
+	bill_amount: 0,
 	brand_uuid: '',
 	model_uuid: '',
 	serial_no: '',
@@ -71,6 +77,8 @@ export const REPAIR_SCHEMA = z
 		uuid: STRING_OPTIONAL,
 		is_transferred_for_qc: BOOLEAN_OPTIONAL.default(false),
 		is_ready_for_delivery: BOOLEAN_OPTIONAL.default(false),
+		repairing_problems_uuid: STRING_ARRAY,
+		repairing_problem_statement: STRING_OPTIONAL,
 		repair_product_transfer: BOOLEAN_OPTIONAL.default(false),
 		product_transfer: z.array(
 			z.object({
@@ -120,6 +128,8 @@ export type IRepair = z.infer<typeof REPAIR_SCHEMA>;
 const ORDER_SCHEMA_FOR_INFO = (ORDER_SCHEMA as any)._def.schema.omit({
 	is_transferred_for_qc: true,
 	is_ready_for_delivery: true,
+	delivery_problem_statement: true,
+	qc_problem_statement: true,
 });
 export const INFO_SCHEMA = z
 	.object({

@@ -70,7 +70,7 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 										body: [
 											[
 												{
-													text: 'Challan',
+													text: 'Bill',
 													fontSize: DEFAULT_FONT_SIZE + 2,
 													bold: true,
 													style: 'header',
@@ -135,17 +135,17 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],
-											// [
-											// 	{
-											// 		text: 'Sales Mode:',
-											// 		bold: true,
-											// 		fontSize: DEFAULT_FONT_SIZE - 2,
-											// 	},
-											// 	{
-											// 		text: data?.payment_method,
-											// 		fontSize: DEFAULT_FONT_SIZE - 2,
-											// 	},
-											// ],
+											[
+												{
+													text: 'Sales Mode:',
+													bold: true,
+													fontSize: DEFAULT_FONT_SIZE - 2,
+												},
+												{
+													text: data?.payment_method,
+													fontSize: DEFAULT_FONT_SIZE - 2,
+												},
+											],
 										],
 									},
 									layout: 'noBorders',

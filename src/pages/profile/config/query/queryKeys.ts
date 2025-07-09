@@ -19,4 +19,13 @@ export const hrQK = {
 
 	//* order info
 	orderInfoByCustomer: (uuid: string) => [...hrQK.all(), 'order-info', 'customer', uuid],
+	//* roaster
+	roasterByEmployeeUUID: (employee_uuid: string, month: number, year: number) => [
+		...hrQK.all(),
+		'roaster',
+		'employee',
+		employee_uuid,
+		month,
+		year,
+	],
 };

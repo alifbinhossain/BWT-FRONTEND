@@ -3,7 +3,7 @@ import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import useAccess from '@/hooks/useAccess';
 
-import { PageInfo } from '@/utils';
+import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { QCColumns } from '../_config/columns';
@@ -39,6 +39,7 @@ const Order = () => {
 			url: `/work/order/${row.original.uuid}`,
 			updatedData: {
 				is_ready_for_delivery: !row.original.is_ready_for_delivery,
+				ready_for_delivery_date: row.original.is_ready_for_delivery ? null : getDateTime(),
 			},
 			isOnCloseNeeded: false,
 		});

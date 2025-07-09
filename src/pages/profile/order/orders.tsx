@@ -18,7 +18,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				label: 'Problems',
 				value: (
 					<div className='flex flex-wrap gap-1'>
-						{(data.problems_name as string[])?.map((item, index) => (
+						{(data.order_problems_name as string[])?.map((item, index) => (
 							<span key={index} className='rounded-[10px] bg-accent px-2 py-1 capitalize text-white'>
 								{item.replace(/_/g, ' ')}
 							</span>

@@ -67,6 +67,16 @@ const useGenerateFieldDefs = ({ entry, remove, watch, add }: IGenerateFieldDefsP
 			},
 		},
 		{
+			header: 'Bill amount',
+			accessorKey: 'bill_amount',
+			type: 'custom',
+			component: (index: number) => {
+				const orderId = watch ? Number(watch(`${entry}.${index}.bill_amount` as any)) : '';
+				if (orderId === 0) return <div className='text-red-600 bg-red-300 w-6 px-2 rounded-sm'>0</div>;
+				return <span>{orderId}</span>;
+			},
+		},
+		{
 			header: 'Remarks',
 			accessorKey: 'remarks',
 			type: 'textarea',
@@ -76,9 +86,9 @@ const useGenerateFieldDefs = ({ entry, remove, watch, add }: IGenerateFieldDefsP
 			accessorKey: 'actions',
 			type: 'custom',
 			component: (index: number) => {
-				if (entry === 'new_challan_entries') {
+				if (entry === 'new_challan_entries' && watch && watch(`${entry}.${index}.bill_amount` as any) !== 0) {
 					return <FieldActionButton handleAdd={add} index={index} />;
-				} else {
+				} else if (entry === 'challan_entries') {
 					return <FieldActionButton handleRemove={remove} index={index} />;
 				}
 			},

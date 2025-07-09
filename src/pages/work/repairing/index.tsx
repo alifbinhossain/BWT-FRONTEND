@@ -4,7 +4,7 @@ import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
-import { PageInfo } from '@/utils';
+import { getDateTime, PageInfo } from '@/utils';
 
 import { RepairingColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
@@ -18,7 +18,7 @@ const Order = () => {
 	const pageAccess = useAccess('work__repairing') as string[];
 	const haveDeliveryAccess = pageAccess?.includes('click_transfer_delivery');
 	const haveQCAccess = pageAccess?.includes('click_transfer_qc');
-	
+	const actionTrxAccess = pageAccess.includes('click_trx');
 
 	// Add/Update Modal state
 
@@ -33,6 +33,7 @@ const Order = () => {
 			url: `/work/order/${row.original.uuid}`,
 			updatedData: {
 				is_ready_for_delivery: !row.original.is_ready_for_delivery,
+				ready_for_delivery_date: row.original.is_ready_for_delivery ? null : getDateTime(),
 			},
 			isOnCloseNeeded: false,
 		});
@@ -47,12 +48,16 @@ const Order = () => {
 			isOnCloseNeeded: false,
 		});
 	};
-
+	const handleAgainstTrx = (row: Row<IOrderTableData>) => {
+		navigate(`/work/transfer-section/${row.original.info_uuid}/${null}/${row.original.uuid}`);
+	};
 	const columns = RepairingColumns({
 		handelDeliveryStatusChange,
 		haveDeliveryAccess,
 		handelQCStatusChange,
 		haveQCAccess,
+		actionTrxAccess,
+		handleAgainstTrx,
 	});
 
 	return (

@@ -9,11 +9,13 @@ import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
 
 export default function Index(data: IChallanTableData, user: any) {
-	const headerHeight = 140;
+	const headerHeight = 150;
 	const footerHeight = 20;
+	let grand_total = 0;
 	data?.challan_entries?.forEach((item) => {
 		item.description = `${item.brand_name}, ${item.model_name} - SN: ${item.serial_no}`;
 		item.unit = 'Pcs';
+		grand_total += Number(item.bill_amount);
 	});
 
 	const node = [
@@ -22,6 +24,7 @@ export default function Index(data: IChallanTableData, user: any) {
 		getTable('accessories_name', 'Accessories'),
 		getTable('quantity', 'Qty', 'right'),
 		getTable('unit', 'Unit'),
+		getTable('bill_amount', 'Amount', 'right'),
 	];
 	const pdfDocGenerator = pdfMake.createPdf({
 		...DEFAULT_A4_PAGE({
@@ -114,7 +117,7 @@ export default function Index(data: IChallanTableData, user: any) {
 			{
 				table: {
 					headerRows: 1,
-					widths: [15, '*', 150, 50, 30],
+					widths: [15, '*', 150, 50, 30, 40],
 					body: [
 						node.map((col) => ({
 							text: col.name,
@@ -136,6 +139,26 @@ export default function Index(data: IChallanTableData, user: any) {
 								alignment: nodeItem.alignment,
 							}))
 						),
+						[
+							{
+								text: 'Grand Total',
+								style: 'tableHeader',
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								alignment: 'right',
+								bold: true,
+								colSpan: 5,
+							},
+							{},
+							{},
+							{},
+							{},
+							{
+								text: grand_total,
+								style: 'tableCell',
+								fontSize: DEFAULT_FONT_SIZE - 2,
+								alignment: 'right',
+							},
+						],
 					],
 				},
 			},

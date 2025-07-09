@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useWorkOrderByCustomerUUID } from '@/pages/work/_config/query';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -22,6 +22,7 @@ const AddOrUpdate = () => {
 	const navigate = useNavigate();
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
+	
 
 	const { url: challanUrl, updateData, postData, deleteData } = useDeliveryChallan();
 
@@ -216,6 +217,16 @@ const AddOrUpdate = () => {
 		append(newFields[index] as any);
 		removeNew(index);
 	};
+	const grandTotal = useCallback(() => {
+		let total = 0;
+		fields.forEach((item) => {
+			// Cast item to the expected type that includes bill_amount
+			const entry = item as unknown as { bill_amount: number };
+			total += entry.bill_amount || 0;
+		});
+		return total;
+	}, [fields]);
+	
 
 	return (
 		<CoreForm.AddEditWrapper
@@ -248,8 +259,16 @@ const AddOrUpdate = () => {
 					watch: form.watch,
 				})}
 				fields={fields}
-			/>
+			>
+			<tr>
+				<td className='border-t text-right font-semibold' colSpan={4}>
+					Grand Total:
+				</td>
 
+				<td className='border-t px-3 py-2'>{grandTotal()}</td>
+				<td className='border-t px-3 py-2'></td>
+			</tr>
+			</CoreForm.DynamicFields>
 			<Suspense fallback={null}>
 				<DeleteModal
 					{...{

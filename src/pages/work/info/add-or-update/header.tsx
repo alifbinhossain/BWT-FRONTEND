@@ -29,6 +29,7 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 	const { data: designationOption } = useOtherDesignation<IFormSelectOption[]>();
 	const { data: zoneOption } = useOtherZone<IFormSelectOption[]>();
 
+
 	useEffect(() => {
 		if (isNewCustomer) {
 			form.resetField('user_uuid');
@@ -137,7 +138,7 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 					</div>
 				)}
 
-				{isNewCustomer && (
+				{isNewCustomer && !isUser && form.watch('business_type') !== undefined && (
 					<>
 						<FormField
 							control={form.control}

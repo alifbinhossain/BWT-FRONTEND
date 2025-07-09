@@ -22,6 +22,7 @@ import {
 } from '@/lib/common-queries/other';
 
 import { IInfo } from '../../_config/schema';
+import ModelFilter from './model-filter';
 
 interface IGenerateFieldDefsProps {
 	copy: (index: any) => void;
@@ -32,8 +33,7 @@ interface IGenerateFieldDefsProps {
 }
 
 const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenerateFieldDefsProps): FieldDef[] => {
-	const [brand, setBrand] = useState([]);
-	const { data: modelOption } = useOtherModelByQuery<IFormSelectOption[]>(`is_brand=false&brand_uuid=${brand}`);
+	const [brand, setBrand] = useState('');
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
 	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
@@ -87,9 +87,12 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 		{
 			header: 'Model',
 			accessorKey: 'model_uuid',
-			type: 'select-create',
-			placeholder: 'Select Model',
-			options: modelOption || [],
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<ModelFilter brand_uuid={form.watch(`order_entry.${index}.brand_uuid`)} form={form} index={index} />
+				);
+			},
 		},
 		{
 			header: 'Quantity',

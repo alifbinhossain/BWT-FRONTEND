@@ -32,7 +32,6 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 	const statusOption = [
 		{ label: 'Pending', value: 'pending' },
 		{ label: 'Rejected', value: 'rejected' },
-		{ label: 'Accepted', value: 'accepted' },
 		{ label: 'Not Repairable', value: 'not_repairable' },
 	];
 
