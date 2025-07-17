@@ -6,7 +6,7 @@ import { getDateTime } from '@/utils';
 
 import { customTable, DEFAULT_FONT_SIZE } from '../ui';
 
-export const getPageHeader = (data: IChallanTableData, user: any) => {
+export const getPageHeader = (data: IChallanTableData, user: any, GenerateQRCode: any) => {
 	return {
 		heights: ['auto', 2, 'auto', 'auto'],
 		widths: ['*'],
@@ -27,7 +27,7 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 								},
 								{
 									table: {
-										widths: ['*'],
+										widths: ['*', 40],
 										body: [
 											[
 												{
@@ -37,6 +37,14 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 													bold: true,
 													color: '#283791',
 													style: 'header',
+												},
+												{
+													svg: GenerateQRCode,
+													width: 40,
+													height: 50,
+													alignment: 'left',
+													border: [false, false, false, false],
+													rowSpan: 3,
 												},
 											],
 											[
@@ -48,6 +56,7 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 
 													style: 'header',
 												},
+												{},
 											],
 											[
 												{
@@ -58,6 +67,7 @@ export const getPageHeader = (data: IChallanTableData, user: any) => {
 
 													style: 'header',
 												},
+												{},
 											],
 										],
 										layout: customTable,

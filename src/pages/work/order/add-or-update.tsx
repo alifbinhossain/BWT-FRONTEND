@@ -44,7 +44,6 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
 	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
 	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
-	
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
 	const { data: modelOption, invalidateQuery: invalidateModel } = useOtherModelByQuery<IFormSelectOption[]>(
@@ -125,6 +124,18 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					name='is_ready_for_delivery'
 					render={(props) => <CoreForm.Checkbox label='Ready for Delivery' {...props} />}
 				/>
+				<FormField
+					control={form.control}
+					name={`is_home_repair`}
+					render={(props) => <CoreForm.Checkbox label='Home Repair' {...props} />}
+				/>
+				{form.watch(`is_home_repair`) && (
+					<FormField
+						control={form.control}
+						name={`is_challan_needed`}
+						render={(props) => <CoreForm.Checkbox label='Challan Needed' {...props} />}
+					/>
+				)}
 			</div>
 			<div className='flex space-x-4'>
 				<div className='flex-1'>
@@ -214,7 +225,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				</div>
 			</div>
 
-			{
+			{!form.watch(`is_home_repair`) && (
 				<div className='grid grid-cols-4 gap-4'>
 					<FormField
 						control={form.control}
@@ -265,9 +276,8 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 						)}
 					/>
 				</div>
-				
-			}
-			
+			)}
+
 			<FormField
 				control={form.control}
 				name='remarks'

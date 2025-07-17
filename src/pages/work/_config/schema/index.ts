@@ -27,10 +27,13 @@ export const ORDER_SCHEMA = z
 		is_transferred_for_qc: BOOLEAN_OPTIONAL.default(false),
 		is_ready_for_delivery: BOOLEAN_OPTIONAL.default(false),
 		is_proceed_to_repair: BOOLEAN_REQUIRED.default(false),
+		is_challan_needed: BOOLEAN_REQUIRED.default(false),
+		is_home_repair: BOOLEAN_REQUIRED.default(false),
 		brand_uuid: STRING_REQUIRED,
 		model_uuid: STRING_REQUIRED,
 		model_id: STRING_OPTIONAL,
 		quantity: NUMBER_DOUBLE_REQUIRED,
+		proposed_cost: NUMBER_DOUBLE_OPTIONAL,
 		bill_amount: NUMBER_DOUBLE_OPTIONAL.default(0),
 		serial_no: STRING_OPTIONAL,
 		problems_uuid: STRING_ARRAY,
@@ -50,6 +53,12 @@ export const ORDER_SCHEMA = z
 		if (data?.problems_uuid.length === 0) {
 			ctx.addIssue(customIssue('Required', 'problems_uuid'));
 		}
+		if (data?.is_home_repair && !(data?.bill_amount > 0)) {
+			ctx.addIssue(customIssue('Required', 'bill_amount'));
+		}
+		if (data?.is_home_repair && !(typeof data?.proposed_cost === 'number' && data.proposed_cost > 0)) {
+			ctx.addIssue(customIssue('Required', 'proposed_cost'));
+		}
 	});
 export const ORDER_NULL: Partial<IOrder> = {
 	is_diagnosis_need: false,
@@ -57,6 +66,7 @@ export const ORDER_NULL: Partial<IOrder> = {
 	is_ready_for_delivery: false,
 	is_proceed_to_repair: false,
 	bill_amount: 0,
+	proposed_cost: 0,
 	brand_uuid: '',
 	model_uuid: '',
 	serial_no: '',
@@ -164,12 +174,13 @@ export const INFO_SCHEMA = z
 				ctx.addIssue(customIssue('Required', 'business_type'));
 			}
 		}
+
 		if (data.is_product_received) {
 			if (!data.received_date) {
 				ctx.addIssue(customIssue('Required', 'received_date'));
 			}
 			data?.order_entry.map((entry, index) => {
-				if (!entry.warehouse_uuid) {
+				if (!entry.warehouse_uuid && !entry.is_home_repair) {
 					ctx.addIssue(customIssue('Required', `order_entry[${index}].warehouse_uuid`));
 				}
 				if (!entry.serial_no) {

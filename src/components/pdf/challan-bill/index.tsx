@@ -1,4 +1,5 @@
 import { IChallanTableData } from '@/pages/delivery/_config/columns/columns.type';
+import QRCode from 'qrcode';
 
 import { DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
 import { DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
@@ -8,7 +9,7 @@ import { getDateTime } from '@/utils';
 import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
 
-export default function Index(data: IChallanTableData, user: any) {
+export default async function Index(data: IChallanTableData, user: any, baseURl: string) {
 	const headerHeight = 150;
 	const footerHeight = 20;
 	let grand_total = 0;
@@ -17,7 +18,7 @@ export default function Index(data: IChallanTableData, user: any) {
 		item.unit = 'Pcs';
 		grand_total += Number(item.bill_amount);
 	});
-
+	const GenerateQRCode = await QRCode.toString(`${baseURl}order/${data?.uuid}`);
 	const node = [
 		getTable('index', '#', 'center'),
 		getTable('description', 'Product Name'),
@@ -38,7 +39,7 @@ export default function Index(data: IChallanTableData, user: any) {
 		},
 		// * Page Header
 		header: {
-			table: getPageHeader(data, user) as any,
+			table: getPageHeader(data, user, GenerateQRCode) as any,
 			layout: 'noBorders',
 			margin: [xMargin, 30, xMargin, 0],
 		},

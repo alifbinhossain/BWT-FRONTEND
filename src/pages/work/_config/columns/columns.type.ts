@@ -17,7 +17,7 @@ export type IDiagnosisTableData = {
 	info_uuid: string;
 	order_id: string;
 	user_name: string;
-	user_phone:string
+	user_phone: string;
 	engineer_uuid: string;
 	problems_uuid: string[];
 	diagnosis_problems_name: string[];
@@ -71,6 +71,8 @@ export type IOrderTableData = {
 	is_product_received: boolean;
 	is_diagnosis_needed: boolean;
 	is_delivery_complete?: boolean;
+	is_home_repair: boolean;
+	is_challan_needed: boolean;
 	received_date: string;
 	user_id: string;
 	model_uuid: string;
