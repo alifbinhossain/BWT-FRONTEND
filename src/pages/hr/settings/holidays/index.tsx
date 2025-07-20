@@ -2,6 +2,9 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 
+import { Calendar } from '@/components/ui/calendar';
+import { HolidayCalendar } from '@/components/ui/holidayCalander';
+
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
@@ -51,43 +54,49 @@ const Designation = () => {
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
-			<TableProvider
-				title={pageInfo.getTitle()}
-				columns={columns}
-				data={data ?? []}
-				isLoading={isLoading}
-				handleCreate={handleCreate}
-				handleUpdate={handleUpdate}
-				handleDelete={handleDelete}
-				handleRefetch={refetch}
-				defaultVisibleColumns={{
-					updated_at: false,
-					created_by_name: false,
-				}}
-			>
-				{renderSuspenseModals([
-					<AddOrUpdate
-						{...{
-							url,
-							open: isOpenAddModal,
-							setOpen: setIsOpenAddModal,
-							updatedData,
-							setUpdatedData,
-							postData,
-							updateData,
-						}}
-					/>,
+			<div className='space-y-8'>
+				<div className='flex w-full items-center justify-center rounded-md border'>
+					<HolidayCalendar selected={data?.map((e) => new Date(e.date)) ?? []} />
+				</div>
 
-					<DeleteModal
-						{...{
-							deleteItem,
-							setDeleteItem,
-							url,
-							deleteData,
-						}}
-					/>,
-				])}
-			</TableProvider>
+				<TableProvider
+					title={pageInfo.getTitle()}
+					columns={columns}
+					data={data ?? []}
+					isLoading={isLoading}
+					handleCreate={handleCreate}
+					handleUpdate={handleUpdate}
+					handleDelete={handleDelete}
+					handleRefetch={refetch}
+					defaultVisibleColumns={{
+						updated_at: false,
+						created_by_name: false,
+					}}
+				>
+					{renderSuspenseModals([
+						<AddOrUpdate
+							{...{
+								url,
+								open: isOpenAddModal,
+								setOpen: setIsOpenAddModal,
+								updatedData,
+								setUpdatedData,
+								postData,
+								updateData,
+							}}
+						/>,
+
+						<DeleteModal
+							{...{
+								deleteItem,
+								setDeleteItem,
+								url,
+								deleteData,
+							}}
+						/>,
+					])}
+				</TableProvider>
+			</div>
 		</PageProvider>
 	);
 };
