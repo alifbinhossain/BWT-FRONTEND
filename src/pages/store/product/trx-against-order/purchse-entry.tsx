@@ -12,7 +12,7 @@ const PurchaseEntry: React.FC<{ form: any; index: number }> = ({ form, index }) 
 	return (
 		<FormField
 			control={form.control}
-			name={`purchase_return_entry.${index}.purchase_entry_uuid`}
+			name={`serials.${index}.purchase_entry_uuid`}
 			render={(props) => (
 				<CoreForm.ReactSelect
 					disableLabel={true}

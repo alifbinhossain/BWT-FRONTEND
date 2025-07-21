@@ -18,7 +18,7 @@ import useGenerateFieldDefs from './useGenerateFieldDefs';
 const AddOrUpdate = () => {
 	const { user } = useAuth();
 	const navigate = useNavigate();
-	const { uuid } = useParams();
+	const { uuid, warehouse_uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 
 	const { postData, deleteData } = useStorePurchases();
@@ -53,6 +53,8 @@ const AddOrUpdate = () => {
 			...item,
 			purchase_entry_uuid: item.uuid,
 			order_uuid: values?.order_uuid,
+			warehouse_uuid: warehouse_uuid,
+			quantity: 1,
 			uuid: nanoid(),
 			created_at,
 			created_by,
@@ -60,7 +62,7 @@ const AddOrUpdate = () => {
 
 		const serials_entries_promise = serials_entries.map((item) =>
 			postData.mutateAsync({
-				url: '/store/purchase-entry',
+				url: '/store/product-transfer',
 				newData: item,
 				isOnCloseNeeded: false,
 			})

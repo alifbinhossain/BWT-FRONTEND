@@ -1,12 +1,13 @@
 import { z } from 'zod';
 
-
-
-import { BOOLEAN_REQUIRED, NUMBER_DOUBLE_REQUIRED, PHONE_NUMBER_REQUIRED, STRING_NULLABLE, STRING_OPTIONAL, STRING_REQUIRED } from '@/utils/validators';
-
-
-
-
+import {
+	BOOLEAN_REQUIRED,
+	NUMBER_DOUBLE_REQUIRED,
+	PHONE_NUMBER_REQUIRED,
+	STRING_NULLABLE,
+	STRING_OPTIONAL,
+	STRING_REQUIRED,
+} from '@/utils/validators';
 
 //* Department Schema
 export const DEPARTMENT_SCHEMA = z.object({
