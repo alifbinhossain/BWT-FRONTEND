@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayPicker, DayPickerProps } from 'react-day-picker';
 
 import { buttonVariants } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 import { cn } from '@/lib/utils';
 
@@ -17,7 +18,7 @@ function HolidayCalendar({
 	captionLayout,
 	showOutsideDays = true,
 	...props
-}: DayPickerProps & { selected: Date[] | any }) {
+}: DayPickerProps & { selected: Date | any; highlightedDates: { date: Date; info: string }[] }) {
 	return (
 		<DayPicker
 			showOutsideDays={showOutsideDays}
@@ -89,14 +90,52 @@ function HolidayCalendar({
 						</select>
 					);
 				},
+
+				Day: ({ day, modifiers, ...dayProps }) => {
+					const holiday = props.highlightedDates?.find(
+						(h) => day.date.toDateString() === h.date.toDateString()
+					);
+
+					return holiday?.info ? (
+						<Tooltip>
+							<TooltipTrigger>
+								{' '}
+								<div
+									{...dayProps}
+									className={cn(
+										buttonVariants({ variant: 'ghost' }),
+										'h-12 w-12 p-0 font-normal aria-selected:opacity-100 cursor-pointer',
+										holiday?.info ? 'bg-yellow-200 text-black' : ''
+									)}
+								>
+									{day.date.getDate()}
+								</div>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>{holiday?.info}</p>
+							</TooltipContent>
+						</Tooltip>
+					) : (
+						<div
+							{...dayProps}
+							className={cn(
+								buttonVariants({ variant: 'ghost' }),
+								'h-12 w-12 p-0 font-normal aria-selected:opacity-100 cursor-pointer',
+								holiday?.info ? 'bg-yellow-200 text-black' : ''
+							)}
+						>
+							{day.date.getDate()}
+						</div>
+					);
+				},
 			}}
 			captionLayout={captionLayout}
-			modifiers={{
-				highlighted: props.selected,
-			}}
-			modifiersClassNames={{
-				highlighted: 'bg-yellow-200 text-black', // Tailwind classes for highlight
-			}}
+			// modifiers={{
+			// 	highlighted: props.selected,
+			// }}
+			// modifiersClassNames={{
+			// 	highlighted: 'bg-yellow-200 text-black', // Tailwind classes for highlight
+			// }}
 			{...props}
 		/>
 	);

@@ -2,6 +2,9 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 
+import { HolidayCalendar } from '@/components/ui/holidayCalander';
+import { TooltipProvider } from '@/components/ui/tooltip';
+
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
@@ -50,45 +53,68 @@ const Designation = () => {
 	// Table Columns
 	const columns = specialDaysColumns();
 
+	const holidays = data?.flatMap((e) => {
+		const dates = [];
+		const start = new Date(e.from_date);
+		const end = new Date(e.to_date);
+
+		for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+			dates.push({
+				date: new Date(d),
+				info: e.name,
+			});
+		}
+
+		return dates;
+	});
+
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
-			<TableProvider
-				title={pageInfo.getTitle()}
-				columns={columns}
-				data={data ?? []}
-				isLoading={isLoading}
-				handleCreate={handleCreate}
-				handleUpdate={handleUpdate}
-				handleDelete={handleDelete}
-				handleRefetch={refetch}
-				defaultVisibleColumns={{
-					updated_at: false,
-					created_by_name: false,
-				}}
-			>
-				{renderSuspenseModals([
-					<AddOrUpdate
-						{...{
-							url,
-							open: isOpenAddModal,
-							setOpen: setIsOpenAddModal,
-							updatedData,
-							setUpdatedData,
-							postData,
-							updateData,
-						}}
-					/>,
+			<div className='flex gap-4'>
+				<TableProvider
+					title={pageInfo.getTitle()}
+					columns={columns}
+					data={data ?? []}
+					isLoading={isLoading}
+					handleCreate={handleCreate}
+					handleUpdate={handleUpdate}
+					handleDelete={handleDelete}
+					handleRefetch={refetch}
+					defaultVisibleColumns={{
+						updated_at: false,
+						created_by_name: false,
+					}}
+				>
+					{renderSuspenseModals([
+						<AddOrUpdate
+							{...{
+								url,
+								open: isOpenAddModal,
+								setOpen: setIsOpenAddModal,
+								updatedData,
+								setUpdatedData,
+								postData,
+								updateData,
+							}}
+						/>,
 
-					<DeleteModal
-						{...{
-							deleteItem,
-							setDeleteItem,
-							url,
-							deleteData,
-						}}
-					/>,
-				])}
-			</TableProvider>
+						<DeleteModal
+							{...{
+								deleteItem,
+								setDeleteItem,
+								url,
+								deleteData,
+							}}
+						/>,
+					])}
+				</TableProvider>
+
+				<div className='flex w-full items-center justify-center rounded-md border'>
+					<TooltipProvider>
+						<HolidayCalendar selected={new Date()} highlightedDates={holidays ?? []} />
+					</TooltipProvider>
+				</div>
+			</div>
 		</PageProvider>
 	);
 };
