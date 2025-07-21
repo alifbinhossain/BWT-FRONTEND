@@ -1,230 +1,58 @@
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+// import { IResponse } from '@/types';
+// import { UseMutationResult } from '@tanstack/react-query';
+// import { AxiosError } from 'axios';
+
+import { IDefaultAddOrUpdateProps } from '@/types';
 
 import '../columns/columns.type';
 
 import {
+	IAccessoriesTableData,
 	IDiagnosisTableData,
 	IOrderTableData,
 	IProblemsTableData,
 	IProcessTableData,
 	ISectionTableData,
+	IZoneTableData,
 } from '../columns/columns.type';
 
-//* Problems
-
-export interface IProblemAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IProblemsTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-//* Jobs
-export interface IOrderAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IOrderTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
 //* Diagnosis
-export interface IDiagnosisAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IDiagnosisAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IDiagnosisTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
+}
+
+//* Problems
+export interface IProblemAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData?: IProblemsTableData | null;
+}
+
+//* Orders
+export interface IOrderAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData?: IOrderTableData | null;
+}
+
+//* Diagnosis
+export interface IDiagnosisAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData?: IDiagnosisTableData | null;
 }
 //* Process
-
-export interface IProcessAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IProcessAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IProcessTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
+
 //*Sections
-export interface ISectionAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface ISectionAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: ISectionTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 //* Zone
-export interface IZoneAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: any | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
+export interface IZoneAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData?: IZoneTableData | null;
 }
 
 //*Accessories
-export interface IAccessoriesAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: any | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
+export interface IAccessoriesAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData?: IAccessoriesTableData | null;
 }
 
 //* Product
@@ -233,10 +61,25 @@ export type TProductProps = {
 	model_name: string;
 	serial_no?: string;
 };
+export type TStoreProductProps = {
+	name: string;
+	model_name: string;
+	category_name?: string;
+	size_name?: string;
+};
+export type TWarrantyProps = {
+	service_warranty: number;
+	warranty: number;
+};
 export type TLocationProps = {
 	branch_name: string;
 	warehouse_name: string;
 	rack_name?: string;
 	floor_name?: string;
 	box_name?: string;
+};
+
+export type TProblemProps = {
+	problems_name: string;
+	problem_statement?: string;
 };

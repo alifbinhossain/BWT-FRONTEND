@@ -45,29 +45,24 @@ const useGenerateFieldDefs = ({ copy, remove, watch, form }: IGenerateFieldDefsP
 			accessorKey: 'serial_no',
 			type: 'text',
 		},
+		// {
+		// 	header: 'Quantity',
+		// 	accessorKey: 'quantity',
+		// 	type: 'number',
+		// },
 		{
-			header: 'Quantity',
-			accessorKey: 'quantity',
-			type: 'number',
-		},
-		{
-			header: 'Price/Unit',
+			header: 'Price',
 			accessorKey: 'price_per_unit',
 			type: 'number',
 		},
-		{
-			header: 'Total',
-			accessorKey: 'total',
-			type: 'custom',
-			component: (index: number) => {
-				return (
-					<span>
-						{(watch?.(`purchase_entry.${index}.price_per_unit`) ?? 0) *
-							(watch?.(`purchase_entry.${index}.quantity`) ?? 0)}
-					</span>
-				);
-			},
-		},
+		// {
+		// 	header: 'Total',
+		// 	accessorKey: 'total',
+		// 	type: 'custom',
+		// 	component: (index: number) => {
+		// 		return <span>{watch?.(`purchase_entry.${index}.price_per_unit`) ?? 0}</span>;
+		// 	},
+		// },
 		{
 			header: 'Discount',
 			accessorKey: 'discount',

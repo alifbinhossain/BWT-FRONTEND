@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IResponse } from '@/types';
+import { IDefaultAddOrUpdateProps, IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { z } from 'zod';
@@ -20,35 +20,9 @@ import { useStoreOrderTransfersByUUID, useWorkOrderByDetails } from '../../../_c
 import { TRANSFER_NULL, TRANSFER_SCHEMA } from '../../../_config/schema';
 import { getFilteredWarehouseOptions, ICustomProductsSelectOption, ICustomWarehouseSelectOption } from './utills';
 
-interface ITrxProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+interface ITrxProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IStockActionTrx | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IStockActionTrx | null>>;
 	order_uuid?: string;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 const Trx: React.FC<ITrxProps> = ({

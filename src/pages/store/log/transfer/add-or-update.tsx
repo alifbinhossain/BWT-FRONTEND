@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { IResponse } from '@/types';
+import { IResponse, IToast } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { z } from 'zod';
@@ -26,8 +26,8 @@ interface ITrxProps {
 	updatedData?: IStockActionTrx | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<IStockActionTrx | null>>;
 	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			updatedData: any;

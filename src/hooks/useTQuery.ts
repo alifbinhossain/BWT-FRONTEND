@@ -1,4 +1,4 @@
-import { IResponse, IToast } from '@/types';
+import { IToast } from '@/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
@@ -10,6 +10,7 @@ interface IUseTQuery {
 	url: string;
 	enabled?: boolean;
 }
+
 interface IPost {
 	url: string;
 	newData: any;
@@ -26,7 +27,7 @@ interface IUpdate {
 const useTQuery = <T>({ queryKey, url, enabled = true }: IUseTQuery) => {
 	const queryClient = useQueryClient();
 
-	const { data, isError, isLoading, isPending, refetch, isFetching, status } = useQuery<IResponse<T>>({
+	const { data, isError, isLoading, isPending, refetch, isFetching, status } = useQuery<T>({
 		queryKey,
 		queryFn: () => api.get(url).then((res) => res.data),
 		refetchInterval: false,
@@ -38,36 +39,25 @@ const useTQuery = <T>({ queryKey, url, enabled = true }: IUseTQuery) => {
 	});
 
 	const postData = useMutation({
-		mutationFn: async ({
-			url,
-			newData,
-		}: {
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: () => void;
-		}) => {
-			const response = await api.post<IResponse<any>>(url, newData);
-			return response.data;
+		mutationFn: async ({ url, newData }: IPost) => {
+			const response = await api.post<IToast>(url, newData);
+			return response?.data;
 		},
-
 		onMutate: async ({ newData }) => {
 			await queryClient.cancelQueries({ queryKey });
 			return { newData };
 		},
 
 		onSuccess: (data) => {
-			toast.success(data?.toast?.message);
-			// ShowToast(data?.toast);
+			toast.success(data?.message);
 		},
 
-		onError: (error: AxiosError<IResponse<any>>, newUser, context) => {
+		onError: (error: AxiosError<IToast>, newUser, context) => {
 			queryClient.setQueryData(queryKey, ({ data }: { data: [] }) =>
 				data?.filter((item: any) => item.id !== context?.newData?.uuid)
 			);
 			console.error(error);
-			toast.error(error?.response?.data?.toast?.message);
-			// ShowToast(error?.response!.data?.toast);
+			toast.error(error?.response?.data?.message);
 		},
 
 		onSettled: (data, error, variables) => {
@@ -110,46 +100,8 @@ const useTQuery = <T>({ queryKey, url, enabled = true }: IUseTQuery) => {
 	});
 
 	const updateData = useMutation({
-		mutationFn: async ({
-			url,
-			updatedData,
-		}: {
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: () => void;
-		}) => {
-			const response = await api.put<IResponse<any>>(url, updatedData);
-			return response.data;
-		},
-		onMutate: async () => {
-			await queryClient.cancelQueries({
-				queryKey,
-			});
-			const previousData = queryClient.getQueryData(queryKey);
-			return { previousData: previousData };
-		},
-		onSuccess: (data) => {
-			// ShowToast(data?.toast);
-			toast.warning(data?.toast?.message);
-		},
-		onError: (error: AxiosError<IResponse<any>>, variables, context: any) => {
-			queryClient.setQueryData(queryKey, context.previousData);
-			console.log(error);
-			// ShowToast(error?.response!.data?.toast);
-			toast.error(error?.response!.data?.toast?.message);
-		},
-
-		onSettled: (data, error, variables) => {
-			queryClient.invalidateQueries({ queryKey });
-			if (variables?.isOnCloseNeeded !== false) {
-				variables?.onClose?.();
-			}
-		},
-	});
-	const imageUpdateData = useMutation({
 		mutationFn: async ({ url, updatedData }: IUpdate) => {
-			const response = await image_api.put<IToast>(url, updatedData);
+			const response = await api.patch<IToast>(url, updatedData);
 			return response.data;
 		},
 		onMutate: async () => {
@@ -175,22 +127,49 @@ const useTQuery = <T>({ queryKey, url, enabled = true }: IUseTQuery) => {
 			}
 		},
 	});
+	const imageUpdateData = useMutation({
+		mutationFn: async ({ url, updatedData }: IUpdate) => {
+			const response = await image_api.patch<IToast>(url, updatedData);
+			return response.data;
+		},
+		onMutate: async () => {
+			await queryClient.cancelQueries({
+				queryKey,
+			});
+			const previousData = queryClient.getQueryData(queryKey);
+			return { previousData: previousData };
+		},
+		onSuccess: (data) => {
+			toast.warning(data?.message);
+		},
+		onError: (error: AxiosError<IToast>, variables, context: any) => {
+			queryClient.setQueryData(queryKey, context.previousData);
+			console.log(error);
+			toast.error(error?.response!.data?.message);
+		},
+
+		onSettled: (data, error, variables) => {
+			queryClient.invalidateQueries({ queryKey });
+			if (variables?.isOnCloseNeeded !== false) {
+				variables?.onClose?.();
+			}
+		},
+	});
+
 	const deleteData = useMutation({
 		mutationFn: async ({ url }: { url: string; isOnCloseNeeded?: boolean; onClose?: () => void }) => {
-			const response = await api.delete<IResponse<any>>(url);
+			const response = await api.delete<IToast>(url);
 			return response.data;
 		},
 		onMutate: async () => {
 			await queryClient.cancelQueries({ queryKey });
 		},
 		onSuccess: (data) => {
-			// ShowToast(data?.toast);
-			toast.error(data?.toast?.message);
+			toast.error(data?.message);
 		},
-		onError: (error: AxiosError<IResponse<any>>) => {
+		onError: (error: AxiosError<IToast>) => {
 			console.log(error);
-			// ShowToast(error?.response!.data?.toast);
-			toast.error(error?.response!.data?.toast?.message);
+			toast.error(error?.response!.data?.message);
 		},
 		onSettled: (data, error, variables) => {
 			queryClient.invalidateQueries({ queryKey });
@@ -200,23 +179,23 @@ const useTQuery = <T>({ queryKey, url, enabled = true }: IUseTQuery) => {
 
 	return {
 		url,
-		// * Data
-		data: data?.data,
-		toast: data?.toast,
-		pagination: data?.pagination,
-
+		data,
+// toast: data?.toast,
+		pagination: (data && typeof data === 'object' && data !== null && 'pagination' in data) ? (data as any).pagination : undefined,
 		// * States
-		isLoading: isLoading,
+		isLoading,
 		isError,
 		isPending,
 		isFetching,
 		status,
+
 		// * Mutations
-		updateData,
-		imageUpdateData,
-		postData,
 		imagePostData,
+		imageUpdateData,
+		updateData,
+		postData,
 		deleteData,
+
 		// * Refetch
 		refetch,
 		invalidateQuery: () => queryClient.invalidateQueries({ queryKey }),

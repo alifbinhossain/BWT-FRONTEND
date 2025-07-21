@@ -68,6 +68,7 @@ const AddOrUpdate = () => {
 				if (item.uuid === undefined) {
 					const newData = {
 						...item,
+						quantity: 1,
 						purchase_uuid: uuid,
 						created_at: getDateTime(),
 						created_by: user?.uuid,
@@ -82,6 +83,7 @@ const AddOrUpdate = () => {
 				} else {
 					const updatedData = {
 						...item,
+						quantity: 1,
 						updated_at: getDateTime(),
 					};
 					return updateData.mutateAsync({
@@ -135,6 +137,7 @@ const AddOrUpdate = () => {
 		// Create purchase entries
 		const purchase_entry_entries = [...values.purchase_entry].map((item) => ({
 			...item,
+			quantity: 1,
 			purchase_uuid: new_purchase_uuid,
 			uuid: nanoid(),
 			created_at,
@@ -165,7 +168,6 @@ const AddOrUpdate = () => {
 		append({
 			product_uuid: '',
 			serial_no: '',
-			quantity: 0,
 			price_per_unit: 0,
 			discount: 0,
 			remarks: '',
@@ -201,7 +203,7 @@ const AddOrUpdate = () => {
 		append({
 			product_uuid: field.product_uuid,
 			serial_no: field.serial_no,
-			quantity: field.quantity,
+
 			price_per_unit: field.price_per_unit,
 			discount: field.discount,
 			remarks: field.remarks,
@@ -213,7 +215,7 @@ const AddOrUpdate = () => {
 	};
 	const total = form.getValues()?.purchase_entry.reduce(
 		(acc, curr) => {
-			acc.total_price += curr.price_per_unit * curr.quantity;
+			acc.total_price += curr.price_per_unit;
 
 			return acc;
 		},
@@ -242,7 +244,7 @@ const AddOrUpdate = () => {
 				fields={fields}
 			>
 				<tr>
-					<td className='border-t text-right font-semibold' colSpan={4}>
+					<td className='border-t text-right font-semibold' colSpan={2}>
 						Grand Total:
 					</td>
 

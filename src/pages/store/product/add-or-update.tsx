@@ -175,7 +175,7 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 					render={(props) => <CoreForm.Input type='number' {...props} />}
 				/>
 			</div>
-			<div className='grid grid-cols-3 gap-4'>
+			{/* <div className='grid grid-cols-3 gap-4'>
 				<FormField
 					control={form.control}
 					name='warehouse_1'
@@ -236,7 +236,7 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 					name='warehouse_12'
 					render={(props) => <CoreForm.Input type='number' {...props} />}
 				/>
-			</div>
+			</div> */}
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);
