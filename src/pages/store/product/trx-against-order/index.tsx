@@ -1,8 +1,8 @@
+import useAuth from '@/hooks/useAuth';
+import useRHF from '@/hooks/useRHF';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import useAuth from '@/hooks/useAuth';
-import useRHF from '@/hooks/useRHF';
 
 import { ShowLocalToast } from '@/components/others/toast';
 import CoreForm from '@core/form';
@@ -111,10 +111,12 @@ const AddOrUpdate = () => {
 				title='Entry'
 				form={form}
 				fieldName='serials'
+				
 				fieldDefs={useGenerateFieldDefs({
 					copy: handleCopy,
 					remove: handleRemove,
 					watch: form.watch,
+					warehouse_uuid
 				})}
 				handleAdd={handleAdd}
 				fields={fields}

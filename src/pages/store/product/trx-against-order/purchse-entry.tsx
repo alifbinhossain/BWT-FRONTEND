@@ -4,10 +4,12 @@ import CoreForm from '@core/form';
 
 import { useOtherPurchaseEntry } from '@/lib/common-queries/other';
 
-const PurchaseEntry: React.FC<{ form: any; index: number }> = ({ form, index }) => {
-	const { data: purchaseEntryOptions } = useOtherPurchaseEntry<IFormSelectOption[]>(
-		`is_purchase_return_entry = false`
-	);
+const PurchaseEntry: React.FC<{ form: any; index: number; warehouse_uuid: string }> = ({
+	form,
+	index,
+	warehouse_uuid,
+}) => {
+	const { data: purchaseEntryOptions } = useOtherPurchaseEntry<IFormSelectOption[]>(`is_purchase_return_entry=false&warehouse_uuid=${warehouse_uuid}`);
 
 	return (
 		<FormField

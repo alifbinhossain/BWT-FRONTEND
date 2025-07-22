@@ -23,6 +23,7 @@ const ProfileInformation = () => {
 	};
 
 	const { profileData, updateProfileData, isLoading } = useProfile();
+	console.log('Profile Data:', profileData);
 
 	if (isLoading) return <div>Loading...</div>;
 

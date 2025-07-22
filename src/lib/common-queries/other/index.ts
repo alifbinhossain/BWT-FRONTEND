@@ -34,7 +34,7 @@ export const useOtherDesignation = <T>() =>
 export const useOtherGroup = <T>() =>
 	useTQuery<T>({
 		queryKey: otherQK.group(),
-		url: `/other/hr/group/value/label`,
+		url: `/other/store/group/value/label`,
 	});
 
 //* GET OTHER BRAND
