@@ -76,7 +76,7 @@ const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 		>
 			<FormField
 				control={form.control}
-				name='product_uuid'
+				name='product_entry_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
 						label='Product'

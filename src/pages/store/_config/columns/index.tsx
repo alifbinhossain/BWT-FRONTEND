@@ -268,15 +268,18 @@ export const productColumns = ({
 	for (let i = 0; i < 12; i++) {
 		const warehouseNum = i + 1;
 		const accessorKey = `warehouse_${warehouseNum}` as const;
+		
 		columns.push({
 			accessorKey,
 			header: () => {
 				const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, accessorKey as IWarehouseKey);
+				
 				return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
 			},
 			enableColumnFilter: false,
 			size: 40,
 			cell: (info: any) => {
+				
 				return (
 					<div className='flex items-center gap-2'>
 						<Transfer

@@ -1,5 +1,5 @@
 import { IEmployeeTableData } from '@/pages/hr/_config/columns/columns.type';
-import { IResponse } from '@/types';
+import { IDefaultAddOrUpdateProps, IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
@@ -10,129 +10,27 @@ import {
 	IPolicyTableData,
 } from '../columns/columns.type';
 
+
 //* Policy
-
-export interface IPolicyAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IPolicyAddOrUpdateProps extends IDefaultAddOrUpdateProps{
 	updatedData?: IPolicyTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
+
 //* Category
-export interface ICategoryAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface ICategoryAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: ICategoryTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
+
 //* Configuration
-
-export interface IConfigurationAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IConfigurationAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IConfigurationTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
-//* Apply Leave
 
-export interface IApplyLeaveAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+//* Apply Leave
+export interface IApplyLeaveAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IApplyLeaveTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
+
 export interface ILeaveEmployee extends IEmployeeTableData {
 	type: 'full' | 'half';
 	remaining_leave_information: [

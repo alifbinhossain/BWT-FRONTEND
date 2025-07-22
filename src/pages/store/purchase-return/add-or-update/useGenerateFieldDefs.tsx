@@ -4,38 +4,30 @@ import FieldActionButton from '@/components/buttons/field-action';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
 
-import { useOtherProduct } from '@/lib/common-queries/other';
+import { useOtherPurchaseEntry } from '@/lib/common-queries/other';
 
 import { IPurchaseReturn } from '../../_config/schema';
+import PurchaseEntry from './purchse-entry';
 
 interface IGenerateFieldDefsProps {
 	copy: (index: any) => void;
 	remove: (index: any) => void;
 	watch?: UseFormWatch<IPurchaseReturn>;
+	data?: IPurchaseReturn;
 }
 
-const useGenerateFieldDefs = ({ copy, remove, watch }: IGenerateFieldDefsProps): FieldDef[] => {
-	const { data: productOptions } = useOtherProduct<IFormSelectOption[]>();
+const useGenerateFieldDefs = ({ copy, remove, watch, data }: IGenerateFieldDefsProps): FieldDef[] => {
+	const { data: productOptions } = useOtherPurchaseEntry<IFormSelectOption[]>();
 
 	return [
 		{
-			header: 'Product',
-			accessorKey: 'product_uuid',
-			type: 'select',
-			placeholder: 'Select Product',
-			options: productOptions || [],
+			header: 'Purchase Entry',
+			accessorKey: 'purchase_entry_uuid',
+			type: 'custom',
+			component: (index: number) => {
+				return <PurchaseEntry form={watch} index={index} data={data ?? { purchase_uuid: '', warehouse_uuid: '', remarks: null, purchase_return_entry: [] }} />;
+			},
 		},
-		{
-			header: 'Quantity',
-			accessorKey: 'quantity',
-			type: 'number',
-		},
-		{
-			header: 'Price Per Unit',
-			accessorKey: 'price_per_unit',
-			type: 'number',
-		},
-
 		{
 			header: 'Remarks',
 			accessorKey: 'remarks',

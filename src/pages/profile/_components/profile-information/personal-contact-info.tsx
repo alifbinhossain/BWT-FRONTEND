@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { IResponse } from '@/types';
+import { IResponse, IToast } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import useRHF from '@/hooks/useRHF';
@@ -18,16 +18,16 @@ export function PersonalContactInfo({
 }: {
 	data: IEmployeeDetails;
 	updateData: UseMutationResult<
-		IResponse<IEmployeeDetails>,
-		AxiosError<IResponse<IEmployeeDetails>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
+			IToast,
+			AxiosError<IToast, any>,
+			{
+				url: string;
+				updatedData: any;
+				isOnCloseNeeded?: boolean;
+				onClose?: (() => void) | undefined;
+			},
+			any
+		>;
 }) {
 	const form = useRHF(PERSONAL_CONTACT_INFO_SCHEMA, PERSONAL_CONTACT_INFO_NULL);
 

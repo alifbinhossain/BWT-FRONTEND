@@ -116,6 +116,9 @@ const otherQK = {
 
 	//* HR Manager
 	hrManager: () => [...otherQK.all(), 'hr-manager'],
+
+	//*Purchase Entry
+	purchaseEntry: (query?: string) => [...otherQK.all(), 'purchase-entry', query],
 };
 
 export default otherQK;

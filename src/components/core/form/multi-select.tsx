@@ -12,6 +12,7 @@ const FormMultiSelect: React.FC<FormMultiSelectProps> = ({
 	isDisabled = false,
 	disableLabel,
 }) => {
+	console.log(field.value, 'field.value in FormMultiSelect');
 	return (
 		<FormItem className='w-full space-y-1.5'>
 			{!disableLabel && (

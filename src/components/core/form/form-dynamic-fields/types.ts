@@ -14,40 +14,81 @@ type FieldText = {
 	type: 'text';
 	// inputType?: 'text' | 'number';
 	placeholder?: string;
+	disabled?: boolean;
 };
 type FieldTextArea = {
 	type: 'textarea';
 	placeholder?: string;
+	disabled?: boolean;
 };
 type FieldNumber = {
 	type: 'number';
 	placeholder?: string;
+	disabled?: boolean;
 };
 type FieldCheckBox = {
 	type: 'checkBox';
 };
-
 type FieldSelect = {
 	type: 'select';
 	placeholder?: string;
 	options: IFormSelectOption[];
+	excludeOptions?: string[];
+	unique?: boolean;
+	disabled?: boolean;
+	onChange?: (option?: any, field?: any) => void;
 };
-type FieldSelectCreate = {
-	type: 'select-create';
+
+type FieldRadio = {
+	type: 'radio';
 	placeholder?: string;
 	options: IFormSelectOption[];
+	disabled?: boolean;
+	onChange?: (option?: any, field?: any) => void;
 };
+type FieldJoinInputUnit = {
+	type: 'join-input-unit';
+	placeholder?: string;
+	unit: (index: number) => string;
+	disabled?: boolean;
+	inputType?: string;
+};
+
+type FieldImage = {
+	type: 'image';
+	placeholder?: string;
+	isUpdate?: boolean;
+};
+type FieldFile = {
+	type: 'file';
+	placeholder?: string;
+	isUpdate?: boolean;
+};
+
+type FieldCheckbox = {
+	type: 'checkbox';
+	placeholder?: string;
+	isUpdate?: boolean;
+	disabled?: boolean;
+};
+
+type FieldDate = {
+	type: 'date';
+	placeholder?: string;
+	isUpdate?: boolean;
+	disabled?: boolean;
+};
+
 type FieldMultiSelect = {
 	type: 'multiSelect';
 	placeholder?: string;
 	options: IFormSelectOption[];
 };
 
-type FieldJoinInputUnit = {
-	type: 'join-input-unit';
+type FieldSelectCreate = {
+	type: 'select-create';
 	placeholder?: string;
-	unit: (index: number) => string;
-	inputType?: string;
+	options: IFormSelectOption[];
 };
 
 export type FieldDef = {
@@ -56,7 +97,9 @@ export type FieldDef = {
 	className?: string;
 	isLoading?: boolean;
 	hidden?: boolean;
-	width?: string;
+	width?: string | number;
+	maxWidth?: string | number;
+	minWidth?: string | number;
 	disabled?: boolean;
 } & (
 	| FieldText
@@ -69,6 +112,11 @@ export type FieldDef = {
 	| FieldCheckBox
 	| FieldMultiSelect
 	| FieldSelectCreate
+	| FieldImage
+	| FieldCheckbox
+	| FieldDate
+	| FieldFile
+	| FieldRadio
 );
 
 export interface DynamicFieldsProps {
@@ -83,4 +131,5 @@ export interface DynamicFieldsProps {
 	containerClassName?: string;
 	className?: string;
 	children?: React.ReactNode;
+	startIndex?: number;
 }

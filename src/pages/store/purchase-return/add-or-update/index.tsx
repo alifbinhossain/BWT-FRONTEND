@@ -55,6 +55,7 @@ const AddOrUpdate = () => {
 		if (isUpdate) {
 			const purchase_return_data = {
 				...values,
+
 				updated_at: getDateTime(),
 			};
 
@@ -69,6 +70,7 @@ const AddOrUpdate = () => {
 					const newData = {
 						...item,
 						purchase_return_uuid: uuid,
+						quantity: 1,
 						created_at: getDateTime(),
 						created_by: user?.uuid,
 						uuid: nanoid(),
@@ -82,6 +84,7 @@ const AddOrUpdate = () => {
 				} else {
 					const updatedData = {
 						...item,
+						quantity: 1,
 						updated_at: getDateTime(),
 					};
 					return updateData.mutateAsync({
@@ -136,6 +139,7 @@ const AddOrUpdate = () => {
 			...item,
 			purchase_return_uuid: new_purchase_return_uuid,
 			uuid: nanoid(),
+			quantity: 1,
 			created_at,
 			created_by,
 		}));
@@ -163,9 +167,7 @@ const AddOrUpdate = () => {
 
 	const handleAdd = () => {
 		append({
-			product_uuid: '',
-			quantity: 0,
-			price_per_unit: 0,
+			purchase_entry_uuid: '',
 			remarks: '',
 		});
 	};
@@ -192,9 +194,7 @@ const AddOrUpdate = () => {
 	const handleCopy = (index: number) => {
 		const field = form.watch('purchase_return_entry')[index];
 		append({
-			product_uuid: field.product_uuid,
-			quantity: field.quantity,
-			price_per_unit: field.price_per_unit,
+			purchase_entry_uuid: field.purchase_entry_uuid,
 			remarks: field.remarks,
 		});
 	};
@@ -205,7 +205,7 @@ const AddOrUpdate = () => {
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<Header />
+			<Header isUpdate={isUpdate} />
 			<CoreForm.DynamicFields
 				title='Entry'
 				form={form}
@@ -214,6 +214,7 @@ const AddOrUpdate = () => {
 					copy: handleCopy,
 					remove: handleRemove,
 					watch: form.watch,
+					data: data as IPurchaseReturn | undefined,
 				})}
 				handleAdd={handleAdd}
 				fields={fields}

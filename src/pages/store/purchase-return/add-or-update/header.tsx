@@ -8,7 +8,7 @@ import { useOtherPurchase, useOtherWarehouse } from '@/lib/common-queries/other'
 
 import { IPurchaseReturn } from '../../_config/schema';
 
-const Header = () => {
+const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 	const form = useFormContext<IPurchaseReturn>();
 	const { data: purchaseOptions } = useOtherPurchase<IFormSelectOption[]>();
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
@@ -23,6 +23,7 @@ const Header = () => {
 						menuPortalTarget={document.body}
 						label='Purchase'
 						placeholder='Select Purchase'
+						isDisabled={isUpdate}
 						options={purchaseOptions!}
 						{...props}
 					/>

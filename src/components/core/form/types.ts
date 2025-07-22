@@ -1,6 +1,6 @@
-//
 import React from 'react';
 import { CheckboxProps } from '@radix-ui/react-checkbox';
+import { RadioGroupProps } from '@radix-ui/react-radio-group';
 import { OTPInputProps } from 'input-otp';
 import { DayPickerProps } from 'react-day-picker';
 import { DropzoneOptions } from 'react-dropzone';
@@ -9,15 +9,26 @@ import { ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStat
 import { InputProps } from '@/components/ui/input';
 import { TextareaProps } from '@/components/ui/textarea';
 
-// * form-textarea
-export interface FormTextareaProps extends TextareaProps {
+interface IFieldProps {
 	field: ControllerRenderProps<any, any>;
 	fieldState: ControllerFieldState;
 	formState: UseFormStateReturn<any>;
 	label?: string;
+	subLabel?: string;
 	placeholder?: string;
 	optional?: boolean;
 	disableLabel?: boolean;
+	disabled?: boolean;
+}
+
+// * form-textarea
+export interface FormTextareaProps extends IFieldProps, TextareaProps {}
+
+// * form-select
+export interface IFormSelectOption {
+	label: string | number;
+	value: string | number;
+	unit?: string;
 }
 export interface Color {
 	h: number;
@@ -30,12 +41,6 @@ export interface Color {
 	hex: string;
 	rgba: string;
 }
-// * form-select
-export interface IFormSelectOption {
-	label: string | number;
-	value: string | number;
-}
-
 export interface FormSelectProps {
 	field: ControllerRenderProps<any, any>;
 	fieldState: ControllerFieldState;
@@ -50,7 +55,6 @@ export interface FormSelectProps {
 	onChange?: (value: any) => void;
 	isLoading?: boolean;
 }
-
 // * form-section
 export interface IFormSectionProps {
 	title?: React.ReactNode;
@@ -59,70 +63,40 @@ export interface IFormSectionProps {
 	extraHeader?: React.ReactNode;
 }
 
-// * form-react-select
-export interface IFormSelectOption {
-	label: string | number;
-	value: string | number;
+export interface FormSelectProps extends IFieldProps {
+	options: IFormSelectOption[];
+	valueType?: 'string' | 'number';
+	isDisabled?: boolean;
 }
 
-export interface FormReactSelectProps {
-	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
-	label?: string;
-	placeholder?: string;
-	optional?: boolean;
+// * form-react-select
+export interface FormReactSelectProps extends IFieldProps {
 	options: IFormSelectOption[];
-	isDisabled?: boolean;
-	disableLabel?: boolean;
+	unique?: boolean;
+	excludeOptions?: string[];
 	isMulti?: boolean;
 	menuPortalTarget?: any;
 	valueType?: 'string' | 'number';
+	isDisabled?: boolean;
+	value?: any;
 	isLoading?: boolean;
+	onChange?: (option?: any, field?: any) => void;
 }
 
 // * form-multi-select
-export interface IFormSelectOption {
-	label: string | number;
-	value: string | number;
-}
-
-export interface FormMultiSelectProps {
-	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
-	label?: string;
-	placeholder?: string;
-	optional?: boolean;
-	options: IFormSelectOption[];
+export interface FormMultiSelectProps extends IFieldProps {
 	isDisabled?: boolean;
-	disableLabel?: boolean;
+	options: IFormSelectOption[];
 }
 
 // * form-join-input-unit
-export interface FormJoinInputUnitProps extends InputProps {
-	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
-	label?: string;
-	subLabel?: string;
-	placeholder?: string;
-	optional?: boolean;
+export interface FormJoinInputUnitProps extends IFieldProps, InputProps {
 	icon?: React.ReactNode;
 	unit: string;
-	disableLabel?: boolean;
-	disabled?: boolean;
 }
 
 // * form-join-input-select
-export interface FormJoinInputSelectProps extends InputProps {
-	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
-	label?: string;
-	subLabel?: string;
-	placeholder?: string;
-	optional?: boolean;
+export interface FormJoinInputSelectProps extends IFieldProps, InputProps {
 	icon?: React.ReactNode;
 	selectField: {
 		name: string;
@@ -132,69 +106,53 @@ export interface FormJoinInputSelectProps extends InputProps {
 }
 
 // * form-input
-export interface FormInputProps extends InputProps {
+export interface FormInputProps extends IFieldProps, InputProps {
+	icon?: React.ReactNode;
+}
+// * form-phone
+export type FormOtpProps = Omit<OTPInputProps, 'children'> & {
 	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
 	label?: string;
 	subLabel?: string;
 	placeholder?: string;
 	optional?: boolean;
-	icon?: React.ReactNode;
 	disableLabel?: boolean;
+	disabled?: boolean;
+	labelClassName?: string;
+};
+
+// * form-file-upload
+export interface FormFileUploadProps extends IFieldProps, InputProps {
+	options?: DropzoneOptions;
+	isUpdate?: boolean;
+	fileType?: 'image' | 'document' | 'all' | 'video' | 'audio';
+	errorText?: string;
+	small?: boolean;
+	previewClassName?: string;
 }
 
-// * form-switch
-export interface FormSwitchProps extends CheckboxProps {
-	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
-	label?: string;
-	placeholder?: string;
-	optional?: boolean;
+// * form-date-picker
+export interface FormDatePickerProps extends IFieldProps {
 	icon?: React.ReactNode;
-	disableLabel?: boolean;
+	className?: string;
+	calendarProps?: DayPickerProps;
+}
+
+// * form-checkbox
+export interface FormCheckboxProps extends IFieldProps, CheckboxProps {
+	icon?: React.ReactNode;
 	labelClassName?: string;
 	isBoxed?: boolean;
 }
 
-// * form-phone
-export type FormOtpProps = Omit<OTPInputProps, 'children'> & {
-	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
-	label?: string;
-	subLabel?: string;
-	optional?: boolean;
-	disableLabel?: boolean;
-};
-
-// * form-date-picker
-export interface FormDatePickerProps {
-	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
-	label?: string;
-	subLabel?: string;
-	placeholder?: string;
-	optional?: boolean;
-	icon?: React.ReactNode;
-	disableLabel?: boolean;
-	className?: string;
-	calendarProps?: DayPickerProps;
-	disabled?: boolean;
+// * form-radio
+export interface FormRadioProps extends IFieldProps, RadioGroupProps {
+	options: IFormSelectOption[];
 }
 
-// * form-checkbox
-export interface FormCheckboxProps extends CheckboxProps {
-	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
-	label?: string;
-	placeholder?: string;
-	optional?: boolean;
+// * form-switch
+export interface FormSwitchProps extends IFieldProps, CheckboxProps {
 	icon?: React.ReactNode;
-	disableLabel?: boolean;
 	labelClassName?: string;
 	isBoxed?: boolean;
 }
@@ -207,18 +165,10 @@ export interface IFormAddEditWrapperProps {
 	title?: string;
 	isSubmitDisable?: boolean;
 }
-// * form-file-upload
-export interface FormFileUploadProps extends InputProps {
-	field: ControllerRenderProps<any, any>;
-	fieldState: ControllerFieldState;
-	formState: UseFormStateReturn<any>;
-	label?: string;
-	subLabel?: string;
-	placeholder?: string;
-	optional?: boolean;
-	disableLabel?: boolean;
-	options?: DropzoneOptions;
-	isUpdate?: boolean;
-	fileType?: 'image' | 'document' | 'all' | 'video' | 'audio';
-	errorText?: string;
+
+// * file upload
+export interface FormFileUploadProps extends IFieldProps {
+	className?: string;
+	accept?: string;
+	multiple?: boolean;
 }

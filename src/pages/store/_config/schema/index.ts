@@ -169,7 +169,7 @@ export type IProduct = z.infer<typeof PRODUCT_SCHEMA>;
 
 //* Stock Schema
 export const STOCK_SCHEMA = z.object({
-	product_uuid: STRING_REQUIRED,
+	product_entry_uuid: STRING_REQUIRED,
 	warehouse_1: NUMBER_DOUBLE_REQUIRED,
 	warehouse_2: NUMBER_DOUBLE_REQUIRED,
 	warehouse_3: NUMBER_DOUBLE_REQUIRED,
@@ -177,7 +177,7 @@ export const STOCK_SCHEMA = z.object({
 });
 
 export const STOCK_NULL: Partial<IStock> = {
-	product_uuid: '',
+	product_entry_uuid: '',
 	warehouse_1: 0,
 	warehouse_2: 0,
 	warehouse_3: 0,
@@ -330,7 +330,7 @@ export const PURCHASE_SCHEMA = z.object({
 			product_uuid: STRING_REQUIRED,
 			product_name: STRING_OPTIONAL,
 			serial_no: STRING_REQUIRED,
-			quantity: NUMBER_DOUBLE_REQUIRED,
+
 			price_per_unit: NUMBER_DOUBLE_REQUIRED,
 			discount: NUMBER_DOUBLE_REQUIRED.default(0),
 			remarks: STRING_NULLABLE,
@@ -354,7 +354,6 @@ export const PURCHASE_NULL: Partial<IPurchase> = {
 			purchase_uuid: '',
 			product_uuid: '',
 			serial_no: '',
-			quantity: 0,
 			price_per_unit: 0,
 			discount: 0,
 			remarks: '',
@@ -377,10 +376,8 @@ export const PURCHASE_RETURN_SCHEMA = z.object({
 		z.object({
 			uuid: STRING_OPTIONAL,
 			purchase_return_uuid: STRING_OPTIONAL,
-			product_uuid: STRING_REQUIRED,
+			purchase_entry_uuid: STRING_REQUIRED,
 			product_name: STRING_OPTIONAL,
-			quantity: NUMBER_DOUBLE_REQUIRED,
-			price_per_unit: NUMBER_DOUBLE_REQUIRED,
 			remarks: STRING_NULLABLE,
 		})
 	),
@@ -394,10 +391,8 @@ export const PURCHASE_RETURN_NULL: Partial<IPurchaseReturn> = {
 		{
 			uuid: '',
 			purchase_return_uuid: '',
-			product_uuid: '',
+			purchase_entry_uuid: '',
 			product_name: '',
-			quantity: 0,
-			price_per_unit: 0,
 			remarks: '',
 		},
 	],
@@ -409,7 +404,7 @@ export type IPurchaseReturn = z.infer<typeof PURCHASE_RETURN_SCHEMA>;
 export const PURCHASE_LOG_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
 	purchase_uuid: STRING_OPTIONAL,
-	product_uuid: STRING_REQUIRED,
+	product_entry_uuid: STRING_REQUIRED,
 	serial_no: STRING_REQUIRED,
 	quantity: NUMBER_DOUBLE_REQUIRED,
 	price_per_unit: NUMBER_DOUBLE_REQUIRED,
@@ -424,7 +419,7 @@ export const PURCHASE_LOG_SCHEMA = z.object({
 export const PURCHASE_LOG_NULL: Partial<IPurchaseLog> = {
 	uuid: '',
 	purchase_uuid: '',
-	product_uuid: '',
+	product_entry_uuid: '',
 	serial_no: '',
 	quantity: 0,
 	price_per_unit: 0,
@@ -442,7 +437,7 @@ export type IPurchaseLog = z.infer<typeof PURCHASE_LOG_SCHEMA>;
 export const PURCHASE_RETURN_LOG_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
 	purchase_return_uuid: STRING_OPTIONAL,
-	product_uuid: STRING_REQUIRED,
+	product_entry_uuid: STRING_REQUIRED,
 	product_name: STRING_OPTIONAL,
 	quantity: NUMBER_DOUBLE_REQUIRED,
 	price_per_unit: NUMBER_DOUBLE_REQUIRED,
@@ -452,7 +447,7 @@ export const PURCHASE_RETURN_LOG_SCHEMA = z.object({
 export const PURCHASE_RETURN_LOG_NULL: Partial<IPurchaseReturnLog> = {
 	uuid: '',
 	purchase_return_uuid: '',
-	product_uuid: '',
+	product_entry_uuid: '',
 	product_name: '',
 	quantity: 0,
 	price_per_unit: 0,
@@ -463,13 +458,24 @@ export type IPurchaseReturnLog = z.infer<typeof PURCHASE_RETURN_LOG_SCHEMA>;
 //* Transfer Schema
 export const TRANSFER_SCHEMA = z.object({
 	order_uuid: STRING_REQUIRED,
-	quantity: NUMBER_DOUBLE_REQUIRED,
+	serials: z.array(
+		z.object({
+			uuid: STRING_OPTIONAL,
+			purchase_entry_uuid: STRING_REQUIRED,
+			remarks: STRING_NULLABLE,
+		})
+	),
 	remarks: STRING_NULLABLE,
 });
 
 export const TRANSFER_NULL: Partial<ITransfer> = {
 	order_uuid: '',
-	quantity: 0,
+	serials: [
+		{
+			purchase_entry_uuid: '',
+			remarks: '',
+		},
+	],
 	remarks: null,
 };
 

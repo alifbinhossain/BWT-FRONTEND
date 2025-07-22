@@ -1,4 +1,4 @@
-import { IResponse } from '@/types';
+import { IToast } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { UseFormReturn } from 'react-hook-form';
@@ -23,8 +23,8 @@ export interface IDeleteAllModalProps {
 	>;
 	url: string;
 	deleteData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			isOnCloseNeeded?: boolean;
@@ -32,25 +32,26 @@ export interface IDeleteAllModalProps {
 		},
 		void
 	>;
-
 	onClose?: () => void;
 }
 
 export interface IDeleteModalProps {
 	deleteItem: {
-		id: string | null;
+		type?: string;
+		id: string | number | null;
 		name: string | null;
 	} | null;
 	setDeleteItem: React.Dispatch<
 		React.SetStateAction<{
+			type?: string;
 			id: string;
 			name: string;
 		} | null>
 	>;
 	url: string;
 	deleteData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			isOnCloseNeeded?: boolean;
@@ -59,8 +60,9 @@ export interface IDeleteModalProps {
 		void
 	>;
 	needRefresh?: boolean;
-	onClose?: () => void;
 	invalidateQueries?: () => void;
+
+	onClose?: () => void;
 }
 
 export interface IAddModalProps {
@@ -74,4 +76,25 @@ export interface IAddModalProps {
 	className?: string;
 	isSmall?: boolean;
 	containerClassName?: string;
+}
+
+export interface IRichTextModalProps {
+	title: string;
+	content: string;
+	className?: string;
+	isSmall?: boolean;
+}
+export interface IContentModalProps {
+	title: string;
+	content: string;
+	className?: string;
+	isSmall?: boolean;
+}
+export interface IDetailsModalProps {
+	title?: string;
+	content: string | React.ReactNode;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	className?: string;
+	isSmall?: boolean;
 }

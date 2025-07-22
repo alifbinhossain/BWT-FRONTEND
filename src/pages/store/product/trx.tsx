@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '@/pages/work/order/details/transfer/utills';
-import { IResponse } from '@/types';
+import {
+	IDefaultAddOrUpdateProps,
+	IResponse,
+	IToast,
+} from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { z } from 'zod';
@@ -25,15 +29,19 @@ import { getDateTime } from '@/utils';
 import { IStockActionTrx } from '../_config/columns/columns.type';
 import { INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '../_config/schema';
 
-interface ITrxProps {
+// interface ITrxProps extends IDefaultAddOrUpdateProps {
+// 	updatedData: IStockActionTrx | null;
+// }
+
+export interface ITrxPropsAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IStockActionTrx | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IStockActionTrx | null>>;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	updatedData: IStockActionTrx | null;
 	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			newData: any;
@@ -43,8 +51,7 @@ interface ITrxProps {
 		any
 	>;
 }
-
-const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedData, postData }) => {
+const Trx: React.FC<ITrxPropsAddOrUpdateProps> = ({ url, open, setOpen, updatedData, setUpdatedData, postData }) => {
 	const { data: warehouseOptions } = useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();

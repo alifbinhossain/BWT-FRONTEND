@@ -13,12 +13,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 	fields,
 	fieldName,
 	fieldDefs,
+	startIndex = 0,
 	form,
 	children,
 }) => {
 	return (
-		<div className='overflow-scroll rounded-b-md border border-t-0'>
-			<Table className='table overflow-x-auto'>
+		<div className='overflow-x-auto rounded-b-md border border-t-0'>
+			<Table className='w-full'>
 				<TableHeader>
 					<TableRow className='h-8 divide-x-[1px]'>
 						{fieldDefs
@@ -52,6 +53,20 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 										} else {
 											return (
 												<TableCell
+													style={{
+														width:
+															typeof fieldDef.width === 'string'
+																? `${fieldDef.width}px`
+																: fieldDef.width,
+														maxWidth:
+															typeof fieldDef.maxWidth === 'string'
+																? `${fieldDef.maxWidth}px`
+																: fieldDef.maxWidth,
+														minWidth:
+															typeof fieldDef.minWidth === 'string'
+																? `${fieldDef.minWidth}px`
+																: fieldDef.minWidth,
+													}}
 													className={cn('first:pl-2 last:pr-2', fieldDef.className)}
 													key={fieldDef.accessorKey}
 												>
@@ -63,13 +78,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 													{fieldDef.type === 'join-input-unit' && (
 														<FormField
 															control={form.control}
-															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
 																<CoreForm.JoinInputUnit
-																	unit={fieldDef.unit(fieldIndex)}
+																	unit={fieldDef.unit(fieldIndex + startIndex)}
 																	disableLabel
-																	type={fieldDef.inputType}
 																	disabled={fieldDef.disabled}
+																	type={fieldDef.inputType}
 																	{...props}
 																/>
 															)}
@@ -79,12 +94,39 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 													{fieldDef.type === 'text' && (
 														<FormField
 															control={form.control}
-															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
 																<CoreForm.Input
 																	type={'text'}
 																	disableLabel
+																	disabled={fieldDef.disabled}
 																	placeholder={fieldDef.placeholder}
+																	{...props}
+																/>
+															)}
+														/>
+													)}
+													{fieldDef.type === 'checkbox' && (
+														<FormField
+															control={form.control}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
+															render={(props) => (
+																<CoreForm.Checkbox
+																	disableLabel
+																	disabled={fieldDef.disabled}
+																	{...props}
+																/>
+															)}
+														/>
+													)}
+
+													{fieldDef.type === 'date' && (
+														<FormField
+															control={form.control}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
+															render={(props) => (
+																<CoreForm.DatePicker
+																	disableLabel
 																	disabled={fieldDef.disabled}
 																	{...props}
 																/>
@@ -95,13 +137,13 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 													{fieldDef.type === 'number' && (
 														<FormField
 															control={form.control}
-															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
 																<CoreForm.Input
 																	type='number'
 																	disableLabel
-																	placeholder={fieldDef.placeholder}
 																	disabled={fieldDef.disabled}
+																	placeholder={fieldDef.placeholder}
 																	{...props}
 																/>
 															)}
@@ -110,7 +152,7 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 													{fieldDef.type === 'textarea' && (
 														<FormField
 															control={form.control}
-															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
 																<CoreForm.Textarea
 																	disableLabel
@@ -125,63 +167,68 @@ const DefaultDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs'
 													{fieldDef.type === 'select' && (
 														<FormField
 															control={form.control}
-															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
 																<CoreForm.ReactSelect
 																	menuPortalTarget={document.body}
 																	options={fieldDef.options}
 																	placeholder={fieldDef.placeholder}
 																	disableLabel
+																	unique={fieldDef.unique}
+																	excludeOptions={fieldDef.excludeOptions}
 																	isDisabled={fieldDef.disabled}
+																	onChange={fieldDef.onChange}
+																	{...props}
+																/>
+															)}
+														/>
+													)}
+													{fieldDef.type === 'radio' && (
+														<FormField
+															control={form.control}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
+															render={(props) => (
+																<CoreForm.Radio
+																	options={fieldDef.options}
+																	placeholder={fieldDef.placeholder}
+																	disableLabel
+																	onChange={fieldDef.onChange}
 																	{...props}
 																/>
 															)}
 														/>
 													)}
 
-													{fieldDef.type === 'select-create' && (
+													{fieldDef.type === 'image' && (
 														<FormField
 															control={form.control}
-															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
-																<CoreForm.ReactSelectCreate
-																	menuPortalTarget={document.body}
-																	options={fieldDef.options}
-																	placeholder={fieldDef.placeholder}
-																	disableLabel
-																	isDisabled={fieldDef.disabled}
+																<CoreForm.FileUpload
+																	disableLabel={true}
+																	isUpdate={fieldDef.isUpdate}
 																	{...props}
 																/>
 															)}
 														/>
 													)}
-													{fieldDef.type === 'multiSelect' && (
+
+													{fieldDef.type === 'file' && (
 														<FormField
 															control={form.control}
-															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
+															name={`${fieldName}.${fieldIndex + startIndex}.${fieldDef.accessorKey}`}
 															render={(props) => (
-																<CoreForm.MultiSelect
-																	options={fieldDef.options}
-																	placeholder={fieldDef.placeholder}
-																	disableLabel
-																	isDisabled={fieldDef.disabled}
+																<CoreForm.FileUpload
+																	fileType='document'
+																	disableLabel={true}
+																	errorText='File must be less than 10MB and of type pdf, doc, docx'
+																	options={{
+																		maxSize: 10000000,
+																	}}
+																	small={true}
+																	isUpdate={fieldDef.isUpdate}
 																	{...props}
 																/>
-															)}
-														/>
-													)}
-													{fieldDef.type === 'checkBox' && (
-														<FormField
-															control={form.control}
-															name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
-															render={(props) => (
-																<div className='flex w-full items-center justify-center'>
-																	<CoreForm.Checkbox
-																		disableLabel
-																		disabled={fieldDef.disabled}
-																		{...props}
-																	/>
-																</div>
 															)}
 														/>
 													)}

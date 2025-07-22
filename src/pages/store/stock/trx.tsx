@@ -1,4 +1,4 @@
-import { IResponse } from '@/types';
+import { IResponse, IToast } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import useAuth from '@/hooks/useAuth';
@@ -29,8 +29,8 @@ interface ITrxProps {
 	updatedData?: IStockActionTrx | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<IStockActionTrx | null>>;
 	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			newData: any;
