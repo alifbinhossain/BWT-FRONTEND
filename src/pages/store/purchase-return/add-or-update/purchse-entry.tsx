@@ -9,7 +9,7 @@ import { IPurchaseReturn } from '../../_config/schema';
 const PurchaseEntry: React.FC<{ form: any; index: number; data: IPurchaseReturn }> = ({ form, index, data }) => {
 	const query = data?.purchase_return_entry[index]?.purchase_entry_uuid
 		? undefined
-		: `is_purchase_return_entry=false&&purchase_uuid=${form('purchase_uuid')}&&warehouse_uuid=${form('warehouse_uuid')}`;
+		: `is_purchase_return_entry=false&purchase_uuid=${form('purchase_uuid')}&warehouse_uuid=${form('warehouse_uuid')}&is_product_transfer=false`;
 	const { data: purchaseEntryOptions } = useOtherPurchaseEntry<IFormSelectOption[]>(query);
 
 	return (

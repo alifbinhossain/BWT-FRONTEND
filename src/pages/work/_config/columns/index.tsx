@@ -1,25 +1,20 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { User } from 'lucide-react';
 
+
+
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
+
+
 import { Location, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
-import {
-	IAccessoriesTableData,
-	IDiagnosisTableData,
-	IInfoTableData,
-	IOrderTableData,
-	IProblemsTableData,
-	IProcessTableData,
-	ISectionTableData,
-	ITransferTableData,
-	IZoneTableData,
-} from './columns.type';
+import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
+
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -803,7 +798,7 @@ export const RepairingColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => {
 			const value = info.row.original.product_transfer as ITransferTableData[] | undefined;
-			const headers = ['Product', 'Warehouse', 'QTY'];
+			const headers = ['Product', 'Serial','Branch' ,'Warehouse'];
 			return <TableForColumn value={value} headers={headers} />;
 		},
 	},
@@ -1329,13 +1324,18 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
+		accessorKey: 'serial_no',
+		header: 'Serial',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'quantity',
-		header: 'Quantity',
+		accessorKey: 'branch_name',
+		header: 'Branch',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
 		enableColumnFilter: false,
 	},
 ];

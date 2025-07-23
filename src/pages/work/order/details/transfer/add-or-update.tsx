@@ -3,18 +3,25 @@ import { IDefaultAddOrUpdateProps } from '@/types';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+
+
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
+
+
 
 import { useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
+
+
 import { IOrderTableData, IStockActionTrx, ITransferTableData } from '../../../_config/columns/columns.type';
 import { useStoreOrderTransfersByUUID, useWorkOrderByDetails } from '../../../_config/query';
 import { TRANSFER_NULL, TRANSFER_SCHEMA } from '../../../_config/schema';
 import { ICustomPurchaseEntrySelectOption, ICustomWarehouseSelectOption } from './utills';
+
 
 interface ITrxProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IStockActionTrx | null;
@@ -36,7 +43,7 @@ const Trx: React.FC<ITrxProps> = ({
 	const { data } = useStoreOrderTransfersByUUID<ITransferTableData>(updatedData?.uuid as string);
 	const { data: purchaseEntryOptions, invalidateQuery: invalidateQueryOtherProduct } = useOtherPurchaseEntry<
 		ICustomPurchaseEntrySelectOption[]
-	>(`is_warehouse=true&&is_purchase_return_entry=false`);
+	>(`is_warehouse=true&is_purchase_return_entry=false`);
 	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
 		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
@@ -65,6 +72,7 @@ const Trx: React.FC<ITrxProps> = ({
 		const warehouse_uuid = purchaseEntryOptions?.find(
 			(option) => option.value === values.purchase_entry_uuid
 		)?.warehouse_uuid;
+		console.log(warehouse_uuid);
 		if (isUpdate) {
 			// ADD NEW ITEM
 			updateData.mutateAsync({
@@ -72,6 +80,7 @@ const Trx: React.FC<ITrxProps> = ({
 				updatedData: {
 					...values,
 					warehouse_uuid: warehouse_uuid,
+					quantity: 1,
 					order_uuid: order_uuid,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
@@ -84,6 +93,8 @@ const Trx: React.FC<ITrxProps> = ({
 				url,
 				newData: {
 					...values,
+					warehouse_uuid: warehouse_uuid,
+					quantity: 1,
 					order_uuid: order_uuid,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
@@ -103,6 +114,7 @@ const Trx: React.FC<ITrxProps> = ({
 					<CoreForm.ReactSelect
 						label='Purchase Entry'
 						placeholder='Select Purchase'
+						isDisabled={isUpdate}
 						options={purchaseEntryOptions!}
 						{...props}
 					/>

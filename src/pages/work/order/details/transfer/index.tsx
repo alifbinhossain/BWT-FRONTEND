@@ -12,7 +12,6 @@ import { transferColumns } from '../../../_config/columns';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
-const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Transfer: React.FC<{ data?: IOrderTableData; isLoading?: any; order_uuid?: string }> = ({
 	data,
@@ -57,22 +56,6 @@ const Transfer: React.FC<{ data?: IOrderTableData; isLoading?: any; order_uuid?:
 		});
 	};
 
-	// Delete All Item
-	const [deleteItems, setDeleteItems] = useState<{ id: string; name: string; checked: boolean }[] | null>(null);
-
-	// Delete All Row Handlers
-	const handleDeleteAll = (rows: Row<ITransferTableData>[]) => {
-		const selectedRows = rows.map((row) => row.original);
-
-		setDeleteItems(
-			selectedRows.map((row) => ({
-				id: row.uuid,
-				name: row.order_id,
-				checked: true,
-			}))
-		);
-	};
-
 	// Table Columns
 	const columns = transferColumns();
 
@@ -87,7 +70,6 @@ const Transfer: React.FC<{ data?: IOrderTableData; isLoading?: any; order_uuid?:
 				handleDelete={handleDelete}
 				handleCreate={handleCreate}
 				handleRefetch={refetch}
-				handleDeleteAll={handleDeleteAll}
 				defaultVisibleColumns={{ updated_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
@@ -111,14 +93,6 @@ const Transfer: React.FC<{ data?: IOrderTableData; isLoading?: any; order_uuid?:
 							url,
 							deleteData,
 							needRefresh: true,
-						}}
-					/>,
-					<DeleteAllModal
-						{...{
-							deleteItems,
-							setDeleteItems,
-							url,
-							deleteData,
 						}}
 					/>,
 				])}

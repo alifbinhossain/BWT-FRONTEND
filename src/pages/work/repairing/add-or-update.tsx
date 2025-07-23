@@ -1,28 +1,45 @@
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+
+
 // import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
+
+
+
+
+
 import '@/lib/common-queries/other';
 
+
+
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { useStoreProducts } from '@/pages/store/_config/query';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+
+
 
 import { IFormSelectOption } from '@/components/core/form/types';
 import { ShowLocalToast } from '@/components/others/toast';
 
-import { useOtherProblem, useOtherProduct, useOtherWarehouse } from '@/lib/common-queries/other';
+
+
+import { useOtherProblem, useOtherProduct, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
+
+
 
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
 import { IRepair, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
 import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '../order/details/transfer/utills';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
+
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
@@ -31,14 +48,16 @@ const AddOrUpdate = () => {
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 	const navigate = useNavigate();
-	const { data: productOptions, invalidateQuery: invalidateQueryOtherProduct } =
-		useOtherProduct<ICustomProductsSelectOption[]>(`?is_quantity=true`);
+	const { data: purchaseEntryOptions, invalidateQuery: invalidateQueryOtherProduct } = useOtherPurchaseEntry<
+		ICustomProductsSelectOption[]
+	>(`is_warehouse=true&&is_purchase_return_entry=false`);
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
 	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
 		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { data, updateData, postData, deleteData } = useWorkOrderByUUID<IOrderTableData>(uuid as string);
 	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(uuid as string);
 	const { invalidateQuery: invalidateQueryRepairing } = useWorkRepairing<IOrderTableData[]>();
+	const { invalidateQuery: invalidateQueryProduct } = useStoreProducts<IFormSelectOption[]>();
 
 	const form = useRHF(REPAIR_SCHEMA, REPAIR_NULL);
 
@@ -70,8 +89,9 @@ const AddOrUpdate = () => {
 	const handleRemove = (index: number) => {
 		const stock_id: string =
 			String(
-				productOptions?.find((p) => p.value === form.getValues('product_transfer')[index].purchase_entry_uuid)
-					?.label
+				purchaseEntryOptions?.find(
+					(p) => p.value === form.getValues('product_transfer')[index].purchase_entry_uuid
+				)?.label
 			) || '';
 		if (fields[index].uuid) {
 			setDeleteItem({
@@ -95,62 +115,12 @@ const AddOrUpdate = () => {
 
 		values.product_transfer.forEach((item: any, index: number) => {
 			const warehouse = warehouseOptions?.find((w) => w.value === item.warehouse_uuid);
-			const product = productOptions?.find((p) => p.value === item.product_uuid);
+			const product = purchaseEntryOptions?.find((p) => p.value === item.purchase_entry_uuid);
 
 			if (!product) {
 				ShowLocalToast({
 					type: 'error',
-					message: `Product not found for the selected product_uuid: ${item.product_uuid}.`,
-				});
-				valid = false;
-				return;
-			}
-			if (typeof item.quantity !== 'number' || item.quantity < 0) {
-				ShowLocalToast({
-					type: 'error',
-					message: `Invalid or missing quantity for product ${product.label}. Quantity provided: ${item.quantity}.`,
-				});
-				valid = false;
-				return;
-			}
-
-			const assignedKey = warehouse?.assigned;
-			if (!assignedKey) {
-				ShowLocalToast({ type: 'error', message: `Assigned key not found in warehouse ${warehouse?.label}.` });
-				return;
-			}
-			if (!(assignedKey in product)) {
-				ShowLocalToast({
-					type: 'error',
-					message: `Assigned key '${assignedKey}' not found in product ${product.label}.`,
-				});
-				valid = false;
-				return;
-			}
-
-			const availableQty = (product as any)[assignedKey];
-			if (typeof availableQty !== 'number') {
-				ShowLocalToast({
-					type: 'error',
-					message: `Product ${product.label} does not have a valid available quantity for '${assignedKey}'. Found: ${availableQty}`,
-				});
-				valid = false;
-				return;
-			}
-			const prevQty = data?.product_transfer?.[index]?.quantity ?? 0;
-			if (availableQty + prevQty < item.quantity) {
-				// Now this comparison is safe
-				ShowLocalToast({
-					type: 'error',
-					message: `Product ${product.label} has only ${availableQty + prevQty} quantity, but ${item.quantity} were requested.`,
-				});
-				valid = false;
-				return;
-			}
-			if (item.quantity <= 0) {
-				ShowLocalToast({
-					type: 'error',
-					message: `Quantity must be greater than 0 for product ${product.label}.`,
+					message: `Product not found for the selected purchase entry: ${item.purchase_entry_uuid}.`,
 				});
 				valid = false;
 				return;
@@ -177,6 +147,7 @@ const AddOrUpdate = () => {
 					const newData = {
 						...item,
 						order_uuid: uuid,
+						quantity: 1,
 						created_at: getDateTime(),
 						created_by: user?.uuid,
 						uuid: nanoid(),
@@ -190,6 +161,7 @@ const AddOrUpdate = () => {
 				} else {
 					const updatedData = {
 						...item,
+						quantity: 1,
 						updated_at: getDateTime(),
 					};
 					return updateData.mutateAsync({
@@ -208,6 +180,7 @@ const AddOrUpdate = () => {
 						invalidateQueryOtherProduct();
 						invalidateQueryOtherWarehouse();
 						invalidateQueryRepairing();
+						invalidateQueryProduct();
 						navigate(`/work/repairing`);
 					});
 			} catch (err) {
