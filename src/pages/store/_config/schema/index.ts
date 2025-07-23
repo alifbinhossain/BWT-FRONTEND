@@ -98,7 +98,7 @@ export const VENDOR_SCHEMA = z.object({
 	company_name: STRING_REQUIRED,
 	phone: PHONE_NUMBER_REQUIRED,
 	address: STRING_REQUIRED,
-	description: STRING_REQUIRED,
+	description: STRING_NULLABLE,
 	is_active: BOOLEAN_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
@@ -109,7 +109,7 @@ export const VENDOR_NULL: Partial<IVendor> = {
 	company_name: '',
 	phone: '',
 	address: '',
-	description: '',
+	description: null,
 	is_active: false,
 	remarks: '',
 };
@@ -120,7 +120,7 @@ export type IVendor = z.infer<typeof VENDOR_SCHEMA>;
 export const PRODUCT_SCHEMA = z.object({
 	category_uuid: STRING_REQUIRED,
 	model_uuid: STRING_REQUIRED,
-	size_uuid: STRING_REQUIRED,
+	size_uuid: STRING_NULLABLE,
 	name: STRING_REQUIRED,
 	warranty_days: NUMBER_DOUBLE_REQUIRED,
 	type: z.enum(['service', 'inventory']),
@@ -144,7 +144,7 @@ export const PRODUCT_SCHEMA = z.object({
 export const PRODUCT_NULL: Partial<IProduct> = {
 	category_uuid: '',
 	model_uuid: '',
-	size_uuid: '',
+	size_uuid: null,
 	name: '',
 	warranty_days: 0,
 	service_warranty_days: 0,
