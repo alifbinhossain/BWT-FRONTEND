@@ -122,6 +122,7 @@ const AddOrUpdate = () => {
 					.then(() => form.reset(INFO_NULL))
 					.then(() => {
 						invalidateCustomer();
+						invalidateTestDetails();
 						navigate(`/work/info/details/${uuid}`);
 					});
 			} catch (err) {
@@ -182,6 +183,7 @@ const AddOrUpdate = () => {
 				.then(() => form.reset(INFO_NULL))
 				.then(() => {
 					invalidateCustomer();
+					invalidateTestDetails();
 					navigate(`/work/info/details/${info_uuid}`);
 				});
 		} catch (err) {
@@ -214,11 +216,11 @@ const AddOrUpdate = () => {
 
 	// Delete Handler
 	const handleRemove = (index: number) => {
-		const modelName: string = String(form.getValues('order_entry')[index].model_id);
+		const modelName: string = String(form.getValues('order_entry')[index].model_name);
 		if (fields[index].uuid) {
 			setDeleteItem({
 				id: fields[index].uuid,
-				name: modelName,
+				name: fields[index].brand_name + '(' + modelName + ')',
 			});
 		} else {
 			remove(index);

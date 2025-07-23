@@ -43,6 +43,12 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 			accessorKey: 'actions',
 			type: 'custom',
 			component: (index: number) => {
+				if (
+					form.watch(`order_entry.${index}.is_home_repair`) ||
+					form.watch(`order_entry.${index}.is_proceed_to_repair`)
+				) {
+					return <FieldActionButton handleCopy={copy} index={index} />;
+				}
 				return <FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />;
 			},
 		},
@@ -178,9 +184,7 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 			accessorKey: 'warehouse_uuid',
 			type: 'custom',
 			component: (index: number) => {
-				return (
-					<Location form={form} index={index} />
-				);
+				return <Location form={form} index={index} />;
 			},
 			hidden: !isProductReceived,
 		},
