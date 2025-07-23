@@ -11,6 +11,7 @@ import CoreForm from '@core/form';
 import { useOtherUserByQuery } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
+import Formdata from '@/utils/formdata';
 
 import { IInfoTableData } from './_config/columns/columns.type';
 import { useWorkInfo, useWorkInfoByUUID } from './_config/query';
@@ -25,7 +26,7 @@ const AddOrUpdate = () => {
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 
-	const { url: infoUrl, postData, deleteData } = useWorkInfo();
+	const { url: infoUrl, postData, imagePostData, deleteData } = useWorkInfo();
 	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 
 	const { data } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
@@ -95,13 +96,14 @@ const AddOrUpdate = () => {
 			created_by,
 		}));
 
-		const order_entry_entries_promise = order_entry_entries.map((item) =>
-			postData.mutateAsync({
+		const order_entry_entries_promise = order_entry_entries.map((item) => {
+			const formData = Formdata(item);
+			return imagePostData.mutateAsync({
 				url: '/work/order',
-				newData: item,
+				newData: formData,
 				isOnCloseNeeded: false,
-			})
-		);
+			});
+		});
 
 		try {
 			// TODO: Update promises name ⬇️
@@ -175,6 +177,7 @@ const AddOrUpdate = () => {
 		remove: handleRemove,
 		watch: form.watch,
 		form: form,
+		isUpdate: isUpdate,
 	});
 	return (
 		<div className='container my-6 w-full px-2 sm:mx-auto lg:my-12 lg:max-w-[840px] lg:px-0'>

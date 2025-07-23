@@ -12,6 +12,7 @@ import CoreForm from '@core/form';
 import { useOtherUserByQuery } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
+import Formdata from '@/utils/formdata';
 
 import { IInfoTableData } from '../../_config/columns/columns.type';
 import { useWorkInfo, useWorkInfoByUUID } from '../../_config/query';
@@ -28,7 +29,7 @@ const AddOrUpdate = () => {
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 
-	const { url: infoUrl, updateData, postData, deleteData } = useWorkInfo();
+	const { url: infoUrl, updateData, postData, imagePostData, imageUpdateData, deleteData } = useWorkInfo();
 	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 
 	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
@@ -169,13 +170,14 @@ const AddOrUpdate = () => {
 			created_by,
 		}));
 
-		const order_entry_entries_promise = order_entry_entries.map((item) =>
-			postData.mutateAsync({
+		const order_entry_entries_promise = order_entry_entries.map((item) => {
+			const formData = Formdata(item);
+			return imagePostData.mutateAsync({
 				url: '/work/order',
-				newData: item,
+				newData: formData,
 				isOnCloseNeeded: false,
-			})
-		);
+			});
+		});
 
 		try {
 			// TODO: Update promises name ⬇️
@@ -254,6 +256,7 @@ const AddOrUpdate = () => {
 		watch: form.watch,
 		form: form,
 		isProductReceived: isProductReceived,
+		isUpdate: isUpdate,
 	});
 	const fieldDefsV2 = useGenerateFieldDefsV2({
 		copy: handleCopy,
@@ -261,6 +264,7 @@ const AddOrUpdate = () => {
 		watch: form.watch,
 		form: form,
 		isProductReceived: isProductReceived,
+		isUpdate: isUpdate,
 	});
 	return (
 		<CoreForm.AddEditWrapper

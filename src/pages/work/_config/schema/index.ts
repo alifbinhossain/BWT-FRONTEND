@@ -48,6 +48,13 @@ export const ORDER_SCHEMA = z
 		floor_uuid: STRING_NULLABLE,
 		box_uuid: STRING_NULLABLE,
 		remarks: STRING_NULLABLE,
+
+		// This is for the Work Info form
+		image_1: z.instanceof(File).or(STRING_NULLABLE).optional(),
+
+		image_2: z.instanceof(File).or(STRING_NULLABLE).optional(),
+
+		image_3: z.instanceof(File).or(STRING_NULLABLE).optional(),
 	})
 	.superRefine((data, ctx) => {
 		if (data?.problems_uuid.length === 0) {
@@ -79,6 +86,10 @@ export const ORDER_NULL: Partial<IOrder> = {
 	floor_uuid: null,
 	box_uuid: null,
 	remarks: null,
+
+	image_1: null,
+	image_2: null,
+	image_3: null,
 };
 export type IOrder = z.infer<typeof ORDER_SCHEMA>;
 //*Order Schema

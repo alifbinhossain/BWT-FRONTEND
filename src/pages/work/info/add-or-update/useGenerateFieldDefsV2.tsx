@@ -30,9 +30,10 @@ interface IGenerateFieldDefsProps {
 	watch?: UseFormWatch<IInfo>;
 	isProductReceived?: boolean;
 	form: any;
+	isUpdate: boolean;
 }
 
-const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form, isUpdate }: IGenerateFieldDefsProps): FieldDef[] => {
 	const [brand, setBrand] = useState('');
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
 	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
@@ -161,6 +162,87 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 			header: 'Remarks',
 			accessorKey: 'remarks',
 			type: 'textarea',
+		},
+		{
+			header: 'Image 1',
+			accessorKey: 'image_1',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`order_entry.${index}.image_1`}
+						render={(props) => (
+							<CoreForm.FileUpload
+								subLabel={
+									form.watch('type') === 'hero'
+										? 'Recommend size (1905x723)'
+										: 'Recommend ratio 1:1 (300x300)'
+								}
+								label='Image 1'
+								className='h-full'
+								fileType='image'
+								isUpdate={isUpdate}
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
+		},
+		{
+			header: 'Image 2',
+			accessorKey: 'image_2',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`order_entry.${index}.image_2`}
+						render={(props) => (
+							<CoreForm.FileUpload
+								subLabel={
+									form.watch('type') === 'hero'
+										? 'Recommend size (1905x723)'
+										: 'Recommend ratio 1:1 (300x300)'
+								}
+								label='Image 2'
+								className='h-full'
+								fileType='image'
+								isUpdate={isUpdate}
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
+		},
+		{
+			header: 'Image 3',
+			accessorKey: 'image_3',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`order_entry.${index}.image_3`}
+						render={(props) => (
+							<CoreForm.FileUpload
+								subLabel={
+									form.watch('type') === 'hero'
+										? 'Recommend size (1905x723)'
+										: 'Recommend ratio 1:1 (300x300)'
+								}
+								label='Image 3'
+								className='h-full'
+								fileType='image'
+								isUpdate={isUpdate}
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
 		},
 		{
 			header: 'Actions',
