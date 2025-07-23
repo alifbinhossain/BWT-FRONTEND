@@ -10,7 +10,7 @@ import { ITransfer } from '../../_config/schema';
 
 const Header = () => {
 	const form = useFormContext<ITransfer>();
-	const { data: orderOptions } = useOtherOrder<IFormSelectOption[]>();
+	const { data: orderOptions } = useOtherOrder<IFormSelectOption[]>(`is_repair=true`);
 
 	return (
 		<CoreForm.Section title={`Information`}>

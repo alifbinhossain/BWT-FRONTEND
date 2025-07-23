@@ -1,20 +1,25 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { User } from 'lucide-react';
 
-
-
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-
-
 import { Location, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
-import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
-
+import {
+	IAccessoriesTableData,
+	IDiagnosisTableData,
+	IInfoTableData,
+	IOrderTableData,
+	IProblemsTableData,
+	IProcessTableData,
+	ISectionTableData,
+	ITransferTableData,
+	IZoneTableData,
+} from './columns.type';
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -55,6 +60,11 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 				</div>
 			);
 		},
+	},
+	{
+		accessorKey: 'branch_name',
+		header: 'Branch',
+		enableColumnFilter: false,
 	},
 	{
 		accessorKey: 'is_product_received',

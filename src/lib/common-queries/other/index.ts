@@ -184,10 +184,10 @@ export const useOtherCourier = <T>() =>
 	});
 
 //* GET OTHER ORDER
-export const useOtherOrder = <T>() =>
+export const useOtherOrder = <T>(query?: string) =>
 	useTQuery<T>({
 		queryKey: otherQK.order(),
-		url: `/other/work/order/value/label`,
+		url: query ? `/other/work/order/value/label?${query}` : `/other/work/order/value/label`,
 	});
 //* GET OTHER Accessories
 export const useOtherAccessories = <T>() =>

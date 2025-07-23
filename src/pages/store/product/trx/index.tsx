@@ -1,4 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { ICustomWarehouseSelectOption } from '@/pages/work/order/details/transfer/utills';
+import { floor } from 'lodash';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
@@ -7,32 +9,36 @@ import useRHF from '@/hooks/useRHF';
 import { ShowLocalToast } from '@/components/others/toast';
 import CoreForm from '@core/form';
 
+import { useOtherWarehouseByQuery } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IProductTableData } from '../../_config/columns/columns.type';
 import { useStoreProducts, useStorePurchases } from '../../_config/query';
-import { ITransfer, TRANSFER_NULL, TRANSFER_SCHEMA } from '../../_config/schema';
+import { IInternalTransfer, INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '../../_config/schema';
 import Header from './header';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
 
 const AddOrUpdate = () => {
 	const { user } = useAuth();
 	const navigate = useNavigate();
-	const { uuid, warehouse_uuid } = useParams();
+	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 
-	const { postData, deleteData } = useStorePurchases();
+	const { postData, updateData, deleteData } = useStorePurchases();
 	const { invalidateQuery: invalidateStoreProducts } = useStoreProducts<IProductTableData[]>();
+	const { invalidateQuery: invalidWarehouseQuery } = useOtherWarehouseByQuery<ICustomWarehouseSelectOption[]>(
+		`product_uuid=${uuid ?? ''}`
+	);
 
-	const form = useRHF(TRANSFER_SCHEMA, TRANSFER_NULL);
+	const form = useRHF(INTERNAL_TRANSFER_SCHEMA, INTERNAL_TRANSFER_NULL);
 
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
 		name: 'serials',
 	});
 
-	async function onSubmit(values: ITransfer) {
+	async function onSubmit(values: IInternalTransfer) {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
@@ -54,17 +60,21 @@ const AddOrUpdate = () => {
 		const serials_entries = [...values.serials].map((item) => ({
 			...item,
 			purchase_entry_uuid: item.purchase_entry_uuid,
-			order_uuid: values?.order_uuid,
-			warehouse_uuid: warehouse_uuid,
+			from_warehouse_uuid: values?.from_warehouse_uuid,
+			to_warehouse_uuid: values?.to_warehouse_uuid,
+			rack_uuid: values?.rack_uuid,
+			floor_uuid: values?.floor_uuid,
+			box_uuid: values?.box_uuid,
+			remarks: item.remarks,
 			quantity: 1,
-			uuid: nanoid(),
+			uuid: new_uuid,
 			created_at,
 			created_by,
 		}));
 
 		const serials_entries_promise = serials_entries.map((item) =>
 			postData.mutateAsync({
-				url: '/store/product-transfer',
+				url: '/store/internal-transfer',
 				newData: item,
 				isOnCloseNeeded: false,
 			})
@@ -72,9 +82,10 @@ const AddOrUpdate = () => {
 
 		try {
 			await Promise.all([...serials_entries_promise])
-				.then(() => form.reset(TRANSFER_NULL))
+				.then(() => form.reset(INTERNAL_TRANSFER_NULL))
 				.then(() => {
 					navigate(`/store/product/`);
+					invalidWarehouseQuery();
 					invalidateStoreProducts();
 				});
 		} catch (err) {
@@ -109,7 +120,7 @@ const AddOrUpdate = () => {
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<Header />
+			<Header product_uuid={uuid ?? ''} />
 			<CoreForm.DynamicFields
 				title='Entry'
 				form={form}
@@ -118,7 +129,7 @@ const AddOrUpdate = () => {
 					copy: handleCopy,
 					remove: handleRemove,
 					watch: form.watch,
-					warehouse_uuid,
+					warehouse_uuid: form.watch('from_warehouse_uuid'),
 				})}
 				handleAdd={handleAdd}
 				fields={fields}

@@ -93,8 +93,7 @@ export const REPAIR_SCHEMA = z
 		product_transfer: z.array(
 			z.object({
 				uuid: STRING_OPTIONAL,
-				product_uuid: STRING_OPTIONAL,
-				quantity: NUMBER_DOUBLE_OPTIONAL,
+				purchase_entry_uuid: STRING_OPTIONAL,
 				warehouse_uuid: STRING_OPTIONAL,
 				remarks: STRING_NULLABLE,
 			})
@@ -104,14 +103,8 @@ export const REPAIR_SCHEMA = z
 	.superRefine((data, ctx) => {
 		if (data?.repair_product_transfer) {
 			data?.product_transfer.map((transfer, index) => {
-				if (!transfer.product_uuid) {
-					ctx.addIssue(customIssue('Required', `product_transfer[${index}].product_uuid`));
-				}
-				if (!transfer.quantity) {
-					ctx.addIssue(customIssue('Required', `product_transfer[${index}].quantity`));
-				}
-				if (!transfer.warehouse_uuid) {
-					ctx.addIssue(customIssue('Required', `product_transfer[${index}].warehouse_uuid`));
+				if (!transfer.purchase_entry_uuid) {
+					ctx.addIssue(customIssue('Required', `product_transfer[${index}].purchase_entry_uuid`));
 				}
 			});
 		}
@@ -124,9 +117,7 @@ export const REPAIR_NULL: Partial<IRepair> = {
 	product_transfer: [
 		{
 			uuid: '',
-			product_uuid: '',
-			quantity: 0,
-			warehouse_uuid: '',
+			purchase_entry_uuid: '',
 			remarks: null,
 		},
 	],
@@ -149,6 +140,7 @@ export const INFO_SCHEMA = z
 		name: STRING_OPTIONAL,
 		phone: PHONE_NUMBER_OPTIONAL,
 		business_type: STRING_OPTIONAL,
+		branch_uuid: STRING_REQUIRED,
 		where_they_find_us: z.enum(['whatsapp', 'instagram', 'facebook', 'youtube', 'person', 'none']).optional(),
 		designation_uuid: STRING_OPTIONAL,
 		department_uuid: STRING_OPTIONAL,
@@ -335,16 +327,14 @@ export const ACCESSORIES_NULL: Partial<IAccessories> = {
 export type IAccessories = z.infer<typeof ACCESSORIES_SCHEMA>;
 //* Transfer Schema
 export const TRANSFER_SCHEMA = z.object({
-	product_uuid: STRING_REQUIRED,
+	purchase_entry_uuid: STRING_REQUIRED,
 	warehouse_uuid: STRING_REQUIRED,
-	quantity: NUMBER_DOUBLE_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 
 export const TRANSFER_NULL: Partial<ITransfer> = {
-	product_uuid: '',
 	warehouse_uuid: '',
-	quantity: 0,
+	purchase_entry_uuid: '',
 	remarks: null,
 };
 

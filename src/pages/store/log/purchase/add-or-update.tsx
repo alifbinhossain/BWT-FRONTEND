@@ -76,17 +76,22 @@ const AddOrUpdate: React.FC<IPurchaseLogAddOrUpdateProps> = ({
 		>
 			<FormField
 				control={form.control}
-				name='product_entry_uuid'
+				name='product_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
 						label='Product'
 						placeholder='Select Product'
+						isDisabled={true}
 						options={productOptions!}
 						{...props}
 					/>
 				)}
 			/>
-			<FormField control={form.control} name='serial_no' render={(props) => <CoreForm.Input {...props} />} />
+			<FormField
+				control={form.control}
+				name='serial_no'
+				render={(props) => <CoreForm.Input disabled={true} {...props} />}
+			/>
 			<FormField
 				control={form.control}
 				name='warehouse_uuid'

@@ -11,13 +11,13 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherOrder } from '@/lib/common-queries/other';
+import { useOtherOrder, useOtherPurchaseEntry } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
 import { IStockActionTrx, ITransferTableData } from '../../_config/columns/columns.type';
 import { useStoreOrderTransfersByUUID } from '../../_config/query';
-import { TRANSFER_NULL, TRANSFER_SCHEMA } from '../../_config/schema';
+import { TRANSFER_LOG_NULL, TRANSFER_LOG_SCHEMA } from '../../_config/schema';
 
 interface ITrxProps {
 	url: string;
@@ -43,15 +43,16 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 
 	const { data } = useStoreOrderTransfersByUUID<ITransferTableData>(updatedData?.uuid as string);
 	const { data: orderOptions } = useOtherOrder<IFormSelectOption[]>();
+	const { data: purchaseEntryOptions } = useOtherPurchaseEntry<IFormSelectOption[]>();
 
 	const { user } = useAuth();
 	const MAX_QUANTITY = updatedData?.max_quantity ?? 0;
-	const schema = TRANSFER_SCHEMA.extend({ quantity: z.number().int().positive().max(MAX_QUANTITY) });
-	const form = useRHF(schema, TRANSFER_NULL);
+	const schema = TRANSFER_LOG_SCHEMA.extend({ quantity: z.number().int().positive().max(MAX_QUANTITY) });
+	const form = useRHF(schema, TRANSFER_LOG_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(TRANSFER_NULL);
+		form.reset(TRANSFER_LOG_NULL);
 		setOpen((prev) => !prev);
 	};
 	useEffect(() => {
@@ -79,6 +80,20 @@ const Trx: React.FC<ITrxProps> = ({ url, open, setOpen, updatedData, setUpdatedD
 
 	return (
 		<AddModal open={open} setOpen={onClose} title={'Transfer Material'} form={form} onSubmit={onSubmit}>
+			<FormField
+				control={form.control}
+				name={`purchase_entry_uuid`}
+				render={(props) => (
+					<CoreForm.ReactSelect
+						isDisabled={true}
+						label='Purchase Entry'
+						placeholder='Select Warehouse'
+						options={purchaseEntryOptions!}
+						menuPortalTarget={document.body}
+						{...props}
+					/>
+				)}
+			/>
 			<FormField
 				control={form.control}
 				name='order_uuid'

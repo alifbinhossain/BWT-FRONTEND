@@ -103,6 +103,18 @@ export const getPageHeader = (data: IInfoTableData, user: any, GenerateQRCode: s
 											],
 											[
 												{
+													text: 'Branch:',
+													bold: true,
+													fontSize: DEFAULT_FONT_SIZE - 2,
+												},
+												{
+													text: data?.branch_name,
+													fontSize: DEFAULT_FONT_SIZE - 2,
+												},
+												
+											],
+											[
+												{
 													text: 'Date:',
 													bold: true,
 													fontSize: DEFAULT_FONT_SIZE - 2,
