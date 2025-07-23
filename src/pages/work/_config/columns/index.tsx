@@ -131,6 +131,44 @@ export const orderColumnsForDetails = ({
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
+		accessorKey: 'status',
+		header: 'Status',
+		enableColumnFilter: false,
+		size: 40,
+		cell: (info) => {
+			const status = info.getValue() as string;
+			const bgColorClass =
+				{
+					accepted: 'bg-success',
+					rejected: 'bg-red-500',
+					not_repairable: 'bg-gray-500',
+					pending: 'bg-warning',
+				}[status?.toLowerCase()] || '';
+
+			return (
+				<div>
+					<span className={`rounded px-2 py-1 capitalize text-white ${bgColorClass}`}>{status}</span>
+					<DateTime
+						date={
+							info.row.original.status_update_date ? new Date(info.row.original.status_update_date) : null
+						}
+						isTime={false}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'diagnosis_proposed_cost',
+		header: () => (
+			<>
+				Proposed <br /> Cost
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'is_proceed_to_repair',
 		header: () => (
 			<>
@@ -165,6 +203,27 @@ export const orderColumnsForDetails = ({
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'bill_amount',
+		header: () => (
+			<>
+				Bill <br /> Amount
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'ready_for_delivery_date',
+		header: () => (
+			<>
+				Ready For <br /> Delivery Date
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
 		accessorKey: 'order_id',
@@ -228,38 +287,6 @@ export const orderColumnsForDetails = ({
 				</div>
 			);
 		},
-	},
-	{
-		accessorKey: 'status',
-		header: 'Status',
-		enableColumnFilter: false,
-		cell: (info) => {
-			const status = info.getValue() as string;
-			const bgColorClass =
-				{
-					accepted: 'bg-success',
-					rejected: 'bg-red-500',
-					not_repairable: 'bg-gray-500',
-					pending: 'bg-warning',
-				}[status?.toLowerCase()] || '';
-
-			return (
-				<div>
-					<span className={`rounded px-2 py-1 capitalize text-white ${bgColorClass}`}>{status}</span>
-					<DateTime
-						date={
-							info.row.original.status_update_date ? new Date(info.row.original.status_update_date) : null
-						}
-						isTime={false}
-					/>
-				</div>
-			);
-		},
-	},
-	{
-		accessorKey: 'diagnosis_proposed_cost',
-		header: 'Proposed Cost',
-		enableColumnFilter: false,
 	},
 	{
 		accessorFn: (row) => {
