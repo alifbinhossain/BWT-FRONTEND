@@ -59,6 +59,7 @@ export type IStockActionTrx = {
 	max_quantity?: number;
 	warehouse_uuid?: string;
 	product_uuid?: string;
+	purchase_entry_uuid?: string;
 };
 //* Order Columns
 export type IOrderTableData = {
@@ -125,6 +126,8 @@ export type IOrderTableData = {
 export type IInfoTableData = {
 	uuid: string;
 	is_new_customer?: boolean;
+	branch_uuid: string;
+	branch_name: string;
 	name: string;
 	phone: string;
 	user_phone: string;

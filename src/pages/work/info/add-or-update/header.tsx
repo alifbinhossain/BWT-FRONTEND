@@ -5,7 +5,13 @@ import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
-import { useOtherDepartment, useOtherDesignation, useOtherUserByQuery, useOtherZone } from '@/lib/common-queries/other';
+import {
+	useOtherBranch,
+	useOtherDepartment,
+	useOtherDesignation,
+	useOtherUserByQuery,
+	useOtherZone,
+} from '@/lib/common-queries/other';
 
 import { IInfo } from '../../_config/schema';
 import { businessTypeOptions, platformTypeOptions } from './utils';
@@ -19,6 +25,7 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 	const form = useFormContext<IInfo>();
 
 	const { data: userOption } = useOtherUserByQuery<ICustomUserType[]>('?type=customer');
+	const { data: branchOptions } = useOtherBranch<IFormSelectOption[]>();
 	const isProductReceived = form.watch('is_product_received');
 	const isNewCustomer = form.watch('is_new_customer');
 	const isUser = form.watch('business_type') === 'user';
@@ -28,7 +35,6 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 	const { data: departmentOption } = useOtherDepartment<IFormSelectOption[]>();
 	const { data: designationOption } = useOtherDesignation<IFormSelectOption[]>();
 	const { data: zoneOption } = useOtherZone<IFormSelectOption[]>();
-
 
 	useEffect(() => {
 		if (isNewCustomer) {
@@ -175,6 +181,19 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 					control={form.control}
 					name='location'
 					render={(props) => <CoreForm.Textarea {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='branch_uuid'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							menuPortalTarget={document.body}
+							label='Branch'
+							options={branchOptions || []}
+							placeholder='Select Branch'
+							{...props}
+						/>
+					)}
 				/>
 				<FormField
 					control={form.control}

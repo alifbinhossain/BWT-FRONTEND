@@ -55,8 +55,7 @@ const AddOrUpdate = () => {
 	}, [data, isUpdate]);
 	const handleAdd = () => {
 		append({
-			product_uuid: '',
-			quantity: 0,
+			purchase_entry_uuid: '',
 			warehouse_uuid: '',
 			remarks: '',
 		});
@@ -71,7 +70,8 @@ const AddOrUpdate = () => {
 	const handleRemove = (index: number) => {
 		const stock_id: string =
 			String(
-				productOptions?.find((p) => p.value === form.getValues('product_transfer')[index].product_uuid)?.label
+				productOptions?.find((p) => p.value === form.getValues('product_transfer')[index].purchase_entry_uuid)
+					?.label
 			) || '';
 		if (fields[index].uuid) {
 			setDeleteItem({

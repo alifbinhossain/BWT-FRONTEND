@@ -188,7 +188,6 @@ export type IStock = z.infer<typeof STOCK_SCHEMA>;
 
 //* Internal Transfer Schema
 export const INTERNAL_TRANSFER_SCHEMA = z.object({
-	stock_uuid: STRING_OPTIONAL,
 	from_warehouse_uuid: STRING_REQUIRED,
 	to_warehouse_uuid: STRING_REQUIRED,
 	rack_uuid: STRING_NULLABLE,
@@ -196,20 +195,49 @@ export const INTERNAL_TRANSFER_SCHEMA = z.object({
 	box_uuid: STRING_NULLABLE,
 	quantity: NUMBER_DOUBLE_REQUIRED,
 	remarks: STRING_NULLABLE,
+	serials: z.array(
+		z.object({
+			uuid: STRING_OPTIONAL,
+			purchase_entry_uuid: STRING_REQUIRED,
+			remarks: STRING_NULLABLE,
+		})
+	),
 });
 
 export const INTERNAL_TRANSFER_NULL: Partial<IInternalTransfer> = {
-	stock_uuid: '',
 	from_warehouse_uuid: '',
 	to_warehouse_uuid: '',
 	rack_uuid: null,
 	floor_uuid: null,
 	box_uuid: null,
 	quantity: 0,
+	serials: [],
 	remarks: null,
 };
 
 export type IInternalTransfer = z.infer<typeof INTERNAL_TRANSFER_SCHEMA>;
+//* Internal Transfer Schema
+export const INTERNAL_TRANSFER_LOG_SCHEMA = z.object({
+	from_warehouse_uuid: STRING_REQUIRED,
+	to_warehouse_uuid: STRING_REQUIRED,
+	rack_uuid: STRING_NULLABLE,
+	floor_uuid: STRING_NULLABLE,
+	box_uuid: STRING_NULLABLE,
+	remarks: STRING_NULLABLE,
+	purchase_entry_uuid: STRING_REQUIRED,
+});
+
+export const INTERNAL_TRANSFER_LOG_NULL: Partial<IInternalTransferLog> = {
+	from_warehouse_uuid: '',
+	to_warehouse_uuid: '',
+	rack_uuid: null,
+	floor_uuid: null,
+	box_uuid: null,
+	remarks: null,
+	purchase_entry_uuid: '',
+};
+
+export type IInternalTransferLog = z.infer<typeof INTERNAL_TRANSFER_LOG_SCHEMA>;
 
 //* Branch Schema
 export const BRANCH_SCHEMA = z.object({
@@ -403,6 +431,7 @@ export type IPurchaseReturn = z.infer<typeof PURCHASE_RETURN_SCHEMA>;
 //* Purchase Log
 export const PURCHASE_LOG_SCHEMA = z.object({
 	uuid: STRING_OPTIONAL,
+	product_uuid: STRING_OPTIONAL,
 	purchase_uuid: STRING_OPTIONAL,
 	product_entry_uuid: STRING_REQUIRED,
 	serial_no: STRING_REQUIRED,
@@ -480,3 +509,17 @@ export const TRANSFER_NULL: Partial<ITransfer> = {
 };
 
 export type ITransfer = z.infer<typeof TRANSFER_SCHEMA>;
+
+export const TRANSFER_LOG_SCHEMA = z.object({
+	order_uuid: STRING_REQUIRED,
+	purchase_entry_uuid: STRING_REQUIRED,
+	remarks: STRING_NULLABLE,
+});
+
+export const TRANSFER_LOG_NULL: Partial<ITransferLog> = {
+	order_uuid: '',
+	purchase_entry_uuid: '',
+	remarks: null,
+};
+
+export type ITransferLog = z.infer<typeof TRANSFER_LOG_SCHEMA>;

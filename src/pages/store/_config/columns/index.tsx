@@ -268,18 +268,17 @@ export const productColumns = ({
 	for (let i = 0; i < 12; i++) {
 		const warehouseNum = i + 1;
 		const accessorKey = `warehouse_${warehouseNum}` as const;
-		
+
 		columns.push({
 			accessorKey,
 			header: () => {
 				const [warehouse_name, branch_name] = getWarehouseAndBranch(warehouse, accessorKey as IWarehouseKey);
-				
+
 				return <Location branch_name={branch_name?.slice(0, -1)} warehouse_name={warehouse_name} />;
 			},
 			enableColumnFilter: false,
 			size: 40,
 			cell: (info: any) => {
-				
 				return (
 					<div className='flex items-center gap-2'>
 						<Transfer
@@ -345,11 +344,6 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 	{
 		accessorKey: 'serial_no',
 		header: 'Serial No',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'quantity',
-		header: 'Quantity',
 		enableColumnFilter: false,
 	},
 	{
@@ -430,17 +424,12 @@ export const purchaseReturnColumns = (): ColumnDef<IPurchaseReturnTableData>[] =
 export const purchaseReturnEntryColumns = (): ColumnDef<IPurchaseReturnEntryTableData>[] => [
 	{
 		accessorKey: 'product_name',
-		header: 'Product ID',
+		header: 'Product',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'quantity',
-		header: 'Quantity',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'price_per_unit',
-		header: 'Price Per Unit',
+		accessorKey: 'serial_no',
+		header: 'Serial No',
 		enableColumnFilter: false,
 	},
 ];
@@ -536,6 +525,11 @@ export const internalTransferColumns = (): ColumnDef<IInternalTransferTableData>
 		enableColumnFilter: false,
 	},
 	{
+		accessorKey: 'serial_no',
+		header: 'Serial No',
+		enableColumnFilter: false,
+	},
+	{
 		accessorFn: (row) =>
 			LocationName({
 				branch_name: row.from_branch_name,
@@ -622,11 +616,6 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 	{
 		accessorKey: 'warehouse_name',
 		header: 'Warehouse',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'quantity',
-		header: 'Quantity',
 		enableColumnFilter: false,
 	},
 ];

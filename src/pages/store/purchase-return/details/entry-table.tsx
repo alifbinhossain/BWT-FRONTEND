@@ -10,7 +10,7 @@ const EntryTable: React.FC<{ data: IPurchaseReturnDetails }> = ({ data }) => {
 
 	return (
 		<DataTableEntry
-			title='Purchase Entry'
+			title='Purchase Return Entry'
 			columns={columns}
 			data={data?.purchase_return_entry || []}
 			defaultVisibleColumns={{ created_at: false, updated_at: false, created_by_name: false }}

@@ -21,7 +21,6 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 const Product = () => {
 	const navigate = useNavigate();
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreProducts<IProductTableData[]>();
-	console.log(data);
 	const { data: warehouse } = useOtherWarehouse<{ label: string; value: string; assigned: string }[]>();
 	const pageInfo = useMemo(() => new PageInfo('Store/Product', url, 'store__product'), [url]);
 	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
@@ -81,9 +80,9 @@ const Product = () => {
 			name: row.original.name,
 		});
 		setIsOpenActionTrxModal(true);
+		navigate(`/store/internal-transfer/${row.original.uuid}`);
 	};
 	
-	console.log('warehouse', warehouse);
 	const handleOrderAgainstWarehouseTrx = (
 		row: Row<IProductTableData>,
 		warehouseKey:
@@ -189,16 +188,6 @@ const Product = () => {
 							setDeleteItems,
 							url,
 							deleteData,
-						}}
-					/>,
-					<AgainstTrx
-						{...{
-							open: isOpenActionTrxModal,
-							setOpen: setIsOpenActionTrxModal,
-							updatedData: updateActionTrxData,
-							setUpdatedData: setUpdateActionTrxData,
-							postData,
-							url: '/store/internal-transfer',
 						}}
 					/>,
 				])}
