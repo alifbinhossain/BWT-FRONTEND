@@ -3,6 +3,7 @@ import { User } from 'lucide-react';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
+import ColumnImage from '@/components/core/data-table/_views/column-image';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
@@ -212,6 +213,53 @@ export const orderColumnsForDetails = ({
 
 			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
 		},
+	},
+	{
+		accessorKey: 'images',
+		header: 'Images',
+		cell: (info) => {
+			const { image_1, image_2, image_3 } = info.row.original;
+
+			return (
+				<div className='flex gap-2'>
+					{image_1 && <ColumnImage src={image_1 as string} alt={'image_1'} />}
+					{image_2 && <ColumnImage src={image_2 as string} alt={'image_2'} />}
+					{image_3 && <ColumnImage src={image_3 as string} alt={'image_3'} />}
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'status',
+		header: 'Status',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const status = info.getValue() as string;
+			const bgColorClass =
+				{
+					accepted: 'bg-success',
+					rejected: 'bg-red-500',
+					not_repairable: 'bg-gray-500',
+					pending: 'bg-warning',
+				}[status?.toLowerCase()] || '';
+
+			return (
+				<div>
+					<span className={`rounded px-2 py-1 capitalize text-white ${bgColorClass}`}>{status}</span>
+					<DateTime
+						date={
+							info.row.original.status_update_date ? new Date(info.row.original.status_update_date) : null
+						}
+						isTime={false}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'diagnosis_proposed_cost',
+		header: 'Proposed Cost',
+		enableColumnFilter: false,
 	},
 	{
 		accessorFn: (row) => {
