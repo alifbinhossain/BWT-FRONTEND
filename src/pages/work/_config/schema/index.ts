@@ -99,7 +99,7 @@ export const REPAIR_SCHEMA = z
 		is_transferred_for_qc: BOOLEAN_OPTIONAL.default(false),
 		is_ready_for_delivery: BOOLEAN_OPTIONAL.default(false),
 		repairing_problems_uuid: STRING_ARRAY,
-		repairing_problem_statement: STRING_OPTIONAL,
+		repairing_problem_statement: STRING_NULLABLE,
 		repair_product_transfer: BOOLEAN_OPTIONAL.default(false),
 		product_transfer: z.array(
 			z.object({
@@ -339,7 +339,7 @@ export type IAccessories = z.infer<typeof ACCESSORIES_SCHEMA>;
 //* Transfer Schema
 export const TRANSFER_SCHEMA = z.object({
 	purchase_entry_uuid: STRING_REQUIRED,
-	warehouse_uuid: STRING_REQUIRED,
+	warehouse_uuid: STRING_OPTIONAL,
 	remarks: STRING_NULLABLE,
 });
 

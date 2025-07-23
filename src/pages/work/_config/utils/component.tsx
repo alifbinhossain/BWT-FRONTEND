@@ -85,8 +85,9 @@ export const TableForColumn = ({ value, headers }: any) => {
 					{value?.map((item: any, idx: number) => (
 						<tr key={idx}>
 							<td className={cn(rowStyle)}>{item.product_name}</td>
+							<td className={cn(rowStyle)}>{item.serial_no}</td>
+							<td className={cn(rowStyle)}>{item.branch_name}</td>
 							<td className={cn(rowStyle)}>{item.warehouse_name}</td>
-							<td className={cn(rowStyle)}>{item.quantity}</td>
 						</tr>
 					))}
 				</tbody>

@@ -11,7 +11,9 @@ import { IPurchaseReturn } from '../../_config/schema';
 const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 	const form = useFormContext<IPurchaseReturn>();
 	const { data: purchaseOptions } = useOtherPurchase<IFormSelectOption[]>();
-	const { data: warehouseOptions } = useOtherWarehouseByQuery<IFormSelectOption[]>(`purchase_uuid=${form.watch('purchase_uuid')}`);
+	const { data: warehouseOptions } = useOtherWarehouseByQuery<IFormSelectOption[]>(
+		`purchase_uuid=${form.watch('purchase_uuid')}`
+	);
 
 	return (
 		<CoreForm.Section title={`Information`}>
@@ -35,8 +37,9 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 				render={(props) => (
 					<CoreForm.ReactSelect
 						menuPortalTarget={document.body}
-						isDisabled={form.watch('purchase_uuid')===''}
+						isDisabled={form.watch('purchase_uuid') === ''|| isUpdate}
 						label='Warehouse'
+					
 						placeholder='Select Warehouse'
 						options={warehouseOptions!}
 						{...props}

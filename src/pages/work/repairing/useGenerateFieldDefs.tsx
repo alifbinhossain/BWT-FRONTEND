@@ -10,7 +10,6 @@ import { useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/o
 import { IRepair } from '../_config/schema';
 import { ICustomPurchaseEntrySelectOption, ICustomWarehouseSelectOption } from '../order/details/transfer/utills';
 
-
 interface IGenerateFieldDefsProps {
 	remove: (index: any) => void;
 	watch?: UseFormWatch<IRepair>;
@@ -20,7 +19,9 @@ interface IGenerateFieldDefsProps {
 // Define this outside your field definitions
 
 const useGenerateFieldDefs = ({ remove, watch, form, data }: IGenerateFieldDefsProps): FieldDef[] => {
-	const { data: purchaseEntryOptions } = useOtherPurchaseEntry<ICustomPurchaseEntrySelectOption[]>();
+	const { data: purchaseEntryOptions } = useOtherPurchaseEntry<ICustomPurchaseEntrySelectOption[]>(
+		`is_warehouse=true&is_purchase_return_entry=false&is_product_transfer=false`
+	);
 	const { data: warehouseOptions } = useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 
 	return [
@@ -30,8 +31,10 @@ const useGenerateFieldDefs = ({ remove, watch, form, data }: IGenerateFieldDefsP
 			type: 'custom',
 			component: (index: number) => {
 				const warehouseUuid =
-					purchaseEntryOptions?.find((item) => item.value === data?.purchase_entry_uuid)?.warehouse_uuid ??
-					'';
+					purchaseEntryOptions?.find(
+						(item) => item.value === form.watch(`product_transfer.${index}.purchase_entry_uuid`)
+					)?.warehouse_uuid ?? '';
+
 				form.setValue(`product_transfer.${index}.warehouse_uuid`, warehouseUuid);
 				return (
 					<FormField
@@ -47,16 +50,6 @@ const useGenerateFieldDefs = ({ remove, watch, form, data }: IGenerateFieldDefsP
 							/>
 						)}
 					/>
-				);
-			},
-		},
-		{
-			header: 'Warehouse',
-			accessorKey: 'warehouse_uuid',
-			type: 'custom',
-			component: (index: number) => {
-				return (
-					<span>{warehouseOptions?.find((item) => item.value === data?.warehouse_uuid)?.label ?? ''}</span>
 				);
 			},
 		},

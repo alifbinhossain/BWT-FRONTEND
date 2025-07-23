@@ -44,6 +44,8 @@ export type ITransferTableData = {
 	max_quantity?: number;
 	product_name: string;
 	product_uuid: string;
+	purchase_entry_uuid: string;
+	serial_no: string;
 	order_id: string;
 	order_uuid: string;
 	info_uuid: string;

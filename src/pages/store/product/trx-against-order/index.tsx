@@ -22,7 +22,7 @@ const AddOrUpdate = () => {
 	const { uuid, warehouse_uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 
-	const { postData, deleteData } = useStorePurchases();
+	const { postData } = useStorePurchases();
 	const { invalidateQuery: invalidateStoreProducts } = useStoreProducts<IProductTableData[]>();
 
 	const form = useRHF(TRANSFER_SCHEMA, TRANSFER_NULL);
