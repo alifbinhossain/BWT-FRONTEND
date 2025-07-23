@@ -34,8 +34,9 @@ const Trx: React.FC<ITrxProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { data } = useStoreOrderTransfersByUUID<ITransferTableData>(updatedData?.uuid as string);
-	const { data: purchaseEntryOptions, invalidateQuery: invalidateQueryOtherProduct } =
-		useOtherPurchaseEntry<ICustomPurchaseEntrySelectOption[]>();
+	const { data: purchaseEntryOptions, invalidateQuery: invalidateQueryOtherProduct } = useOtherPurchaseEntry<
+		ICustomPurchaseEntrySelectOption[]
+	>(`is_warehouse=true&&is_purchase_return_entry=false`);
 	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
 		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
