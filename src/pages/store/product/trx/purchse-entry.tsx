@@ -10,7 +10,7 @@ const PurchaseEntry: React.FC<{ form: any; index: number; warehouse_uuid: string
 	warehouse_uuid,
 }) => {
 	const { data: purchaseEntryOptions } = useOtherPurchaseEntry<IFormSelectOption[]>(
-		`is_purchase_return_entry=false&warehouse_uuid=${warehouse_uuid}`
+		`is_purchase_return_entry=false&warehouse_uuid=${warehouse_uuid}&is_product_transfer=false`
 	);
 
 	return (
