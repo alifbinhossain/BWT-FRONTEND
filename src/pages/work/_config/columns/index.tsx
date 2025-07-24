@@ -1,26 +1,13 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
-import { User } from 'lucide-react';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
-import ColumnImage from '@/components/core/data-table/_views/column-image';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
 import { Location, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
-import {
-	IAccessoriesTableData,
-	IDiagnosisTableData,
-	IInfoTableData,
-	IOrderTableData,
-	IProblemsTableData,
-	IProcessTableData,
-	ISectionTableData,
-	ITransferTableData,
-	IZoneTableData,
-} from './columns.type';
 import {
 	IAccessoriesTableData,
 	IDiagnosisTableData,
@@ -125,9 +112,7 @@ type IOrderColumns = {
 };
 export const orderColumnsForDetails = ({
 	actionTrxAccess,
-	actionProceedToRepair,
 	handleAgainstTrx,
-	handleProceedToRepair,
 }: IOrderColumns = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_diagnosis_need',
@@ -874,21 +859,6 @@ export const RepairingColumns = ({
 			disableFullFilter: true,
 		},
 	},
-	// {
-	// 	id: 'action_trx',
-	// 	header: () => (
-	// 		<>
-	// 			Transfer Repairing <br />
-	// 			Product
-	// 		</>
-	// 	),
-	// 	cell: (info) => <Transfer onClick={() => handleAgainstTrx?.(info.row)} />,
-	// 	size: 40,
-	// 	meta: {
-	// 		hidden: !actionTrxAccess,
-	// 		disableFullFilter: true,
-	// 	},
-	// },
 	{
 		accessorFn: (row) => {
 			return (
@@ -901,7 +871,6 @@ export const RepairingColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => {
 			const value = info.row.original.product_transfer as ITransferTableData[] | undefined;
-			const headers = ['Product', 'Serial', 'Branch', 'Warehouse'];
 			const headers = ['Product', 'Serial', 'Branch', 'Warehouse'];
 			return <TableForColumn value={value} headers={headers} />;
 		},
@@ -1205,8 +1174,6 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 ];
 //* Diagnosis Columns
 export const diagnosisColumns = ({
-	actionTrxAccess,
-	handleAgainstTrx,
 	handleProceedToRepair,
 }: {
 	actionTrxAccess: boolean;
@@ -1341,18 +1308,6 @@ export const diagnosisColumns = ({
 			<Switch checked={info.getValue() as boolean} onCheckedChange={() => handleProceedToRepair?.(info.row)} />
 		),
 	},
-	// {
-	// 	id: 'action_trx',
-	// 	header: 'Section Transfer',
-	// 	cell: (info) => (
-	// 		<Transfer onClick={() => handleAgainstTrx(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
-	// 	),
-	// 	size: 40,
-	// 	meta: {
-	// 		hidden: !actionTrxAccess,
-	// 		disableFullFilter: true,
-	// 	},
-	// },
 ];
 //* Section Columns
 export const sectionColumns = (): ColumnDef<ISectionTableData>[] => [
@@ -1374,11 +1329,6 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 		header: 'Section',
 		enableColumnFilter: false,
 	},
-	// {
-	// 	accessorKey: 'process_id',
-	// 	header: 'Process ID',
-	// 	enableColumnFilter: false,
-	// },
 	{
 		accessorKey: 'status',
 		header: 'Process Status',
@@ -1473,4 +1423,3 @@ export const transferColumns = (): ColumnDef<ITransferTableData, unknown>[] => [
 		enableColumnFilter: false,
 	},
 ];
-
