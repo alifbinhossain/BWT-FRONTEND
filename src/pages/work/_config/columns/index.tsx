@@ -1,8 +1,6 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { User } from 'lucide-react';
 
-
-
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import ColumnImage from '@/components/core/data-table/_views/column-image';
@@ -10,12 +8,19 @@ import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-
-
-import { Location, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
+import { Location, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
-import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
-
+import {
+	IAccessoriesTableData,
+	IDiagnosisTableData,
+	IInfoTableData,
+	IOrderTableData,
+	IProblemsTableData,
+	IProcessTableData,
+	ISectionTableData,
+	ITransferTableData,
+	IZoneTableData,
+} from './columns.type';
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -274,13 +279,7 @@ export const orderColumnsForDetails = ({
 		cell: (info) => {
 			const { image_1, image_2, image_3 } = info.row.original;
 
-			return (
-				<div className='flex gap-2'>
-					{image_1 && <ColumnImage src={image_1 as string} alt={'image_1'} />}
-					{image_2 && <ColumnImage src={image_2 as string} alt={'image_2'} />}
-					{image_3 && <ColumnImage src={image_3 as string} alt={'image_3'} />}
-				</div>
-			);
+			return <OrderImages image_1={image_1} image_2={image_2} image_3={image_3} />;
 		},
 	},
 	{
@@ -515,6 +514,15 @@ export const orderColumns = ({
 		},
 	},
 	{
+		accessorKey: 'images',
+		header: 'Images',
+		cell: (info) => {
+			const { image_1, image_2, image_3 } = info.row.original;
+
+			return <OrderImages image_1={image_1} image_2={image_2} image_3={image_3} />;
+		},
+	},
+	{
 		accessorFn: (row) => {
 			return row.accessories_name
 				?.map((item) => item)
@@ -652,6 +660,15 @@ export const QCColumns = ({
 			const { problem_statement } = info.row.original;
 
 			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
+	},
+	{
+		accessorKey: 'images',
+		header: 'Images',
+		cell: (info) => {
+			const { image_1, image_2, image_3 } = info.row.original;
+
+			return <OrderImages image_1={image_1} image_2={image_2} image_3={image_3} />;
 		},
 	},
 	{
@@ -873,7 +890,7 @@ export const RepairingColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => {
 			const value = info.row.original.product_transfer as ITransferTableData[] | undefined;
-			const headers = ['Product', 'Serial','Branch' ,'Warehouse'];
+			const headers = ['Product', 'Serial', 'Branch', 'Warehouse'];
 			return <TableForColumn value={value} headers={headers} />;
 		},
 	},
@@ -907,6 +924,15 @@ export const RepairingColumns = ({
 			const { problem_statement } = info.row.original;
 
 			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
+	},
+	{
+		accessorKey: 'images',
+		header: 'Images',
+		cell: (info) => {
+			const { image_1, image_2, image_3 } = info.row.original;
+
+			return <OrderImages image_1={image_1} image_2={image_2} image_3={image_3} />;
 		},
 	},
 	{
@@ -1057,6 +1083,15 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		},
 	},
 	{
+		accessorKey: 'images',
+		header: 'Images',
+		cell: (info) => {
+			const { image_1, image_2, image_3 } = info.row.original;
+
+			return <OrderImages image_1={image_1} image_2={image_2} image_3={image_3} />;
+		},
+	},
+	{
 		accessorFn: (row) => {
 			return row.diagnosis_problems_name
 				.map((item) => item)
@@ -1160,9 +1195,11 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 export const diagnosisColumns = ({
 	actionTrxAccess,
 	handleAgainstTrx,
+	handleProceedToRepair,
 }: {
 	actionTrxAccess: boolean;
 	handleAgainstTrx: (row: Row<any>) => void;
+	handleProceedToRepair: (row: Row<any>) => void;
 }): ColumnDef<IDiagnosisTableData>[] => [
 	{
 		accessorKey: 'diagnosis_id',
@@ -1221,6 +1258,15 @@ export const diagnosisColumns = ({
 		},
 	},
 	{
+		accessorKey: 'images',
+		header: 'Images',
+		cell: (info) => {
+			const { image_1, image_2, image_3 } = info.row.original;
+
+			return <OrderImages image_1={image_1} image_2={image_2} image_3={image_3} />;
+		},
+	},
+	{
 		accessorFn: (row) => {
 			return row.diagnosis_problems_name
 				.map((item) => item)
@@ -1272,15 +1318,16 @@ export const diagnosisColumns = ({
 	{
 		accessorKey: 'is_proceed_to_repair',
 		header: () => (
-			<div className='flex items-center gap-1'>
-				<span>
-					Proceed to <br />
-					Repair
-				</span>
-			</div>
+			<>
+				Proceed to <br />
+				Repair
+			</>
 		),
+		size: 40,
 		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+		cell: (info) => (
+			<Switch checked={info.getValue() as boolean} onCheckedChange={() => handleProceedToRepair?.(info.row)} />
+		),
 	},
 	// {
 	// 	id: 'action_trx',

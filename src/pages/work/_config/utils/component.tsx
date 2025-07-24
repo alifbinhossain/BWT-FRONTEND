@@ -13,6 +13,8 @@ import {
 	Warehouse,
 } from 'lucide-react';
 
+import ColumnImage from '@/components/core/data-table/_views/column-image';
+
 import { cn } from '@/lib/utils';
 
 import { TLocationProps, TProblemProps, TProductProps, TStoreProductProps, TWarrantyProps } from '../types';
@@ -148,6 +150,24 @@ export const UserNamePhone = ({ user_name, phone }: { user_name: string; phone: 
 					<span className='text-[.8rem] capitalize'>{phone}</span>
 				</div>
 			</div>
+		</div>
+	);
+};
+
+export const OrderImages = ({
+	image_1,
+	image_2,
+	image_3,
+}: {
+	image_1?: string;
+	image_2?: string;
+	image_3?: string;
+}) => {
+	return (
+		<div className='flex gap-2'>
+			{image_1 && <ColumnImage src={image_1 as string} alt={'image_1'} />}
+			{image_2 && <ColumnImage src={image_2 as string} alt={'image_2'} />}
+			{image_3 && <ColumnImage src={image_3 as string} alt={'image_3'} />}
 		</div>
 	);
 };

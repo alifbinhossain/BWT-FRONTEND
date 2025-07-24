@@ -34,6 +34,10 @@ export type IDiagnosisTableData = {
 	created_by: string;
 	created_at: string;
 	updated_at: string;
+
+	image_1?: string;
+	image_2?: string;
+	image_3?: string;
 };
 //* Transfer
 export type ITransferTableData = {
