@@ -25,6 +25,7 @@ import { useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../
 import { IRepair, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
 import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '../order/details/transfer/utills';
 import { orderFields } from '../order/utill';
+import Information from './information';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
@@ -43,7 +44,10 @@ const AddOrUpdate = () => {
 	const { data, updateData, postData, imageUpdateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(
 		uuid as string
 	);
-	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(uuid as string);
+
+	const { data: orderData, invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
+		uuid as string
+	);
 	const { invalidateQuery: invalidateQueryRepairing } = useWorkRepairing<IOrderTableData[]>();
 	const { invalidateQuery: invalidateQueryProduct } = useStoreProducts<IFormSelectOption[]>();
 
@@ -185,6 +189,7 @@ const AddOrUpdate = () => {
 			form={form}
 			onSubmit={onSubmit}
 		>
+			<Information data={(orderData || []) as IOrderTableData} />
 			<CoreForm.Section
 				title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
 				className='flex'
@@ -272,3 +277,4 @@ const AddOrUpdate = () => {
 };
 
 export default AddOrUpdate;
+

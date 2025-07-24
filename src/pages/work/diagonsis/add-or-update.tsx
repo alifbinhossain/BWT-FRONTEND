@@ -11,7 +11,7 @@ import { useOtherProblem } from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
 
 import { IDiagnosisTableData } from '../_config/columns/columns.type';
-import { useWorkDiagnosisByUUID, useWorkOrder } from '../_config/query';
+import { useWorkDiagnosisByUUID, useWorkOrder, useWorkRepairing } from '../_config/query';
 import { DIAGNOSIS_NULL, DIAGNOSIS_SCHEMA } from '../_config/schema';
 import { IDiagnosisAddOrUpdateProps } from '../_config/types';
 
@@ -28,6 +28,7 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 	const { user } = useAuth();
 	const { data } = useWorkDiagnosisByUUID<IDiagnosisTableData>(updatedData?.uuid as string);
 	const { invalidateQuery: invalidateOrder } = useWorkOrder();
+	const { invalidateQuery: invalidateRepair } = useWorkRepairing();
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
 	const statusOption = [
 		{ label: 'Pending', value: 'pending' },
@@ -65,6 +66,8 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 			},
 			onClose,
 		});
+
+		invalidateRepair();
 	}
 
 	return (
