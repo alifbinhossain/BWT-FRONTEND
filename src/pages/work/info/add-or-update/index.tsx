@@ -17,6 +17,7 @@ import Formdata from '@/utils/formdata';
 import { IInfoTableData } from '../../_config/columns/columns.type';
 import { useWorkInfo, useWorkInfoByUUID } from '../../_config/query';
 import { IInfo, INFO_NULL, INFO_SCHEMA } from '../../_config/schema';
+import { orderFields } from '../../order/utill';
 import Header from './header';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
 import useGenerateFieldDefsV2 from './useGenerateFieldDefsV2';
@@ -62,6 +63,7 @@ const AddOrUpdate = () => {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
+		console.log('values', values);
 
 		if (isProductReceived && values.order_entry.length === 0) {
 			ShowLocalToast({
@@ -98,10 +100,16 @@ const AddOrUpdate = () => {
 						created_by: user?.uuid,
 						uuid: nanoid(),
 					};
+					const formData = Formdata(newData);
+					orderFields.forEach((field) => {
+						if (item[field as keyof typeof values] == null || item[field as keyof typeof values] === 0) {
+							formData.delete(field);
+						}
+					});
 
-					return postData.mutateAsync({
+					return imagePostData.mutateAsync({
 						url: '/work/order',
-						newData: newData,
+						newData: formData,
 						isOnCloseNeeded: false,
 					});
 				} else {
@@ -110,9 +118,17 @@ const AddOrUpdate = () => {
 
 						updated_at: getDateTime(),
 					};
-					return updateData.mutateAsync({
+					const formData = Formdata(updatedData);
+
+					orderFields.forEach((field) => {
+						if (item[field as keyof typeof values] == null || item[field as keyof typeof values] === 0) {
+							formData.delete(field);
+						}
+					});
+
+					return imageUpdateData.mutateAsync({
 						url: `/work/order/${item.uuid}`,
-						updatedData,
+						updatedData: formData,
 						isOnCloseNeeded: false,
 					});
 				}
@@ -171,7 +187,79 @@ const AddOrUpdate = () => {
 		}));
 
 		const order_entry_entries_promise = order_entry_entries.map((item) => {
-			const formData = Formdata(item);
+			const formData = Formdata({ ...item, bill_amount: 0, proposed_cost: 0 });
+			const formFields = [
+				'id',
+				'order_id',
+				'is_proceed_to_repair',
+				'uuid',
+				'user_name',
+				'user_phone',
+				'is_product_received',
+				'is_diagnosis_needed',
+				'is_delivery_complete',
+				'is_home_repair',
+				'is_challan_needed',
+				'received_date',
+				'user_id',
+				'model_uuid',
+				'model_name',
+				'brand_name',
+				'size_uuid',
+				'size_name',
+				'serial_no',
+				'product',
+				'accessoriesString',
+				'problems_uuid',
+				'order_problems_name',
+				'diagnosis_problems_name',
+				'repairing_problems_name',
+				'qc_problems_name',
+				'delivery_problems_name',
+				'problem_statement',
+				'diagnosis_problem_statement',
+				'repairing_problem_statement',
+				'qc_problem_statement',
+				'delivery_problem_statement',
+				'accessories',
+				'accessories_name',
+				'info_uuid',
+				'info_id',
+				'is_transferred_for_qc',
+				'is_ready_for_delivery',
+				'ready_for_delivery_date',
+				'is_diagnosis_need',
+				'branch_name',
+				'warehouse_uuid',
+				'warehouse_name',
+				'rack_uuid',
+				'rack_name',
+				'floor_uuid',
+				'floor_name',
+				'box_uuid',
+				'box_name',
+				'quantity',
+				'unit',
+				'created_by',
+				'created_at',
+				'updated_at',
+				'diagnosis',
+				'product_transfer',
+				'process',
+				'remarks',
+				'image_1',
+				'image_2',
+				'image_3',
+				'status_update_date',
+				'status',
+				'diagnosis_proposed_cost',
+			];
+			formFields.forEach((field) => {
+				if (item[field as keyof typeof values] == null || item[field as keyof typeof values] === 0) {
+					formData.delete(field);
+				}
+			});
+
 			return imagePostData.mutateAsync({
 				url: '/work/order',
 				newData: formData,
