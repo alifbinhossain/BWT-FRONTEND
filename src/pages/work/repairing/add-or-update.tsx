@@ -1,45 +1,31 @@
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-
-
 // import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
-
-
-
-
-
 import '@/lib/common-queries/other';
-
-
 
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useStoreProducts } from '@/pages/store/_config/query';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
-
-
 import { IFormSelectOption } from '@/components/core/form/types';
 import { ShowLocalToast } from '@/components/others/toast';
-
-
 
 import { useOtherProblem, useOtherProduct, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
-
-
+import Formdata from '@/utils/formdata';
 
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
 import { IRepair, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
 import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '../order/details/transfer/utills';
+import { orderFields } from '../order/utill';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
-
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
@@ -54,7 +40,9 @@ const AddOrUpdate = () => {
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
 	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
 		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
-	const { data, updateData, postData, deleteData } = useWorkOrderByUUID<IOrderTableData>(uuid as string);
+	const { data, updateData, postData, imageUpdateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(
+		uuid as string
+	);
 	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(uuid as string);
 	const { invalidateQuery: invalidateQueryRepairing } = useWorkRepairing<IOrderTableData[]>();
 	const { invalidateQuery: invalidateQueryProduct } = useStoreProducts<IFormSelectOption[]>();
@@ -111,32 +99,32 @@ const AddOrUpdate = () => {
 
 	// Submit handler
 	async function onSubmit(values: IRepair) {
-		let valid = true;
-
 		values.product_transfer.forEach((item: any, index: number) => {
 			const warehouse = warehouseOptions?.find((w) => w.value === item.warehouse_uuid);
 			const product = purchaseEntryOptions?.find((p) => p.value === item.purchase_entry_uuid);
-
-			if (!product) {
-				ShowLocalToast({
-					type: 'error',
-					message: `Product not found for the selected purchase entry: ${item.purchase_entry_uuid}.`,
-				});
-				valid = false;
-				return;
-			}
 		});
-		if (!valid) {
-			return;
-		}
 
 		if (isUpdate) {
 			const order_data = {
 				...values,
+				product_transfer: null,
 				updated_at: getDateTime(),
 			};
-
-			const order_promise = await updateData.mutateAsync({
+			const formData = Formdata({
+				...order_data,
+			});
+			orderFields.forEach((field) => {
+				if (
+					values[field as keyof typeof values] == null ||
+					values[field as keyof typeof values] === '' ||
+					values[field as keyof typeof values] === undefined ||
+					(Array.isArray(values[field as keyof typeof values]) &&
+						(values[field as keyof typeof values] as unknown[]).length === 0)
+				) {
+					formData.delete(field);
+				}
+			});
+			const order_promise = await imageUpdateData.mutateAsync({
 				url: `/work/order/${uuid}`,
 				updatedData: order_data,
 				isOnCloseNeeded: false,

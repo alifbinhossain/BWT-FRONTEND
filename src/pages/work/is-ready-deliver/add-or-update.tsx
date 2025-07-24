@@ -14,6 +14,7 @@ import { IFormSelectOption } from '@/components/core/form/types';
 import { useOtherProblem } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
+import Formdata from '@/utils/formdata';
 
 import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkDiagnosis, useWorkOrderByUUID } from '../_config/query';
@@ -26,8 +27,8 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	setOpen,
 	updatedData,
 	setUpdatedData,
-	postData,
-	updateData,
+	imagePostData,
+	imageUpdateData,
 }) => {
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
@@ -60,23 +61,25 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 		};
 
 		if (isUpdate) {
-			await updateData.mutateAsync({
+			const formData = Formdata({
+				...payload,
+				updated_at: getDateTime(),
+			});
+			await imageUpdateData.mutateAsync({
 				url: `${url}/${updatedData?.uuid}`,
-				updatedData: {
-					...payload,
-					updated_at: getDateTime(),
-				},
+				updatedData: formData,
 				onClose,
 			});
 		} else {
-			await postData.mutateAsync({
+			const formData = Formdata({
+				...payload,
+				created_at: getDateTime(),
+				created_by: user?.uuid,
+				uuid: nanoid(),
+			});
+			await imagePostData.mutateAsync({
 				url,
-				newData: {
-					...payload,
-					created_at: getDateTime(),
-					created_by: user?.uuid,
-					uuid: nanoid(),
-				},
+				newData: formData,
 				onClose,
 			});
 		}
@@ -104,7 +107,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					/>
 				)}
 			/>
-			
+
 			<FormField
 				control={form.control}
 				name='delivery_problem_statement'

@@ -13,7 +13,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const Order = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
+	const { data, isLoading, url, deleteData, imagePostData, imageUpdateData, refetch } =
 		useWorkIsDeliveryReady<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Ready to Deliver', url, 'work__is_ready_for_delivery'), [url]);
@@ -71,8 +71,8 @@ const Order = () => {
 							setOpen: setIsOpenAddModal,
 							updatedData,
 							setUpdatedData,
-							postData,
-							updateData,
+							imagePostData,
+							imageUpdateData,
 						}}
 					/>,
 

@@ -14,6 +14,7 @@ import { IFormSelectOption } from '@/components/core/form/types';
 import { useOtherProblem } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
+import Formdata from '@/utils/formdata';
 
 import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkDiagnosis, useWorkOrderByUUID } from '../_config/query';
@@ -25,18 +26,16 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	setOpen,
 	updatedData,
 	setUpdatedData,
-	postData,
-	updateData,
+	imagePostData,
+	imageUpdateData,
 }) => {
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
 	const { data } = useWorkOrderByUUID<IOrderTableData>(updatedData?.uuid as string);
 	const { invalidateQuery: invalidateDiagnosis } = useWorkDiagnosis<IDiagnosisTableData[]>();
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
-	
 
 	const form = useRHF(ORDER_SCHEMA, ORDER_NULL);
-	
 
 	// Reset form values when data is updated
 	useEffect(() => {
@@ -58,25 +57,26 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 		const payload = {
 			...values,
 		};
-
+		const formData = Formdata({
+			...payload,
+			updated_at: getDateTime(),
+		});
 		if (isUpdate) {
-			await updateData.mutateAsync({
+			await imageUpdateData.mutateAsync({
 				url: `/work/order/${updatedData?.uuid}`,
-				updatedData: {
-					...payload,
-					updated_at: getDateTime(),
-				},
+				updatedData: formData,
 				onClose,
 			});
 		} else {
-			await postData.mutateAsync({
+			const formData = Formdata({
+				...payload,
+				created_at: getDateTime(),
+				created_by: user?.uuid,
+				uuid: nanoid(),
+			});
+			await imagePostData.mutateAsync({
 				url: '/work/order',
-				newData: {
-					...payload,
-					created_at: getDateTime(),
-					created_by: user?.uuid,
-					uuid: nanoid(),
-				},
+				newData: formData,
 				onClose,
 			});
 		}
@@ -110,7 +110,6 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					<CoreForm.ReactSelect
 						isMulti
 						label='Problems'
-						
 						options={problemOption!}
 						placeholder='Select Problems'
 						{...props}

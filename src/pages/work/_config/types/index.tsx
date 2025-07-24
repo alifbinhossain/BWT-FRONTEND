@@ -2,7 +2,7 @@
 // import { UseMutationResult } from '@tanstack/react-query';
 // import { AxiosError } from 'axios';
 
-import { IDefaultAddOrUpdateProps } from '@/types';
+import { IDefaultAddOrUpdateProps, IFileAddOrUpdateProps } from '@/types';
 
 import '../columns/columns.type';
 
@@ -27,7 +27,7 @@ export interface IProblemAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 }
 
 //* Orders
-export interface IOrderAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+export interface IOrderAddOrUpdateProps extends IFileAddOrUpdateProps {
 	updatedData?: IOrderTableData | null;
 }
 
