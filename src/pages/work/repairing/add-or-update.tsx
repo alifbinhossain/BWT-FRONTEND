@@ -1,45 +1,30 @@
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-
-
 // import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
-
-
-
-
-
 import '@/lib/common-queries/other';
-
-
 
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useStoreProducts } from '@/pages/store/_config/query';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
-
-
 import { IFormSelectOption } from '@/components/core/form/types';
 import { ShowLocalToast } from '@/components/others/toast';
-
-
 
 import { useOtherProblem, useOtherProduct, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-
-
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
 import { IRepair, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
 import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '../order/details/transfer/utills';
+import Information from './information';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
-
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
@@ -55,7 +40,10 @@ const AddOrUpdate = () => {
 	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
 		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { data, updateData, postData, deleteData } = useWorkOrderByUUID<IOrderTableData>(uuid as string);
-	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(uuid as string);
+
+	const { data: orderData, invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
+		uuid as string
+	);
 	const { invalidateQuery: invalidateQueryRepairing } = useWorkRepairing<IOrderTableData[]>();
 	const { invalidateQuery: invalidateQueryProduct } = useStoreProducts<IFormSelectOption[]>();
 
@@ -197,6 +185,7 @@ const AddOrUpdate = () => {
 			form={form}
 			onSubmit={onSubmit}
 		>
+			<Information data={(orderData || []) as IOrderTableData} />
 			<CoreForm.Section
 				title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
 				className='flex'
