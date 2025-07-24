@@ -73,7 +73,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 		const payload = {
 			...values,
 		};
-		console.log(payload);
+	
 
 		if (isUpdate) {
 			const formData = Formdata({ ...payload, updated_at: getDateTime() });
