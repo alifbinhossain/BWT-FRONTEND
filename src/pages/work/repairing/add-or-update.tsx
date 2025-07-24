@@ -37,7 +37,7 @@ const AddOrUpdate = () => {
 		ICustomProductsSelectOption[]
 	>(`is_warehouse=true&&is_purchase_return_entry=false`);
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
-	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
+	const { invalidateQuery: invalidateQueryOtherWarehouse } =
 		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { data, updateData, postData, imageUpdateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(
 		uuid as string
