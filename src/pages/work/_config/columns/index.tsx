@@ -1185,7 +1185,6 @@ export const diagnosisColumns = ({
 		header: 'Diagnosis ID',
 		enableColumnFilter: false,
 	},
-
 	{
 		accessorKey: 'order_id',
 		header: 'Order ID',
@@ -1266,6 +1265,7 @@ export const diagnosisColumns = ({
 		accessorKey: 'status',
 		header: 'Status',
 		enableColumnFilter: false,
+		size: 180,
 		cell: (info) => {
 			const status = info.getValue() as string;
 			const bgColorClass =
@@ -1274,11 +1274,14 @@ export const diagnosisColumns = ({
 					rejected: 'bg-red-500',
 					not_repairable: 'bg-gray-500',
 					pending: 'bg-warning',
+					customer_reject: 'bg-red-500',
 				}[status.toLowerCase()] || '';
 
 			return (
-				<div>
-					<span className={`rounded px-2 py-1 capitalize text-white ${bgColorClass}`}>{status}</span>
+				<div className=' gap-2'>
+					<span className={`rounded px-2 py-1 capitalize text-white flex-1 ${bgColorClass}`}>
+						{status?.split('_').join(' ')}
+					</span>
 					<DateTime
 						date={
 							info.row.original.status_update_date ? new Date(info.row.original.status_update_date) : null

@@ -34,6 +34,7 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 		{ label: 'Pending', value: 'pending' },
 		{ label: 'Rejected', value: 'rejected' },
 		{ label: 'Not Repairable', value: 'not_repairable' },
+		{ label: 'Customer Reject', value: 'customer_reject' },
 	];
 
 	const form = useRHF(DIAGNOSIS_SCHEMA, DIAGNOSIS_NULL);
