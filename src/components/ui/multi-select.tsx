@@ -166,12 +166,12 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 		};
 
 		const clearExtraOptions = () => {
-			const newSelectedValues = selectedValues.slice(0, maxCount);
+			const newSelectedValues = selectedValues?.slice(0, maxCount);
 			setSelectedValues(newSelectedValues);
 		};
 
 		const toggleAll = () => {
-			if (selectedValues.length === options.length) {
+			if (selectedValues?.length === options.length) {
 				handleClear();
 			} else {
 				const allValues = options.map((option) => option.value);
@@ -192,7 +192,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 							className
 						)}
 					>
-						{selectedValues.length > 0 ? (
+						{selectedValues?.length > 0 ? (
 							<div className='flex w-full items-center justify-between'>
 								<div className='flex flex-wrap items-center'>
 									{selectedValues.slice(0, maxCount).map((value) => {
@@ -267,7 +267,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 									<div
 										className={cn(
 											'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-											selectedValues.length === options.length
+											selectedValues?.length === options.length
 												? 'bg-primary text-primary-foreground'
 												: 'opacity-50 [&_svg]:invisible'
 										)}
@@ -277,7 +277,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 									<span>(Select All)</span>
 								</CommandItem>
 								{options.map((option) => {
-									const isSelected = selectedValues.includes(option.value);
+									const isSelected = selectedValues?.includes(option.value);
 									return (
 										<CommandItem
 											key={option.value}
@@ -305,7 +305,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 							<CommandSeparator />
 							<CommandGroup>
 								<div className='flex items-center justify-between'>
-									{selectedValues.length > 0 && (
+									{selectedValues?.length > 0 && (
 										<>
 											<CommandItem
 												onSelect={handleClear}

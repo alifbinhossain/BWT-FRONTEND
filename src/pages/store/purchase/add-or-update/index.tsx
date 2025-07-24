@@ -10,7 +10,7 @@ import CoreForm from '@core/form';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { useStorePurchases, useStorePurchasesByUUID } from '../../_config/query';
+import { useStoreProducts, useStorePurchases, useStorePurchasesByUUID } from '../../_config/query';
 import { IPurchase, PURCHASE_NULL, PURCHASE_SCHEMA } from '../../_config/schema';
 import Header from './header';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
@@ -26,6 +26,7 @@ const AddOrUpdate = () => {
 	const { url: purchaseUrl, updateData, postData, deleteData } = useStorePurchases();
 
 	const { data, invalidateQuery: invalidateTestDetails } = useStorePurchasesByUUID(uuid as string);
+	const { invalidateQuery: invalidateProduct } = useStoreProducts();
 
 	const form = useRHF(PURCHASE_SCHEMA, PURCHASE_NULL);
 
@@ -99,6 +100,7 @@ const AddOrUpdate = () => {
 					.then(() => form.reset(PURCHASE_NULL))
 					.then(() => {
 						invalidateTestDetails(); // TODO: Update invalidate query
+						invalidateProduct();
 						navigate(`/store/purchase/${uuid}/details`);
 					});
 			} catch (err) {
@@ -157,6 +159,7 @@ const AddOrUpdate = () => {
 				.then(() => form.reset(PURCHASE_NULL))
 				.then(() => {
 					invalidateTestDetails(); // TODO: Update invalidate query
+					invalidateProduct();
 					navigate(`/store/purchase/${new_purchase_uuid}/details`);
 				});
 		} catch (err) {
@@ -248,8 +251,9 @@ const AddOrUpdate = () => {
 						Grand Total:
 					</td>
 
-					<td className='border-t px-3 py-2'>{total.total_price}</td>
-					<td className='border-t px-3 py-2'></td>
+					<td className='border-t px-3 py-2' colSpan={5}>
+						{total.total_price}
+					</td>
 				</tr>
 			</CoreForm.DynamicFields>
 
@@ -260,6 +264,7 @@ const AddOrUpdate = () => {
 						setDeleteItem,
 						url: `/store/purchase-entry`,
 						deleteData,
+						invalidateQueries:invalidateProduct,
 						onClose: () => {
 							form.setValue(
 								'purchase_entry',

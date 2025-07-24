@@ -614,9 +614,25 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
+		accessorKey: 'serial_no',
+		header: 'Serial',
 		enableColumnFilter: false,
+	},
+	{
+		accessorFn: (row) => LocationName(row),
+		id: 'location',
+		header: 'Location',
+		enableColumnFilter: false,
+		size: 170,
+		cell: (info) => {
+			const { branch_name, warehouse_name } = info.row.original;
+			return (
+				<Location
+					branch_name={branch_name}
+					warehouse_name={warehouse_name}
+				/>
+			);
+		},
 	},
 ];
 //* Room Columns

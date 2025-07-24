@@ -220,6 +220,8 @@ export type ITransferTableData = {
 	id: string;
 	warehouse_uuid: string;
 	warehouse_name: string;
+	branch_uuid: string;
+	branch_name: string;
 	max_quantity?: number;
 	product_name: string;
 	product_uuid: string;
