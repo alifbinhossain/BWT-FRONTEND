@@ -72,7 +72,6 @@ const Trx: React.FC<ITrxProps> = ({
 		const warehouse_uuid = purchaseEntryOptions?.find(
 			(option) => option.value === values.purchase_entry_uuid
 		)?.warehouse_uuid;
-		console.log(warehouse_uuid);
 		if (isUpdate) {
 			// ADD NEW ITEM
 			updateData.mutateAsync({

@@ -64,7 +64,6 @@ const FormFileUpload: React.FC<FormFileUploadProps> = ({
 		if (isUpdate) {
 			if (field.value) {
 				setPreview(API_IMAGE_URL + field.value);
-				console.log(API_IMAGE_URL + field.value);
 			}
 		}
 	}, [isUpdate, field.value]);

@@ -63,7 +63,7 @@ const AddOrUpdate = () => {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
-		console.log('values', values);
+		
 
 		if (isProductReceived && values.order_entry.length === 0) {
 			ShowLocalToast({

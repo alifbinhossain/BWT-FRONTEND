@@ -87,7 +87,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 					formData.delete(field);
 				}
 			});
-			console.log(formData);
+			
 			await imageUpdateData.mutateAsync({
 				url: `${url}/${updatedData?.uuid}`,
 				updatedData: formData,
