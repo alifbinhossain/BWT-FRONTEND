@@ -25,7 +25,8 @@ const Order = () => {
 	const actionTrxAccess = pageAccess.includes('click_trx');
 	const actionProceedToRepair = pageAccess.includes('click_proceed_to_repair');
 	const actionDiagnosisNeed = pageAccess.includes('click_diagnosis_need');
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkInHandWork<IOrderTableData[]>();
+	const { data, isLoading, url, deleteData, postData, imageUpdateData, updateData, refetch } =
+		useWorkInHandWork<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Order', url, 'work__order'), [url]);
 
@@ -62,7 +63,7 @@ const Order = () => {
 		const is_proceed_to_repair = !row?.original?.is_proceed_to_repair;
 		const updated_at = getDateTime();
 
-		await updateData.mutateAsync({
+		await imageUpdateData.mutateAsync({
 			url: `/work/order/${row?.original?.uuid}`,
 			updatedData: { is_proceed_to_repair, updated_at },
 		});
@@ -73,7 +74,7 @@ const Order = () => {
 		const is_diagnosis_need = !row?.original?.is_diagnosis_need;
 		const updated_at = getDateTime();
 
-		await updateData.mutateAsync({
+		await imageUpdateData.mutateAsync({
 			url: `/work/order/${row?.original?.uuid}`,
 			updatedData: { is_diagnosis_need, updated_at },
 		});

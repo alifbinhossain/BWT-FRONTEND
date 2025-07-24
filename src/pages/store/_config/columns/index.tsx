@@ -371,7 +371,14 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 		),
 	},
 	{
-		accessorFn: (row) => LocationName(row),
+		accessorFn: (row) =>
+			LocationName({
+				branch_name: row.branch_name ?? '',
+				warehouse_name: row.warehouse_name ?? '',
+				rack_name: row.rack_name ?? '',
+				floor_name: row.floor_name ?? '',
+				box_name: row.box_name ?? '',
+			}),
 		id: 'location',
 		header: 'Location',
 		enableColumnFilter: false,
@@ -580,7 +587,7 @@ export const internalTransferColumns = (): ColumnDef<IInternalTransferTableData>
 	},
 ];
 //* Transfer Columns
-export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
+export const transferColumns = (): ColumnDef<ITransferTableData, unknown>[] => [
 	{
 		accessorKey: 'order_id',
 		header: 'ID',
@@ -619,19 +626,18 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorFn: (row) => LocationName(row),
+		accessorFn: (row) =>
+			LocationName({
+				branch_name: row.branch_name ?? '',
+				warehouse_name: row.warehouse_name ?? '',
+			}),
 		id: 'location',
 		header: 'Location',
 		enableColumnFilter: false,
 		size: 170,
 		cell: (info) => {
 			const { branch_name, warehouse_name } = info.row.original;
-			return (
-				<Location
-					branch_name={branch_name}
-					warehouse_name={warehouse_name}
-				/>
-			);
+			return <Location branch_name={branch_name!} warehouse_name={warehouse_name} />;
 		},
 	},
 ];
