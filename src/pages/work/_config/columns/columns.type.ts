@@ -71,6 +71,7 @@ export type IStockActionTrx = {
 export type IOrderTableData = {
 	id: string;
 	order_id: string;
+	order_uuid: string;
 	is_proceed_to_repair: boolean;
 	uuid: string;
 	user_name: string;

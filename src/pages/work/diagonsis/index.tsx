@@ -65,7 +65,7 @@ const Diagnosis = () => {
 		const formData = Formdata({ is_proceed_to_repair, updated_at });
 
 		await imageUpdateData.mutateAsync({
-			url: `/work/order/${row?.original?.uuid}`,
+			url: `/work/order/${row?.original?.order_uuid}`,
 			updatedData: formData,
 		});
 	};
