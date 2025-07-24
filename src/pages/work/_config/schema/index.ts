@@ -128,7 +128,7 @@ export const REPAIR_NULL: Partial<IRepair> = {
 	is_transferred_for_qc: false,
 	is_ready_for_delivery: false,
 	repairing_problems_uuid: undefined,
-	
+
 	repair_product_transfer: false,
 	product_transfer: [
 		{
@@ -217,7 +217,7 @@ export const DIAGNOSIS_SCHEMA = z.object({
 	problems_uuid: STRING_ARRAY,
 	problem_statement: STRING_NULLABLE,
 	customer_problem_statement: STRING_NULLABLE,
-	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
+	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable', 'customer_reject']),
 	proposed_cost: NUMBER_DOUBLE_REQUIRED,
 	is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
 	remarks: STRING_NULLABLE,
