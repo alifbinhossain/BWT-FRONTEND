@@ -8,7 +8,8 @@ import { Row } from '@tanstack/react-table';
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-import { transferColumns } from '../../../_config/columns';
+// Ensure transferColumns uses the correct ITransferTableData type from store/_config/columns/columns.type
+import { transferColumns } from '@/pages/store/_config/columns';
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
