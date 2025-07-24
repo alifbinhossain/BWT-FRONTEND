@@ -58,6 +58,20 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 					/>
 				),
 			},
+			{
+				label: 'QC Problem',
+				value: (
+					<Problem
+						problems_name={
+							data?.qc_problems_name
+								?.map((item) => item)
+								.join(', ')
+								.replace(/_/g, ' ') as string
+						}
+						problem_statement={data?.qc_problem_statement}
+					/>
+				),
+			},
 		];
 	};
 

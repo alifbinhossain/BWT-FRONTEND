@@ -19,6 +19,7 @@ import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns
 import { useWorkDiagnosis, useWorkOrderByUUID } from '../_config/query';
 import { ORDER_NULL, ORDER_SCHEMA } from '../_config/schema';
 import { IOrderAddOrUpdateProps } from '../_config/types';
+import Information from './information';
 
 const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	open,
@@ -91,6 +92,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			isSmall={true}
 			onSubmit={onSubmit}
 		>
+			<Information data={(data || []) as IOrderTableData} />
 			<div className='flex justify-end gap-2'>
 				<FormField
 					control={form.control}
