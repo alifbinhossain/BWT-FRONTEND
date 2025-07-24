@@ -1,4 +1,4 @@
-import { Product } from '@/pages/work/_config/utils/component';
+import { Location, Product } from '@/pages/work/_config/utils/component';
 import { UseFormWatch } from 'react-hook-form';
 
 import FieldActionButton from '@/components/buttons/field-action';
@@ -72,9 +72,32 @@ const useGenerateFieldDefs = ({ entry, remove, watch, add }: IGenerateFieldDefsP
 			type: 'custom',
 			component: (index: number) => {
 				const orderId = watch ? Number(watch(`${entry}.${index}.bill_amount` as any)) : '';
-				if (orderId === 0) return <div className='text-red-600 bg-red-300 w-6 px-2 rounded-sm'>0</div>;
+				if (orderId === 0) return <div className='w-6 rounded-sm bg-red-300 px-2 text-red-600'>0</div>;
 				return <span>{orderId}</span>;
 			},
+		},
+		{
+			header: 'Location',
+			accessorKey: 'location',
+			type: 'custom',
+			component: (index: number) => {
+				const branch = watch ? watch(`${entry}.${index}.branch_name` as any) : null;
+				const warehouse = watch ? watch(`${entry}.${index}.warehouse_name` as any) : null;
+				const rack = watch ? watch(`${entry}.${index}.rack` as any) : null;
+				const floor = watch ? watch(`${entry}.${index}.floor` as any) : null;
+				const box = watch ? watch(`${entry}.${index}.box` as any) : null;
+
+				return (
+					<Location
+						branch_name={branch}
+						warehouse_name={warehouse}
+						rack_name={rack}
+						floor_name={floor}
+						box_name={box}
+					/>
+				);
+			},
+			hidden:entry==='challan_entries',
 		},
 		{
 			header: 'Remarks',

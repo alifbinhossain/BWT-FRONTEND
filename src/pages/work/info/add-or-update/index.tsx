@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { sub } from 'date-fns';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
@@ -13,6 +12,7 @@ import CoreForm from '@core/form';
 import { useOtherUserByQuery } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
+import Formdata from '@/utils/formdata';
 
 import { IInfoTableData } from '../../_config/columns/columns.type';
 import { useWorkInfo, useWorkInfoByUUID } from '../../_config/query';
@@ -29,7 +29,7 @@ const AddOrUpdate = () => {
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 
-	const { url: infoUrl, updateData, postData, deleteData } = useWorkInfo();
+	const { url: infoUrl, updateData, postData, imagePostData, imageUpdateData, deleteData } = useWorkInfo();
 	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 
 	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
@@ -123,6 +123,7 @@ const AddOrUpdate = () => {
 					.then(() => form.reset(INFO_NULL))
 					.then(() => {
 						invalidateCustomer();
+						invalidateTestDetails();
 						navigate(`/work/info/details/${uuid}`);
 					});
 			} catch (err) {
@@ -169,13 +170,14 @@ const AddOrUpdate = () => {
 			created_by,
 		}));
 
-		const order_entry_entries_promise = order_entry_entries.map((item) =>
-			postData.mutateAsync({
+		const order_entry_entries_promise = order_entry_entries.map((item) => {
+			const formData = Formdata(item);
+			return imagePostData.mutateAsync({
 				url: '/work/order',
-				newData: item,
+				newData: formData,
 				isOnCloseNeeded: false,
-			})
-		);
+			});
+		});
 
 		try {
 			// TODO: Update promises name ⬇️
@@ -183,6 +185,7 @@ const AddOrUpdate = () => {
 				.then(() => form.reset(INFO_NULL))
 				.then(() => {
 					invalidateCustomer();
+					invalidateTestDetails();
 					navigate(`/work/info/details/${info_uuid}`);
 				});
 		} catch (err) {
@@ -215,11 +218,11 @@ const AddOrUpdate = () => {
 
 	// Delete Handler
 	const handleRemove = (index: number) => {
-		const modelName: string = String(form.getValues('order_entry')[index].model_id);
+		const modelName: string = String(form.getValues('order_entry')[index].model_name);
 		if (fields[index].uuid) {
 			setDeleteItem({
 				id: fields[index].uuid,
-				name: modelName,
+				name: fields[index].brand_name + '(' + modelName + ')',
 			});
 		} else {
 			remove(index);
@@ -253,6 +256,7 @@ const AddOrUpdate = () => {
 		watch: form.watch,
 		form: form,
 		isProductReceived: isProductReceived,
+		isUpdate: isUpdate,
 	});
 	const fieldDefsV2 = useGenerateFieldDefsV2({
 		copy: handleCopy,
@@ -260,6 +264,7 @@ const AddOrUpdate = () => {
 		watch: form.watch,
 		form: form,
 		isProductReceived: isProductReceived,
+		isUpdate: isUpdate,
 	});
 	return (
 		<CoreForm.AddEditWrapper

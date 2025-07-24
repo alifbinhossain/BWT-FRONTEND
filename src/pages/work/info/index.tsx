@@ -84,7 +84,7 @@ const Info = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url,
+							url:'/work/info',
 							deleteData,
 						}}
 					/>,

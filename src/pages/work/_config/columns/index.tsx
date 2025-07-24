@@ -5,6 +5,7 @@ import { User } from 'lucide-react';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
+import ColumnImage from '@/components/core/data-table/_views/column-image';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
@@ -55,6 +56,11 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 				</div>
 			);
 		},
+	},
+	{
+		accessorKey: 'branch_name',
+		header: 'Branch',
+		enableColumnFilter: false,
 	},
 	{
 		accessorKey: 'is_product_received',
@@ -120,6 +126,44 @@ export const orderColumnsForDetails = ({
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
+		accessorKey: 'status',
+		header: 'Status',
+		enableColumnFilter: false,
+		size: 40,
+		cell: (info) => {
+			const status = info.getValue() as string;
+			const bgColorClass =
+				{
+					accepted: 'bg-success',
+					rejected: 'bg-red-500',
+					not_repairable: 'bg-gray-500',
+					pending: 'bg-warning',
+				}[status?.toLowerCase()] || '';
+
+			return (
+				<div>
+					<span className={`rounded px-2 py-1 capitalize text-white ${bgColorClass}`}>{status}</span>
+					<DateTime
+						date={
+							info.row.original.status_update_date ? new Date(info.row.original.status_update_date) : null
+						}
+						isTime={false}
+					/>
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'diagnosis_proposed_cost',
+		header: () => (
+			<>
+				Proposed <br /> Cost
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+	},
+	{
 		accessorKey: 'is_proceed_to_repair',
 		header: () => (
 			<>
@@ -154,6 +198,27 @@ export const orderColumnsForDetails = ({
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+	},
+	{
+		accessorKey: 'bill_amount',
+		header: () => (
+			<>
+				Bill <br /> Amount
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'ready_for_delivery_date',
+		header: () => (
+			<>
+				Ready For <br /> Delivery Date
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
 		accessorKey: 'order_id',
@@ -201,6 +266,21 @@ export const orderColumnsForDetails = ({
 			const { problem_statement } = info.row.original;
 
 			return <Problem problems_name={info.getValue() as string} problem_statement={problem_statement} />;
+		},
+	},
+	{
+		accessorKey: 'images',
+		header: 'Images',
+		cell: (info) => {
+			const { image_1, image_2, image_3 } = info.row.original;
+
+			return (
+				<div className='flex gap-2'>
+					{image_1 && <ColumnImage src={image_1 as string} alt={'image_1'} />}
+					{image_2 && <ColumnImage src={image_2 as string} alt={'image_2'} />}
+					{image_3 && <ColumnImage src={image_3 as string} alt={'image_3'} />}
+				</div>
+			);
 		},
 	},
 	{
@@ -793,7 +873,7 @@ export const RepairingColumns = ({
 		enableColumnFilter: false,
 		cell: (info) => {
 			const value = info.row.original.product_transfer as ITransferTableData[] | undefined;
-			const headers = ['Product', 'Warehouse', 'QTY'];
+			const headers = ['Product', 'Serial','Branch' ,'Warehouse'];
 			return <TableForColumn value={value} headers={headers} />;
 		},
 	},
@@ -1319,13 +1399,18 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'warehouse_name',
-		header: 'Warehouse',
+		accessorKey: 'serial_no',
+		header: 'Serial',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'quantity',
-		header: 'Quantity',
+		accessorKey: 'branch_name',
+		header: 'Branch',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'warehouse_name',
+		header: 'Warehouse',
 		enableColumnFilter: false,
 	},
 ];

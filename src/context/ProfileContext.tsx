@@ -2,7 +2,7 @@ import { createContext, useCallback, useEffect, useMemo, useState } from 'react'
 import { useHrEmployeesByUUID } from '@/pages/hr/_config/query';
 import { navigationItems } from '@/pages/profile/_components/navigation-items';
 import { IEmployeeDetails } from '@/pages/profile/config/types';
-import { IResponse, IUser } from '@/types';
+import { IResponse, IToast, IUser } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -12,13 +12,14 @@ type INavigationItem = (typeof navigationItems)[number];
 
 type INavigationTabTitle = INavigationItem['title'];
 
+
 interface IProfileContext {
 	user: IUser | null;
 	readonly navigationItems: INavigationItem[];
 	profileData: IEmployeeDetails | null;
 	updateProfileData: UseMutationResult<
-		IResponse<IEmployeeDetails>,
-		AxiosError<IResponse<IEmployeeDetails>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			updatedData: any;
@@ -28,8 +29,8 @@ interface IProfileContext {
 		any
 	>;
 	deleteProfileData: UseMutationResult<
-		IResponse<IEmployeeDetails>,
-		AxiosError<IResponse<IEmployeeDetails>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			isOnCloseNeeded?: boolean;
@@ -61,11 +62,12 @@ const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) => {
 	const { user } = useAuth();
 	const { uuid } = useParams();
 	const navigate = useNavigate();
+	
 
 	const { data, updateData, deleteData, isLoading, refetch } = useHrEmployeesByUUID<IEmployeeDetails>(
 		uuid ? uuid : (user?.employee_uuid as string)
 	);
-
+	console.log('Profile Data:', user, data);
 	useEffect(() => {
 		if (!uuid) {
 			navigate(`/profile/${user?.employee_uuid}`);

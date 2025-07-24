@@ -10,7 +10,6 @@ import { formatDateTable } from '@/utils/formatDate';
 import { IInfoTableData } from '../../_config/columns/columns.type';
 
 const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
-	
 	const fullURL = window.location.href;
 	const slice = fullURL.split('w');
 	const baseURl = slice[0];
@@ -28,6 +27,10 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 			{
 				label: 'Submitted By',
 				value: data?.submitted_by,
+			},
+			{
+				label: 'Branch',
+				value: data?.branch_name,
 			},
 			{ label: 'Location', value: data.location + ' (' + data.zone_name + ')' },
 			{ label: 'Remarks', value: data.remarks },

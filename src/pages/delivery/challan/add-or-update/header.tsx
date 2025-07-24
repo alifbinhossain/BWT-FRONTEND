@@ -12,7 +12,7 @@ const Header = ({ challan_uuid }: { challan_uuid: string }) => {
 	const form = useFormContext<IChallan>();
 	const query = challan_uuid
 		? `?challan_uuid=${challan_uuid}`
-		: `?type=customer&is_ready_for_delivery=true&is_delivery_complete=false`;
+		: `?type=customer&is_challan_needed=true`;
 	const { data: customerOption } = useOtherUserByQuery<IFormSelectOption[]>(query);
 	const { data: vehicleOption } = useOtherVehicle<IFormSelectOption[]>();
 	const { data: employeeOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=employee&designation=delivery');

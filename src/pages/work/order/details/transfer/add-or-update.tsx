@@ -1,54 +1,31 @@
-import { useEffect, useState } from 'react';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { z } from 'zod';
+import { useEffect } from 'react';
+import { IDefaultAddOrUpdateProps } from '@/types';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-import { IFormSelectOption } from '@/components/core/form/types';
+
+
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherOrder, useOtherProduct, useOtherWarehouse } from '@/lib/common-queries/other';
+
+
+import { useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
+
+
 
 import { IOrderTableData, IStockActionTrx, ITransferTableData } from '../../../_config/columns/columns.type';
 import { useStoreOrderTransfersByUUID, useWorkOrderByDetails } from '../../../_config/query';
 import { TRANSFER_NULL, TRANSFER_SCHEMA } from '../../../_config/schema';
-import { getFilteredWarehouseOptions, ICustomProductsSelectOption, ICustomWarehouseSelectOption } from './utills';
+import { ICustomPurchaseEntrySelectOption, ICustomWarehouseSelectOption } from './utills';
 
-interface ITrxProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+
+interface ITrxProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IStockActionTrx | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IStockActionTrx | null>>;
 	order_uuid?: string;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 const Trx: React.FC<ITrxProps> = ({
@@ -64,8 +41,9 @@ const Trx: React.FC<ITrxProps> = ({
 	const isUpdate = !!updatedData;
 
 	const { data } = useStoreOrderTransfersByUUID<ITransferTableData>(updatedData?.uuid as string);
-	const { data: productOptions, invalidateQuery: invalidateQueryOtherProduct } =
-		useOtherProduct<ICustomProductsSelectOption[]>(`?is_quantity=true`);
+	const { data: purchaseEntryOptions, invalidateQuery: invalidateQueryOtherProduct } = useOtherPurchaseEntry<
+		ICustomPurchaseEntrySelectOption[]
+	>(`is_warehouse=true&is_purchase_return_entry=false`);
 	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
 		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
@@ -73,43 +51,7 @@ const Trx: React.FC<ITrxProps> = ({
 	);
 
 	const { user } = useAuth();
-	const [MAX_QUANTITY, setMAX_QUANTITY] = useState(0);
-	const schema = TRANSFER_SCHEMA.extend({
-		quantity: z
-			.number()
-			.int()
-			.positive()
-			.max(MAX_QUANTITY + ((data?.quantity as number) || 0), {
-				message: `Quantity must be less than or equal to ${MAX_QUANTITY + ((data?.quantity as number) || 0)}`,
-			}),
-	});
-	const form = useRHF(schema, TRANSFER_NULL);
-
-	const filteredWarehouseOptions = getFilteredWarehouseOptions(
-		form.watch('product_uuid'),
-		productOptions,
-		warehouseOptions
-	);
-
-	//* Set Max Quantity
-	const product_uuid = form.watch('product_uuid');
-	const warehouse_uuid = form.watch('warehouse_uuid');
-	useEffect(() => {
-		if (product_uuid && warehouse_uuid && productOptions) {
-			const selectedProduct = productOptions.find((p) => p.value === product_uuid);
-			const selectedWarehouse = warehouseOptions?.find((w) => w.value === warehouse_uuid);
-
-			if (selectedProduct && selectedWarehouse) {
-				const warehouseKey = selectedWarehouse.assigned;
-				const quantity = (selectedProduct[warehouseKey as keyof ICustomProductsSelectOption] as number) || 0;
-				setMAX_QUANTITY(quantity);
-			} else {
-				setMAX_QUANTITY(0);
-			}
-		} else {
-			setMAX_QUANTITY(0);
-		}
-	}, [product_uuid, warehouse_uuid, productOptions, warehouseOptions]);
+	const form = useRHF(TRANSFER_SCHEMA, TRANSFER_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
@@ -127,12 +69,18 @@ const Trx: React.FC<ITrxProps> = ({
 	}, [data, isUpdate]);
 	// Submit handler
 	async function onSubmit(values: IStockActionTrx) {
+		const warehouse_uuid = purchaseEntryOptions?.find(
+			(option) => option.value === values.purchase_entry_uuid
+		)?.warehouse_uuid;
+		console.log(warehouse_uuid);
 		if (isUpdate) {
 			// ADD NEW ITEM
 			updateData.mutateAsync({
 				url: `${url}/${updatedData?.uuid}`,
 				updatedData: {
 					...values,
+					warehouse_uuid: warehouse_uuid,
+					quantity: 1,
 					order_uuid: order_uuid,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
@@ -145,6 +93,8 @@ const Trx: React.FC<ITrxProps> = ({
 				url,
 				newData: {
 					...values,
+					warehouse_uuid: warehouse_uuid,
+					quantity: 1,
 					order_uuid: order_uuid,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
@@ -159,35 +109,13 @@ const Trx: React.FC<ITrxProps> = ({
 		<AddModal open={open} setOpen={onClose} title={'Transfer Material'} form={form} onSubmit={onSubmit}>
 			<FormField
 				control={form.control}
-				name='product_uuid'
+				name='purchase_entry_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
-						label='Product'
-						placeholder='Select Product'
-						options={productOptions!}
-						{...props}
-					/>
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='warehouse_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect
-						label='Warehouse'
-						placeholder='Select Warehouse'
-						options={filteredWarehouseOptions!}
-						{...props}
-					/>
-				)}
-			/>
-			<FormField
-				control={form.control}
-				name='quantity'
-				render={(props) => (
-					<CoreForm.Input
-						label={`Quantity (Max Transfer: ${MAX_QUANTITY + ((data?.quantity as number) || 0)})`}
-						type='number'
+						label='Purchase Entry'
+						placeholder='Select Purchase'
+						isDisabled={isUpdate}
+						options={purchaseEntryOptions!}
 						{...props}
 					/>
 				)}

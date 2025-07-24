@@ -1,12 +1,7 @@
-import { error } from 'console';
 import { useEffect } from 'react';
 import { IPurchaseReturnEntryTableData } from '@/pages/store/_config/columns/columns.type';
 import { useStorePurchaseReturnEntryByUUID } from '@/pages/store/_config/query';
-import { PURCHASE_RETURN_LOG_NULL, PURCHASE_RETURN_LOG_SCHEMA } from '@/pages/store/_config/schema';
-import { IResponse } from '@/types';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import useAuth from '@/hooks/useAuth';
+import { PURCHASE_RETURN_LOG_NULL, PURCHASE_RETURN_LOG_SCHEMA } from '@/pages/store/_config/schema';;
 import useRHF from '@/hooks/useRHF';
 
 import { IFormSelectOption } from '@/components/core/form/types';
@@ -14,17 +9,7 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import {
-	useOtherBox,
-	useOtherBranch,
-	useOtherFloor,
-	useOtherProduct,
-	useOtherRack,
-	useOtherRoom,
-	useOtherStock,
-	useOtherWarehouse,
-} from '@/lib/common-queries/other';
-import nanoid from '@/lib/nanoid';
+import { useOtherProduct } from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
 
 import { IPurchaseReturnLogAddOrUpdateProps } from '../../_config/types';
@@ -38,8 +23,6 @@ const AddOrUpdate: React.FC<IPurchaseReturnLogAddOrUpdateProps> = ({
 	updateData,
 }) => {
 	const isUpdate = !!updatedData;
-
-	const { user } = useAuth();
 	const { data } = useStorePurchaseReturnEntryByUUID<IPurchaseReturnEntryTableData>(updatedData?.uuid as string);
 	const { data: productOptions } = useOtherProduct<IFormSelectOption[]>();
 
@@ -82,7 +65,7 @@ const AddOrUpdate: React.FC<IPurchaseReturnLogAddOrUpdateProps> = ({
 		>
 			<FormField
 				control={form.control}
-				name='product_uuid'
+				name='product_entry_uuid'
 				render={(props) => (
 					<CoreForm.ReactSelect
 						label='Product'

@@ -63,8 +63,11 @@ interface MultiSelectProps
 	 */
 	onValueChange: (value: string[]) => void;
 
-	/** The default selected values when the component mounts. */
+	/** The default selected values when the component mounts (for uncontrolled mode). */
 	defaultValue?: string[];
+
+	/** The controlled value of the multi-select (overrides internal state if provided). */
+	value?: string[]; // NEW: Add this for controlled mode
 
 	/**
 	 * Placeholder text to be displayed when no values are selected.
@@ -105,6 +108,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 			onValueChange,
 			variant,
 			defaultValue = [],
+			value: controlledValue, // NEW: Destructure the new prop
 			placeholder = 'Select options',
 			maxCount = 3,
 			modalPopover = false,
@@ -114,8 +118,27 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 		},
 		ref
 	) => {
-		const [selectedValues, setSelectedValues] = React.useState<string[]>(defaultValue);
+		const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue);
 		const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+
+		// NEW: Determine if we're in controlled mode (value prop provided) or uncontrolled
+		const isControlled = controlledValue !== undefined;
+		const selectedValues = isControlled ? controlledValue : internalValue;
+
+		// NEW: Helper to update value (calls onValueChange and updates internal state if uncontrolled)
+		const setSelectedValues = (newValue: string[]) => {
+			if (!isControlled) {
+				setInternalValue(newValue);
+			}
+			onValueChange(newValue);
+		};
+
+		// NEW: Sync internal state if defaultValue changes (for uncontrolled mode only)
+		React.useEffect(() => {
+			if (!isControlled) {
+				setInternalValue(defaultValue);
+			}
+		}, [defaultValue, isControlled]);
 
 		const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 			if (event.key === 'Enter') {
@@ -124,7 +147,6 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 				const newSelectedValues = [...selectedValues];
 				newSelectedValues.pop();
 				setSelectedValues(newSelectedValues);
-				onValueChange(newSelectedValues);
 			}
 		};
 
@@ -133,12 +155,10 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 				? selectedValues.filter((value) => value !== option)
 				: [...selectedValues, option];
 			setSelectedValues(newSelectedValues);
-			onValueChange(newSelectedValues);
 		};
 
 		const handleClear = () => {
 			setSelectedValues([]);
-			onValueChange([]);
 		};
 
 		const handleTogglePopover = () => {
@@ -146,21 +166,20 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 		};
 
 		const clearExtraOptions = () => {
-			const newSelectedValues = selectedValues.slice(0, maxCount);
+			const newSelectedValues = selectedValues?.slice(0, maxCount);
 			setSelectedValues(newSelectedValues);
-			onValueChange(newSelectedValues);
 		};
 
 		const toggleAll = () => {
-			if (selectedValues.length === options.length) {
+			if (selectedValues?.length === options.length) {
 				handleClear();
 			} else {
 				const allValues = options.map((option) => option.value);
 				setSelectedValues(allValues);
-				onValueChange(allValues);
 			}
 		};
 
+		// The rest of the JSX remains unchanged (it now uses `selectedValues` which is either controlled or internal)
 		return (
 			<Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal={modalPopover}>
 				<PopoverTrigger asChild>
@@ -173,7 +192,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 							className
 						)}
 					>
-						{selectedValues.length > 0 ? (
+						{selectedValues?.length > 0 ? (
 							<div className='flex w-full items-center justify-between'>
 								<div className='flex flex-wrap items-center'>
 									{selectedValues.slice(0, maxCount).map((value) => {
@@ -248,7 +267,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 									<div
 										className={cn(
 											'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-											selectedValues.length === options.length
+											selectedValues?.length === options.length
 												? 'bg-primary text-primary-foreground'
 												: 'opacity-50 [&_svg]:invisible'
 										)}
@@ -258,7 +277,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 									<span>(Select All)</span>
 								</CommandItem>
 								{options.map((option) => {
-									const isSelected = selectedValues.includes(option.value);
+									const isSelected = selectedValues?.includes(option.value);
 									return (
 										<CommandItem
 											key={option.value}
@@ -286,7 +305,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 							<CommandSeparator />
 							<CommandGroup>
 								<div className='flex items-center justify-between'>
-									{selectedValues.length > 0 && (
+									{selectedValues?.length > 0 && (
 										<>
 											<CommandItem
 												onSelect={handleClear}

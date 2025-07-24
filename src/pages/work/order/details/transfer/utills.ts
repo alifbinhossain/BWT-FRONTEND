@@ -18,6 +18,10 @@ export interface ICustomWarehouseSelectOption extends IFormSelectOption {
 	assigned: string;
 }
 
+export interface ICustomPurchaseEntrySelectOption extends IFormSelectOption {
+	warehouse_uuid: string;
+}
+
 export function getFilteredWarehouseOptions(
 	productUuid: string,
 	productOptions: ICustomProductsSelectOption[] = [],

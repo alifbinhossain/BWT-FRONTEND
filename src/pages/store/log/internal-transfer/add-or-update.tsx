@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { IInternalTransferTableData } from '@/pages/store/_config/columns/columns.type';
 import { useStoreInternalTransfersByUUID } from '@/pages/store/_config/query';
-import { INTERNAL_TRANSFER_NULL, INTERNAL_TRANSFER_SCHEMA } from '@/pages/store/_config/schema';
+import { INTERNAL_TRANSFER_LOG_NULL, INTERNAL_TRANSFER_LOG_SCHEMA } from '@/pages/store/_config/schema';
 import { z } from 'zod';
 import useRHF from '@/hooks/useRHF';
 
@@ -10,7 +10,13 @@ import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { AddModal } from '@core/modal';
 
-import { useOtherBox, useOtherFloor, useOtherRack, useOtherWarehouse } from '@/lib/common-queries/other';
+import {
+	useOtherBox,
+	useOtherFloor,
+	useOtherPurchaseEntry,
+	useOtherRack,
+	useOtherWarehouse,
+} from '@/lib/common-queries/other';
 import { getDateTime } from '@/utils';
 
 import { IInternalTransferAddOrUpdateProps } from '../../_config/types';
@@ -31,14 +37,13 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 	const { data: RackOptions } = useOtherRack<IFormSelectOption[]>();
 	const { data: FloorOptions } = useOtherFloor<IFormSelectOption[]>();
 	const { data: BoxOptions } = useOtherBox<IFormSelectOption[]>();
-	const MAX_QUANTITY = updatedData ? updatedData.from_warehouse + updatedData.quantity : Infinity;
-	const schema = INTERNAL_TRANSFER_SCHEMA.extend({ quantity: z.number().int().positive().max(MAX_QUANTITY) });
+	const { data: purchaseEntryOptions } = useOtherPurchaseEntry<IFormSelectOption[]>();
 
-	const form = useRHF(schema, INTERNAL_TRANSFER_NULL);
+	const form = useRHF(INTERNAL_TRANSFER_LOG_SCHEMA, INTERNAL_TRANSFER_LOG_NULL);
 
 	const onClose = () => {
 		setUpdatedData?.(null);
-		form.reset(INTERNAL_TRANSFER_NULL);
+		form.reset(INTERNAL_TRANSFER_LOG_NULL);
 		setOpen((prev) => !prev);
 	};
 
@@ -71,6 +76,20 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 			form={form}
 			onSubmit={onSubmit}
 		>
+			<FormField
+				control={form.control}
+				name={`purchase_entry_uuid`}
+				render={(props) => (
+					<CoreForm.ReactSelect
+						isDisabled={true}
+						label='Purchase Entry'
+						placeholder='Select Warehouse'
+						options={purchaseEntryOptions!}
+						menuPortalTarget={document.body}
+						{...props}
+					/>
+				)}
+			/>
 			<FormField
 				control={form.control}
 				name='from_warehouse_uuid'
@@ -115,11 +134,6 @@ const AddOrUpdate: React.FC<IInternalTransferAddOrUpdateProps> = ({
 				render={(props) => (
 					<CoreForm.ReactSelect label='Box' placeholder='Select Box' options={BoxOptions!} {...props} />
 				)}
-			/>
-			<FormField
-				control={form.control}
-				name='quantity'
-				render={(props) => <CoreForm.Input type='number' {...props} />}
 			/>
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>

@@ -1,5 +1,5 @@
 import { createContext, useLayoutEffect, useMemo, useState } from 'react';
-import { IResponse, ITableAdvanceFilter, ITableFacetedFilter, IToolbarOptions } from '@/types';
+import { ITableAdvanceFilter, ITableFacetedFilter, IToolbarOptions } from '@/types';
 import { RankingInfo } from '@tanstack/match-sorter-utils';
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 import {
@@ -50,13 +50,14 @@ declare module '@tanstack/react-table' {
 interface ITableContext<TData> {
 	title: string;
 	subtitle?: string;
+	clientRedirectUrl?: string;
 	isEntry?: boolean;
 	table: Table<TData>;
 	isLoading?: boolean;
 	handleCreate?: () => void;
 	handleUpdate?: (row: Row<TData>) => void;
 	handleDelete?: (row: Row<TData>) => void;
-	handleRefetch?: (options?: RefetchOptions) => Promise<QueryObserverResult<IResponse<any>, Error>>;
+	handleRefetch?: (options?: RefetchOptions) => Promise<QueryObserverResult<any, Error>>;
 	handleDeleteAll?: (rows: Row<TData>[]) => void;
 	initialDateRange: [Date | string, Date | string];
 	globalFilterValue?: string;
@@ -78,6 +79,7 @@ export const TableContext = createContext({} as ITableContext<any>);
 export interface ITableProviderProps<TData, TValue> {
 	title: string;
 	subtitle?: string;
+	clientRedirectUrl?: string;
 	isEntry?: boolean;
 	children?: React.ReactNode;
 	columns: ColumnDef<TData, TValue>[];
@@ -89,7 +91,7 @@ export interface ITableProviderProps<TData, TValue> {
 	handleCreate?: () => void;
 	handleUpdate?: (row: Row<TData>) => void;
 	handleDelete?: (row: Row<TData>) => void;
-	handleRefetch?: (options?: RefetchOptions) => Promise<QueryObserverResult<IResponse<any>, Error>>;
+	handleRefetch?: (options?: RefetchOptions) => Promise<QueryObserverResult<any, Error>>;
 	handleDeleteAll?: (rows: Row<TData>[]) => void;
 	facetedFilters?: ITableFacetedFilter[];
 	advanceFilters?: ITableAdvanceFilter[];
@@ -106,12 +108,13 @@ export interface ITableProviderProps<TData, TValue> {
 function TableProvider<TData, TValue>({
 	title,
 	subtitle,
+	clientRedirectUrl,
 	isEntry = false,
 	children,
 	columns,
 	data,
-	isLoading,
 	defaultSorting = [{ id: 'created_at', desc: true }],
+	isLoading,
 	enableRowSelection = false,
 	enableDefaultColumns = true,
 	handleCreate,
@@ -127,8 +130,8 @@ function TableProvider<TData, TValue>({
 	end_date,
 	onUpdate,
 	onClear,
-	isClear,
 	otherToolBarComponents,
+	isClear,
 }: ITableProviderProps<TData, TValue>) {
 	const [isMounted, setIsMounted] = useState(false);
 
@@ -202,6 +205,7 @@ function TableProvider<TData, TValue>({
 		() => ({
 			title,
 			subtitle,
+			clientRedirectUrl,
 			isEntry,
 			isLoading,
 			table,
@@ -227,6 +231,7 @@ function TableProvider<TData, TValue>({
 		[
 			title,
 			subtitle,
+			clientRedirectUrl,
 			isEntry,
 			isLoading,
 			table,

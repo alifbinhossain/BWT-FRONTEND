@@ -1,6 +1,7 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
+import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
 import { useOtherWarehouse } from '@/lib/common-queries/other';
@@ -12,12 +13,13 @@ import { IProductTableData, IStockActionTrx } from '../_config/columns/columns.t
 import { useStoreProducts } from '../_config/query';
 
 const AgainstTrx = lazy(() => import('./trx'));
-const OrderAgainstTrx = lazy(() => import('./trx-against-order'));
+
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 
 const Product = () => {
+	const navigate = useNavigate();
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useStoreProducts<IProductTableData[]>();
 	const { data: warehouse } = useOtherWarehouse<{ label: string; value: string; assigned: string }[]>();
 	const pageInfo = useMemo(() => new PageInfo('Store/Product', url, 'store__product'), [url]);
@@ -78,13 +80,9 @@ const Product = () => {
 			name: row.original.name,
 		});
 		setIsOpenActionTrxModal(true);
+		navigate(`/store/internal-transfer/${row.original.uuid}`);
 	};
-	// Action Trx Modal state
-	const [isOpenActionOrderAgainstTrxModal, setIsOpenActionOrderAgainstTrxModal] = useState(false);
-	const [updateActionOrderAgainstTrxData, setUpdateActionOrderAgainstTrxData] = useState<IStockActionTrx | null>(
-		null
-	);
-
+	
 	const handleOrderAgainstWarehouseTrx = (
 		row: Row<IProductTableData>,
 		warehouseKey:
@@ -115,13 +113,7 @@ const Product = () => {
 			| 'warehouse_11_uuid'
 			| 'warehouse_12_uuid'
 	) => {
-		setUpdateActionOrderAgainstTrxData({
-			uuid: row.original.uuid,
-			name: row.original.name,
-			max_quantity: row.original[warehouseKey],
-			warehouse_uuid: row.original[warehouseUuidKey],
-		});
-		setIsOpenActionOrderAgainstTrxModal(true);
+		navigate(`/store/product/${row.original.uuid}/order-against-warehouse-trx/${row.original[warehouseUuidKey]}`);
 	};
 
 	// Table Columns
@@ -196,26 +188,6 @@ const Product = () => {
 							setDeleteItems,
 							url,
 							deleteData,
-						}}
-					/>,
-					<AgainstTrx
-						{...{
-							open: isOpenActionTrxModal,
-							setOpen: setIsOpenActionTrxModal,
-							updatedData: updateActionTrxData,
-							setUpdatedData: setUpdateActionTrxData,
-							postData,
-							url: '/store/internal-transfer',
-						}}
-					/>,
-					<OrderAgainstTrx
-						{...{
-							open: isOpenActionOrderAgainstTrxModal,
-							setOpen: setIsOpenActionOrderAgainstTrxModal,
-							updatedData: updateActionOrderAgainstTrxData,
-							setUpdatedData: setUpdateActionOrderAgainstTrxData,
-							postData,
-							url: '/store/product-transfer',
 						}}
 					/>,
 				])}

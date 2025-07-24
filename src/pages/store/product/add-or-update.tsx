@@ -32,7 +32,7 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useStoreProductsByUUID<IProductTableData>(updatedData?.uuid as string);
-	const { data: modelOptions } = useOtherModel<IFormSelectOption[]>();
+	const { data: modelOption } = useOtherModel<IFormSelectOption[]>();
 	const { data: sizeOptions } = useOtherSize<IFormSelectOption[]>();
 	const { data: categoryOptions } = useOtherCategory<IFormSelectOption[]>();
 	const { invalidateQuery: invalidateProduct } = useOtherProduct<IFormSelectOption[]>();
@@ -146,8 +146,8 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 					render={(props) => (
 						<CoreForm.ReactSelect
 							label='Model'
+							options={modelOption || []}
 							placeholder='Select Model'
-							options={modelOptions!}
 							{...props}
 						/>
 					)}
@@ -167,15 +167,15 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 				<FormField
 					control={form.control}
 					name='warranty_days'
-					render={(props) => <CoreForm.Input type='number' {...props} />}
+					render={(props) => <CoreForm.Input label='Warranty (Days)' type='number' {...props} />}
 				/>
 				<FormField
 					control={form.control}
 					name='service_warranty_days'
-					render={(props) => <CoreForm.Input type='number' {...props} />}
+					render={(props) => <CoreForm.Input label='Service Warranty (Days)' type='number' {...props} />}
 				/>
 			</div>
-			<div className='grid grid-cols-3 gap-4'>
+			{/* <div className='grid grid-cols-3 gap-4'>
 				<FormField
 					control={form.control}
 					name='warehouse_1'
@@ -236,7 +236,7 @@ const AddOrUpdate: React.FC<IProductAddOrUpdateProps> = ({
 					name='warehouse_12'
 					render={(props) => <CoreForm.Input type='number' {...props} />}
 				/>
-			</div>
+			</div> */}
 			<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
 		</AddModal>
 	);

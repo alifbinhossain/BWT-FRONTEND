@@ -17,7 +17,7 @@ export type IDiagnosisTableData = {
 	info_uuid: string;
 	order_id: string;
 	user_name: string;
-	user_phone:string
+	user_phone: string;
 	engineer_uuid: string;
 	problems_uuid: string[];
 	diagnosis_problems_name: string[];
@@ -44,6 +44,8 @@ export type ITransferTableData = {
 	max_quantity?: number;
 	product_name: string;
 	product_uuid: string;
+	purchase_entry_uuid: string;
+	serial_no: string;
 	order_id: string;
 	order_uuid: string;
 	info_uuid: string;
@@ -59,6 +61,7 @@ export type IStockActionTrx = {
 	max_quantity?: number;
 	warehouse_uuid?: string;
 	product_uuid?: string;
+	purchase_entry_uuid?: string;
 };
 //* Order Columns
 export type IOrderTableData = {
@@ -71,6 +74,8 @@ export type IOrderTableData = {
 	is_product_received: boolean;
 	is_diagnosis_needed: boolean;
 	is_delivery_complete?: boolean;
+	is_home_repair: boolean;
+	is_challan_needed: boolean;
 	received_date: string;
 	user_id: string;
 	model_uuid: string;
@@ -118,11 +123,21 @@ export type IOrderTableData = {
 	product_transfer?: ITransferTableData[];
 	process?: IProcessTableData[];
 	remarks: string;
+
+	image_1?: string;
+	image_2?: string;
+	image_3?: string;
+
+	status_update_date: string;
+	status: string;
+	diagnosis_proposed_cost: number;
 };
 //* Info Columns
 export type IInfoTableData = {
 	uuid: string;
 	is_new_customer?: boolean;
+	branch_uuid: string;
+	branch_name: string;
 	name: string;
 	phone: string;
 	user_phone: string;

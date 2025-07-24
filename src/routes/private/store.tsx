@@ -1,6 +1,10 @@
 import { lazy } from 'react';
 import { IRoute } from '@/types';
 
+
+
+
+
 const Group = lazy(() => import('@/pages/store/group'));
 const Category = lazy(() => import('@/pages/store/category'));
 const Brand = lazy(() => import('@/pages/store/brand'));
@@ -21,6 +25,8 @@ const PurchaseReturn = lazy(() => import('@/pages/store/purchase-return'));
 const PurchaseReturnAddOrUpdate = lazy(() => import('@/pages/store/purchase-return/add-or-update'));
 const PurchaseReturnDetails = lazy(() => import('@/pages/store/purchase-return/details'));
 const Log = lazy(() => import('@/pages/store/log'));
+const ProductTransferOrderAgainst = lazy(() => import('@/pages/store/product/trx-against-order'));
+const ProductInternalTransfer = lazy(() => import('@/pages/store/product/trx'));
 
 const StoreRoutes: IRoute[] = [
 	{
@@ -32,6 +38,22 @@ const StoreRoutes: IRoute[] = [
 				element: <Product />,
 				page_name: 'store__product',
 				actions: ['create', 'read', 'update', 'delete', 'click_trx', 'click_order_trx'],
+			},
+			{
+				name: 'Product Order Transfer',
+				path: '/store/product/:uuid/order-against-warehouse-trx/:warehouse_uuid',
+				element: <ProductTransferOrderAgainst />,
+				hidden: true,
+				page_name: 'store__product_transfer_order_against',
+				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Product Internal Transfer',
+				path: '/store/internal-transfer/:uuid',
+				element: <ProductInternalTransfer />,
+				hidden: true,
+				page_name: 'store__product_internal_transfer',
+				actions: ['create', 'read', 'update', 'delete'],
 			},
 			{
 				name: 'Purchase',

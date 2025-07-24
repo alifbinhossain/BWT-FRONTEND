@@ -10,7 +10,7 @@ import CoreForm from '@core/form';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { useStorePurchases, useStorePurchasesByUUID } from '../../_config/query';
+import { useStoreProducts, useStorePurchases, useStorePurchasesByUUID } from '../../_config/query';
 import { IPurchase, PURCHASE_NULL, PURCHASE_SCHEMA } from '../../_config/schema';
 import Header from './header';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
@@ -26,6 +26,7 @@ const AddOrUpdate = () => {
 	const { url: purchaseUrl, updateData, postData, deleteData } = useStorePurchases();
 
 	const { data, invalidateQuery: invalidateTestDetails } = useStorePurchasesByUUID(uuid as string);
+	const { invalidateQuery: invalidateProduct } = useStoreProducts();
 
 	const form = useRHF(PURCHASE_SCHEMA, PURCHASE_NULL);
 
@@ -68,6 +69,7 @@ const AddOrUpdate = () => {
 				if (item.uuid === undefined) {
 					const newData = {
 						...item,
+						quantity: 1,
 						purchase_uuid: uuid,
 						created_at: getDateTime(),
 						created_by: user?.uuid,
@@ -82,6 +84,7 @@ const AddOrUpdate = () => {
 				} else {
 					const updatedData = {
 						...item,
+						quantity: 1,
 						updated_at: getDateTime(),
 					};
 					return updateData.mutateAsync({
@@ -97,6 +100,7 @@ const AddOrUpdate = () => {
 					.then(() => form.reset(PURCHASE_NULL))
 					.then(() => {
 						invalidateTestDetails(); // TODO: Update invalidate query
+						invalidateProduct();
 						navigate(`/store/purchase/${uuid}/details`);
 					});
 			} catch (err) {
@@ -135,6 +139,7 @@ const AddOrUpdate = () => {
 		// Create purchase entries
 		const purchase_entry_entries = [...values.purchase_entry].map((item) => ({
 			...item,
+			quantity: 1,
 			purchase_uuid: new_purchase_uuid,
 			uuid: nanoid(),
 			created_at,
@@ -154,6 +159,7 @@ const AddOrUpdate = () => {
 				.then(() => form.reset(PURCHASE_NULL))
 				.then(() => {
 					invalidateTestDetails(); // TODO: Update invalidate query
+					invalidateProduct();
 					navigate(`/store/purchase/${new_purchase_uuid}/details`);
 				});
 		} catch (err) {
@@ -165,7 +171,6 @@ const AddOrUpdate = () => {
 		append({
 			product_uuid: '',
 			serial_no: '',
-			quantity: 0,
 			price_per_unit: 0,
 			discount: 0,
 			remarks: '',
@@ -201,7 +206,7 @@ const AddOrUpdate = () => {
 		append({
 			product_uuid: field.product_uuid,
 			serial_no: field.serial_no,
-			quantity: field.quantity,
+
 			price_per_unit: field.price_per_unit,
 			discount: field.discount,
 			remarks: field.remarks,
@@ -213,7 +218,7 @@ const AddOrUpdate = () => {
 	};
 	const total = form.getValues()?.purchase_entry.reduce(
 		(acc, curr) => {
-			acc.total_price += curr.price_per_unit * curr.quantity;
+			acc.total_price += curr.price_per_unit;
 
 			return acc;
 		},
@@ -242,12 +247,13 @@ const AddOrUpdate = () => {
 				fields={fields}
 			>
 				<tr>
-					<td className='border-t text-right font-semibold' colSpan={4}>
+					<td className='border-t text-right font-semibold' colSpan={2}>
 						Grand Total:
 					</td>
 
-					<td className='border-t px-3 py-2'>{total.total_price}</td>
-					<td className='border-t px-3 py-2'></td>
+					<td className='border-t px-3 py-2' colSpan={5}>
+						{total.total_price}
+					</td>
 				</tr>
 			</CoreForm.DynamicFields>
 
@@ -258,6 +264,7 @@ const AddOrUpdate = () => {
 						setDeleteItem,
 						url: `/store/purchase-entry`,
 						deleteData,
+						invalidateQueries:invalidateProduct,
 						onClose: () => {
 							form.setValue(
 								'purchase_entry',

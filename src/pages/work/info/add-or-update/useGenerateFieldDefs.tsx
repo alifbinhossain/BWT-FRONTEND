@@ -19,6 +19,7 @@ import {
 } from '@/lib/common-queries/other';
 
 import { IInfo } from '../../_config/schema';
+import Location from './location';
 import ModelFilter from './model-filter';
 
 interface IGenerateFieldDefsProps {
@@ -27,16 +28,19 @@ interface IGenerateFieldDefsProps {
 	watch?: UseFormWatch<IInfo>;
 	isProductReceived?: boolean;
 	form: any;
+	isUpdate: boolean;
 }
 
-const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({
+	copy,
+	remove,
+	isProductReceived,
+	form,
+	isUpdate,
+}: IGenerateFieldDefsProps): FieldDef[] => {
 	const [brand, setBrand] = useState([]);
 
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
-	const { data: warehouseOptions } = useOtherWarehouse<IFormSelectOption[]>();
-	const { data: rackOption } = useOtherRack<IFormSelectOption[]>();
-	const { data: floorOption } = useOtherFloor<IFormSelectOption[]>();
-	const { data: boxOption } = useOtherBox<IFormSelectOption[]>();
 	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
 	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
 
@@ -46,6 +50,12 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 			accessorKey: 'actions',
 			type: 'custom',
 			component: (index: number) => {
+				if (
+					form.watch(`order_entry.${index}.is_home_repair`) ||
+					form.watch(`order_entry.${index}.is_proceed_to_repair`)
+				) {
+					return <FieldActionButton handleCopy={copy} index={index} />;
+				}
 				return <FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />;
 			},
 		},
@@ -66,6 +76,18 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 							name={`order_entry.${index}.is_proceed_to_repair`}
 							render={(props) => <CoreForm.Checkbox label='Proceed to Repair' {...props} />}
 						/>
+						<FormField
+							control={form.control}
+							name={`order_entry.${index}.is_home_repair`}
+							render={(props) => <CoreForm.Checkbox label='Home Repair' {...props} />}
+						/>
+						{form.watch(`order_entry.${index}.is_home_repair`) && (
+							<FormField
+								control={form.control}
+								name={`order_entry.${index}.is_challan_needed`}
+								render={(props) => <CoreForm.Checkbox label='Challan Needed' {...props} />}
+							/>
+						)}
 					</div>
 				);
 			},
@@ -116,6 +138,29 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 			type: 'number',
 		},
 		{
+			header: 'Cost',
+			accessorKey: 'cost',
+			type: 'custom',
+			component: (index: number) => {
+				if (form.watch(`order_entry.${index}.is_home_repair`)) {
+					return (
+						<div className='flex gap-2'>
+							<FormField
+								control={form.control}
+								name={`order_entry.${index}.proposed_cost`}
+								render={(props) => <CoreForm.Input label='Proposed Cost' type='number' {...props} />}
+							/>
+							<FormField
+								control={form.control}
+								name={`order_entry.${index}.bill_amount`}
+								render={(props) => <CoreForm.Input label='Bill Amount' type='number' {...props} />}
+							/>
+						</div>
+					);
+				}
+			},
+		},
+		{
 			header: 'Accessories',
 			accessorKey: 'accessories',
 			type: 'multiSelect',
@@ -144,35 +189,94 @@ const useGenerateFieldDefs = ({ copy, remove, isProductReceived, form }: IGenera
 		{
 			header: 'Warehouse',
 			accessorKey: 'warehouse_uuid',
-			type: 'select',
-			options: warehouseOptions || [],
-			placeholder: 'Select Warehouse',
+			type: 'custom',
+			component: (index: number) => {
+				return <Location form={form} index={index} />;
+			},
 			hidden: !isProductReceived,
 		},
 		{
-			header: 'Rack',
-			accessorKey: 'rack_uuid',
-			type: 'select',
-			options: rackOption || [],
-			placeholder: 'Select Rack',
-			hidden: !isProductReceived,
+			header: 'Image 1',
+			accessorKey: 'image_1',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`order_entry.${index}.image_1`}
+						render={(props) => (
+							<CoreForm.FileUpload
+								subLabel={
+									form.watch('type') === 'hero'
+										? 'Recommend size (1905x723)'
+										: 'Recommend ratio 1:1 (300x300)'
+								}
+								label='Image 1'
+								className='h-full'
+								fileType='image'
+								isUpdate={isUpdate}
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
 		},
 		{
-			header: 'Floor',
-			accessorKey: 'floor_uuid',
-			type: 'select',
-			options: floorOption || [],
-			placeholder: 'Select Floor',
-			hidden: !isProductReceived,
+			header: 'Image 2',
+			accessorKey: 'image_2',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`order_entry.${index}.image_2`}
+						render={(props) => (
+							<CoreForm.FileUpload
+								subLabel={
+									form.watch('type') === 'hero'
+										? 'Recommend size (1905x723)'
+										: 'Recommend ratio 1:1 (300x300)'
+								}
+								label='Image 2'
+								className='h-full'
+								fileType='image'
+								isUpdate={isUpdate}
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
 		},
 		{
-			header: 'Box',
-			accessorKey: 'box_uuid',
-			type: 'select',
-			options: boxOption || [],
-			placeholder: 'Select Box',
-			hidden: !isProductReceived,
+			header: 'Image 3',
+			accessorKey: 'image_3',
+			type: 'custom',
+			component: (index: number) => {
+				return (
+					<FormField
+						control={form.control}
+						name={`order_entry.${index}.image_3`}
+						render={(props) => (
+							<CoreForm.FileUpload
+								subLabel={
+									form.watch('type') === 'hero'
+										? 'Recommend size (1905x723)'
+										: 'Recommend ratio 1:1 (300x300)'
+								}
+								label='Image 3'
+								className='h-full'
+								fileType='image'
+								isUpdate={isUpdate}
+								{...props}
+							/>
+						)}
+					/>
+				);
+			},
 		},
+
 		{
 			header: 'Remarks',
 			accessorKey: 'remarks',

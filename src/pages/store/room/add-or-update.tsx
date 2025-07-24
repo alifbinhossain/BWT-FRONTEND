@@ -17,38 +17,9 @@ import { getDateTime } from '@/utils';
 import { IRoomTableData } from '../_config/columns/columns.type';
 import { useStoreRoomsByUUID } from '../_config/query';
 import { ROOM_NULL, ROOM_SCHEMA } from '../_config/schema';
+import { IRoomAddOrUpdateProps } from '../_config/types';
 
-interface IAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IRoomTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IRoomTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
-
-const AddOrUpdate: React.FC<IAddOrUpdateProps> = ({
+const AddOrUpdate: React.FC<IRoomAddOrUpdateProps> = ({
 	url,
 	open,
 	setOpen,

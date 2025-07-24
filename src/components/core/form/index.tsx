@@ -1,46 +1,52 @@
-import FormAddEditWrapper from './add-edit-wrapper';
-import FormCheckbox from './checkbox';
-import FormDatePicker from './date-picker';
+import AddEditWrapper from './add-edit-wrapper';
+import Checkbox from './checkbox';
+import DatePicker from './date-picker';
 import DateTimePicker from './date-time-picker';
 import FileUpload from './file-upload';
-import FormDynamicFields from './form-dynamic-fields';
+import DynamicFields from './form-dynamic-fields';
 import Gender from './gender';
-import FormInput from './input';
-import FormJoinInputSelect from './join-input-select';
-import FormJoinInputUnit from './join-input-unit';
-import FormMultiSelect from './multi-select';
+import Input from './input';
+import JoinInputSelect from './join-input-select';
+import JoinInputUnit from './join-input-unit';
+import MultiSelect from './multi-select';
 import Otp from './otp';
 import Phone from './phone';
-import FormReactSelect from './react-select';
-import FormReactSelectCreate from './react-select-create';
-import FormSection from './section';
-import FormSelect from './select';
-import FormSubmit from './submit';
+import Radio from './radio';
+import ReactSelect from './react-select';
+import ReactSelectCreate from './react-select-create';
+import RichTextEditor from './rich-text-editor';
+import Section from './section';
+import Select from './select';
+import StudentID from './student-id-box';
+import Submit from './submit';
 import Switch from './switch';
-import FormTextarea from './textarea';
+import Textarea from './textarea';
 import TimePicker from './time-picker';
 
 const Form = {
-	Input: FormInput,
-	Textarea: FormTextarea,
-	DatePicker: FormDatePicker,
-	Checkbox: FormCheckbox,
-	Select: FormSelect,
-	MultiSelect: FormMultiSelect,
-	ReactSelect: FormReactSelect,
-	Submit: FormSubmit,
-	Section: FormSection,
-	JoinInputUnit: FormJoinInputUnit,
-	JoinInputSelect: FormJoinInputSelect,
-	DynamicFields: FormDynamicFields,
-	AddEditWrapper: FormAddEditWrapper,
-	ReactSelectCreate: FormReactSelectCreate,
+	Input,
+	Textarea,
+	DatePicker,
+	Checkbox,
+	Radio,
+	Select,
+	MultiSelect,
+	ReactSelect,
+	Submit,
+	Section,
+	JoinInputUnit,
+	JoinInputSelect,
+	DynamicFields,
+	AddEditWrapper,
+	FileUpload,
+	RichTextEditor,
 	Switch,
-	Phone,
 	Otp,
 	Gender,
+	Phone,
+	ReactSelectCreate,
 	DateTimePicker,
-	FileUpload,
+	StudentID,
 	TimePicker,
 };
 

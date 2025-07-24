@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { IResponse } from '@/types';
+import { IResponse, IToast } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import useRHF from '@/hooks/useRHF';
@@ -30,8 +30,8 @@ export function GeneralInformation({
 }: {
 	data: IEmployeeDetails;
 	updateData: UseMutationResult<
-		IResponse<IEmployeeDetails>,
-		AxiosError<IResponse<IEmployeeDetails>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			updatedData: any;

@@ -1,423 +1,105 @@
-import { IResponse } from '@/types';
+import { IDefaultAddOrUpdateProps,IToast } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-
-
-import { IBoxTableData, IBranchTableData, IBrandTableData, ICategoryTableData, IFloorTableData, IGroupTableData, IInternalTransferTableData, IModelTableData, IProductTableData, IPurchaseEntryTableData, IPurchaseReturnEntryTableData, IRackTableData, ISizeTableData, IStockTableData, IVendorTableData, IWarehouseTableData } from '../columns/columns.type';
-
+import {
+	IBoxTableData,
+	IBranchTableData,
+	IBrandTableData,
+	ICategoryTableData,
+	IFloorTableData,
+	IGroupTableData,
+	IInternalTransferTableData,
+	IModelTableData,
+	IProductTableData,
+	IPurchaseEntryTableData,
+	IPurchaseReturnEntryTableData,
+	IRackTableData,
+	IRoomTableData,
+	ISizeTableData,
+	IStockTableData,
+	IVendorTableData,
+	IWarehouseTableData,
+} from '../columns/columns.type';
 
 //* Group
-export interface IGroupAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IGroupAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IGroupTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
+// }
 
 //* Brand
-export interface IBrandAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IBrandAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IBrandTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 //* Category
-export interface ICategoryAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface ICategoryAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: ICategoryTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 //* Model
-export interface IModelAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IModelAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IModelTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 //* Size
-export interface ISizeAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface ISizeAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: ISizeTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 //* Branch
-export interface IBranchAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IBranchAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IBranchTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 //* Vendor
-export interface IVendorAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IVendorAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IVendorTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
+
 //* Stock
-export interface IStockAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IStockAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IStockTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IStockTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 //* Product
-export interface IProductAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IProductAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IProductTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IProductTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 //* Warehouse
-export interface IWarehouseAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IWarehouseAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IWarehouseTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<any>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
 
 //* Floor
-export interface IFloorAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IFloorAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IFloorTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IFloorTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
 }
-
 //* Rack
-export interface IRackAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface IRackAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IRackTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IRackTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
+}
+//* Box
+export interface IBoxAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData?: IBoxTableData | null;
+}
+//*Room
+export interface IRoomAddOrUpdateProps extends IDefaultAddOrUpdateProps {
+	updatedData?: IRoomTableData | null;
 }
 
-//* Box
-export interface IBoxAddOrUpdateProps {
-	url: string;
-	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	updatedData?: IBoxTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IBoxTableData | null>>;
-	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			newData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
-		{
-			url: string;
-			updatedData: any;
-			isOnCloseNeeded?: boolean;
-			onClose?: (() => void) | undefined;
-		},
-		any
-	>;
-}
 //* Internal Transfer
 export interface IInternalTransferAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	updatedData?: IInternalTransferTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IInternalTransferTableData | null>>;
 	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			updatedData: any;
@@ -433,11 +115,11 @@ export interface IPurchaseLogAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	updatedData?: IPurchaseEntryTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IPurchaseEntryTableData | null>>;
 	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			updatedData: any;
@@ -453,11 +135,11 @@ export interface IPurchaseReturnLogAddOrUpdateProps {
 	url: string;
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	updatedData?: IPurchaseReturnEntryTableData | null;
-	setUpdatedData?: React.Dispatch<React.SetStateAction<IPurchaseReturnEntryTableData | null>>;
 	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			updatedData: any;

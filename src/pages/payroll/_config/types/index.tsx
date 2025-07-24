@@ -1,4 +1,4 @@
-import { IResponse } from '@/types';
+import { IResponse, IToast } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
@@ -11,8 +11,8 @@ export interface IAddOrUpdateProps<T> {
 	updatedData?: T | null;
 	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	postData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			newData: any;
@@ -22,8 +22,8 @@ export interface IAddOrUpdateProps<T> {
 		any
 	>;
 	updateData: UseMutationResult<
-		IResponse<any>,
-		AxiosError<IResponse<any>, any>,
+		IToast,
+		AxiosError<IToast, any>,
 		{
 			url: string;
 			updatedData: any;

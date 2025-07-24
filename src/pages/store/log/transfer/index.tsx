@@ -2,7 +2,7 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { transferColumns } from '@/pages/store/_config/columns';
 import { IStockActionTrx, ITransferTableData } from '@/pages/store/_config/columns/columns.type';
-import { useStoreOrderTransfers } from '@/pages/store/_config/query';
+import { useStoreOrderTransfers, useStoreProducts } from '@/pages/store/_config/query';
 import { Row } from '@tanstack/react-table';
 
 import { PageInfo } from '@/utils';
@@ -15,6 +15,8 @@ const DeleteAllModal = lazy(() => import('@core/modal/delete/all'));
 const Transfer = () => {
 	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useStoreOrderTransfers<ITransferTableData[]>();
+
+	const { invalidateQuery: invalidateProduct } = useStoreProducts();
 
 	const pageInfo = useMemo(() => new PageInfo('Store/Log -> Order Against Transfer', url, 'store__log'), [url]);
 
@@ -97,6 +99,7 @@ const Transfer = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
+							invalidateQueries: invalidateProduct,
 							url,
 							deleteData,
 						}}
