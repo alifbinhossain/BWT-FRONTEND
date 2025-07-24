@@ -127,11 +127,9 @@ export type IOrderTableData = {
 	product_transfer?: ITransferTableData[];
 	process?: IProcessTableData[];
 	remarks: string;
-
 	image_1?: string;
 	image_2?: string;
 	image_3?: string;
-
 	status_update_date: string;
 	status: string;
 	diagnosis_proposed_cost: number;

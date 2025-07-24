@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
 import { getDateTime, PageInfo } from '@/utils';
+import Formdata from '@/utils/formdata';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { orderColumns } from '../_config/columns';
@@ -25,7 +26,8 @@ const Order = () => {
 	const actionTrxAccess = pageAccess.includes('click_trx');
 	const actionProceedToRepair = pageAccess.includes('click_proceed_to_repair');
 	const actionDiagnosisNeed = pageAccess.includes('click_diagnosis_need');
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkInHandWork<IOrderTableData[]>();
+	const { data, isLoading, url, deleteData, imagePostData, imageUpdateData, updateData, refetch } =
+		useWorkInHandWork<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Order', url, 'work__order'), [url]);
 
@@ -42,7 +44,6 @@ const Order = () => {
 		setUpdatedData(row.original);
 		setIsOpenAddModal(true);
 	};
-
 	// Delete Modal state
 	// Single Delete Item
 	const [deleteItem, setDeleteItem] = useState<{
@@ -60,24 +61,22 @@ const Order = () => {
 
 	const handleProceedToRepair = async (row: Row<IOrderTableData>) => {
 		const is_proceed_to_repair = !row?.original?.is_proceed_to_repair;
-		const is_diagnosis_need = false;
 		const updated_at = getDateTime();
-
-		await updateData.mutateAsync({
+		const formData = Formdata({ is_proceed_to_repair, updated_at });
+		await imageUpdateData.mutateAsync({
 			url: `/work/order/${row?.original?.uuid}`,
-			updatedData: { is_proceed_to_repair, is_diagnosis_need, updated_at },
+			updatedData: formData,
 		});
 		invalidateDiagnosis();
 		invalidateRepairing();
 	};
 	const handelDiagnosisStatusChange = async (row: Row<IOrderTableData>) => {
 		const is_diagnosis_need = !row?.original?.is_diagnosis_need;
-		const is_proceed_to_repair = false;
 		const updated_at = getDateTime();
-
-		await updateData.mutateAsync({
+		const formData = Formdata({ is_diagnosis_need, updated_at });
+		await imageUpdateData.mutateAsync({
 			url: `/work/order/${row?.original?.uuid}`,
-			updatedData: { is_diagnosis_need, is_proceed_to_repair, updated_at },
+			updatedData: formData,
 		});
 		invalidateDiagnosis();
 		invalidateRepairing();
@@ -115,10 +114,10 @@ const Order = () => {
 							url: '/work/order',
 							open: isOpenAddModal,
 							setOpen: setIsOpenAddModal,
-							updatedData,
+							imageUpdateData,
 							setUpdatedData,
-							postData,
-							updateData,
+							imagePostData,
+							updatedData,
 						}}
 					/>,
 

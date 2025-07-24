@@ -21,6 +21,17 @@ import {
 	ITransferTableData,
 	IZoneTableData,
 } from './columns.type';
+import {
+	IAccessoriesTableData,
+	IDiagnosisTableData,
+	IInfoTableData,
+	IOrderTableData,
+	IProblemsTableData,
+	IProcessTableData,
+	ISectionTableData,
+	ITransferTableData,
+	IZoneTableData,
+} from './columns.type';
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -891,6 +902,7 @@ export const RepairingColumns = ({
 		cell: (info) => {
 			const value = info.row.original.product_transfer as ITransferTableData[] | undefined;
 			const headers = ['Product', 'Serial', 'Branch', 'Warehouse'];
+			const headers = ['Product', 'Serial', 'Branch', 'Warehouse'];
 			return <TableForColumn value={value} headers={headers} />;
 		},
 	},
@@ -1439,7 +1451,7 @@ export const accessoriesColumns = (): ColumnDef<IAccessoriesTableData>[] => [
 	},
 ];
 //* Transfer Columns
-export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
+export const transferColumns = (): ColumnDef<ITransferTableData, unknown>[] => [
 	{
 		accessorKey: 'product_name',
 		header: 'Product',
@@ -1461,3 +1473,4 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 		enableColumnFilter: false,
 	},
 ];
+
