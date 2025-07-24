@@ -93,35 +93,38 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			onSubmit={onSubmit}
 		>
 			<Information data={(data || []) as IOrderTableData} />
-			<FormField
-				control={form.control}
-				name='delivery_problems_uuid'
-				render={(props) => (
-					<CoreForm.ReactSelect
-						isMulti
-						label='Problems'
-						options={problemOption!}
-						placeholder='Select Problems'
-						{...props}
-					/>
-				)}
-			/>
-			
-			<FormField
-				control={form.control}
-				name='delivery_problem_statement'
-				render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
-			/>
-			<FormField
-				control={form.control}
-				name='bill_amount'
-				render={(props) => <CoreForm.Input type='number' label='Bill Amount' {...props} />}
-			/>
-			<FormField
-				control={form.control}
-				name='remarks'
-				render={(props) => <CoreForm.Textarea label='Remarks' {...props} />}
-			/>
+
+			<div className='grid grid-cols-2 gap-4'>
+				<FormField
+					control={form.control}
+					name='delivery_problems_uuid'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							isMulti
+							label='Problems'
+							options={problemOption!}
+							placeholder='Select Problems'
+							{...props}
+						/>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='bill_amount'
+					render={(props) => <CoreForm.Input type='number' label='Bill Amount' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='delivery_problem_statement'
+					render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+				/>
+
+				<FormField
+					control={form.control}
+					name='remarks'
+					render={(props) => <CoreForm.Textarea label='Remarks' {...props} />}
+				/>
+			</div>
 		</AddModal>
 	);
 };

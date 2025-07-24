@@ -5,6 +5,7 @@ import StatusButton from '@/components/buttons/status';
 import { CustomLink } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Switch } from '@/components/ui/switch';
 
 import { getDateTime } from '@/utils';
@@ -201,23 +202,35 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 
 	return (
 		<>
-			<SectionContainer title={'Order Details'}>
-				<div className='flex w-full flex-row gap-y-4 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
-					<TableList title='General' className='w-full md:w-1/2' items={renderGeneralItems()} />
-					<TableList title='Product' className='w-full md:w-1/2' items={renderProductItems()} />
-					<TableList title='Problem' className='w-full md:w-1/2' items={renderProblemItems()} />
-					<TableList title='Status' className='w-full md:w-1/2' items={renderStatusItems()} />
-					<TableList title='Location' className='w-full md:w-1/2' items={renderLocationItems()} />
-				</div>
-			</SectionContainer>
-			{data?.is_diagnosis_need && (
-				<SectionContainer title={'Diagnosis'}>
-					<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
-						<TableList className='over w-full md:w-1/2' items={renderDiagnosisItemsLeft()} />
-						<TableList className='w-full md:w-1/2' items={renderDiagnosisItemsRight()} />
-					</div>
-				</SectionContainer>
-			)}
+			<Accordion type='single' collapsible className='w-full' defaultValue='item-1'>
+				<AccordionItem value='item-1'>
+					<AccordionTrigger>Order Details</AccordionTrigger>
+					<AccordionContent className='flex flex-col gap-4 text-balance'>
+						<SectionContainer title={'Order Details'}>
+							<div className='flex w-full flex-row gap-y-4 overflow-x-scroll md:flex-row md:gap-y-0 md:space-x-4'>
+								<TableList title='General' className='w-full md:w-1/2' items={renderGeneralItems()} />
+								<TableList title='Product' className='w-full md:w-1/2' items={renderProductItems()} />
+								<TableList title='Problem' className='w-full md:w-1/2' items={renderProblemItems()} />
+								<TableList title='Status' className='w-full md:w-1/2' items={renderStatusItems()} />
+								<TableList title='Location' className='w-full md:w-1/2' items={renderLocationItems()} />
+							</div>
+						</SectionContainer>
+					</AccordionContent>
+				</AccordionItem>
+				<AccordionItem value='item-2'>
+					<AccordionTrigger>Diagnosis Details</AccordionTrigger>
+					<AccordionContent className='flex flex-col gap-4 text-balance'>
+						{data?.is_diagnosis_need && (
+							<SectionContainer title={'Diagnosis'}>
+								<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
+									<TableList className='over w-full md:w-1/2' items={renderDiagnosisItemsLeft()} />
+									<TableList className='w-full md:w-1/2' items={renderDiagnosisItemsRight()} />
+								</div>
+							</SectionContainer>
+						)}
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
 		</>
 	);
 };
