@@ -177,11 +177,7 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 			</div>
 
 			<div className='flex flex-col gap-4'>
-				<FormField
-					control={form.control}
-					name='location'
-					render={(props) => <CoreForm.Textarea {...props} />}
-				/>
+				{' '}
 				<FormField
 					control={form.control}
 					name='branch_uuid'
@@ -194,6 +190,11 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 							{...props}
 						/>
 					)}
+				/>
+				<FormField
+					control={form.control}
+					name='location'
+					render={(props) => <CoreForm.Textarea {...props} />}
 				/>
 				<FormField
 					control={form.control}

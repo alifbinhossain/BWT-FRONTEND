@@ -187,7 +187,7 @@ const AddOrUpdate = () => {
 		}));
 
 		const order_entry_entries_promise = order_entry_entries.map((item) => {
-			const formData = Formdata({ ...item, bill_amount: 0, proposed_cost: 0 });
+			const formData = Formdata({ ...item, proposed_cost: 0 });
 			const formFields = [
 				'id',
 				'order_id',

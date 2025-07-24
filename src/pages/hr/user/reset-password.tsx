@@ -29,7 +29,7 @@ const ResetPassword: React.FC<IResetPasswordProps> = ({
 	// Submit handler
 	async function onSubmit(values: IResetPasswordSchema) {
 		await updateData.mutateAsync({
-			url,
+			url:`/hr/user/password/${updatedData?.uuid}?is_reset=true`,
 			updatedData: {
 				...values,
 				updated_at: getDateTime(),

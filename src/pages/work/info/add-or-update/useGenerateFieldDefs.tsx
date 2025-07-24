@@ -65,29 +65,67 @@ const useGenerateFieldDefs = ({
 			type: 'custom',
 			component: (index: number) => {
 				return (
-					<div className='flex gap-2'>
-						<FormField
-							control={form.control}
-							name={`order_entry.${index}.is_diagnosis_need`}
-							render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
-						/>
-						<FormField
-							control={form.control}
-							name={`order_entry.${index}.is_proceed_to_repair`}
-							render={(props) => <CoreForm.Checkbox label='Proceed to Repair' {...props} />}
-						/>
-						<FormField
-							control={form.control}
-							name={`order_entry.${index}.is_home_repair`}
-							render={(props) => <CoreForm.Checkbox label='Home Repair' {...props} />}
-						/>
-						{form.watch(`order_entry.${index}.is_home_repair`) && (
+					<div className='flex flex-col gap-4'>
+						<div className='flex gap-2'>
 							<FormField
 								control={form.control}
-								name={`order_entry.${index}.is_challan_needed`}
-								render={(props) => <CoreForm.Checkbox label='Challan Needed' {...props} />}
+								name={`order_entry.${index}.is_home_repair`}
+								render={(props) => (
+									<CoreForm.Checkbox
+										label='Home Repair'
+										{...props}
+										onCheckedChange={(e) => {
+											form.setValue(`order_entry.${index}.is_home_repair`, e);
+											if (e) {
+												form.setValue(`order_entry.${index}.is_proceed_to_repair`, false);
+												form.setValue(`order_entry.${index}.bill_amount`, 0);
+											}
+										}}
+									/>
+								)}
 							/>
-						)}
+							{form.watch(`order_entry.${index}.is_home_repair`) && (
+								<FormField
+									control={form.control}
+									name={`order_entry.${index}.is_challan_needed`}
+									render={(props) => <CoreForm.Checkbox label='Challan Needed' {...props} />}
+								/>
+							)}
+						</div>
+						<div className='flex gap-2'>
+							<FormField
+								control={form.control}
+								name={`order_entry.${index}.is_diagnosis_need`}
+								render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
+							/>
+						</div>
+						<div className='flex gap-2'>
+							{!form.watch(`order_entry.${index}.is_home_repair`) && (
+								<FormField
+									control={form.control}
+									name={`order_entry.${index}.is_proceed_to_repair`}
+									render={(props) => (
+										<CoreForm.Checkbox
+											label='Proceed to Repair'
+											{...props}
+											onCheckedChange={(e) => {
+												form.setValue(`order_entry.${index}.is_proceed_to_repair`, e);
+												if (!e) {
+													form.setValue(`order_entry.${index}.bill_amount`, 0);
+												}
+											}}
+										/>
+									)}
+								/>
+							)}
+							{form.watch(`order_entry.${index}.is_proceed_to_repair`) && (
+								<FormField
+									control={form.control}
+									name={`order_entry.${index}.bill_amount`}
+									render={(props) => <CoreForm.Input type='number' label='Bill Amount' {...props} />}
+								/>
+							)}
+						</div>
 					</div>
 				);
 			},
