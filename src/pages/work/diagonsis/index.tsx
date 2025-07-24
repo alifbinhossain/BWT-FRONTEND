@@ -60,7 +60,6 @@ const Diagnosis = () => {
 
 	const handleProceedToRepair = async (row: Row<IOrderTableData>) => {
 		const is_proceed_to_repair = !row?.original?.is_proceed_to_repair;
-		const is_diagnosis_need = false;
 		const updated_at = getDateTime();
 
 		const formData = Formdata({ is_proceed_to_repair, updated_at });

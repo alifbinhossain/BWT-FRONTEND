@@ -1,7 +1,6 @@
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-// import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
@@ -13,9 +12,8 @@ import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { IFormSelectOption } from '@/components/core/form/types';
-import { ShowLocalToast } from '@/components/others/toast';
 
-import { useOtherProblem, useOtherProduct, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
+import { useOtherProblem, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 import Formdata from '@/utils/formdata';
@@ -39,7 +37,7 @@ const AddOrUpdate = () => {
 		ICustomProductsSelectOption[]
 	>(`is_warehouse=true&&is_purchase_return_entry=false`);
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
-	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
+	const { invalidateQuery: invalidateQueryOtherWarehouse } =
 		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { data, updateData, postData, imageUpdateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(
 		uuid as string
@@ -99,15 +97,11 @@ const AddOrUpdate = () => {
 		watch: form.watch,
 		form,
 		data,
+		isUpdate,
 	});
 
 	// Submit handler
 	async function onSubmit(values: IRepair) {
-		values.product_transfer.forEach((item: any, index: number) => {
-			const warehouse = warehouseOptions?.find((w) => w.value === item.warehouse_uuid);
-			const product = purchaseEntryOptions?.find((p) => p.value === item.purchase_entry_uuid);
-		});
-
 		if (isUpdate) {
 			const order_data = {
 				...values,
@@ -130,7 +124,7 @@ const AddOrUpdate = () => {
 			});
 			const order_promise = await imageUpdateData.mutateAsync({
 				url: `/work/order/${uuid}`,
-				updatedData: order_data,
+				updatedData: formData,
 				isOnCloseNeeded: false,
 			});
 
@@ -277,4 +271,3 @@ const AddOrUpdate = () => {
 };
 
 export default AddOrUpdate;
-

@@ -12,7 +12,7 @@ import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkRepairing } from '../_config/query';
 
 const Order = () => {
-	const { data, isLoading, url, postData, imageUpdateData, refetch } = useWorkRepairing<IOrderTableData[]>();
+	const { data, isLoading, url, imageUpdateData, refetch } = useWorkRepairing<IOrderTableData[]>();
 	const navigate = useNavigate();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Repairing', url, 'work__repairing'), [url]);
