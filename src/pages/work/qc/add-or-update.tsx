@@ -20,6 +20,7 @@ import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns
 import { useWorkDiagnosis, useWorkOrderByUUID } from '../_config/query';
 import { ORDER_NULL, ORDER_SCHEMA } from '../_config/schema';
 import { IOrderAddOrUpdateProps } from '../_config/types';
+import { orderFields } from '../order/utill';
 import Information from './information';
 
 const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
@@ -62,6 +63,18 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 			...payload,
 			updated_at: getDateTime(),
 		});
+		orderFields.forEach((field) => {
+			if (
+				payload[field as keyof typeof values] == null ||
+				payload[field as keyof typeof values] === 0 ||
+				payload[field as keyof typeof values] === '' ||
+				payload[field as keyof typeof values] === undefined ||
+				(Array.isArray(payload[field as keyof typeof values]) &&
+					(payload[field as keyof typeof values] as unknown[]).length === 0)
+			) {
+				formData.delete(field);
+			}
+		});
 		if (isUpdate) {
 			await imageUpdateData.mutateAsync({
 				url: `/work/order/${updatedData?.uuid}`,
@@ -69,6 +82,18 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 				onClose,
 			});
 		} else {
+			orderFields.forEach((field) => {
+				if (
+					payload[field as keyof typeof values] == null ||
+					payload[field as keyof typeof values] === 0 ||
+					payload[field as keyof typeof values] === '' ||
+					payload[field as keyof typeof values] === undefined ||
+					(Array.isArray(payload[field as keyof typeof values]) &&
+						(payload[field as keyof typeof values] as unknown[]).length === 0)
+				) {
+					formData.delete(field);
+				}
+			});
 			const formData = Formdata({
 				...payload,
 				created_at: getDateTime(),

@@ -15,12 +15,16 @@ interface IGenerateFieldDefsProps {
 	watch?: UseFormWatch<IRepair>;
 	form: any;
 	data: any;
+	isUpdate: boolean;
 }
 // Define this outside your field definitions
 
-const useGenerateFieldDefs = ({ remove, watch, form, data }: IGenerateFieldDefsProps): FieldDef[] => {
+const useGenerateFieldDefs = ({ remove, watch, form, data, isUpdate }: IGenerateFieldDefsProps): FieldDef[] => {
+	const query = isUpdate
+		? `is_warehouse=true&is_purchase_return_entry=false`
+		: `is_warehouse=true&is_purchase_return_entry=false&is_product_transfer=false`;
 	const { data: purchaseEntryOptions } = useOtherPurchaseEntry<ICustomPurchaseEntrySelectOption[]>(
-		`is_warehouse=true&is_purchase_return_entry=false&is_product_transfer=false`
+		`${query}`
 	);
 	const { data: warehouseOptions } = useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 

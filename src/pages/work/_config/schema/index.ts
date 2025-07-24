@@ -101,7 +101,7 @@ export const REPAIR_SCHEMA = z
 		uuid: STRING_OPTIONAL,
 		is_transferred_for_qc: BOOLEAN_OPTIONAL.default(false),
 		is_ready_for_delivery: BOOLEAN_OPTIONAL.default(false),
-		repairing_problems_uuid: STRING_ARRAY,
+		repairing_problems_uuid: STRING_ARRAY_OPTIONAL,
 		repairing_problem_statement: STRING_NULLABLE,
 		repair_product_transfer: BOOLEAN_OPTIONAL.default(false),
 		product_transfer: z.array(
@@ -127,6 +127,8 @@ export const REPAIR_SCHEMA = z
 export const REPAIR_NULL: Partial<IRepair> = {
 	is_transferred_for_qc: false,
 	is_ready_for_delivery: false,
+	repairing_problems_uuid: undefined,
+	
 	repair_product_transfer: false,
 	product_transfer: [
 		{

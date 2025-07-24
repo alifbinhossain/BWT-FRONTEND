@@ -1,24 +1,37 @@
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-// import { IFormSelectOption } from '@/components/core/form/types';
+
+
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
+
+
+
+
+
 import '@/lib/common-queries/other';
+
+
 
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useStoreProducts } from '@/pages/store/_config/query';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { IFormSelectOption } from '@/components/core/form/types';
-import { ShowLocalToast } from '@/components/others/toast';
 
-import { useOtherProblem, useOtherProduct, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
+
+import { IFormSelectOption } from '@/components/core/form/types';
+
+
+
+import { useOtherProblem, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 import Formdata from '@/utils/formdata';
+
+
 
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
@@ -27,6 +40,7 @@ import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '../or
 import { orderFields } from '../order/utill';
 import Information from './information';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
+
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
@@ -99,15 +113,12 @@ const AddOrUpdate = () => {
 		watch: form.watch,
 		form,
 		data,
+		isUpdate,
 	});
 
 	// Submit handler
 	async function onSubmit(values: IRepair) {
-		values.product_transfer.forEach((item: any, index: number) => {
-			const warehouse = warehouseOptions?.find((w) => w.value === item.warehouse_uuid);
-			const product = purchaseEntryOptions?.find((p) => p.value === item.purchase_entry_uuid);
-		});
-
+		console.log(values);
 		if (isUpdate) {
 			const order_data = {
 				...values,
@@ -130,7 +141,7 @@ const AddOrUpdate = () => {
 			});
 			const order_promise = await imageUpdateData.mutateAsync({
 				url: `/work/order/${uuid}`,
-				updatedData: order_data,
+				updatedData: formData,
 				isOnCloseNeeded: false,
 			});
 
@@ -277,4 +288,3 @@ const AddOrUpdate = () => {
 };
 
 export default AddOrUpdate;
-
