@@ -33,7 +33,7 @@ const AddOrUpdate = () => {
 	const { url: infoUrl, updateData, postData, imagePostData, imageUpdateData, deleteData } = useWorkInfo();
 	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 
-	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
+	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(uuid as string, isUpdate);
 
 	const form = useRHF(INFO_SCHEMA, INFO_NULL);
 	const isProductReceived = form.watch('is_product_received');
@@ -63,7 +63,6 @@ const AddOrUpdate = () => {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
-		
 
 		if (isProductReceived && values.order_entry.length === 0) {
 			ShowLocalToast({
@@ -100,9 +99,12 @@ const AddOrUpdate = () => {
 						created_by: user?.uuid,
 						uuid: nanoid(),
 					};
-					const formData = Formdata(newData);
+					const formData = Formdata({ ...newData, proposed_cost: 0 });
 					orderFields.forEach((field) => {
-						if (item[field as keyof typeof values] == null || item[field as keyof typeof values] === 0) {
+						if (
+							newData[field as keyof typeof values] == null ||
+							newData[field as keyof typeof values] === 0
+						) {
 							formData.delete(field);
 						}
 					});
@@ -286,7 +288,7 @@ const AddOrUpdate = () => {
 			is_diagnosis_need: false,
 			model_uuid: '',
 			size_uuid: '',
-			quantity: 0,
+			quantity: 1,
 			serial_no: '',
 			problems_uuid: [],
 			problem_statement: '',

@@ -23,10 +23,10 @@ export const useWorkInfo = <T>(query?: string) =>
 		url: query ? `/work/info?${query}` : '/work/info',
 	});
 
-export const useWorkInfoByUUID = <T>(uuid: string) =>
+export const useWorkInfoByUUID = <T>(uuid: string, isUpdate?: boolean) =>
 	useTQuery<T>({
-		queryKey: workQK.infoByDetails(uuid),
-		url: `/work/order-details-by-info/${uuid}`,
+		queryKey: workQK.infoByDetails(uuid, isUpdate),
+		url: isUpdate ? `/work/order-details-by-info/${uuid}?is_update=${isUpdate}` : `/work/order-details-by-info/${uuid}`,
 		enabled: !!uuid,
 	});
 export const useWorkInfoOrderByUUID = <T>(uuid: string) =>
