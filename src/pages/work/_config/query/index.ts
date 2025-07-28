@@ -163,3 +163,8 @@ export const useStoreOrderTransfersByUUID = <T>(uuid: string) =>
 		url: `/store/product-transfer/${uuid}`,
 		enabled: !!uuid,
 	});
+export const useWorkChat = <T>(order_uuid: string) =>
+	useTQuery<T>({
+		queryKey: workQK.chat(order_uuid),
+		url: `/work/chat?order_uuid=${order_uuid}`,
+	});

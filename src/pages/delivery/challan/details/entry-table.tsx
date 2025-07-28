@@ -8,7 +8,7 @@ import { IChallanTableData } from '../../_config/columns/columns.type';
 const EntryTable: React.FC<{ data: IChallanTableData }> = ({ data }) => {
 	const columns = challanEntryColumns();
 
-	const grandTotal = data?.challan_entries.reduce((total, entry) => total + entry.bill_amount, 0);
+	const grandTotal = data?.challan_entries?.reduce((total, entry) => total + entry.bill_amount, 0);
 
 	return (
 		<div>

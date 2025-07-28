@@ -46,4 +46,6 @@ export const workQK = {
 	//* Order Transfer
 	orderTransfer: () => [...workQK.all(), 'orderTransfer'],
 	orderTransferByUUID: (uuid: string) => [...workQK.orderTransfer(), uuid],
+	//* Chat
+	chat: (order_uuid: string) => [...workQK.all(), 'chat', order_uuid],
 };
