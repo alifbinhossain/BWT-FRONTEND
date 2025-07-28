@@ -14,10 +14,11 @@ import { useOtherProblem } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 
-import { IDiagnosisTableData } from '../_config/columns/columns.type';
-import { useWorkChat, useWorkDiagnosisByUUID, useWorkOrder, useWorkRepairing } from '../_config/query';
+import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns.type';
+import { useWorkChat, useWorkDiagnosisByUUID, useWorkOrder, useWorkOrderByDetails, useWorkRepairing } from '../_config/query';
 import { DIAGNOSIS_NULL, DIAGNOSIS_SCHEMA, MESSAGE_NULL, MESSAGE_SCHEMA } from '../_config/schema';
 import { IDiagnosisAddOrUpdateProps } from '../_config/types';
+import Information from './information';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
@@ -33,7 +34,11 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 
 	const { user } = useAuth();
 	const { data } = useWorkDiagnosisByUUID<IDiagnosisTableData>(updatedData?.uuid as string);
+	const { data: orderData, invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
+		updatedData?.order_uuid as string
+	);
 	const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+
 	const [deleteMessage, setDeleteMessage] = useState<{
 		id: string;
 		name: string;
@@ -147,83 +152,88 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 				open={open}
 				setOpen={onClose}
 				title={`Update Diagnosis: ${updatedData?.diagnosis_id} (${updatedData?.order_id}) `}
-				isSmall={true}
+				isLarge={true}
 				form={form}
 				onSubmit={onSubmit}
 			>
-				<div className='flex flex-col gap-4'>
-					<FormField
-						control={form.control}
-						name='problems_uuid'
-						render={(props) => (
-							<CoreForm.ReactSelect
-								isMulti
-								label='Problem'
-								placeholder='Select Problems'
-								options={problemOption!}
-								{...props}
+				<Information data={(orderData || []) as IOrderTableData} />
+				
+				<div className='grid grid-cols-2 gap-4'>
+					<div className='flex flex-col gap-4'>
+						<FormField
+							control={form.control}
+							name='problems_uuid'
+							render={(props) => (
+								<CoreForm.ReactSelect
+									isMulti
+									label='Problem'
+									placeholder='Select Problems'
+									options={problemOption!}
+									{...props}
+								/>
+							)}
+						/>
+						<div className='flex gap-4'>
+							<FormField
+								control={form.control}
+								name='problem_statement'
+								render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
 							/>
-						)}
-					/>
-					<div className='flex gap-4'>
+							<FormField
+								control={form.control}
+								name='customer_problem_statement'
+								render={(props) => <CoreForm.Textarea label='Customer Problem Statement' {...props} />}
+							/>
+						</div>
+						<div className='flex gap-4'>
+							<FormField
+								control={form.control}
+								name='status'
+								render={(props) => (
+									<CoreForm.ReactSelect options={statusOption!} label='Status' {...props} />
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='proposed_cost'
+								render={(props) => <CoreForm.Input type='number' label='Proposed Cost' {...props} />}
+							/>
+						</div>
+						<div className='flex gap-4'>
+							<FormField
+								control={form.control}
+								name='is_proceed_to_repair'
+								render={(props) => (
+									<CoreForm.Checkbox label='Proceed to Repair' className='h-5' {...props} />
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='customer_remarks'
+								render={(props) => <CoreForm.Textarea label='Customer Remarks' {...props} />}
+							/>
+						</div>
 						<FormField
 							control={form.control}
-							name='problem_statement'
-							render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
-						/>
-						<FormField
-							control={form.control}
-							name='customer_problem_statement'
-							render={(props) => <CoreForm.Textarea label='Customer Problem Statement' {...props} />}
-						/>
-					</div>
-					<div className='flex gap-4'>
-						<FormField
-							control={form.control}
-							name='status'
-							render={(props) => (
-								<CoreForm.ReactSelect options={statusOption!} label='Status' {...props} />
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='proposed_cost'
-							render={(props) => <CoreForm.Input type='number' label='Proposed Cost' {...props} />}
-						/>
-					</div>
-					<div className='flex gap-4'>
-						<FormField
-							control={form.control}
-							name='is_proceed_to_repair'
-							render={(props) => (
-								<CoreForm.Checkbox label='Proceed to Repair' className='h-5' {...props} />
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='customer_remarks'
-							render={(props) => <CoreForm.Textarea label='Customer Remarks' {...props} />}
+							name='remarks'
+							render={(props) => <CoreForm.Textarea {...props} />}
 						/>
 					</div>
-					<FormField
-						control={form.control}
-						name='remarks'
-						render={(props) => <CoreForm.Textarea {...props} />}
+
+					<ChatInterface
+						handleSend={handleSend}
+						form={messageForm}
+						data={chatData || []}
+						title='Chat With Diagnosis'
+						subTitle={`${data?.order_id}`}
+						page='repair'
+						deleteMessage={handleDelete}
+						refetch={refetch}
+						editingMessageId={editingMessageId}
+						setEditingMessageId={setEditingMessageId}
+						onClick={(e) => e.preventDefault()}
 					/>
 				</div>
-				<ChatInterface
-					handleSend={handleSend}
-					form={messageForm}
-					data={chatData || []}
-					title='Chat With Diagnosis'
-					subTitle={`${data?.order_id}`}
-					page='repair'
-					deleteMessage={handleDelete}
-					refetch={refetch}
-					editingMessageId={editingMessageId}
-					setEditingMessageId={setEditingMessageId}
-					onClick={(e) => e.preventDefault()}
-				/>
 			</AddModal>
 			<Suspense fallback={null}>
 				<DeleteModal

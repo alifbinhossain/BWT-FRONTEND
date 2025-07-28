@@ -1,24 +1,19 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 
+
+
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
+
+
 import { Location, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
-import {
-	IAccessoriesTableData,
-	IDiagnosisTableData,
-	IInfoTableData,
-	IOrderTableData,
-	IProblemsTableData,
-	IProcessTableData,
-	ISectionTableData,
-	ITransferTableData,
-	IZoneTableData,
-} from './columns.type';
+import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
+
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -1220,6 +1215,23 @@ export const diagnosisColumns = ({
 		},
 	},
 	{
+		accessorFn: (row) => ProductName(row),
+		id: 'product',
+		header: 'Product',
+		size: 170,
+		enableColumnFilter: false,
+		cell: (info) => {
+			const { brand_name, model_name, serial_no } = info.row.original;
+			return <Product brand_name={brand_name} model_name={model_name} serial_no={serial_no} />;
+		},
+	},
+	{
+		accessorKey: 'quantity',
+		header: 'QTY',
+		size: 40,
+		enableColumnFilter: false,
+	},
+	{
 		accessorFn: (row) => {
 			return row.order_problems_name
 				.map((item) => item)
@@ -1278,8 +1290,8 @@ export const diagnosisColumns = ({
 				}[status.toLowerCase()] || '';
 
 			return (
-				<div className=' gap-2'>
-					<span className={`rounded px-2 py-1 capitalize text-white flex-1 ${bgColorClass}`}>
+				<div className='gap-2'>
+					<span className={`flex-1 rounded px-2 py-1 capitalize text-white ${bgColorClass}`}>
 						{status?.split('_').join(' ')}
 					</span>
 					<DateTime

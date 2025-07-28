@@ -251,120 +251,121 @@ const AddOrUpdate = () => {
 	return (
 		<div className='gap-2'>
 			<Information data={(orderData || []) as IOrderTableData} />
-			<ChatInterface
-				handleSend={handleSend}
-				form={messageForm}
-				data={chatData || []}
-				title='Chat With Diagnosis'
-				subTitle={`${data?.order_id}`}
-				page='repair'
-				deleteMessage={handleDelete}
-				refetch={refetch}
-				editingMessageId={editingMessageId}
-				setEditingMessageId={setEditingMessageId}
-			/>
-			<div className='gap-4'>
-				<CoreForm.AddEditWrapper
-					title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
-					form={form}
-					onSubmit={onSubmit}
-				>
-					<CoreForm.Section
+			<div className='grid grid-cols-2 gap-4'>
+				<div className='gap-4'>
+					<CoreForm.AddEditWrapper
 						title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
-						className='flex'
-						extraHeader={
-							<div className='flex gap-2 text-warning-foreground'>
-								<FormField
-									control={form.control}
-									name='is_transferred_for_qc'
-									render={(props) => (
-										<CoreForm.Checkbox
-											className='bg-warning-foreground'
-											label='Transfer to QC'
-											{...props}
-										/>
-									)}
-								/>
-								<FormField
-									control={form.control}
-									name='is_ready_for_delivery'
-									render={(props) => (
-										<CoreForm.Checkbox
-											label='Ready for Delivery'
-											className='bg-warning-foreground'
-											{...props}
-										/>
-									)}
-								/>
-							</div>
-						}
-					>
-						<FormField
-							control={form.control}
-							name='repairing_problems_uuid'
-							render={(props) => (
-								<CoreForm.ReactSelect
-									isMulti
-									label='Problems'
-									menuPortalTarget={document.body}
-									options={problemOption!}
-									placeholder='Select Problems'
-									{...props}
-								/>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='repairing_problem_statement'
-							render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
-						/>
-						<FormField
-							control={form.control}
-							name='remarks'
-							render={(props) => <CoreForm.Textarea label='Remarks' className='flex-1' {...props} />}
-						/>
-					</CoreForm.Section>
-
-					<CoreForm.DynamicFields
-						title='Repairing Product Transfer'
 						form={form}
-						fieldName='product_transfer'
-						fieldDefs={felidDefs}
-						handleAdd={handleAdd}
-						fields={fields}
-					/>
+						onSubmit={onSubmit}
+					>
+						<CoreForm.Section
+							title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
+							className='flex'
+							extraHeader={
+								<div className='flex gap-2 text-warning-foreground'>
+									<FormField
+										control={form.control}
+										name='is_transferred_for_qc'
+										render={(props) => (
+											<CoreForm.Checkbox
+												className='bg-warning-foreground'
+												label='Transfer to QC'
+												{...props}
+											/>
+										)}
+									/>
+									<FormField
+										control={form.control}
+										name='is_ready_for_delivery'
+										render={(props) => (
+											<CoreForm.Checkbox
+												label='Ready for Delivery'
+												className='bg-warning-foreground'
+												{...props}
+											/>
+										)}
+									/>
+								</div>
+							}
+						>
+							<FormField
+								control={form.control}
+								name='repairing_problems_uuid'
+								render={(props) => (
+									<CoreForm.ReactSelect
+										isMulti
+										label='Problems'
+										menuPortalTarget={document.body}
+										options={problemOption!}
+										placeholder='Select Problems'
+										{...props}
+									/>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='repairing_problem_statement'
+								render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+							/>
+							<FormField
+								control={form.control}
+								name='remarks'
+								render={(props) => <CoreForm.Textarea label='Remarks' className='flex-1' {...props} />}
+							/>
+						</CoreForm.Section>
 
-					<Suspense fallback={null}>
-						<DeleteModal
-							{...{
-								deleteItem,
-								setDeleteItem,
-								url: `/store/product-transfer`,
-								deleteData,
-								onClose: () => {
-									form.setValue(
-										'product_transfer',
-										form
-											.getValues('product_transfer')
-											.filter((item) => item.uuid !== deleteItem?.id)
-									);
-								},
-								needRefresh: true,
-							}}
+						<CoreForm.DynamicFields
+							title='Repairing Product Transfer'
+							form={form}
+							fieldName='product_transfer'
+							fieldDefs={felidDefs}
+							handleAdd={handleAdd}
+							fields={fields}
 						/>
-						<DeleteModal
-							{...{
-								deleteItem: deleteMessage,
-								setDeleteItem: setDeleteMessage,
-								url: `/work/chat`,
-								deleteData,
 
-								invalidateQueries: invalidateQueryChat,
-							}}
-						/>
-						
-					</Suspense>
-				</CoreForm.AddEditWrapper>
+						<Suspense fallback={null}>
+							<DeleteModal
+								{...{
+									deleteItem,
+									setDeleteItem,
+									url: `/store/product-transfer`,
+									deleteData,
+									onClose: () => {
+										form.setValue(
+											'product_transfer',
+											form
+												.getValues('product_transfer')
+												.filter((item) => item.uuid !== deleteItem?.id)
+										);
+									},
+									needRefresh: true,
+								}}
+							/>
+							<DeleteModal
+								{...{
+									deleteItem: deleteMessage,
+									setDeleteItem: setDeleteMessage,
+									url: `/work/chat`,
+									deleteData,
+
+									invalidateQueries: invalidateQueryChat,
+								}}
+							/>
+						</Suspense>
+					</CoreForm.AddEditWrapper>
+				</div>
+				<ChatInterface
+					handleSend={handleSend}
+					form={messageForm}
+					data={chatData || []}
+					title='Chat With Repairing'
+					subTitle={`${data?.order_id}`}
+					page='repair'
+					deleteMessage={handleDelete}
+					refetch={refetch}
+					editingMessageId={editingMessageId}
+					setEditingMessageId={setEditingMessageId}
+				/>
 			</div>
 		</div>
 	);

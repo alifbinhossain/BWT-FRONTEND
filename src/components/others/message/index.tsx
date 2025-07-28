@@ -140,19 +140,21 @@ export default function ChatInterface({
 	const groupedMessages = useMemo(() => generateGroupedMessages(data!), [data]);
 
 	return (
-		<ExpandableChat size={size} position={position} isOpen={isOpen} setIsOpen={setIsOpen} onClick={onClick}>
-			<ExpandableChatHeader className='flex-col justify-center text-center'>
-				<h1 className='text-xl font-semibold'>{title}</h1>
-				<p className='text-sm'>{subTitle}</p>
-				<div className='flex items-center gap-2 pt-2'>
+		<div className='duration-250 flex h-full w-full flex-col overflow-hidden border bg-background shadow-md transition-all'>
+			<ExpandableChatHeader className='shrink-0 flex-col justify-center text-center'>
+				<div className='flex w-full items-center justify-between gap-2'>
+					<div className='text-left'>
+						<h1 className='text-xl font-semibold'>{title}</h1>
+						<p className='text-sm'>{subTitle}</p>
+					</div>
 					<Button aria-label='Refresh Data' variant='secondary' onClick={handleClick}>
 						<RefreshCw className={cn('size-4', isLoading && 'animate-spin')} />
-						<span className='hidden lg:inline'>Refresh</span>
+						{/* <span className='hidden lg:inline'>Refresh</span> */}
 					</Button>
 				</div>
 			</ExpandableChatHeader>
 
-			<ExpandableChatBody>
+			<ExpandableChatBody className='max-h-[50vh] flex-grow overflow-scroll'>
 				<ChatMessageList smooth={true}>
 					{groupedMessages.map((item, index) => {
 						if (item.type === 'date') {
@@ -191,7 +193,7 @@ export default function ChatInterface({
 								</ChatBubbleMessage>
 								<ChatBubbleActionWrapper>
 									{actionIcons.map(({ icon: Icon, color, type, onClick }) =>
-										variant === 'sent' ? (
+										variant === 'sent' && !editingMessageId ? (
 											<ChatBubbleAction
 												key={type}
 												className='size-7'
@@ -209,7 +211,7 @@ export default function ChatInterface({
 					})}
 				</ChatMessageList>
 			</ExpandableChatBody>
-			<ExpandableChatFooter>
+			<ExpandableChatFooter className='shrink-0'>
 				<form className='relative rounded-lg border bg-background p-1 focus-within:ring-1 focus-within:ring-ring'>
 					<ChatInput
 						placeholder='Type your message here...'
@@ -266,6 +268,6 @@ export default function ChatInterface({
 					</div>
 				</form>
 			</ExpandableChatFooter>
-		</ExpandableChat>
+		</div>
 	);
 }

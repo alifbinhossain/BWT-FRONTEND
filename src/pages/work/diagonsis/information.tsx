@@ -202,7 +202,7 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 
 	return (
 		<>
-			<Accordion type='single' collapsible className='w-full'>
+			<Accordion type='single' collapsible className='w-full' >
 				<AccordionItem value='item-1'>
 					<AccordionTrigger>Order Details</AccordionTrigger>
 					<AccordionContent className='flex flex-col gap-4 text-balance'>
@@ -215,19 +215,6 @@ const Information: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 								<TableList title='Location' className='w-full md:w-1/2' items={renderLocationItems()} />
 							</div>
 						</SectionContainer>
-					</AccordionContent>
-				</AccordionItem>
-				<AccordionItem value='item-2'>
-					<AccordionTrigger>Diagnosis Details</AccordionTrigger>
-					<AccordionContent className='flex flex-col gap-4 text-balance'>
-						{data?.is_diagnosis_need && (
-							<SectionContainer title={'Diagnosis'}>
-								<div className='flex w-full flex-col gap-y-4 md:flex-row md:gap-y-0 md:space-x-4'>
-									<TableList className='over w-full md:w-1/2' items={renderDiagnosisItemsLeft()} />
-									<TableList className='w-full md:w-1/2' items={renderDiagnosisItemsRight()} />
-								</div>
-							</SectionContainer>
-						)}
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>
