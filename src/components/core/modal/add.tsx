@@ -21,7 +21,8 @@ const AddModal: React.FC<IAddModalProps> = ({
 	subtitle,
 	children,
 	className,
-	isSmall,
+	isSmall=false,
+	isLarge=false,
 	containerClassName,
 }) => {
 	useHotkeys(
@@ -51,6 +52,7 @@ const AddModal: React.FC<IAddModalProps> = ({
 							className={cn(
 								'relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-background p-6 shadow-lg',
 								isSmall && 'sm:max-w-5xl',
+								isLarge && 'max-w-7xl',
 								className
 							)}
 						>

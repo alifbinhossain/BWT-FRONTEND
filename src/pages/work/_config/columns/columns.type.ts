@@ -20,6 +20,9 @@ export type IDiagnosisTableData = {
 	user_phone: string;
 	engineer_uuid: string;
 	problems_uuid: string[];
+	brand_name: string;
+	model_name: string;
+	serial_no: string;
 	diagnosis_problems_name: string[];
 	order_problems_name: string[];
 	order_problem_statement: string;

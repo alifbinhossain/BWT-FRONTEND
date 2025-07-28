@@ -75,6 +75,7 @@ export interface IAddModalProps {
 	children?: React.ReactNode;
 	className?: string;
 	isSmall?: boolean;
+	isLarge?: boolean;
 	containerClassName?: string;
 }
 
