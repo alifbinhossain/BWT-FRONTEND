@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import useAccess from '@/hooks/useAccess';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
@@ -26,6 +27,8 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 }) => {
 	const isUpdate = !!updatedData;
 
+	const pageAccess = useAccess('admin__user') as string[];
+
 	const { user } = useAuth();
 	const { data } = useHrUsersByUUID(updatedData?.uuid as string);
 	const { data: departmentData } = useOtherDepartment<IFormSelectOption[]>();
@@ -39,6 +42,10 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 		{
 			label: 'Vendor',
 			value: 'vendor',
+		},
+		{
+			label: 'Employee',
+			value: 'employee',
 		},
 	];
 	const ratingOption = [
@@ -138,7 +145,9 @@ const AddOrUpdate: React.FC<IUserAddOrUpdateProps> = ({
 						<CoreForm.ReactSelect
 							label='User Type'
 							placeholder='Select Type'
-							options={typeOptions!}
+							options={typeOptions.filter(
+								(item) => pageAccess.includes('create_employee') || item.value !== 'employee'
+							)}
 							{...props}
 						/>
 					)}
