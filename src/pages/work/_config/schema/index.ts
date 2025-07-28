@@ -141,6 +141,14 @@ export const REPAIR_NULL: Partial<IRepair> = {
 };
 export type IRepair = z.infer<typeof REPAIR_SCHEMA>;
 
+export const MESSAGE_SCHEMA = z.object({
+	message: STRING_REQUIRED,
+});
+export const MESSAGE_NULL: Partial<IMessage> = {
+	message: '',
+};
+export type IMessage = z.infer<typeof MESSAGE_SCHEMA>;
+
 //* Info Schema
 const ORDER_SCHEMA_FOR_INFO = (ORDER_SCHEMA as any)._def.schema.omit({
 	is_transferred_for_qc: true,

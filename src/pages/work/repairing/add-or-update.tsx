@@ -19,8 +19,9 @@ import { getDateTime } from '@/utils';
 import Formdata from '@/utils/formdata';
 
 import { IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
-import { IRepair, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
+import { useWorkChat, useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
+import { IRepair, MESSAGE_NULL, MESSAGE_SCHEMA, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
+import ChatInterface from '../../../components/others/message';
 import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '../order/details/transfer/utills';
 import { orderFields } from '../order/utill';
 import Information from './information';
@@ -33,23 +34,27 @@ const AddOrUpdate = () => {
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 	const navigate = useNavigate();
+	//* Data and Invalidation Queries
 	const { data: purchaseEntryOptions, invalidateQuery: invalidateQueryOtherProduct } = useOtherPurchaseEntry<
 		ICustomProductsSelectOption[]
 	>(`is_warehouse=true&&is_purchase_return_entry=false`);
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
-	const { invalidateQuery: invalidateQueryOtherWarehouse } =
-		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
+	const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+
 	const { data, updateData, postData, imageUpdateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(
 		uuid as string
 	);
-
 	const { data: orderData, invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
 		uuid as string
 	);
+	const { data: chatData, invalidateQuery: invalidateQueryChat, refetch } = useWorkChat<Message[]>(uuid as string);
+	const { invalidateQuery: invalidateQueryOtherWarehouse } = useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { invalidateQuery: invalidateQueryRepairing } = useWorkRepairing<IOrderTableData[]>();
 	const { invalidateQuery: invalidateQueryProduct } = useStoreProducts<IFormSelectOption[]>();
 
+	//* Form and Field Arrays
 	const form = useRHF(REPAIR_SCHEMA, REPAIR_NULL);
+	const messageForm = useRHF(MESSAGE_SCHEMA, MESSAGE_NULL);
 
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
@@ -62,6 +67,7 @@ const AddOrUpdate = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
+
 	const handleAdd = () => {
 		append({
 			purchase_entry_uuid: '',
@@ -92,6 +98,17 @@ const AddOrUpdate = () => {
 			remove(index);
 		}
 	};
+	const [deleteMessage, setDeleteMessage] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
+	const handleDelete = (uuid: string) => {
+		const message = chatData?.find((msg) => msg.uuid === uuid);
+		setDeleteMessage({
+			id: uuid,
+			name: message?.message || 'Message',
+		});
+	};
 	const felidDefs = useGenerateFieldDefs({
 		remove: handleRemove,
 		watch: form.watch,
@@ -99,7 +116,61 @@ const AddOrUpdate = () => {
 		data,
 		isUpdate,
 	});
+	interface Message {
+		uuid: string;
+		message: string;
+		page: 'repair' | 'diagnosis';
+		created_by_name?: string;
+		order_uuid?: string;
+		created_by?: string;
+		created_at?: string;
+		updated_at?: string | undefined;
+	}
 
+	const handleSend = async (editId?: string, editText?: string) => {
+		try {
+			const now = getDateTime();
+
+			if (editId === undefined && messageForm.getValues('message')) {
+				// Create new user message
+				const userMsg: Message = {
+					uuid: nanoid(),
+					message: messageForm.getValues('message'),
+					page: 'repair',
+					order_uuid: uuid,
+					created_by: user?.uuid,
+					created_at: now,
+					updated_at: undefined,
+				};
+				await postData.mutateAsync({
+					url: '/work/chat',
+					newData: userMsg,
+					isOnCloseNeeded: false,
+				});
+				messageForm.reset(MESSAGE_NULL);
+				invalidateQueryChat();
+			} else {
+				// Update existing message
+				const updatedMsg: Message = {
+					uuid: editId || '',
+					message: editText || '',
+					page: 'repair',
+					order_uuid: uuid,
+					created_by: user?.uuid,
+					updated_at: now,
+				};
+				await updateData.mutateAsync({
+					url: `/work/chat/${editId}`,
+					updatedData: updatedMsg,
+					isOnCloseNeeded: false,
+				});
+				invalidateQueryChat();
+				setEditingMessageId(null);
+			}
+		} catch (error) {
+			console.error(`${editId ? 'Update' : 'Create'} failed:`, error);
+		}
+	};
 	// Submit handler
 	async function onSubmit(values: IRepair) {
 		if (isUpdate) {
@@ -178,95 +249,124 @@ const AddOrUpdate = () => {
 	}
 
 	return (
-		<CoreForm.AddEditWrapper
-			title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
-			form={form}
-			onSubmit={onSubmit}
-		>
+		<div className='gap-2'>
 			<Information data={(orderData || []) as IOrderTableData} />
-			<CoreForm.Section
-				title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
-				className='flex'
-				extraHeader={
-					<div className='flex gap-2 text-warning-foreground'>
-						<FormField
-							control={form.control}
-							name='is_transferred_for_qc'
-							render={(props) => (
-								<CoreForm.Checkbox
-									className='bg-warning-foreground'
-									label='Transfer to QC'
-									{...props}
-								/>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='is_ready_for_delivery'
-							render={(props) => (
-								<CoreForm.Checkbox
-									label='Ready for Delivery'
-									className='bg-warning-foreground'
-									{...props}
-								/>
-							)}
-						/>
-					</div>
-				}
-			>
-				<FormField
-					control={form.control}
-					name='repairing_problems_uuid'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							isMulti
-							label='Problems'
-							menuPortalTarget={document.body}
-							options={problemOption!}
-							placeholder='Select Problems'
-							{...props}
-						/>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='repairing_problem_statement'
-					render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
-				/>
-				<FormField
-					control={form.control}
-					name='remarks'
-					render={(props) => <CoreForm.Textarea label='Remarks' className='flex-1' {...props} />}
-				/>
-			</CoreForm.Section>
-
-			<CoreForm.DynamicFields
-				title='Repairing Product Transfer'
-				form={form}
-				fieldName='product_transfer'
-				fieldDefs={felidDefs}
-				handleAdd={handleAdd}
-				fields={fields}
+			<ChatInterface
+				handleSend={handleSend}
+				form={messageForm}
+				data={chatData || []}
+				title='Chat With Diagnosis'
+				subTitle={`${data?.order_id}`}
+				page='repair'
+				deleteMessage={handleDelete}
+				refetch={refetch}
+				editingMessageId={editingMessageId}
+				setEditingMessageId={setEditingMessageId}
 			/>
+			<div className='gap-4'>
+				<CoreForm.AddEditWrapper
+					title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
+					form={form}
+					onSubmit={onSubmit}
+				>
+					<CoreForm.Section
+						title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
+						className='flex'
+						extraHeader={
+							<div className='flex gap-2 text-warning-foreground'>
+								<FormField
+									control={form.control}
+									name='is_transferred_for_qc'
+									render={(props) => (
+										<CoreForm.Checkbox
+											className='bg-warning-foreground'
+											label='Transfer to QC'
+											{...props}
+										/>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name='is_ready_for_delivery'
+									render={(props) => (
+										<CoreForm.Checkbox
+											label='Ready for Delivery'
+											className='bg-warning-foreground'
+											{...props}
+										/>
+									)}
+								/>
+							</div>
+						}
+					>
+						<FormField
+							control={form.control}
+							name='repairing_problems_uuid'
+							render={(props) => (
+								<CoreForm.ReactSelect
+									isMulti
+									label='Problems'
+									menuPortalTarget={document.body}
+									options={problemOption!}
+									placeholder='Select Problems'
+									{...props}
+								/>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='repairing_problem_statement'
+							render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+						/>
+						<FormField
+							control={form.control}
+							name='remarks'
+							render={(props) => <CoreForm.Textarea label='Remarks' className='flex-1' {...props} />}
+						/>
+					</CoreForm.Section>
 
-			<Suspense fallback={null}>
-				<DeleteModal
-					{...{
-						deleteItem,
-						setDeleteItem,
-						url: `/store/product-transfer`,
-						deleteData,
-						onClose: () => {
-							form.setValue(
-								'product_transfer',
-								form.getValues('product_transfer').filter((item) => item.uuid !== deleteItem?.id)
-							);
-						},
-						needRefresh: true,
-					}}
-				/>
-			</Suspense>
-		</CoreForm.AddEditWrapper>
+					<CoreForm.DynamicFields
+						title='Repairing Product Transfer'
+						form={form}
+						fieldName='product_transfer'
+						fieldDefs={felidDefs}
+						handleAdd={handleAdd}
+						fields={fields}
+					/>
+
+					<Suspense fallback={null}>
+						<DeleteModal
+							{...{
+								deleteItem,
+								setDeleteItem,
+								url: `/store/product-transfer`,
+								deleteData,
+								onClose: () => {
+									form.setValue(
+										'product_transfer',
+										form
+											.getValues('product_transfer')
+											.filter((item) => item.uuid !== deleteItem?.id)
+									);
+								},
+								needRefresh: true,
+							}}
+						/>
+						<DeleteModal
+							{...{
+								deleteItem: deleteMessage,
+								setDeleteItem: setDeleteMessage,
+								url: `/work/chat`,
+								deleteData,
+
+								invalidateQueries: invalidateQueryChat,
+							}}
+						/>
+						
+					</Suspense>
+				</CoreForm.AddEditWrapper>
+			</div>
+		</div>
 	);
 };
 
