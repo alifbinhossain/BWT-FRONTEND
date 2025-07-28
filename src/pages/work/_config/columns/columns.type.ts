@@ -134,6 +134,10 @@ export type IOrderTableData = {
 	status_update_date: string;
 	status: string;
 	diagnosis_proposed_cost: number;
+	bill_amount: number;
+	proposed_cost: number;
+	challan_no: string;
+	challan_type: string;
 };
 //* Info Columns
 export type IInfoTableData = {
