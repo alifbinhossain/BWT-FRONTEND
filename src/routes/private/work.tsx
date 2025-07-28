@@ -41,6 +41,7 @@ const workRoutes: IRoute[] = [
 					'click_reset_password',
 					'click_page_assign',
 					'click_rating_change',
+					'create_employee'
 				],
 			},
 			{
