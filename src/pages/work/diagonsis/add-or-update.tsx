@@ -125,7 +125,7 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 		const message = chatData?.find((msg) => msg.uuid === uuid);
 		setDeleteMessage({
 			id: uuid,
-			name: message?.message || 'Message',
+			name:'Message',
 		});
 	};
 
@@ -226,7 +226,6 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 						data={chatData || []}
 						title='Chat With Diagnosis'
 						subTitle={`${data?.order_id}`}
-						page='repair'
 						deleteMessage={handleDelete}
 						refetch={refetch}
 						editingMessageId={editingMessageId}
