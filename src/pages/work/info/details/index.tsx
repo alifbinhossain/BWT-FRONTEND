@@ -34,8 +34,14 @@ const DetailsPage = () => {
 
 	return (
 		<div className='space-y-8'>
-			<iframe src={data2} className='h-[40rem] w-full rounded-md border-none' />
-			<Information data={(data || []) as IInfoTableData} />
+			<div className='grid grid-cols-5 gap-4'>
+				<div className='col-span-2'>
+					<Information data={(data || []) as IInfoTableData} />
+				</div>
+				<div className='col-span-3'>
+					<iframe src={data2} className='h-[40rem] w-full rounded-md border-none' />
+				</div>
+			</div>
 			<OrderTable data={(data || []) as IInfoTableData} />
 		</div>
 	);

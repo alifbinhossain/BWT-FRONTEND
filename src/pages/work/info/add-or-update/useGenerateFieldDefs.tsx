@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { UseFormWatch } from 'react-hook-form';
 
 import FieldActionButton from '@/components/buttons/field-action';
@@ -7,16 +6,7 @@ import CoreForm from '@core/form';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
 
-import {
-	useOtherAccessories,
-	useOtherBox,
-	useOtherBrand,
-	useOtherFloor,
-	useOtherModelByQuery,
-	useOtherProblem,
-	useOtherRack,
-	useOtherWarehouse,
-} from '@/lib/common-queries/other';
+import { useOtherAccessories, useOtherBrand, useOtherProblem } from '@/lib/common-queries/other';
 
 import { IInfo } from '../../_config/schema';
 import Location from './location';
@@ -38,8 +28,6 @@ const useGenerateFieldDefs = ({
 	form,
 	isUpdate,
 }: IGenerateFieldDefsProps): FieldDef[] => {
-	const [brand, setBrand] = useState([]);
-
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
 	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
 	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
@@ -135,7 +123,6 @@ const useGenerateFieldDefs = ({
 			accessorKey: 'brand_uuid',
 			type: 'custom',
 			component: (index: number) => {
-				setBrand(form.watch(`order_entry.${index}.brand_uuid`));
 				return (
 					<FormField
 						control={form.control}

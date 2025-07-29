@@ -154,7 +154,8 @@ const KanbanDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs' 
 													control={form.control}
 													name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
 													render={(props) => (
-														<CoreForm.MultiSelect
+														<CoreForm.ReactSelect
+															isMulti
 															options={fieldDef.options}
 															placeholder={fieldDef.placeholder}
 															label={fieldDef.header}
