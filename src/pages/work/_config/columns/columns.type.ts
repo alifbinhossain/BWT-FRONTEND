@@ -171,6 +171,10 @@ export type IInfoTableData = {
 	delivered_count: number;
 	order_count: number;
 	order_entry: IOrderTableData[];
+
+	reference_user_name: string;
+	commission_amount: number;
+	is_commission_amount: boolean;
 };
 
 //* Section Columns

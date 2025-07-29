@@ -3,8 +3,10 @@ import { z } from 'zod';
 import {
 	BOOLEAN_OPTIONAL,
 	BOOLEAN_REQUIRED,
+	NUMBER,
 	NUMBER_DOUBLE_OPTIONAL,
 	NUMBER_DOUBLE_REQUIRED,
+	NUMBER_OPTIONAL,
 	PHONE_NUMBER_OPTIONAL,
 	STRING_ARRAY,
 	STRING_ARRAY_OPTIONAL,
@@ -174,8 +176,12 @@ export const INFO_SCHEMA = z
 		received_date: STRING_NULLABLE,
 		remarks: STRING_NULLABLE,
 		order_entry: z.array(ORDER_SCHEMA_FOR_INFO),
+		reference_user_uuid: STRING_OPTIONAL,
+		is_commission_amount: BOOLEAN_OPTIONAL.default(false),
+		commission_amount: NUMBER('Commission Amount').default(0),
 	})
 	.superRefine((data, ctx) => {
+		console.log('Top data:', data);
 		if (!data.is_new_customer && !data.user_uuid) {
 			ctx.addIssue(customIssue('Required', 'user_uuid'));
 		}
@@ -204,6 +210,17 @@ export const INFO_SCHEMA = z
 				}
 			});
 		}
+
+		console.log('Bottom data:', data);
+		if (data.reference_user_uuid !== '') {
+			if (data.commission_amount < 1) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: ['commission_amount'],
+					message: 'Amount must be greater than 0',
+				});
+			}
+		}
 	});
 export const INFO_NULL: Partial<IInfo> = {
 	is_new_customer: false,
@@ -214,6 +231,15 @@ export const INFO_NULL: Partial<IInfo> = {
 	where_they_find_us: 'none',
 	name: '',
 	phone: undefined,
+	business_type: '',
+	branch_uuid: '',
+	designation_uuid: '',
+	department_uuid: '',
+	location: '',
+	zone_uuid: '',
+	reference_user_uuid: '',
+	is_commission_amount: false,
+	commission_amount: 0,
 	order_entry: [ORDER_NULL as IOrder],
 	remarks: null,
 };

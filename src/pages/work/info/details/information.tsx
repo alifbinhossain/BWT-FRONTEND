@@ -33,6 +33,12 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 				value: data?.branch_name,
 			},
 			{ label: 'Location', value: data.location + ' (' + data.zone_name + ')' },
+			{ label: 'Reference User', value: data.reference_user_name },
+			{
+				label: 'Commission Amount',
+				value: `${data.commission_amount} ${data.is_commission_amount ? 'BDT' : '%'}`,
+			},
+
 			{ label: 'Remarks', value: data.remarks },
 		];
 	};
@@ -60,6 +66,7 @@ const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 					<CustomLink
 						url={`${baseURl}order/${data?.uuid}`}
 						label={`${baseURl}order/${data?.uuid}`}
+						name='Open'
 						openInNewTab={true}
 					/>
 				),
