@@ -10,18 +10,25 @@ import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
 
 export default async function Index(data: IChallanTableData, user: any, baseURl: string) {
-	const headerHeight = 140;
+	const headerHeight = 180;
 	const footerHeight = 20;
 	data?.challan_entries?.forEach((item) => {
 		item.description = `${item.brand_name}, ${item.model_name} - SN: ${item.serial_no}`;
-		item.unit = 'Pcs';
+		item.unit = 'Pcs';		
+		const orderProblems = (item.order_problems_name || []).map((p) => `O: ${p}`);
+		const diagnosisProblems = (item.diagnosis_problems_name || []).map((p) => `D: ${p}`);
+		const qcProblems = (item.qc_problems_name || []).map((p) => `Q: ${p}`);
+		const deliveryProblems = (item.delivery_problems_name || []).map((p) => `DE: ${p}`);
+		item.problems_list = [...orderProblems, ...diagnosisProblems, ...qcProblems, ...deliveryProblems].join(', ');
 	});
+
 	const GenerateQRCode = await QRCode.toString(`${baseURl}order/${data?.uuid}`);
 
 	const node = [
 		getTable('index', '#', 'center'),
 		getTable('description', 'Product Name'),
 		getTable('accessories_name', 'Accessories'),
+		getTable('problems_list', 'Problems'),
 		getTable('quantity', 'Qty', 'right'),
 		getTable('unit', 'Unit'),
 	];
@@ -116,7 +123,7 @@ export default async function Index(data: IChallanTableData, user: any, baseURl:
 			{
 				table: {
 					headerRows: 1,
-					widths: [15, '*', 150, 50, 30],
+					widths: [15, '*', 100, 100, 50, 30],
 					body: [
 						node.map((col) => ({
 							text: col.name,

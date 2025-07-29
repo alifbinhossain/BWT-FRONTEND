@@ -1,6 +1,7 @@
 import useTQuery from '@/hooks/useTQuery';
 
 import { workQK } from './queryKeys';
+import { hrQK } from '@/pages/hr/_config/query/queryKeys';
 
 // * Problem
 export const useWorkProblems = <T>() =>
@@ -149,4 +150,11 @@ export const useWorkAccessoriesByUUID = <T>(uuid: string) =>
 		queryKey: workQK.accessoriesByUUID(uuid),
 		url: `/work/accessory/${uuid}`,
 		enabled: !!uuid,
+	});
+//* Order Info By Customer
+export const useWorkOrderInfoByCustomer = <T>(customer_uuid: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.orderInfoByCustomer(customer_uuid),
+		url: `/work/info?customer_uuid=${customer_uuid}`,
+		enabled: !!customer_uuid,
 	});

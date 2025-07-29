@@ -1,12 +1,62 @@
 import { BWT_LOGO } from '@/assets/images/base64';
 import { IChallanTableData } from '@/pages/delivery/_config/columns/columns.type';
 import { format, formatDate } from 'date-fns';
+import { D } from 'node_modules/@tanstack/react-query-devtools/build/modern/ReactQueryDevtools-Cn7cKi7o';
 
 import { getDateTime } from '@/utils';
 
 import { customTable, DEFAULT_FONT_SIZE } from '../ui';
 
 export const getPageHeader = (data: IChallanTableData, user: any, GenerateQRCode: any) => {
+	const delivery_information = [];
+	if (data?.challan_type === 'employee_delivery') {
+		delivery_information.push([
+			{
+				text: 'Delivery Employee:',
+				bold: true,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+			{
+				text: data?.employee_name,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+		]);
+	} else if (data?.challan_type === 'vehicle_delivery') {
+		delivery_information.push([
+			{
+				text: 'Delivery Employee:',
+				bold: true,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+			{
+				text: data?.employee_name,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+		]);
+		delivery_information.push([
+			{
+				text: 'Delivery Vehicle:',
+				bold: true,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+			{
+				text: data?.vehicle_name,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+		]);
+	} else if (data?.challan_type === 'courier_delivery') {
+		delivery_information.push([
+			{
+				text: 'Courier:',
+				bold: true,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+			{
+				text: data?.courier_name + '-' + data?.courier_branch,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+		]);
+	}
 	return {
 		heights: ['auto', 2, 'auto', 'auto'],
 		widths: ['*'],
@@ -114,15 +164,16 @@ export const getPageHeader = (data: IChallanTableData, user: any, GenerateQRCode
 											],
 											[
 												{
-													text: 'Status:',
+													text: 'Challan Type:',
 													bold: true,
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 												{
-													text: '',
+													text: data?.challan_type.split('_').join(' ').toUpperCase(),
 													fontSize: DEFAULT_FONT_SIZE - 2,
 												},
 											],
+											...delivery_information,
 											[
 												{
 													text: 'Challan Branch:',

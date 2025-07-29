@@ -1,6 +1,7 @@
 import { IRoute } from '@/types';
 import { cloneDeep } from 'lodash';
 
+import CustomerRoutes from './customer';
 import DeliveryRoutes from './delivery';
 import HrRoutes from './Hr';
 import PayrollRoutes from './payroll';
@@ -15,6 +16,7 @@ const privateRoutes: IRoute[] = [
 	...WorkRoutes,
 	...DeliveryRoutes,
 	...PayrollRoutes,
+	...CustomerRoutes,
 ];
 
 const privateRoutesClone = cloneDeep(privateRoutes);
