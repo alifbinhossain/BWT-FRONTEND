@@ -117,7 +117,8 @@ export default function ChatInterface({
 		}
 	};
 
-	const handleClick = async () => {
+	const handleClick = async (e:any) => {
+		e.preventDefault();
 		setIsLoading(true);
 		refetch();
 		setIsLoading(false);
@@ -147,7 +148,7 @@ export default function ChatInterface({
 						<h1 className='text-xl font-semibold'>{title}</h1>
 						<p className='text-sm'>{subTitle}</p>
 					</div>
-					<Button aria-label='Refresh Data' variant='secondary' onClick={handleClick}>
+					<Button aria-label='Refresh Data' variant='secondary' onClick={(e) => handleClick(e)}>
 						<RefreshCw className={cn('size-4', isLoading && 'animate-spin')} />
 						{/* <span className='hidden lg:inline'>Refresh</span> */}
 					</Button>
