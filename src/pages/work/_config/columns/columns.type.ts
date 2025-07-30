@@ -155,7 +155,9 @@ export type IInfoTableData = {
 	user_id: string;
 	id: string;
 	info_id: string;
-
+	customer_feedback?: string;
+	is_contact_with_customer?: boolean;
+	order_info_status: 'accepted' | 'pending' | 'rejected';
 	user_uuid: string;
 	user_name: string;
 	zone_name: string;

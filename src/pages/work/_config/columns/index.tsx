@@ -1,6 +1,5 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
-
-
+import { over } from 'lodash';
 
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
@@ -8,12 +7,19 @@ import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-
-
 import { Location, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
-import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
-
+import {
+	IAccessoriesTableData,
+	IDiagnosisTableData,
+	IInfoTableData,
+	IOrderTableData,
+	IProblemsTableData,
+	IProcessTableData,
+	ISectionTableData,
+	ITransferTableData,
+	IZoneTableData,
+} from './columns.type';
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -29,7 +35,11 @@ export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
 	},
 ];
 //* Info Columns
-export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
+export const infoColumns = (
+	handleStatus?: (row: Row<IInfoTableData>) => void,
+	permissionStatus?: boolean,
+	overriddenPermissionStatus?: boolean
+): ColumnDef<IInfoTableData>[] => [
 	{
 		accessorKey: 'info_id',
 		header: 'Info ID',
@@ -70,14 +80,16 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 			</>
 		),
 		enableColumnFilter: false,
-		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
+		cell: (info) => {
+			return (
+				<div>
+					<StatusButton value={info.getValue() as boolean} />
+					<DateTime date={info.row.original.received_date} isTime={false} />
+				</div>
+			);
+		},
 	},
-	{
-		accessorKey: 'received_date',
-		header: 'Receive Date',
-		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
-	},
+
 	{
 		accessorFn: (row) => row.delivered_count + '/' + row.order_count,
 		header: 'Delivered',
@@ -94,6 +106,54 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 		header: 'Submitted By',
 		enableColumnFilter: false,
 		cell: (info) => <span className='capitalize'>{info.getValue() as string}</span>,
+	},
+	{
+		accessorKey: 'is_contact_with_customer',
+		header: () => (
+			<>
+				Contact <br />
+			</>
+		),
+		size: 40,
+		enableColumnFilter: false,
+		cell: (info) => {
+			const status = info.row.original.order_info_status;
+			const bgColorClass =
+				{
+					accepted: 'bg-success',
+					rejected: 'bg-red-500',
+					cancel: 'bg-gray-500',
+					pending: 'bg-warning',
+				}[status?.toLowerCase()] || '';
+			if (info.row.original.submitted_by === 'employee') {
+				return <span>-</span>;
+			}
+			return (
+				<div className='flex flex-col items-center gap-2'>
+					<Switch
+						checked={info.getValue() as boolean}
+						onCheckedChange={() => handleStatus?.(info.row)}
+						disabled={
+							!overriddenPermissionStatus &&
+							(!permissionStatus || (permissionStatus && (info.getValue() as boolean)))
+						}
+					/>
+
+					<span className={`flex-1 rounded px-2 py-1 text-xs capitalize text-white ${bgColorClass}`}>
+						{status?.split('_').join(' ')}
+					</span>
+				</div>
+			);
+		},
+		meta: {
+			hidden: !overriddenPermissionStatus && !permissionStatus,
+			disableFullFilter: true,
+		},
+	},
+	{
+		accessorKey: 'customer_feedback',
+		header: 'Feedback',
+		enableColumnFilter: false,
 	},
 ];
 //* Order Columns

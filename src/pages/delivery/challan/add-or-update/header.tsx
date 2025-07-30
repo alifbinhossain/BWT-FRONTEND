@@ -15,7 +15,7 @@ const Header = ({ challan_uuid }: { challan_uuid: string }) => {
 		: `?type=customer&is_challan_needed=true`;
 	const { data: customerOption } = useOtherUserByQuery<IFormSelectOption[]>(query);
 	const { data: vehicleOption } = useOtherVehicle<IFormSelectOption[]>();
-	const { data: employeeOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=employee&designation=delivery');
+	const { data: employeeOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=employee&department=delivery');
 	const { data: courierOption } = useOtherCourier<IFormSelectOption[]>();
 	const { data: branchOption } = useOtherBranch<IFormSelectOption[]>();
 	const paymentMethodOptions = [
