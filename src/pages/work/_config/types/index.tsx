@@ -2,13 +2,17 @@
 // import { UseMutationResult } from '@tanstack/react-query';
 // import { AxiosError } from 'axios';
 
-import { IDefaultAddOrUpdateProps, IFileAddOrUpdateProps } from '@/types';
+import { IDefaultAddOrUpdateProps, IFileAddOrUpdateProps, IToast } from '@/types';
 
 import '../columns/columns.type';
+
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 import {
 	IAccessoriesTableData,
 	IDiagnosisTableData,
+	IInfoTableData,
 	IOrderTableData,
 	IProblemsTableData,
 	IProcessTableData,
@@ -54,7 +58,25 @@ export interface IZoneAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 export interface IAccessoriesAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 	updatedData?: IAccessoriesTableData | null;
 }
+export interface IInfoPopUpAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	updatedData?: IInfoTableData;
 
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	updateData: UseMutationResult<
+		IToast,
+		AxiosError<IToast, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
 //* Product
 export type TProductProps = {
 	brand_name: string;

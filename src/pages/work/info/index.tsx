@@ -2,10 +2,11 @@ import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
+import useAccess from '@/hooks/useAccess';
 
 import ReactSelect from '@/components/ui/react-select';
 
-import { PageInfo } from '@/utils';
+import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
 import { infoColumns } from '../_config/columns';
@@ -13,13 +14,21 @@ import { IInfoTableData } from '../_config/columns/columns.type';
 import { useWorkInfo } from '../_config/query';
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
+const PopUpModal = lazy(() => import('./pop-up-modal'));
 
 const Info = () => {
 	const navigate = useNavigate();
 	const [type, setType] = useState('pending');
-	const { data, isLoading, url, deleteData, refetch } = useWorkInfo<IInfoTableData[]>(`status=${type}`);
+	const { data, isLoading, url, deleteData, updateData, postData, refetch } = useWorkInfo<IInfoTableData[]>(
+		`status=${type}`
+	);
+	const [isOpenAddModal, setIsOpenAddModal] = useState(false);
+	const [updatedData, setUpdatedData] = useState<IInfoTableData>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Info', url, 'work__info'), [url]);
+	const pageAccess = useAccess(pageInfo.getTab() as string) as string[];
+	const actionTrxAccess = pageAccess.includes('click_contact_with_customer');
+	const actionTrxOverride = pageAccess.includes('click_contact_with_customer_override');
 
 	const handleCreate = () => navigate('/work/info/entry');
 	const handleUpdate = (row: Row<IInfoTableData>) => {
@@ -40,9 +49,24 @@ const Info = () => {
 			name: row?.original?.info_id,
 		});
 	};
+	const handleStatus = (row: Row<IInfoTableData>) => {
+		if (row.original.is_contact_with_customer === false) {
+			setUpdatedData(row.original);
+			setIsOpenAddModal(true);
+		} else {
+			updateData.mutateAsync({
+				url: `/work/info/${row?.original?.uuid}`,
+				updatedData: {
+					is_contact_with_customer: false,
+					order_info_status: 'pending',
+					updated_at: getDateTime(),
+				},
+			});
+		}
+	};
 
 	//* Table Columns
-	const columns = infoColumns();
+	const columns = infoColumns(handleStatus, actionTrxAccess, actionTrxOverride);
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -84,8 +108,18 @@ const Info = () => {
 						{...{
 							deleteItem,
 							setDeleteItem,
-							url:'/work/info',
+							url: '/work/info',
 							deleteData,
+						}}
+					/>,
+					<PopUpModal
+						{...{
+							url: '/work/info',
+							open: isOpenAddModal,
+							setOpen: setIsOpenAddModal,
+							updatedData,
+							setUpdatedData,
+							updateData,
 						}}
 					/>,
 				])}

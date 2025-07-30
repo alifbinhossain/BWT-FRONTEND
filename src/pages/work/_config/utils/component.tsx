@@ -171,3 +171,18 @@ export const OrderImages = ({
 		</div>
 	);
 };
+
+export const Address = ({ location, zone_name }: { location: string; zone_name: string }) => {
+	return (
+		<div className='flex flex-col gap-2'>
+			<div className='flex items-center gap-1'>
+				<MapPin className='size-4' />
+				<span className='inline-block flex-1'>{location}</span>
+			</div>
+			<div className='flex items-center gap-1'>
+				<Pin className='size-4' />
+				<span className='inline-block flex-1 text-sm'>{zone_name}</span>
+			</div>
+		</div>
+	);
+};

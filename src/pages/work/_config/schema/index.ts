@@ -167,6 +167,9 @@ export const INFO_SCHEMA = z
 		phone: PHONE_NUMBER_OPTIONAL,
 		business_type: STRING_OPTIONAL,
 		branch_uuid: STRING_REQUIRED,
+		customer_feedback: STRING_OPTIONAL,
+		is_contact_with_customer: BOOLEAN_OPTIONAL.default(false),
+		order_info_status: z.enum(['accepted', 'pending', 'rejected']).optional(),
 		where_they_find_us: z.enum(['whatsapp', 'instagram', 'facebook', 'youtube', 'person', 'none']).optional(),
 		designation_uuid: STRING_OPTIONAL,
 		department_uuid: STRING_OPTIONAL,
@@ -389,3 +392,16 @@ export const TRANSFER_NULL: Partial<ITransfer> = {
 };
 
 export type ITransfer = z.infer<typeof TRANSFER_SCHEMA>;
+
+//* Info Pop Up
+export const INFO_POPUP_SCHEMA = z.object({
+	customer_feedback: STRING_OPTIONAL,
+	is_contact_with_customer: BOOLEAN_OPTIONAL.default(false),
+	order_info_status: z.enum(['accepted', 'pending', 'rejected', 'cancel']).optional(),
+});
+export const INFO_POPUP_NULL: Partial<IInfoPopup> = {
+	customer_feedback: '',
+	is_contact_with_customer: false,
+	order_info_status: 'pending',
+};
+export type IInfoPopup = z.infer<typeof INFO_POPUP_SCHEMA>;

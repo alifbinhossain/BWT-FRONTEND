@@ -39,7 +39,7 @@ const workRoutes: IRoute[] = [
 					'click_reset_password',
 					'click_page_assign',
 					'click_rating_change',
-					'create_employee'
+					'create_employee',
 				],
 			},
 			{
@@ -47,7 +47,14 @@ const workRoutes: IRoute[] = [
 				path: '/work/info',
 				element: <Info />,
 				page_name: 'work__info',
-				actions: ['create', 'read', 'update', 'delete'],
+				actions: [
+					'create',
+					'read',
+					'update',
+					'delete',
+					'click_contact_with_customer_override',
+					'click_contact_with_customer',
+				],
 			},
 
 			{
