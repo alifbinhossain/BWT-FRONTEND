@@ -33,12 +33,16 @@ const AddOrUpdate = () => {
 	const { url: infoUrl, updateData, postData, imagePostData, imageUpdateData, deleteData } = useWorkInfo();
 	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
 
-	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(uuid as string, isUpdate);
+	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(
+		uuid as string,
+		isUpdate
+	);
 
 	const form = useRHF(INFO_SCHEMA, INFO_NULL);
 	const isProductReceived = form.watch('is_product_received');
 	const isNewCustomer = form.watch('is_new_customer');
 	const isBusinessTypeCompany = form.watch('business_type') === 'company' && isNewCustomer;
+	console.log(form.formState.errors);
 
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
@@ -63,6 +67,7 @@ const AddOrUpdate = () => {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
+		console.log(values);
 
 		if (isProductReceived && values.order_entry.length === 0) {
 			ShowLocalToast({
@@ -74,6 +79,7 @@ const AddOrUpdate = () => {
 		if (isUpdate) {
 			const infoData = {
 				...values,
+
 				...(isNewCustomer && { user_uuid: nanoid() }),
 				...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
 				submitted_by: 'employee',
@@ -89,12 +95,11 @@ const AddOrUpdate = () => {
 				isOnCloseNeeded: false,
 			});
 
-			const order_entry_promise = values.order_entry.map((item) => {
+			const order_entry_promise = values.order_entry.map((item, index) => {
 				if (item.uuid === undefined) {
 					const newData = {
 						...item,
 						info_uuid: uuid,
-
 						created_at: getDateTime(),
 						created_by: user?.uuid,
 						uuid: nanoid(),
@@ -190,73 +195,8 @@ const AddOrUpdate = () => {
 
 		const order_entry_entries_promise = order_entry_entries.map((item) => {
 			const formData = Formdata({ ...item, proposed_cost: 0 });
-			const formFields = [
-				'id',
-				'order_id',
-				'is_proceed_to_repair',
-				'uuid',
-				'user_name',
-				'user_phone',
-				'is_product_received',
-				'is_diagnosis_needed',
-				'is_delivery_complete',
-				'is_home_repair',
-				'is_challan_needed',
-				'received_date',
-				'user_id',
-				'model_uuid',
-				'model_name',
-				'brand_name',
-				'size_uuid',
-				'size_name',
-				'serial_no',
-				'product',
-				'accessoriesString',
-				'problems_uuid',
-				'order_problems_name',
-				'diagnosis_problems_name',
-				'repairing_problems_name',
-				'qc_problems_name',
-				'delivery_problems_name',
-				'problem_statement',
-				'diagnosis_problem_statement',
-				'repairing_problem_statement',
-				'qc_problem_statement',
-				'delivery_problem_statement',
-				'accessories',
-				'accessories_name',
-				'info_uuid',
-				'info_id',
-				'is_transferred_for_qc',
-				'is_ready_for_delivery',
-				'ready_for_delivery_date',
-				'is_diagnosis_need',
-				'branch_name',
-				'warehouse_uuid',
-				'warehouse_name',
-				'rack_uuid',
-				'rack_name',
-				'floor_uuid',
-				'floor_name',
-				'box_uuid',
-				'box_name',
-				'quantity',
-				'unit',
-				'created_by',
-				'created_at',
-				'updated_at',
-				'diagnosis',
-				'product_transfer',
-				'process',
-				'remarks',
-				'image_1',
-				'image_2',
-				'image_3',
-				'status_update_date',
-				'status',
-				'diagnosis_proposed_cost',
-			];
-			formFields.forEach((field) => {
+
+			orderFields.forEach((field) => {
 				if (item[field as keyof typeof values] == null || item[field as keyof typeof values] === 0) {
 					formData.delete(field);
 				}
@@ -298,6 +238,8 @@ const AddOrUpdate = () => {
 			floor_uuid: null,
 			box_uuid: null,
 			remarks: null,
+			reclaimed_order_uuid: null,
+			reclaimed_order_id: null,
 		});
 	};
 
@@ -328,15 +270,41 @@ const AddOrUpdate = () => {
 			model_uuid: field.model_uuid,
 			serial_no: field.serial_no,
 			quantity: field.quantity,
-			problems_uuid: field.problems_uuid,
-			problem_statement: field.problem_statement,
 			accessories: field.accessories,
 			warehouse_uuid: field.warehouse_uuid,
 			rack_uuid: field.rack_uuid,
 			floor_uuid: field.floor_uuid,
 			box_uuid: field.box_uuid,
 			remarks: field.remarks,
+			reclaimed_order_uuid: '',
+			reclaimed_order_id: '',
 		});
+	};
+	const handleReclaimed = (index: number, isReclaimed: boolean) => {
+		const field = form.watch('order_entry')[index];
+		if (isReclaimed) {
+			append({
+				is_diagnosis_need: field.is_diagnosis_need,
+				brand_uuid: field.brand_uuid,
+				model_uuid: field.model_uuid,
+				serial_no: field.serial_no,
+				quantity: field.quantity,
+				problems_uuid: field.problems_uuid,
+				problem_statement: field.problem_statement,
+				accessories: field.accessories,
+				warehouse_uuid: field.warehouse_uuid,
+				rack_uuid: field.rack_uuid,
+				floor_uuid: field.floor_uuid,
+				box_uuid: field.box_uuid,
+				remarks: 'Reclaimed',
+				reclaimed_order_uuid: field.uuid,
+				reclaimed_order_id: field.order_id,
+			});
+		} else {
+			const removeIdx = fields.findIndex((item) => item.reclaimed_order_uuid === field.uuid);
+			console.log(removeIdx);
+			handleRemove(removeIdx);
+		}
 	};
 	//!Remove it when Version confirm
 	const [version, setVersion] = useState(2);
@@ -347,6 +315,7 @@ const AddOrUpdate = () => {
 		form: form,
 		isProductReceived: isProductReceived,
 		isUpdate: isUpdate,
+		handleReclaimed: handleReclaimed,
 	});
 	const fieldDefsV2 = useGenerateFieldDefsV2({
 		copy: handleCopy,
@@ -362,7 +331,7 @@ const AddOrUpdate = () => {
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<Header isUpdate={isUpdate} />
+			<Header isUpdate={isUpdate} data={data} />
 			{version === 1 && (
 				<CoreForm.DynamicFields
 					title={

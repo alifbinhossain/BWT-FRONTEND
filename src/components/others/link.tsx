@@ -18,7 +18,7 @@ export const LinkOnly = ({ uri, title }: ILinkOnlyProps) => {
 };
 
 export const CustomLink = ({ label = '', url = '', name = '', showCopyButton = true, openInNewTab = false, className = '' }) => {
-	if (!label) return '--';
+	if (!label) return '';
 
 	const displayName = name ? name : label;
 	return (
