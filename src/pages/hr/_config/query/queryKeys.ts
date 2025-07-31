@@ -101,4 +101,23 @@ export const hrQK = {
 	deviceList: () => [...hrQK.all(), 'device-list'],
 	deviceListByUUID: (uuid: string) => [...hrQK.deviceList(), uuid],
 	orderInfoByCustomer: (uuid: string) => [...hrQK.all(), 'order-info', 'customer', uuid],
+
+	//? Report ?//
+
+	reportIndividual: (uuid: string, from: string, to: string) => [
+		...hrQK.all(),
+		'report',
+		'individual',
+		uuid,
+		from,
+		to,
+	],
+	reportDepartment: (uuid: string, from: string, to: string) => [
+		...hrQK.all(),
+		'report',
+		'department',
+		uuid,
+		from,
+		to,
+	],
 };

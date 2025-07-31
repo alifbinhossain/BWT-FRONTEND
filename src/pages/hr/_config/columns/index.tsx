@@ -13,10 +13,12 @@ import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 
 import {
+	IDepartmentReportTableData,
 	IDepartmentTableData,
 	IDesignationTableData,
 	IDeviceListTableData,
 	IEmployeeTableData,
+	IIndividualReportTableData,
 	IManualEntryTableData,
 	IUserTableData,
 } from './columns.type';
@@ -459,5 +461,112 @@ export const deviceListColumns = ({
 		header: 'Employees',
 		enableColumnFilter: false,
 		cell: (info) => <Button onClick={() => handleDevices(info.row)}>Assign Employee</Button>,
+	},
+];
+
+//? Report ?//
+
+//* Individual Report
+export const individualReportColumns = (): ColumnDef<IIndividualReportTableData>[] => [
+	{
+		accessorKey: 'employee_name',
+		header: 'Employee',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'punch_date',
+		header: 'Punch Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'entry_time',
+		header: 'Entry Time',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'exit_time',
+		header: 'Exit Time',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'hours_worked',
+		header: 'Hours Worked',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'expected_hours',
+		header: 'Expected Hours',
+		enableColumnFilter: false,
+	},
+];
+
+//* Department Report
+export const departmentReportColumns = (): ColumnDef<IDepartmentReportTableData>[] => [
+	{
+		accessorKey: 'employee_name',
+		header: 'Employee',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'designation_name',
+		header: 'Designation',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'department_name',
+		header: 'Department',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'workplace_name',
+		header: 'Workplace',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'employment_type_name',
+		header: 'Employment Type',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'present_days',
+		header: 'Present Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'absent_days',
+		header: 'Absent Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'leave_days',
+		header: 'Leave Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'punch_date',
+		header: 'Punch Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'entry_time',
+		header: 'Entry Time',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'exit_time',
+		header: 'Exit Time',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'hours_worked',
+		header: 'Hours Worked',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'expected_hours',
+		header: 'Expected Hours',
+		enableColumnFilter: false,
 	},
 ];
