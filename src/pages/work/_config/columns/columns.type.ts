@@ -72,10 +72,14 @@ export type IStockActionTrx = {
 };
 //* Order Columns
 export type IOrderTableData = {
+	reclaimed_order_uuid: any;
+	reclaimed_order_id: string;
+	reclaimed_id: string;
 	id: string;
 	order_id: string;
 	order_uuid: string;
 	is_proceed_to_repair: boolean;
+	new_order_uuid: string;
 	uuid: string;
 	user_name: string;
 	user_phone: string;

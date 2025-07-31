@@ -39,21 +39,6 @@ const KanbanDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs' 
 
 											{fieldDef.type === 'custom' && fieldDef.accessorKey === 'actions' && (
 												<div className='bg-gradient rounded-y absolute left-0 right-0 top-0 flex items-center justify-between border-b px-4 py-1.5'>
-													<div className='flex gap-4 items-center'>
-														<span className='text-sm font-medium'>
-															Entry # {fieldIndex + 1}
-														</span>
-														<span className='font-medium'>
-															{
-																<DateTime
-																	date={form.watch(
-																		`order_entry.${fieldIndex}.created_at`
-																	)}
-																	isTime={false}
-																/>
-															}
-														</span>
-													</div>
 													{fieldDef.component(fieldIndex)}
 												</div>
 											)}

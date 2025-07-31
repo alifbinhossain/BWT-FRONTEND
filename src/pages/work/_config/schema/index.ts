@@ -7,6 +7,7 @@ import {
 	NUMBER_DOUBLE_OPTIONAL,
 	NUMBER_DOUBLE_REQUIRED,
 	NUMBER_OPTIONAL,
+	NUMBER_REQUIRED,
 	PHONE_NUMBER_OPTIONAL,
 	STRING_ARRAY,
 	STRING_ARRAY_OPTIONAL,
@@ -36,6 +37,7 @@ export const ORDER_SCHEMA = z
 		model_id: STRING_OPTIONAL,
 		quantity: NUMBER_DOUBLE_REQUIRED,
 		proposed_cost: NUMBER_DOUBLE_OPTIONAL,
+		reclaimed_order_uuid: STRING_NULLABLE.optional(),
 		bill_amount: NUMBER_DOUBLE_OPTIONAL.default(0),
 		serial_no: STRING_OPTIONAL,
 		problems_uuid: STRING_ARRAY,
@@ -46,6 +48,7 @@ export const ORDER_SCHEMA = z
 		delivery_problem_statement: STRING_NULLABLE,
 		accessories: STRING_ARRAY_OPTIONAL,
 		warehouse_uuid: STRING_NULLABLE,
+		is_reclaimed: BOOLEAN_OPTIONAL.default(false),
 		rack_uuid: STRING_NULLABLE,
 		floor_uuid: STRING_NULLABLE,
 		box_uuid: STRING_NULLABLE,
@@ -167,9 +170,10 @@ export const INFO_SCHEMA = z
 		phone: PHONE_NUMBER_OPTIONAL,
 		business_type: STRING_OPTIONAL,
 		branch_uuid: STRING_REQUIRED,
-		customer_feedback: STRING_OPTIONAL,
+		customer_feedback: STRING_NULLABLE.optional(),
 		is_contact_with_customer: BOOLEAN_OPTIONAL.default(false),
-		order_info_status: z.enum(['accepted', 'pending', 'rejected']).optional(),
+
+		order_info_status: z.enum(['accepted', 'pending', 'rejected', 'cancel']).nullable().optional(),
 		where_they_find_us: z.enum(['whatsapp', 'instagram', 'facebook', 'youtube', 'person', 'none']).optional(),
 		designation_uuid: STRING_OPTIONAL,
 		department_uuid: STRING_OPTIONAL,
@@ -177,14 +181,14 @@ export const INFO_SCHEMA = z
 		location: STRING_REQUIRED,
 		zone_uuid: STRING_REQUIRED,
 		received_date: STRING_NULLABLE,
+
 		remarks: STRING_NULLABLE,
 		order_entry: z.array(ORDER_SCHEMA_FOR_INFO),
-		reference_user_uuid: STRING_OPTIONAL,
+		reference_user_uuid: STRING_OPTIONAL.nullable(),
 		is_commission_amount: BOOLEAN_OPTIONAL.default(false),
-		commission_amount: NUMBER('Commission Amount').default(0),
+		commission_amount: NUMBER_REQUIRED.default(0),
 	})
 	.superRefine((data, ctx) => {
-		console.log('Top data:', data);
 		if (!data.is_new_customer && !data.user_uuid) {
 			ctx.addIssue(customIssue('Required', 'user_uuid'));
 		}
@@ -197,6 +201,19 @@ export const INFO_SCHEMA = z
 			}
 			if (!data.business_type) {
 				ctx.addIssue(customIssue('Required', 'business_type'));
+			}
+		}
+		if (
+			data?.reference_user_uuid !== null &&
+			data?.reference_user_uuid !== '' &&
+			data?.reference_user_uuid !== undefined
+		) {
+			if (data?.commission_amount < 1) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: ['commission_amount'],
+					message: 'Amount must be greater than 0',
+				});
 			}
 		}
 
@@ -213,23 +230,13 @@ export const INFO_SCHEMA = z
 				}
 			});
 		}
-
-		console.log('Bottom data:', data);
-		if (data.reference_user_uuid !== '') {
-			if (data.commission_amount < 1) {
-				ctx.addIssue({
-					code: z.ZodIssueCode.custom,
-					path: ['commission_amount'],
-					message: 'Amount must be greater than 0',
-				});
-			}
-		}
 	});
 export const INFO_NULL: Partial<IInfo> = {
 	is_new_customer: false,
 	uuid: '',
 	user_uuid: null,
 	is_product_received: false,
+
 	received_date: null,
 	where_they_find_us: 'none',
 	name: '',
@@ -240,8 +247,9 @@ export const INFO_NULL: Partial<IInfo> = {
 	department_uuid: '',
 	location: '',
 	zone_uuid: '',
-	reference_user_uuid: '',
+	reference_user_uuid: null,
 	is_commission_amount: false,
+
 	commission_amount: 0,
 	order_entry: [ORDER_NULL as IOrder],
 	remarks: null,

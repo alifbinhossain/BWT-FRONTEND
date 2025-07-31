@@ -7,7 +7,7 @@ import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-import { Location, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
+import { Address, Location, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, ProductName } from '../utils/function';
 import {
 	IAccessoriesTableData,
@@ -52,7 +52,7 @@ export const infoColumns = (
 		},
 	},
 	{
-		accessorFn: (row) => row.user_name + ' - ' + row.user_phone,
+		accessorFn: (row) => row.location + ' - ' + row.user_phone,
 		header: 'Customer',
 		enableColumnFilter: false,
 		cell: (info) => {
@@ -64,6 +64,21 @@ export const infoColumns = (
 				</div>
 			);
 		},
+	},
+	{
+		accessorFn: (row) => row.zone_name + ' : ' + row.location,
+		header: 'Address',
+		enableColumnFilter: false,
+		cell: (info) => {
+			const { location, zone_name } = info.row.original;
+
+			return (
+				<div className='flex items-center gap-2'>
+					<Address location={location} zone_name={zone_name} />
+				</div>
+			);
+		},
+		size: 200,
 	},
 	{
 		accessorKey: 'branch_name',
@@ -85,6 +100,23 @@ export const infoColumns = (
 				<div>
 					<StatusButton value={info.getValue() as boolean} />
 					<DateTime date={info.row.original.received_date} isTime={false} />
+				</div>
+			);
+		},
+	},
+	{
+		accessorKey: 'reference_user_name',
+		header: 'Reference',
+		enableColumnFilter: false,
+		cell: (info) => {
+			if (info.getValue() === null) return '-';
+			return (
+				<div className='flex flex-col gap-2'>
+					<span>{info.getValue() as string}</span>
+					<span>
+						CO: {info.row.original.commission_amount}
+						{info.row.original.is_commission_amount ? 'BDT' : '%'}
+					</span>
 				</div>
 			);
 		},
@@ -170,6 +202,24 @@ export const orderColumnsForDetails = ({
 	handleAgainstTrx,
 }: IOrderColumns = {}): ColumnDef<IOrderTableData>[] => [
 	{
+		accessorKey: 'is_reclaimed',
+		header: 'Reclaimed',
+		enableColumnFilter: false,
+		size: 40,
+		cell: (info) => {
+			return (
+				<div className='flex items-center gap-2'>
+					<StatusButton value={info.getValue() as boolean} />
+					<CustomLink
+						url={`/work/info/details/${info.row.original.info_uuid}/order/details/${info.row.original.new_order_uuid}`}
+						label={info.getValue() as string}
+						openInNewTab={true}
+					/>
+				</div>
+			);
+		},
+	},
+	{
 		accessorKey: 'is_diagnosis_need',
 		header: () => (
 			<>
@@ -181,6 +231,7 @@ export const orderColumnsForDetails = ({
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
+
 	{
 		accessorKey: 'status',
 		header: 'Status',
@@ -277,18 +328,28 @@ export const orderColumnsForDetails = ({
 		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
-		accessorKey: 'order_id',
+		accessorFn: (row) => row.order_id + '-' + row.reclaimed_order_id,
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
+			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
 			return (
-				<CustomLink
-					url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-					label={info.getValue() as string}
-					openInNewTab={true}
-				/>
+				<div>
+					<CustomLink
+						url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+						label={info.row.original.order_id as string}
+						openInNewTab={true}
+					/>
+					{info.row.original.reclaimed_order_uuid && (
+						<CustomLink
+							url={`/work/info/details/${info_uuid}/order/details/${reclaimed_order_uuid}`}
+							label={info.row.original.reclaimed_order_id as string}
+							openInNewTab={true}
+						/>
+					)}
+				</div>
 			);
 		},
 	},
