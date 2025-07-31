@@ -1,4 +1,4 @@
-import { TLocationProps, TProductProps } from '../types';
+import { TLocationProps, TOrderProps, TProductProps } from '../types';
 
 export const ProductName = (row: TProductProps) => {
 	let name = '';
@@ -16,4 +16,9 @@ export const LocationName = (row: TLocationProps) => {
 	if (row.floor_name) name += name ? ` - ${row.floor_name}` : row.floor_name;
 	if (row.box_name) name += name ? ` - ${row.box_name}` : row.box_name;
 	return name;
+};
+
+export const OrderID = (row: TOrderProps) => {
+	if (row.order_id && !row.reclaimed_order_id) return row.order_id;
+	return row.order_id + '-' + row.reclaimed_order_id;
 };

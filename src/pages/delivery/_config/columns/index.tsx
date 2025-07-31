@@ -1,17 +1,12 @@
-import { Product } from '@/pages/work/_config/utils/component';
-import { ProductName } from '@/pages/work/_config/utils/function';
+import { OderID, Product } from '@/pages/work/_config/utils/component';
+import { OrderID, ProductName } from '@/pages/work/_config/utils/function';
 import { ColumnDef } from '@tanstack/react-table';
-
-
 
 import StatusButton from '@/components/buttons/status';
 import { CustomLink } from '@/components/others/link';
 import { Switch } from '@/components/ui/switch';
 
-
-
 import { IChallanEntryTableData, IChallanTableData, ICourierTableData, IVehicleTableData } from './columns.type';
-
 
 //* Vehicle Columns
 export const vehicleColumns = (): ColumnDef<IVehicleTableData>[] => [
@@ -112,17 +107,21 @@ export const challanColumns = (
 //* Challan Entry Columns
 export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 	{
-		accessorKey: 'order_id',
+		accessorFn: (row) => OrderID(row),
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const uuid = info.row.original.order_uuid;
+			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
+			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
+			
 			return (
-				<CustomLink
-					url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-					label={info.getValue() as string}
-					openInNewTab={true}
+				<OderID
+					info_uuid={info_uuid}
+					uuid={uuid}
+					order_id={info.row.original.order_id}
+					reclaimed_order_uuid={reclaimed_order_uuid}
+					reclaimed_order_id={info.row.original.reclaimed_order_id}
 				/>
 			);
 		},

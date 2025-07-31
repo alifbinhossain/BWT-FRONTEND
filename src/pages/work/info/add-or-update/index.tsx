@@ -32,7 +32,7 @@ const AddOrUpdate = () => {
 
 	const { url: infoUrl, updateData, postData, imagePostData, imageUpdateData, deleteData } = useWorkInfo();
 	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
-
+	const { invalidateQuery: invalidateWorkInfo } = useWorkInfo<IInfoTableData[]>(`status=pending`);
 	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(
 		uuid as string,
 		isUpdate
@@ -42,7 +42,6 @@ const AddOrUpdate = () => {
 	const isProductReceived = form.watch('is_product_received');
 	const isNewCustomer = form.watch('is_new_customer');
 	const isBusinessTypeCompany = form.watch('business_type') === 'company' && isNewCustomer;
-	console.log(form.formState.errors);
 
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
@@ -67,7 +66,6 @@ const AddOrUpdate = () => {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
-		console.log(values);
 
 		if (isProductReceived && values.order_entry.length === 0) {
 			ShowLocalToast({
@@ -147,6 +145,8 @@ const AddOrUpdate = () => {
 					.then(() => {
 						invalidateCustomer();
 						invalidateTestDetails();
+						invalidateTestDetails();
+						invalidateWorkInfo();
 						navigate(`/work/info/details/${uuid}`);
 					});
 			} catch (err) {
@@ -216,6 +216,7 @@ const AddOrUpdate = () => {
 				.then(() => {
 					invalidateCustomer();
 					invalidateTestDetails();
+					invalidateWorkInfo();
 					navigate(`/work/info/details/${info_uuid}`);
 				});
 		} catch (err) {

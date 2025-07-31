@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 
 import ColumnImage from '@/components/core/data-table/_views/column-image';
+import { CustomLink } from '@/components/others/link';
 
 import { cn } from '@/lib/utils';
 
@@ -183,6 +184,37 @@ export const Address = ({ location, zone_name }: { location: string; zone_name: 
 				<Pin className='size-4' />
 				<span className='inline-block flex-1 text-sm'>{zone_name}</span>
 			</div>
+		</div>
+	);
+};
+
+export const OderID = ({
+	info_uuid,
+	uuid,
+	order_id,
+	reclaimed_order_uuid,
+	reclaimed_order_id,
+}: {
+	info_uuid: string;
+	uuid: string;
+	order_id: string;
+	reclaimed_order_uuid?: string;
+	reclaimed_order_id?: string;
+}) => {
+	return (
+		<div>
+			<CustomLink
+				url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+				label={order_id as string}
+				openInNewTab={true}
+			/>
+			{reclaimed_order_uuid && (
+				<CustomLink
+					url={`/work/info/details/${info_uuid}/order/details/${reclaimed_order_uuid}`}
+					label={reclaimed_order_id as string}
+					openInNewTab={true}
+				/>
+			)}
 		</div>
 	);
 };

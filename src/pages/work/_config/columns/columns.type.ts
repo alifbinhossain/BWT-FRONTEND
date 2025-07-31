@@ -13,6 +13,9 @@ export type IDiagnosisTableData = {
 	uuid: string;
 	id: string;
 	diagnosis_id: string;
+	reclaimed_order_uuid: string;
+	reclaimed_order_id: string;
+	is_reclaimed: boolean;
 	order_uuid: string;
 	info_uuid: string;
 	order_id: string;
@@ -72,8 +75,10 @@ export type IStockActionTrx = {
 };
 //* Order Columns
 export type IOrderTableData = {
+	is_reclaimed: boolean;
 	reclaimed_order_uuid: any;
 	reclaimed_order_id: string;
+	new_order_id: string;
 	reclaimed_id: string;
 	id: string;
 	order_id: string;

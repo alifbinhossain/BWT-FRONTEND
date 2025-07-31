@@ -2,13 +2,14 @@ import React from 'react';
 import useAccess from '@/hooks/useAccess';
 
 import StatusButton from '@/components/buttons/status';
+import SwitchStatus from '@/components/buttons/switch-or-satus';
 import { CustomLink } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
-import { Switch } from '@/components/ui/switch';
 
 import { getDateTime } from '@/utils';
 import { formatDateTable } from '@/utils/formatDate';
+import Formdata from '@/utils/formdata';
 
 import { IOrderTableData } from '../../_config/columns/columns.type';
 
@@ -22,13 +23,24 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 		return [
 			{
 				label: 'ID',
-				value: data.order_id,
+				value: (
+					<div>
+						<span>{data?.order_id}</span>
+						{data?.reclaimed_order_uuid && (
+							<CustomLink
+								url={`/work/info/details/${data?.info_uuid}/order/details/${data?.reclaimed_order_uuid}`}
+								label={data?.reclaimed_order_id as string}
+								openInNewTab={true}
+							/>
+						)}
+					</div>
+				),
 			},
 			{
 				label: 'Info ID',
 				value: (
 					<CustomLink
-						url={`/work/info/details/${data?.info_uuid}/order/details/${data?.uuid}`}
+						url={`/work/info/details/${data?.info_uuid}`}
 						label={data?.info_id as string}
 						openInNewTab={true}
 					/>
@@ -96,25 +108,47 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 		return [
 			{
 				label: 'Received',
-				value: <StatusButton value={data.is_product_received as boolean} />,
+				value: (
+					<div className='flex flex-col gap-2'>
+						<StatusButton value={data.is_product_received as boolean} />
+						<span>{formatDateTable(data?.received_date)}</span>
+					</div>
+				),
+			},
+			{
+				label: 'Reclaimed',
+				value: (
+					<div className='flex flex-col gap-2'>
+						<StatusButton value={data.is_reclaimed as boolean} />
+						{data?.new_order_uuid && (
+							<CustomLink
+								url={`/work/info/details/${data?.info_uuid}/order/details/${data?.new_order_uuid}`}
+								label={data?.new_order_id as string}
+								openInNewTab={true}
+							/>
+						)}
+					</div>
+				),
 			},
 			{
 				label: 'Diagnosing Needed',
 				value: (
-					<Switch
+					<SwitchStatus
 						checked={data?.is_diagnosis_need}
 						onCheckedChange={() => handelDiagnosisStatusChange()}
 						disabled={!haveDiagnosedNeedAccess}
+						isClickable={data?.is_delivery_complete}
 					/>
 				),
 			},
 			{
 				label: 'Proceed to Repair',
 				value: (
-					<Switch
+					<SwitchStatus
 						checked={data?.is_proceed_to_repair}
 						onCheckedChange={() => handelProceedToRepair()}
 						disabled={!haveProceedToRepairAccess}
+						isClickable={data?.is_delivery_complete}
 					/>
 				),
 			},
@@ -129,31 +163,31 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 			{
 				label: 'Transfer For QC',
 				value: (
-					<Switch
+					<SwitchStatus
 						checked={data?.is_transferred_for_qc}
 						onCheckedChange={() => handelQCStatusChange()}
 						disabled={!haveQCAccess}
+						isClickable={data?.is_delivery_complete}
 					/>
 				),
 			},
 			{
 				label: 'Ready For Delivery',
 				value: (
-					<Switch
-						checked={data?.is_ready_for_delivery}
-						onCheckedChange={() => handelDeliveryStatusChange()}
-						disabled={!haveDeliveryAccess}
-					/>
+					<div>
+						<SwitchStatus
+							checked={data?.is_ready_for_delivery}
+							onCheckedChange={() => handelDeliveryStatusChange()}
+							disabled={!haveDeliveryAccess}
+							isClickable={data?.is_delivery_complete}
+						/>
+						<span>{formatDateTable(data?.ready_for_delivery_date)}</span>
+					</div>
 				),
 			},
 			{
 				label: 'Delivery Complete',
 				value: <StatusButton value={data.is_delivery_complete as boolean} />,
-			},
-
-			{
-				label: 'Receiving Date',
-				value: formatDateTable(data.received_date),
 			},
 		];
 	};
@@ -227,40 +261,47 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 		];
 	};
 	const handelDiagnosisStatusChange = async () => {
+		const form = Formdata({
+			is_diagnosis_need: !data?.is_diagnosis_need,
+		});
 		await updateData.mutateAsync({
 			url: `/work/order/${data?.uuid}`,
-			updatedData: {
-				is_diagnosis_need: !data?.is_diagnosis_need,
-			},
+			updatedData: form,
 			isOnCloseNeeded: false,
 		});
 	};
 	const handelProceedToRepair = async () => {
+		const form = Formdata({
+			is_proceed_to_repair: !data?.is_proceed_to_repair,
+		});
 		await updateData.mutateAsync({
 			url: `/work/order/${data?.uuid}`,
-			updatedData: {
-				is_proceed_to_repair: !data?.is_proceed_to_repair,
-			},
+			updatedData: form,
 			isOnCloseNeeded: false,
 		});
 	};
 	const handelQCStatusChange = async () => {
+		const form = Formdata({
+			is_transferred_for_qc: !data?.is_transferred_for_qc,
+		});
 		await updateData.mutateAsync({
 			url: `/work/order/${data?.uuid}`,
-			updatedData: {
-				is_transferred_for_qc: !data?.is_transferred_for_qc,
-			},
+			updatedData: form,
 			isOnCloseNeeded: false,
 		});
 	};
 
 	const handelDeliveryStatusChange = async () => {
+		const form = Formdata({
+			is_ready_for_delivery: !data?.is_ready_for_delivery,
+			ready_for_delivery_date: data.is_ready_for_delivery ? null : getDateTime(),
+		});
+		if (data?.is_ready_for_delivery) {
+			form.delete('ready_for_delivery_date');
+		}
 		await updateData.mutateAsync({
 			url: `/work/order/${data?.uuid}`,
-			updatedData: {
-				is_ready_for_delivery: !data?.is_ready_for_delivery,
-				ready_for_delivery_date: data.is_ready_for_delivery ? null : getDateTime(),
-			},
+			updatedData: form,
 			isOnCloseNeeded: false,
 		});
 	};
