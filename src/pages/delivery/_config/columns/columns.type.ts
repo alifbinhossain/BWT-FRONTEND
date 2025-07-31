@@ -17,6 +17,9 @@ export type ICourierTableData = {
 
 //* Challan Entry
 export type IChallanEntryTableData = {
+	order_id: any;
+	reclaimed_order_id:string;
+	reclaimed_order_uuid: any;
 	uuid: string;
 	challan_uuid: string;
 	description: string;

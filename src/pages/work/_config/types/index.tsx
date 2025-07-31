@@ -105,3 +105,8 @@ export type TProblemProps = {
 	problems_name: string;
 	problem_statement?: string;
 };
+
+export type TOrderProps = {
+	order_id: string;
+	reclaimed_order_id: string;
+};

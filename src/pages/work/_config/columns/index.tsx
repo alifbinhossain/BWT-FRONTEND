@@ -7,8 +7,17 @@ import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-import { Address, Location, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
-import { LocationName, ProductName } from '../utils/function';
+import {
+	Address,
+	Location,
+	OderID,
+	OrderImages,
+	Problem,
+	Product,
+	TableForColumn,
+	UserNamePhone,
+} from '../utils/component';
+import { LocationName, OrderID, ProductName } from '../utils/function';
 import {
 	IAccessoriesTableData,
 	IDiagnosisTableData,
@@ -204,15 +213,15 @@ export const orderColumnsForDetails = ({
 	{
 		accessorKey: 'is_reclaimed',
 		header: 'Reclaimed',
+		size: 200,
 		enableColumnFilter: false,
-		size: 40,
 		cell: (info) => {
 			return (
 				<div className='flex items-center gap-2'>
 					<StatusButton value={info.getValue() as boolean} />
 					<CustomLink
 						url={`/work/info/details/${info.row.original.info_uuid}/order/details/${info.row.original.new_order_uuid}`}
-						label={info.getValue() as string}
+						label={info.row.original.new_order_id as string}
 						openInNewTab={true}
 					/>
 				</div>
@@ -328,7 +337,7 @@ export const orderColumnsForDetails = ({
 		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
 	},
 	{
-		accessorFn: (row) => row.order_id + '-' + row.reclaimed_order_id,
+		accessorFn: (row) => OrderID(row),
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
@@ -336,20 +345,13 @@ export const orderColumnsForDetails = ({
 			const info_uuid = info.row.original.info_uuid;
 			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
 			return (
-				<div>
-					<CustomLink
-						url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-						label={info.row.original.order_id as string}
-						openInNewTab={true}
-					/>
-					{info.row.original.reclaimed_order_uuid && (
-						<CustomLink
-							url={`/work/info/details/${info_uuid}/order/details/${reclaimed_order_uuid}`}
-							label={info.row.original.reclaimed_order_id as string}
-							openInNewTab={true}
-						/>
-					)}
-				</div>
+				<OderID
+					info_uuid={info_uuid}
+					uuid={uuid}
+					order_id={info.row.original.order_id}
+					reclaimed_order_uuid={reclaimed_order_uuid}
+					reclaimed_order_id={info.row.original.reclaimed_order_id}
+				/>
 			);
 		},
 	},
@@ -519,6 +521,23 @@ export const orderColumns = ({
 	handelDiagnosisStatusChange,
 }: IOrderColumns = {}): ColumnDef<IOrderTableData>[] => [
 	{
+		accessorKey: 'is_reclaimed',
+		header: 'Reclaimed',
+		enableColumnFilter: false,
+		cell: (info) => {
+			return (
+				<div className='flex flex-col gap-2'>
+					<StatusButton value={info.getValue() as boolean} />
+					<CustomLink
+						url={`/work/info/details/${info.row.original.info_uuid}/order/details/${info.row.original.new_order_uuid}`}
+						label={info.row.original.new_order_id as string}
+						openInNewTab={true}
+					/>
+				</div>
+			);
+		},
+	},
+	{
 		accessorKey: 'is_diagnosis_need',
 		header: () => (
 			<>
@@ -559,17 +578,20 @@ export const orderColumns = ({
 	},
 
 	{
-		accessorKey: 'order_id',
+		accessorFn: (row) => OrderID(row),
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
+			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
 			return (
-				<CustomLink
-					url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-					label={info.getValue() as string}
-					openInNewTab={true}
+				<OderID
+					info_uuid={info_uuid}
+					uuid={uuid}
+					order_id={info.row.original.order_id}
+					reclaimed_order_uuid={reclaimed_order_uuid}
+					reclaimed_order_id={info.row.original.reclaimed_order_id}
 				/>
 			);
 		},
@@ -709,17 +731,20 @@ export const QCColumns = ({
 		),
 	},
 	{
-		accessorKey: 'order_id',
+		accessorFn: (row) => OrderID(row),
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
+			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
 			return (
-				<CustomLink
-					url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-					label={info.getValue() as string}
-					openInNewTab={true}
+				<OderID
+					info_uuid={info_uuid}
+					uuid={uuid}
+					order_id={info.row.original.order_id}
+					reclaimed_order_uuid={reclaimed_order_uuid}
+					reclaimed_order_id={info.row.original.reclaimed_order_id}
 				/>
 			);
 		},
@@ -922,17 +947,20 @@ export const RepairingColumns = ({
 		),
 	},
 	{
-		accessorKey: 'order_id',
+		accessorFn: (row) => OrderID(row),
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
+			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
 			return (
-				<CustomLink
-					url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-					label={info.getValue() as string}
-					openInNewTab={true}
+				<OderID
+					info_uuid={info_uuid}
+					uuid={uuid}
+					order_id={info.row.original.order_id}
+					reclaimed_order_uuid={reclaimed_order_uuid}
+					reclaimed_order_id={info.row.original.reclaimed_order_id}
 				/>
 			);
 		},
@@ -1114,17 +1142,20 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'order_id',
+		accessorFn: (row) => OrderID(row),
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
+			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
 			return (
-				<CustomLink
-					url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-					label={info.getValue() as string}
-					openInNewTab={true}
+				<OderID
+					info_uuid={info_uuid}
+					uuid={uuid}
+					order_id={info.row.original.order_id}
+					reclaimed_order_uuid={reclaimed_order_uuid}
+					reclaimed_order_id={info.row.original.reclaimed_order_id}
 				/>
 			);
 		},
@@ -1302,17 +1333,20 @@ export const diagnosisColumns = ({
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'order_id',
+		accessorFn: (row) => OrderID(row),
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const uuid = info.row.original.order_uuid;
+			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
+			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
 			return (
-				<CustomLink
-					url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
-					label={info.getValue() as string}
-					openInNewTab={true}
+				<OderID
+					info_uuid={info_uuid}
+					uuid={uuid}
+					order_id={info.row.original.order_id}
+					reclaimed_order_uuid={reclaimed_order_uuid}
+					reclaimed_order_id={info.row.original.reclaimed_order_id}
 				/>
 			);
 		},
