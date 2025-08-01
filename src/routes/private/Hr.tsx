@@ -25,6 +25,9 @@ const PendingApproval = lazy(() => import('@/pages/hr/pending-approval'));
 const Shift = lazy(() => import('@/pages/hr/shifts-management/shifts'));
 const ShiftsGroups = lazy(() => import('@/pages/hr/shifts-management/shifts-groups'));
 const Roasters = lazy(() => import('@/pages/hr/shifts-management/roasters'));
+const IndividualReport = lazy(() => import('@/pages/hr/report/individual-report'));
+const DepartmentReport = lazy(() => import('@/pages/hr/report/department-report'));
+
 const HrRoutes: IRoute[] = [
 	{
 		name: 'HR',
@@ -251,6 +254,25 @@ const HrRoutes: IRoute[] = [
 				element: <PendingApproval />,
 				page_name: 'admin__pending_approval',
 				actions: ['create', 'read', 'update', 'delete'],
+			},
+			{
+				name: 'Report',
+				children: [
+					{
+						name: 'Individual Report',
+						path: '/hr/report/individual',
+						element: <IndividualReport />,
+						page_name: 'report__individual_report',
+						actions: ['read'],
+					},
+					{
+						name: 'Department Report',
+						path: '/hr/report/department',
+						element: <DepartmentReport />,
+						page_name: 'report__department_report',
+						actions: ['read'],
+					},
+				],
 			},
 		],
 	},

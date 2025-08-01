@@ -205,3 +205,34 @@ export type ILateApprovalTableData = {
 	reason: string;
 	approved: boolean;
 };
+
+//? Report ?//
+
+//* Individual Report
+export type IIndividualReportTableData = {
+	user_uuid: string;
+	employee_name: string;
+	punch_date: string;
+	entry_time: string;
+	exit_time: string;
+	hours_worked: string;
+	expected_hours: string;
+};
+
+//* Department Report
+export type IDepartmentReportTableData = {
+	user_uuid: string;
+	employee_name: string;
+	designation_uuid: string;
+	designation_name: string;
+	department_uuid: string;
+	department_name: string;
+	workplace_uuid: string;
+	workplace_name: string;
+	employment_type_uuid: string;
+	employment_type_name: string;
+	present_days: string;
+	absent_days: string;
+	leave_days: string;
+	
+};

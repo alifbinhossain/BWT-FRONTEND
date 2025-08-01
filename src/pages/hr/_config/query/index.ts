@@ -1,14 +1,9 @@
 import { IPaginationQuery } from '@/types';
 import useTQuery from '@/hooks/useTQuery';
 
-
-
 import addQueryParams from '@/utils/addQueryParams';
 
-
-
 import { hrQK } from './queryKeys';
-
 
 // * User
 
@@ -297,4 +292,22 @@ export const useHrLateEntriesByEmployeeUUID = <T>(uuid: string, query: string) =
 		queryKey: hrQK.punchLateEntriesByEmployeeUUID(uuid, query),
 		url: `/hr/punch-late-log-per-day/by/${uuid}?${query}`,
 		enabled: !!uuid && !!query,
+	});
+
+//? Report ?//
+
+//* Individual Report
+export const useReportIndividual = <T>(uuid: string, from: string, to: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.reportIndividual(uuid, from, to),
+		url: `/report/attendance-report/${uuid}?from_date=${from}&to_date=${to}`,
+		enabled: !!uuid,
+	});
+
+//* Department Report
+export const useReportDepartment = <T>(uuid: string, from: string, to: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.reportDepartment(uuid, from, to),
+		url: `/report/department-attendance-report?department_uuid=${uuid}&from_date=${from}&to_date=${to}`,
+		enabled: !!uuid,
 	});
