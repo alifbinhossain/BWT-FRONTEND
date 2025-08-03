@@ -2,7 +2,7 @@ import { IInfoTableData } from '@/pages/work/_config/columns/columns.type';
 import QRCode from 'qrcode';
 
 import { DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
-import { DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
+import { banglaRegex, DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
 
 import pdfMake from '..';
 import { getPageFooter, getPageHeader } from './utils';
@@ -12,6 +12,7 @@ export default async function Index(data: IInfoTableData, user: any, baseURl: st
 	const footerHeight = 20;
 
 	const GenerateQRCode = await QRCode.toString(`${baseURl}order/${data?.uuid}`);
+
 
 	data?.order_entry?.forEach((item) => {
 		item.product = `${item.brand_name}, ${item.model_name} - SN: ${item.serial_no}`;
@@ -71,7 +72,11 @@ export default async function Index(data: IInfoTableData, user: any, baseURl: st
 									body: [
 										[
 											{ text: `Customer Name:`, fontSize: DEFAULT_FONT_SIZE - 2, bold: true },
-											{ text: data?.user_name, fontSize: DEFAULT_FONT_SIZE - 2 },
+											{
+												text: data?.user_name,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+												font: `${banglaRegex.test(data?.user_name) ? 'Bangla' : 'Roboto'}`,
+											},
 										],
 										[
 											{
@@ -87,7 +92,11 @@ export default async function Index(data: IInfoTableData, user: any, baseURl: st
 												bold: true,
 												fontSize: DEFAULT_FONT_SIZE - 2,
 											},
-											{ text: data?.location, fontSize: DEFAULT_FONT_SIZE - 2 },
+											{
+												text: data?.location,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+												font: `${banglaRegex.test(data?.location) ? 'Bangla' : 'Roboto'}`,
+											},
 										],
 										[
 											{
