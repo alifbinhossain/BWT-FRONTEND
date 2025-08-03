@@ -47,6 +47,17 @@ export const getPageHeader = (data: IChallanTableData, user: any, GenerateQRCode
 	} else if (data?.challan_type === 'courier_delivery') {
 		delivery_information.push([
 			{
+				text: 'Delivery Employee:',
+				bold: true,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+			{
+				text: data?.employee_name,
+				fontSize: DEFAULT_FONT_SIZE - 2,
+			},
+		]);
+		delivery_information.push([
+			{
 				text: 'Courier:',
 				bold: true,
 				fontSize: DEFAULT_FONT_SIZE - 2,

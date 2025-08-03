@@ -112,6 +112,7 @@ const Order = () => {
 					<AddOrUpdate
 						{...{
 							url: '/work/order',
+							
 							open: isOpenAddModal,
 							setOpen: setIsOpenAddModal,
 							imageUpdateData,
