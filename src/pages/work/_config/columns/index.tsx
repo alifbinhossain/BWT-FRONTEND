@@ -74,21 +74,21 @@ export const infoColumns = (
 			);
 		},
 	},
-	{
-		accessorFn: (row) => row.zone_name + ' : ' + row.location,
-		header: 'Address',
-		enableColumnFilter: false,
-		cell: (info) => {
-			const { location, zone_name } = info.row.original;
+	// {
+	// 	accessorFn: (row) => row.zone_name + ' : ' + row.location,
+	// 	header: 'Address',
+	// 	enableColumnFilter: false,
+	// 	cell: (info) => {
+	// 		const { location, zone_name } = info.row.original;
 
-			return (
-				<div className='flex items-center gap-2'>
-					<Address location={location} zone_name={zone_name} />
-				</div>
-			);
-		},
-		size: 200,
-	},
+	// 		return (
+	// 			<div className='flex items-center gap-2'>
+	// 				<Address location={location} zone_name={zone_name} />
+	// 			</div>
+	// 		);
+	// 	},
+	// 	size: 200,
+	// },
 	{
 		accessorKey: 'branch_name',
 		header: 'Branch',

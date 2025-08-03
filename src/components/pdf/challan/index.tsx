@@ -2,7 +2,7 @@ import { IChallanTableData } from '@/pages/delivery/_config/columns/columns.type
 import QRCode from 'qrcode';
 
 import { DEFAULT_FONT_SIZE, xMargin } from '@/components/pdf/ui';
-import { DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
+import { banglaRegex, DEFAULT_A4_PAGE, getTable } from '@/components/pdf/utils';
 
 import { getDateTime } from '@/utils';
 
@@ -14,7 +14,7 @@ export default async function Index(data: IChallanTableData, user: any, baseURl:
 	const footerHeight = 20;
 	data?.challan_entries?.forEach((item) => {
 		item.description = `${item.brand_name}, ${item.model_name} - SN: ${item.serial_no}`;
-		item.unit = 'Pcs';		
+		item.unit = 'Pcs';
 		const orderProblems = (item.order_problems_name || []).map((p) => `O: ${p}`);
 		const diagnosisProblems = (item.diagnosis_problems_name || []).map((p) => `D: ${p}`);
 		const qcProblems = (item.qc_problems_name || []).map((p) => `Q: ${p}`);
@@ -77,7 +77,11 @@ export default async function Index(data: IChallanTableData, user: any, baseURl:
 									body: [
 										[
 											{ text: `Customer Name:`, fontSize: DEFAULT_FONT_SIZE - 2, bold: true },
-											{ text: data?.customer_name, fontSize: DEFAULT_FONT_SIZE - 2 },
+											{
+												text: data?.customer_name,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+												font: `${banglaRegex.test(data?.customer_name) ? 'Bangla' : 'Roboto'}`,
+											},
 										],
 										[
 											{
@@ -93,7 +97,11 @@ export default async function Index(data: IChallanTableData, user: any, baseURl:
 												bold: true,
 												fontSize: DEFAULT_FONT_SIZE - 2,
 											},
-											{ text: data?.location, fontSize: DEFAULT_FONT_SIZE - 2 },
+											{
+												text: data?.location,
+												fontSize: DEFAULT_FONT_SIZE - 2,
+												font: `${banglaRegex.test(data?.location) ? 'Bangla' : 'Roboto'}`,
+											},
 										],
 										[
 											{

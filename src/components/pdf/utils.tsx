@@ -1,7 +1,9 @@
-
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 
+
+
 import { DEFAULT_FONT_SIZE, defaultStyle, PRIMARY_COLOR, styles } from './ui';
+
 
 interface PageProps {
 	xMargin: number;
@@ -28,6 +30,7 @@ interface CustomPageThreadStickerProps extends PageProps {
 interface CustomPageConeStickerProps extends PageProps {
 	pageOrientation?: 'landscape' | 'portrait';
 }
+export const banglaRegex = /[\u0980-\u09FF]/;
 
 //
 // PDF DEFAULTS

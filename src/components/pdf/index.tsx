@@ -11,6 +11,10 @@ pdfMake.fonts = {
 		italics: 'Roboto-Italic.ttf',
 		bolditalics: 'Roboto-BoldItalic.ttf',
 	},
+	Bangla: {
+		normal: 'TiroBangla-Regular.ttf',
+		bold: 'NotoSansBengali_Condensed-Bold.ttf',
+	},
 };
 
 export default pdfMake;
