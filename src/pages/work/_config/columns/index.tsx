@@ -1,34 +1,20 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { over } from 'lodash';
 
+
+
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { CustomLink } from '@/components/others/link';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-import {
-	Address,
-	Location,
-	OderID,
-	OrderImages,
-	Problem,
-	Product,
-	TableForColumn,
-	UserNamePhone,
-} from '../utils/component';
+
+
+import { Address, Location, OderID, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
 import { LocationName, OrderID, ProductName } from '../utils/function';
-import {
-	IAccessoriesTableData,
-	IDiagnosisTableData,
-	IInfoTableData,
-	IOrderTableData,
-	IProblemsTableData,
-	IProcessTableData,
-	ISectionTableData,
-	ITransferTableData,
-	IZoneTableData,
-} from './columns.type';
+import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
+
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -61,7 +47,7 @@ export const infoColumns = (
 		},
 	},
 	{
-		accessorFn: (row) => row.location + ' - ' + row.user_phone,
+		accessorFn: (row) => row.user_name + ' - ' + row.user_phone,
 		header: 'Customer',
 		enableColumnFilter: false,
 		cell: (info) => {

@@ -77,10 +77,8 @@ const AddOrUpdate = () => {
 		if (isUpdate) {
 			const infoData = {
 				...values,
-
 				...(isNewCustomer && { user_uuid: nanoid() }),
 				...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
-				submitted_by: 'employee',
 				updated_at: getDateTime(),
 			};
 			if ('order_entry' in infoData) {

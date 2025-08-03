@@ -30,6 +30,7 @@ const AddOrUpdate = () => {
 
 	const form = useRHF(CHALLAN_SCHEMA, CHALLAN_NULL);
 	const { data: order } = useWorkOrderByCustomerUUID(form.watch('customer_uuid'));
+	console.log(form.formState.errors);
 
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
@@ -72,7 +73,6 @@ const AddOrUpdate = () => {
 			form.setValue('vehicle_uuid', null);
 			form.setValue('courier_uuid', null);
 		} else if (challanType === 'courier_delivery') {
-			form.setValue('employee_uuid', null);
 			form.setValue('vehicle_uuid', null);
 		} else if (challanType === 'employee_delivery') {
 			form.setValue('vehicle_uuid', null);

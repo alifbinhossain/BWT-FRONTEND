@@ -61,6 +61,7 @@ const Order = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
+				defaultSorting={[{ id: 'ready_for_delivery_date', desc: true }]}
 				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
