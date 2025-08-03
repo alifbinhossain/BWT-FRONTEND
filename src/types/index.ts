@@ -43,6 +43,7 @@ export type IUser = {
 	name: string;
 	department: string;
 	employee_uuid: string;
+	user_type: 'employee' | 'customer' | 'vendor';
 };
 
 export type IRoute = RouteObject & {

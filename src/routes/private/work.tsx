@@ -53,7 +53,6 @@ const workRoutes: IRoute[] = [
 					'update',
 					'delete',
 					'click_contact_with_customer_override',
-					'click_contact_with_customer',
 				],
 			},
 

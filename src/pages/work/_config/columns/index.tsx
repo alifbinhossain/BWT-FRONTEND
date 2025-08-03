@@ -1,20 +1,35 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { over } from 'lodash';
 
-
-
 import StatusButton from '@/components/buttons/status';
 import Transfer from '@/components/buttons/transfer';
 import { CustomLink } from '@/components/others/link';
+import { WhatsApp } from '@/components/others/what-app-button';
 import DateTime from '@/components/ui/date-time';
 import { Switch } from '@/components/ui/switch';
 
-
-
-import { Address, Location, OderID, OrderImages, Problem, Product, TableForColumn, UserNamePhone } from '../utils/component';
+import {
+	Address,
+	Location,
+	OderID,
+	OrderImages,
+	Problem,
+	Product,
+	TableForColumn,
+	UserNamePhone,
+} from '../utils/component';
 import { LocationName, OrderID, ProductName } from '../utils/function';
-import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, ITransferTableData, IZoneTableData } from './columns.type';
-
+import {
+	IAccessoriesTableData,
+	IDiagnosisTableData,
+	IInfoTableData,
+	IOrderTableData,
+	IProblemsTableData,
+	IProcessTableData,
+	ISectionTableData,
+	ITransferTableData,
+	IZoneTableData,
+} from './columns.type';
 
 //* Problems Columns
 export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
@@ -33,7 +48,8 @@ export const problemsColumns = (): ColumnDef<IProblemsTableData>[] => [
 export const infoColumns = (
 	handleStatus?: (row: Row<IInfoTableData>) => void,
 	permissionStatus?: boolean,
-	overriddenPermissionStatus?: boolean
+	overriddenPermissionStatus?: boolean,
+	handleWhatsApp?: (row: Row<IInfoTableData>) => void
 ): ColumnDef<IInfoTableData>[] => [
 	{
 		accessorKey: 'info_id',
@@ -49,6 +65,7 @@ export const infoColumns = (
 	{
 		accessorFn: (row) => row.user_name + ' - ' + row.user_phone,
 		header: 'Customer',
+		size: 200,
 		enableColumnFilter: false,
 		cell: (info) => {
 			const { user_name, user_phone } = info.row.original;
@@ -116,6 +133,13 @@ export const infoColumns = (
 			);
 		},
 	},
+	{
+		accessorKey: 'is_whatsapp',
+		header: 'WhatsApp',
+		cell: (info) => {
+			return <WhatsApp onClick={() => handleWhatsApp?.(info.row)} />;
+		},
+	},
 
 	{
 		accessorFn: (row) => row.delivered_count + '/' + row.order_count,
@@ -152,18 +176,12 @@ export const infoColumns = (
 					cancel: 'bg-gray-500',
 					pending: 'bg-warning',
 				}[status?.toLowerCase()] || '';
-			if (info.row.original.submitted_by === 'employee') {
-				return <span>-</span>;
-			}
 			return (
 				<div className='flex flex-col items-center gap-2'>
 					<Switch
 						checked={info.getValue() as boolean}
 						onCheckedChange={() => handleStatus?.(info.row)}
-						disabled={
-							!overriddenPermissionStatus &&
-							(!permissionStatus || (permissionStatus && (info.getValue() as boolean)))
-						}
+						disabled={!overriddenPermissionStatus && info.getValue() as boolean}
 					/>
 
 					<span className={`flex-1 rounded px-2 py-1 text-xs capitalize text-white ${bgColorClass}`}>
@@ -173,7 +191,6 @@ export const infoColumns = (
 			);
 		},
 		meta: {
-			hidden: !overriddenPermissionStatus && !permissionStatus,
 			disableFullFilter: true,
 		},
 	},

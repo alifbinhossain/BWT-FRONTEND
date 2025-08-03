@@ -4,14 +4,21 @@ import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
+
+
 import ReactSelect from '@/components/ui/react-select';
+
+
 
 import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
+
+
 import { infoColumns } from '../_config/columns';
 import { IInfoTableData } from '../_config/columns/columns.type';
 import { useWorkInfo } from '../_config/query';
+
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const PopUpModal = lazy(() => import('./pop-up-modal'));
@@ -64,9 +71,22 @@ const Info = () => {
 			});
 		}
 	};
+	const handleWhatsApp = (row: Row<IInfoTableData>) => {
+		const val = row?.original;
+		const fullURL = window.location.href;
+		const slice = fullURL.split('w');
+		const baseURl = slice[0];
+		const fullUrl = ``;
+		// let message = `BWT Order: ${baseURl}order/${row?.original?.uuid}.\n For new user, url: ${baseURl}login email: ${val.user_email} pass: ${val.user_phone}.\n For any query: 01956666777`;
+		let message = `Successfully placed your order: ${val?.info_id}. You can view the details here: ${baseURl}work/info/${row?.original?.uuid}.`;
+
+		const formattedNumber = val.user_phone.replace(/[^\d]/g, '');
+		const url = `https://web.whatsapp.com/send?phone=88${formattedNumber}&text=${message}&app_absent=0`;
+		window.open(url);
+	};
 
 	//* Table Columns
-	const columns = infoColumns(handleStatus, actionTrxAccess, actionTrxOverride);
+	const columns = infoColumns(handleStatus, actionTrxAccess, actionTrxOverride, handleWhatsApp);
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

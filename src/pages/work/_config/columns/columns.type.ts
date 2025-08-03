@@ -160,6 +160,7 @@ export type IInfoTableData = {
 	name: string;
 	phone: string;
 	user_phone: string;
+	user_email: string;
 	submitted_by: 'customer' | 'employee';
 	user_id: string;
 	id: string;
