@@ -1,9 +1,6 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 
-
-
 import { vfs } from './vfs_fonts';
-
 
 pdfMake.vfs = vfs;
 
