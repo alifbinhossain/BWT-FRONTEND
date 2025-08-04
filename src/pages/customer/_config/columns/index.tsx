@@ -61,7 +61,7 @@ export const infoColumns = (): ColumnDef<IInfoTableData>[] => [
 			return (
 				<div className='flex flex-col'>
 					<StatusButton value={info.getValue() as boolean} />
-					<DateTime date={info.row.original.received_date } isTime={false} />
+					<DateTime date={info.row.original.received_date} isTime={false} />
 				</div>
 			);
 		},
@@ -82,24 +82,14 @@ export const orderColumnsForDetails = ({
 }: IOrderColumns = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_diagnosis_need',
-		header: () => (
-			<>
-				Diagnosis <br />
-				Need
-			</>
-		),
+		header: 'Diagnosis \nNeed',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
-		header: () => (
-			<>
-				Proceed to <br />
-				Repair
-			</>
-		),
+		header: 'Proceed to \nRepair',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
@@ -149,12 +139,7 @@ export const orderColumnsForDetails = ({
 	},
 	{
 		accessorKey: 'problem_statement',
-		header: () => (
-			<>
-				Problem <br />
-				Statement
-			</>
-		),
+		header: 'Problem \nStatement',
 		enableColumnFilter: false,
 	},
 	{
@@ -170,12 +155,7 @@ export const orderColumnsForDetails = ({
 	},
 	{
 		id: 'action_trx',
-		header: () => (
-			<>
-				Section <br />
-				Transfer
-			</>
-		),
+		header: 'Section \nTransfer',
 		cell: (info) => (
 			<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
 		),
@@ -213,24 +193,14 @@ export const orderColumns = ({
 }: IOrderColumns = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_diagnosis_need',
-		header: () => (
-			<>
-				Diagnosis <br />
-				Need
-			</>
-		),
+		header: 'Diagnosis \nNeed',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
-		header: () => (
-			<>
-				Proceed to <br />
-				Repair
-			</>
-		),
+		header: 'Proceed to \nRepair',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => (
@@ -297,12 +267,7 @@ export const orderColumns = ({
 	},
 	{
 		accessorKey: 'problem_statement',
-		header: () => (
-			<>
-				Problem <br />
-				Statement
-			</>
-		),
+		header: 'Problem \nStatement',
 		enableColumnFilter: false,
 	},
 	{
@@ -318,12 +283,7 @@ export const orderColumns = ({
 	},
 	{
 		id: 'action_trx',
-		header: () => (
-			<>
-				Section <br />
-				Transfer
-			</>
-		),
+		header: 'Section \nTransfer',
 		cell: (info) => (
 			<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
 		),
@@ -362,14 +322,7 @@ export const QCColumns = ({
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_ready_for_delivery',
-		header: () => (
-			<div className='flex items-center gap-1'>
-				<span>
-					Ready For <br />
-					Delivery
-				</span>
-			</div>
-		),
+		header: 'Ready for \nDelivery',
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -482,14 +435,7 @@ export const RepairingColumns = ({
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_transferred_for_qc',
-		header: () => (
-			<div className='flex items-center gap-1'>
-				<span>
-					Transfer For <br />
-					QC
-				</span>
-			</div>
-		),
+		header: 'Transferred for \nQC',
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -501,14 +447,7 @@ export const RepairingColumns = ({
 	},
 	{
 		accessorKey: 'is_ready_for_delivery',
-		header: () => (
-			<div className='flex items-center gap-1'>
-				<span>
-					Ready For <br />
-					Delivery
-				</span>
-			</div>
-		),
+		header: 'Ready for \nDelivery',
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -791,14 +730,7 @@ export const diagnosisColumns = ({
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
-		header: () => (
-			<div className='flex items-center gap-1'>
-				<span>
-					Proceed to <br />
-					Repair
-				</span>
-			</div>
-		),
+		header: 'Proceed to \nRepair',
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
@@ -1006,12 +938,7 @@ export function userColumns({
 		{
 			accessorKey: 'reset_pass_actions',
 			id: 'reset_pass_actions',
-			header: () => (
-				<span>
-					Reset <br />
-					Password
-				</span>
-			),
+			header: 'Reset \nPassword',
 			enableColumnFilter: false,
 			enableSorting: false,
 			cell: (info) => <ResetPassword onClick={() => handleResetPassword(info.row)} />,
@@ -1025,12 +952,7 @@ export function userColumns({
 		{
 			accessorKey: 'page_assign_actions',
 			id: 'page_assign_actions',
-			header: () => (
-				<span>
-					Page <br />
-					Assign
-				</span>
-			),
+			header: 'Page \nAssign',
 			enableColumnFilter: false,
 			enableSorting: false,
 			cell: (info) => <PageAssign onClick={() => handlePageAssign(info.row)} />,

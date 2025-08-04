@@ -174,12 +174,7 @@ export const productColumns = ({
 	const columns: ColumnDef<IProductTableData>[] = [
 		{
 			accessorKey: 'is_maintaining_stock',
-			header: () => (
-				<>
-					Maintain <br />
-					Stock
-				</>
-			),
+			header: 'Maintain \nStock',
 			enableColumnFilter: false,
 			size: 40,
 			cell: (info) => {
@@ -207,23 +202,13 @@ export const productColumns = ({
 		},
 		{
 			accessorKey: 'warranty_days',
-			header: () => (
-				<>
-					Warranty <br />
-					Days
-				</>
-			),
+			header: 'Warranty \nDays',
 			size: 40,
 			enableColumnFilter: false,
 		},
 		{
 			accessorKey: 'service_warranty_days',
-			header: () => (
-				<>
-					Service <br />
-					Warranty
-				</>
-			),
+			header: 'Service \nWarranty',
 			size: 40,
 			enableColumnFilter: false,
 		},
@@ -235,12 +220,7 @@ export const productColumns = ({
 		},
 		{
 			id: 'action_trx',
-			header: () => (
-				<>
-					Internal <br />
-					Transfer
-				</>
-			),
+			header: 'Internal \nTransfer',
 			cell: (info) => <Transfer onClick={() => handleAgainstTrx(info.row)} />,
 			size: 40,
 			meta: {

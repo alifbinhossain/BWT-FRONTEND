@@ -27,6 +27,7 @@ const ShiftsGroups = lazy(() => import('@/pages/hr/shifts-management/shifts-grou
 const Roasters = lazy(() => import('@/pages/hr/shifts-management/roasters'));
 const IndividualReport = lazy(() => import('@/pages/hr/report/individual-report'));
 const DepartmentReport = lazy(() => import('@/pages/hr/report/department-report'));
+const MonthlyReport = lazy(() => import('@/pages/hr/report/monthly-report'));
 
 const HrRoutes: IRoute[] = [
 	{
@@ -270,6 +271,13 @@ const HrRoutes: IRoute[] = [
 						path: '/hr/report/department',
 						element: <DepartmentReport />,
 						page_name: 'report__department_report',
+						actions: ['read'],
+					},
+					{
+						name: 'Monthly Report',
+						path: '/hr/report/monthly',
+						element: <MonthlyReport />,
+						page_name: 'report__monthly_report',
 						actions: ['read'],
 					},
 				],

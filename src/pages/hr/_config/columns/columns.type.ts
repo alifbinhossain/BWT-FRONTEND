@@ -234,5 +234,34 @@ export type IDepartmentReportTableData = {
 	present_days: string;
 	absent_days: string;
 	leave_days: string;
-	
+};
+
+//* Monthly Report
+export type IMonthlyReportTableData = {
+	employee_uuid: string;
+	user_uuid: string;
+	employee_name: string;
+	designation_uuid: string | null;
+	designation_name: string | null;
+	department_uuid: string | null;
+	department_name: string | null;
+	workplace_uuid: string | null;
+	workplace_name: string | null;
+	employment_type_uuid: string | null;
+	employment_type_name: string | null;
+	total_days: number;
+	working_days: number;
+	present_days: number;
+	absent_days: number;
+	leave_days: number;
+	off_days: number;
+	general_holidays: number;
+	special_holidays: number;
+	late_days: number;
+	approved_lates: number;
+	field_visit_days: number;
+	expected_hours: number;
+	total_late_hours: number;
+	working_hours: number;
+	difference_hours: number;
 };

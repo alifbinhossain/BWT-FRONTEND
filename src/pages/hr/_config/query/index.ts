@@ -311,3 +311,10 @@ export const useReportDepartment = <T>(uuid: string, from: string, to: string) =
 		url: `/report/department-attendance-report?department_uuid=${uuid}&from_date=${from}&to_date=${to}`,
 		enabled: !!uuid,
 	});
+
+//* Monthly Report
+export const useReportMonthly = <T>(from: string, to: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.reportMonthly(from, to),
+		url: `/report/monthly-attendance-report?from_date=${from}&to_date=${to}`,
+	});
