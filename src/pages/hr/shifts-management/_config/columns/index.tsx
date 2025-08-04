@@ -43,36 +43,21 @@ export const shiftsColumns = (): ColumnDef<IShiftsColumnsType>[] => [
 	},
 	{
 		accessorKey: 'early_exit_before',
-		header: () => (
-			<div>
-				Early Exit <br />
-				Before
-			</div>
-		),
+		header: 'Early Exit \nBefore',
 		enableColumnFilter: false,
 		cell: (info) => <DateTime date={info.getValue() as string} isDate={false} />,
 		size: 10,
 	},
 	{
 		accessorKey: 'first_half_end',
-		header: () => (
-			<div>
-				First Half <br />
-				End
-			</div>
-		),
+		header: 'First Half \nEnd',
 		enableColumnFilter: false,
 		cell: (info) => <DateTime date={info.getValue() as string} isDate={false} />,
 		size: 10,
 	},
 	{
 		accessorKey: 'break_time_end',
-		header: () => (
-			<div>
-				Break Time <br />
-				End
-			</div>
-		),
+		header: 'Break Time \nEnd',
 		enableColumnFilter: false,
 		cell: (info) => <DateTime date={info.getValue() as string} isDate={false} />,
 		size: 10,

@@ -1,4 +1,4 @@
-import { ReloadIcon } from '@radix-ui/react-icons';
+import { RotateCw } from 'lucide-react';
 
 import {
 	AlertDialog,
@@ -51,7 +51,7 @@ const DeleteModal: React.FC<IDeleteModalProps> = ({
 				<AlertDialogFooter>
 					<AlertDialogCancel onClick={() => setDeleteItem(null)}>Cancel</AlertDialogCancel>
 					<AlertDialogAction disabled={deleteData.isPending} onClick={handleConfirm}>
-						{deleteData.isPending && <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />}
+						{deleteData.isPending && <RotateCw className='mr-2 h-4 w-4 animate-spin' />}
 						{deleteData.isPending ? 'Please wait...' : 'Confirm'}
 					</AlertDialogAction>
 				</AlertDialogFooter>

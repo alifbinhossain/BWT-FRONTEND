@@ -41,12 +41,7 @@ export const challanColumns = (
 ): ColumnDef<IChallanTableData>[] => [
 	{
 		accessorKey: 'is_delivery_complete',
-		header: () => (
-			<>
-				Delivery <br />
-				Complete
-			</>
-		),
+		header: 'Delivery \nComplete',
 		enableColumnFilter: false,
 		size: 80,
 		cell: (info) => (
@@ -114,7 +109,7 @@ export const challanEntryColumns = (): ColumnDef<IChallanEntryTableData>[] => [
 			const uuid = info.row.original.uuid;
 			const info_uuid = info.row.original.info_uuid;
 			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
-			
+
 			return (
 				<OderID
 					info_uuid={info_uuid}
