@@ -151,7 +151,7 @@ const AddOrUpdate: React.FC<IDiagnosisAddOrUpdateProps> = ({
 			<AddModal
 				open={open}
 				setOpen={onClose}
-				title={`Update Diagnosis: ${updatedData?.diagnosis_id} (${updatedData?.order_id}) `}
+				title={`Update Diagnosis: ${updatedData?.order_id} (${updatedData?.info_id}) `}
 				isLarge={true}
 				form={form}
 				onSubmit={onSubmit}

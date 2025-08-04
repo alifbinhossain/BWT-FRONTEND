@@ -13,6 +13,7 @@ export type IDiagnosisTableData = {
 	uuid: string;
 	id: string;
 	diagnosis_id: string;
+	info_id: string;
 	reclaimed_order_uuid: string;
 	reclaimed_order_id: string;
 	is_reclaimed: boolean;

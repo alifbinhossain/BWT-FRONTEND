@@ -181,7 +181,7 @@ export const infoColumns = (
 					<Switch
 						checked={info.getValue() as boolean}
 						onCheckedChange={() => handleStatus?.(info.row)}
-						disabled={!overriddenPermissionStatus && info.getValue() as boolean}
+						disabled={!overriddenPermissionStatus && (info.getValue() as boolean)}
 					/>
 
 					<span className={`flex-1 rounded px-2 py-1 text-xs capitalize text-white ${bgColorClass}`}>
@@ -653,6 +653,8 @@ export const orderColumns = ({
 	{
 		accessorKey: 'images',
 		header: 'Images',
+		enableColumnFilter: false,
+		enableSorting: false,
 		cell: (info) => {
 			const { image_1, image_2, image_3 } = info.row.original;
 
@@ -1330,11 +1332,11 @@ export const diagnosisColumns = ({
 	handleAgainstTrx: (row: Row<any>) => void;
 	handleProceedToRepair: (row: Row<any>) => void;
 }): ColumnDef<IDiagnosisTableData>[] => [
-	{
-		accessorKey: 'diagnosis_id',
-		header: 'Diagnosis ID',
-		enableColumnFilter: false,
-	},
+	// {
+	// 	accessorKey: 'diagnosis_id',
+	// 	header: 'Diagnosis ID',
+	// 	enableColumnFilter: false,
+	// },
 	{
 		accessorFn: (row) => OrderID(row),
 		header: 'Order ID',
