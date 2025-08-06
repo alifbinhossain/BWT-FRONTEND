@@ -257,7 +257,7 @@ export const useOtherDeviceList = <T>(query?: string) =>
 export const useOtherShifts = <T>(query?: string) =>
 	useTQuery<T>({
 		queryKey: otherQK.shifts(query),
-		url: `${query ? `/other/hr/shifts/value/label?${query}` : `/other/hr/shift/value/label`}`,
+		url: `${query ? `/other/hr/shifts/value/label?${query}` : `/other/hr/shifts/value/label`}`,
 		enabled: query ? !!query : true,
 	});
 //* GET OTHER ROASTER

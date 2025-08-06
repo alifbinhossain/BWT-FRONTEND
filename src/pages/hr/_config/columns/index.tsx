@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 
 import {
+	DateAccessor,
 	IDepartmentReportTableData,
 	IDepartmentTableData,
 	IDesignationTableData,
@@ -448,38 +449,88 @@ export const deviceListColumns = ({
 //? Report ?//
 
 //* Individual Report
-export const individualReportColumns = (): ColumnDef<IIndividualReportTableData>[] => [
+export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndividualReportTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Employee',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'punch_date',
-		header: 'Punch Date',
+		accessorKey: 'shift',
+		header: 'Shift',
 		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+		size: 180,
+		cell: (info) => {
+			const { shift_details } = info.row.original;
+
+			return (
+				<div className='space-y-1'>
+					<span>{shift_details.name}</span>
+					<div className='flex w-fit items-center gap-2 rounded-md border bg-slate-200 px-2'>
+						<DateTime date={shift_details.start_time as Date} isTime={true} isDate={false} />
+						-
+						<DateTime date={shift_details.end_time as Date} isTime={true} isDate={false} />
+					</div>
+				</div>
+			);
+		},
 	},
-	{
-		accessorKey: 'entry_time',
-		header: 'Entry Time',
+	...dateAccessor.map((date) => ({
+		accessorKey: date,
+		header: date,
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'exit_time',
-		header: 'Exit Time',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'hours_worked',
-		header: 'Hours Worked',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'expected_hours',
-		header: 'Expected Hours',
-		enableColumnFilter: false,
-	},
+		size: 210,
+		cell: (info: any) => {
+			const { entry_time, exit_time, status, hours_worked, expected_hours, late_hours, early_exit_hours } =
+				info.getValue() as DateAccessor;
+
+			return (
+				<div className='flex flex-col gap-1 text-sm'>
+					<div>
+						<strong>Status:</strong>{' '}
+						<span
+							className={cn(
+								'text-xs',
+								status === 'Absent' &&
+									'rounded-full border border-red-500 bg-red-100 px-3 py-0.5 text-red-700',
+								status === 'Late' &&
+									'rounded-full border border-yellow-500 bg-yellow-100 px-3 py-0.5 text-yellow-700',
+								status === 'Early Exit' &&
+									'rounded-full border border-orange-500 bg-orange-100 px-3 py-0.5 text-orange-700',
+								status === 'Present' &&
+									'rounded-full border border-green-500 bg-green-100 px-3 py-0.5 text-green-700',
+
+								status === 'Off Day' &&
+									'rounded-full border border-blue-500 bg-blue-100 px-3 py-0.5 text-blue-700'
+							)}
+						>
+							{status ?? 'N/A'}
+						</span>
+					</div>
+					<div className='flex items-center gap-2'>
+						<strong>Entry:</strong>{' '}
+						<DateTime date={entry_time as Date} isTime={true} isDate={false} ClassNameTime='text-sm' />
+					</div>
+					<div className='flex items-center gap-2'>
+						<strong>Exit:</strong>{' '}
+						<DateTime date={exit_time as Date} isTime={true} isDate={false} ClassNameTime='text-sm' />
+					</div>
+					<div>
+						<strong>Late:</strong> {late_hours}
+					</div>
+					<div>
+						<strong>Early Exit:</strong> {early_exit_hours}
+					</div>
+					<div>
+						<strong>Working Hours:</strong> {hours_worked}
+					</div>
+					<div>
+						<strong>Expected Hours:</strong> {expected_hours}
+					</div>
+				</div>
+			);
+		},
+	})),
 ];
 
 //* Department Report

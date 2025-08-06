@@ -1,5 +1,7 @@
 import { format } from 'date-fns';
 
+import { cn } from '@/lib/utils';
+
 const Body = ({ value, className = '' }: { value: string; className?: string }) => {
 	return <span className={'text-[0.7rem] font-semibold capitalize text-primary ' + className}>{value}</span>;
 };
@@ -9,9 +11,16 @@ interface IDateTimeProps {
 	isDate?: boolean;
 	isTime?: boolean;
 	onlyTime?: boolean;
+	ClassNameTime?: string;
 }
 
-const DateTime: React.FC<IDateTimeProps> = ({ date, isDate = true, isTime = true, onlyTime = false }) => {
+const DateTime: React.FC<IDateTimeProps> = ({
+	date,
+	isDate = true,
+	isTime = true,
+	onlyTime = false,
+	ClassNameTime,
+}) => {
 	if (!date) return null;
 
 	const customizedDate = format(new Date(date), 'dd/MM/yy');
@@ -22,7 +31,9 @@ const DateTime: React.FC<IDateTimeProps> = ({ date, isDate = true, isTime = true
 	return (
 		<div className='flex flex-col'>
 			{isDate && <Body value={customizedDate} />}
-			{isTime && <Body value={customizedTime} className='-mt-1 text-secondary' />}
+			{isTime && (
+				<Body value={customizedTime} className={cn('-mt-1 text-secondary', !isDate && 'mt-0', ClassNameTime)} />
+			)}
 		</div>
 	);
 };
