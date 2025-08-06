@@ -27,6 +27,8 @@ const ShiftsGroups = lazy(() => import('@/pages/hr/shifts-management/shifts-grou
 const Roasters = lazy(() => import('@/pages/hr/shifts-management/roasters'));
 const IndividualReport = lazy(() => import('@/pages/hr/report/individual-report'));
 const DepartmentReport = lazy(() => import('@/pages/hr/report/department-report'));
+const LeaveHistory = lazy(() => import('@/pages/hr/report/leave/history'));
+const LeaveBalance = lazy(() => import('@/pages/hr/report/leave/balance'));
 
 const HrRoutes: IRoute[] = [
 	{
@@ -271,6 +273,25 @@ const HrRoutes: IRoute[] = [
 						element: <DepartmentReport />,
 						page_name: 'report__department_report',
 						actions: ['read'],
+					},
+					{
+						name: 'Leave Report',
+						children: [
+							{
+								name: 'History',
+								path: '/hr/report/leave/history',
+								element: <LeaveHistory />,
+								page_name: 'report__department_leave_history',
+								actions: ['read'],
+							},
+							{
+								name: 'Balance',
+								path: '/hr/report/leave/balance',
+								element: <LeaveBalance />,
+								page_name: 'report__department_leave_balance',
+								actions: ['read'],
+							},
+						],
 					},
 				],
 			},
