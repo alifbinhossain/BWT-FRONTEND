@@ -21,7 +21,7 @@ const Info = () => {
 	}
 	const { data, isLoading, url, refetch } = useReportLeaveBalance<ILeaveBalance[]>(`${getYear(years)}/01/01`, to);
 
-	const pageInfo = useMemo(() => new PageInfo('Report/Leave Balance', url, 'report__department_leave_balance'), []);
+	const pageInfo = useMemo(() => new PageInfo('Report/Leave Balance', url, 'report__leave_balance'), []);
 
 	//* Table Columns
 	const columns = leaveBalance();

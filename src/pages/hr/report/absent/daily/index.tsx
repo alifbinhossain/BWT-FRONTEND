@@ -1,38 +1,36 @@
 import { useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
-import { status } from '@/pages/hr/field-visit/utils';
-import { endOfMonth, format, startOfMonth } from 'date-fns';
+import { format } from 'date-fns';
 
 import { IFormSelectOption } from '@/components/core/form/types';
-import MonthPickerPopover from '@/components/others/month-picker-pop-up';
+import { DateTimePicker } from '@/components/ui/date-time-picker';
 import ReactSelect from '@/components/ui/react-select';
+import SingleDatePicker from '@/components/ui/single-date-picker';
 
-import { useOtherLeaveCategory } from '@/lib/common-queries/other';
+import { useOtherDepartment } from '@/lib/common-queries/other';
 import { PageInfo } from '@/utils';
 
-import { reportLeaveHistory } from '../_config/columns';
-import { IHistoryTableData } from '../_config/columns/columns.type';
-import { useReportLeaveHistory } from '../_config/query';
+import { dailyAbsentColumns } from '../_config/columns';
+import { IDailyAbsentTableData } from '../_config/columns/columns.type';
+import { useReportDailyAbsent } from '../_config/query';
+import { statusOptions } from '../summery/utiils';
 
 const Info = () => {
-	const [category, setCategory] = useState('');
-	const [approval, setApproval] = useState('');
 	const [date, setDate] = useState(new Date());
-	const from = startOfMonth(date);
-	const to = endOfMonth(date);
+	const [status, setStatus] = useState<string | undefined>(undefined);
+	const [department, setDepartment] = useState('');
+	const { data: departmentOptions } = useOtherDepartment<IFormSelectOption[]>();
 
-	const { data, url, isLoading, refetch } = useReportLeaveHistory<IHistoryTableData[]>(
-		format(from, 'yyyy/MM/dd'),
-		format(to, 'yyyy/MM/dd'),
-		category,
-		approval
+	const { data, url, isLoading, refetch } = useReportDailyAbsent<IDailyAbsentTableData[]>(
+		format(date, 'yyyy/MM/dd'),
+		status,
+		department
 	);
-	const { data: categoryOptions } = useOtherLeaveCategory<IFormSelectOption[]>();
 
-	const pageInfo = useMemo(() => new PageInfo('Report/Leave History', url, 'report__leave_history'), []);
+	const pageInfo = useMemo(() => new PageInfo('Report/Daily Absent', url, 'report__absent_daily'), []);
 
 	//* Table Columns
-	const columns = reportLeaveHistory();
+	const columns = dailyAbsentColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -45,31 +43,31 @@ const Info = () => {
 				defaultVisibleColumns={{ updated_at: false, created_by_name: false, created_at: false, remarks: false }}
 				otherToolBarComponents={
 					<>
-						<MonthPickerPopover date={date} setDate={setDate} />
+						<SingleDatePicker selected={date} onSelect={setDate} maxDate={new Date()} />
 						<ReactSelect
-							placeholder='Select Category'
-							options={categoryOptions}
-							value={categoryOptions?.find((option) => option.value === category)}
+							placeholder='Select Department'
+							options={departmentOptions}
+							value={departmentOptions?.find((option) => option.value === department)}
 							menuPortalTarget={document.body}
 							styles={{
 								menuPortal: (base) => ({ ...base, zIndex: 999 }),
 								control: (base) => ({ ...base, minWidth: 120 }),
 							}}
 							onChange={(e: any) => {
-								setCategory(e?.value);
+								setDepartment(e?.value);
 							}}
 						/>
 						<ReactSelect
 							placeholder='Select Status'
-							options={status}
-							value={status?.find((option) => option.value === approval)}
+							options={statusOptions}
+							value={statusOptions.find((option) => option.value === status)}
 							menuPortalTarget={document.body}
 							styles={{
 								menuPortal: (base) => ({ ...base, zIndex: 999 }),
 								control: (base) => ({ ...base, minWidth: 120 }),
 							}}
 							onChange={(e: any) => {
-								setApproval(e?.value);
+								setStatus(e?.value);
 							}}
 						/>
 					</>

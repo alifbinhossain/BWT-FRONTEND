@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button';
 
 import { getDateTime } from '@/utils';
 
-const EmployeeStatus = () => {
+const EmployeeStatus = (data: any) => {
 	const { user, profileData, updateProfileData } = useProfile();
 
 	const onSubmit = async () => {
 		await updateProfileData.mutateAsync({
-			url: `/hr/employee/${user?.employee_uuid}`,
+			url: `/hr/employee/${data?.data?.uuid}`,
 			updatedData: {
 				status: profileData?.status ? false : true,
 				updated_at: getDateTime(),

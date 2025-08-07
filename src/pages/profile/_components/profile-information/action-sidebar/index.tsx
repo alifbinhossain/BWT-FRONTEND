@@ -15,15 +15,16 @@ import ManualEntry from './manual-entry';
 import ResignEmployee from './resign-employee';
 import SyncEmployee from './sync-employee';
 
-export function ActionsSidebar() {
-	const { profileData } = useProfile();
+export function ActionsSidebar(data: any) {
+	// const { profileData } = useProfile();
+
 	return (
 		<Card className='flex h-full w-full flex-col overflow-hidden'>
 			<CardHeader className='border-b border-gray-200 py-2'>
 				<CardTitle className='text-[16px] font-semibold text-accent'>Actions</CardTitle>
 			</CardHeader>
 			<CardContent className='flex flex-1 flex-col gap-2 overflow-auto p-2'>
-				{profileData?.status === true && profileData?.is_resign === false && (
+				{data.data?.status === true && data?.data?.is_resign === false && (
 					<>
 						<ApplyForLeave />
 						<ApplyForLateApproval />
@@ -35,10 +36,10 @@ export function ActionsSidebar() {
 						<ExcludeFromAttendanceReport />
 					</>
 				)}
-				{profileData?.is_resign === false && <EmployeeStatus />}
-				<ResignEmployee />
-				<DeleteEmployee />
-				{profileData?.status === true && <SyncEmployee />}
+				{data?.data?.is_resign === false && <EmployeeStatus data={data?.data} />}
+				<ResignEmployee data={data?.data} />
+				<DeleteEmployee data={data?.data} />
+				{/* {data?.status === true && <SyncEmployee data={data} />} */}
 			</CardContent>
 		</Card>
 	);
