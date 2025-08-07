@@ -11,14 +11,14 @@ import {
 
 //* Department Schema
 export const DEPARTMENT_SCHEMA = z.object({
-	department: STRING_REQUIRED,
+	name: STRING_REQUIRED,
 	status: BOOLEAN_REQUIRED,
 	hierarchy: NUMBER_REQUIRED,
 	remarks: STRING_NULLABLE,
 });
 
 export const DEPARTMENT_NULL: Partial<IDepartment> = {
-	department: '',
+	name: '',
 	hierarchy: 0,
 	status: false,
 	remarks: null,

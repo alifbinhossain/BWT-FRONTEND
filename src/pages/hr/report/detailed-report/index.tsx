@@ -11,21 +11,19 @@ import { PageInfo } from '@/utils';
 
 import { departmentReportColumns } from '../../_config/columns';
 import { IDepartmentReportTableData } from '../../_config/columns/columns.type';
-import { useReportDepartment } from '../../_config/query';
+import { useReportDetailed } from '../../_config/query';
 
 const Info = () => {
 	const [department, setDepartment] = useState('');
 	const [from, setFrom] = useState(new Date());
 	const [to, setTo] = useState(new Date());
-	const { data, isLoading, refetch } = useReportDepartment<IDepartmentReportTableData[]>(
-		department,
+	const { data, isLoading, refetch } = useReportDetailed<IDepartmentReportTableData[]>(
 		format(from, 'yyyy/MM/dd'),
 		format(to, 'yyyy/MM/dd')
 	);
-	const { data: departmentOptions } = useOtherDepartment<IFormSelectOption[]>();
 
 	const pageInfo = useMemo(
-		() => new PageInfo('Report/Department', '/hr/report/department', 'report__department_report'),
+		() => new PageInfo('Report/Detailed', '/hr/report/detailed', 'report__detailed_report'),
 		[]
 	);
 
@@ -54,19 +52,6 @@ const Info = () => {
 				defaultVisibleColumns={{ updated_at: false, created_by_name: false, created_at: false, remarks: false }}
 				otherToolBarComponents={
 					<>
-						<ReactSelect
-							placeholder='Select Department'
-							options={departmentOptions}
-							value={departmentOptions?.find((option) => option.value === department)}
-							menuPortalTarget={document.body}
-							styles={{
-								menuPortal: (base) => ({ ...base, zIndex: 999 }),
-								control: (base) => ({ ...base, minWidth: 120 }),
-							}}
-							onChange={(e: any) => {
-								setDepartment(e?.value);
-							}}
-						/>
 						<DateTimePicker className='h-[2rem] w-fit' onChange={setFrom} value={from} />
 						<DateTimePicker className='h-[2rem] w-fit' onChange={setTo} value={to} />
 					</>

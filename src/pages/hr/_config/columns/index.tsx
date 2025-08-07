@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 
 import {
 	DateAccessor,
+	DateAccessorDepartment,
 	IDepartmentReportTableData,
 	IDepartmentTableData,
 	IDesignationTableData,
@@ -584,8 +585,16 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 	})),
 ];
 
+function formatDecimalHours(decimalHours: number) {
+	if (!decimalHours) return '--';
+	const totalMinutes = Math.round(decimalHours * 60);
+	const hours = Math.floor(totalMinutes / 60);
+	const minutes = totalMinutes % 60;
+	return `${hours}h ${minutes}m`;
+}
+
 //* Department Report
-export const departmentReportColumns = (): ColumnDef<IDepartmentReportTableData>[] => [
+export const departmentReportColumns = (dateAccessor: string[]): ColumnDef<IDepartmentReportTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Employee',
@@ -611,46 +620,166 @@ export const departmentReportColumns = (): ColumnDef<IDepartmentReportTableData>
 		header: 'Employment Type',
 		enableColumnFilter: false,
 	},
+	...dateAccessor.map((date) => ({
+		accessorKey: date,
+		header: date,
+		enableColumnFilter: false,
+		size: 210,
+		cell: (info: any) => {
+			const { entry_time, exit_time, status, hours_worked, expected_hours, late_hours, early_exit_hours } =
+				info.getValue() as DateAccessorDepartment;
+
+			return (
+				<div
+					className={cn(
+						'w-[210px] space-y-3 rounded-lg border p-4 text-sm shadow-sm',
+						status === 'Absent' && 'border-red-200 bg-red-50',
+						status === 'Late' && 'border-yellow-200 bg-yellow-50',
+						status === 'Early Exit' && 'border-orange-200 bg-orange-50',
+						status === 'present' && 'border-green-200 bg-green-50',
+						status === 'Off Day' && 'border-blue-200 bg-blue-50'
+					)}
+				>
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Status:</strong>
+						<span
+							className={cn(
+								'rounded-full border px-3 py-0.5 text-xs font-medium capitalize',
+								status === 'Absent' && 'border-red-500 bg-red-100 text-red-700',
+								status === 'Late' && 'border-yellow-500 bg-yellow-100 text-yellow-700',
+								status === 'Early Exit' && 'border-orange-500 bg-orange-100 text-orange-700',
+								status === 'present' && 'border-green-500 bg-green-100 text-green-700',
+								status === 'Off Day' && 'border-blue-500 bg-blue-100 text-blue-700'
+							)}
+						>
+							{status ?? 'N/A'}
+						</span>
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Entry:</strong>
+						{entry_time ? (
+							<DateTime
+								date={entry_time as Date}
+								isTime={true}
+								isDate={false}
+								ClassNameTime={cn(
+									'px-2 text-sm',
+									status === 'Late' && 'rounded-full bg-yellow-200 text-yellow-700'
+								)}
+							/>
+						) : (
+							<span className='px-2'>-</span>
+						)}
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Exit:</strong>
+						{exit_time ? (
+							<DateTime
+								date={exit_time as Date}
+								isTime={true}
+								isDate={false}
+								ClassNameTime={cn(
+									'px-2 text-sm',
+									status === 'Early Exit' && 'rounded-full bg-orange-200 text-yellow-700'
+								)}
+							/>
+						) : (
+							<span className='px-2'>-</span>
+						)}
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Late:</strong>
+						<span
+							className={cn(
+								'px-2',
+								status === 'Late' && 'rounded-full bg-yellow-200 px-2 text-yellow-700'
+							)}
+						>
+							{status === 'Absent' ? '-' : formatDecimalHours(late_hours)}
+						</span>
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Early Exit:</strong>
+						<span
+							className={cn(
+								'px-2',
+								status === 'Early Exit' && 'rounded-full bg-orange-200 px-2 text-orange-700'
+							)}
+						>
+							{status === 'Absent' ? '-' : formatDecimalHours(early_exit_hours)}
+						</span>
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Worked:</strong>
+						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(hours_worked)}</span>
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Expected:</strong>
+						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(expected_hours)}</span>
+					</div>
+				</div>
+			);
+		},
+	})),
 	{
 		accessorKey: 'present_days',
-		header: 'Present Days',
+		header: 'Present',
 		enableColumnFilter: false,
+		cell: (info) => <p className='w-full text-center'>{info.getValue() as number}</p>,
 	},
 	{
 		accessorKey: 'absent_days',
-		header: 'Absent Days',
+		header: 'Absent',
 		enableColumnFilter: false,
+		cell: (info) => <p className='w-full text-center'>{info.getValue() as number}</p>,
 	},
 	{
 		accessorKey: 'leave_days',
-		header: 'Leave Days',
+		header: 'Leave',
 		enableColumnFilter: false,
+		cell: (info) => <p className='w-full text-center'>{info.getValue() as number}</p>,
 	},
 	{
-		accessorKey: 'punch_date',
-		header: 'Punch Date',
+		accessorKey: 'late_days',
+		header: 'Late',
 		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+		cell: (info) => <p className='w-full text-center'>{info.getValue() as number}</p>,
 	},
 	{
-		accessorKey: 'entry_time',
-		header: 'Entry Time',
+		accessorKey: 'early_leaves',
+		header: 'Early Exit',
 		enableColumnFilter: false,
+		cell: (info) => <p className='w-full text-center'>{info.getValue() as number}</p>,
 	},
 	{
-		accessorKey: 'exit_time',
-		header: 'Exit Time',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'hours_worked',
-		header: 'Hours Worked',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'expected_hours',
+		accessorKey: 'total_expected_hours',
 		header: 'Expected Hours',
 		enableColumnFilter: false,
+		cell: (info) => <p className='w-full text-center'>{formatDecimalHours(info.getValue() as number)}</p>,
+	},
+	{
+		accessorKey: 'total_hours_worked',
+		header: 'Actual Hours',
+		enableColumnFilter: false,
+		cell: (info) => <p className='w-full text-center'>{formatDecimalHours(info.getValue() as number)}</p>,
+	},
+	{
+		accessorKey: 'total_hour_difference',
+		header: 'Difference Hours',
+		enableColumnFilter: false,
+		cell: (info) => <p className='w-full text-center'>{formatDecimalHours(info.getValue() as number)}</p>,
+	},
+	{
+		accessorKey: 'total_hour_differences',
+		header: 'Average Hours',
+		enableColumnFilter: false,
+		cell: (info) => <p className='w-full text-center'>{formatDecimalHours(info.getValue() as number)}</p>,
 	},
 ];
 

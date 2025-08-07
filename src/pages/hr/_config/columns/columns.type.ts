@@ -238,6 +238,19 @@ export type IIndividualReportTableData = {
 };
 
 //* Department Report
+export type DateAccessorDepartment = {
+	punch_date: Date;
+	entry_time: Date;
+	exit_time: Date;
+	hours_worked: number;
+	expected_hours: number;
+	status: string;
+	late_time: Date;
+	late_hours: number;
+	early_exit_before: string;
+	early_exit_hours: number;
+};
+
 export type IDepartmentReportTableData = {
 	user_uuid: string;
 	employee_name: string;
