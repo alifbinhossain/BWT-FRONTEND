@@ -1,5 +1,5 @@
-import { CalendarIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
+import { Calendar as CalendarIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -68,11 +68,7 @@ const FormDateTimePicker: React.FC<FormDatePickerProps> = ({
 							)}
 							disabled={disabled}
 						>
-							{field.value ? (
-								format(field.value, 'hh:mm aa')
-							) : (
-								<span>hh:mm aa</span>
-							)}
+							{field.value ? format(field.value, 'hh:mm aa') : <span>hh:mm aa</span>}
 							<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
 						</Button>
 					</FormControl>

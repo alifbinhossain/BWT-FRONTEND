@@ -53,7 +53,7 @@ export const SHIFT_GROUP_NULL: Partial<IShiftGroup> = {
 	shifts_uuid: '',
 	status: false,
 	off_days: [],
-	effective_date: `${getYear(new Date())}-01-01`,
+	effective_date: ``,
 };
 export type IShiftGroup = z.infer<typeof SHIFT_GROUP_SCHEMA>;
 

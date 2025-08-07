@@ -91,15 +91,7 @@ export const configurationColumns = (): ColumnDef<IConfigurationTableData>[] => 
 
 	{
 		accessorKey: 'enable_earned_leave',
-		header: () => (
-			<div className='flex items-center gap-1'>
-				<span className='p-2'>
-					Earned Leave
-					<br />
-					Status
-				</span>
-			</div>
-		),
+		header: 'Earned Leave \nStatus',
 		enableColumnFilter: false,
 		cell: (info) => {
 			const data = info.row.original.configuration_entry.map((item) => item?.enable_earned_leave);

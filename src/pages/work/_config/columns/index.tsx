@@ -100,12 +100,7 @@ export const infoColumns = (
 	{
 		accessorKey: 'is_product_received',
 		size: 32,
-		header: () => (
-			<>
-				Product <br />
-				Received
-			</>
-		),
+		header: 'Product \nReceived',
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (
@@ -160,11 +155,7 @@ export const infoColumns = (
 	},
 	{
 		accessorKey: 'is_contact_with_customer',
-		header: () => (
-			<>
-				Contact <br />
-			</>
-		),
+		header: 'Contact with \nCustomer',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => {
@@ -233,12 +224,7 @@ export const orderColumnsForDetails = ({
 	},
 	{
 		accessorKey: 'is_diagnosis_need',
-		header: () => (
-			<>
-				Diagnosis <br />
-				Need
-			</>
-		),
+		header: 'Diagnosis \nNeed',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
@@ -274,67 +260,40 @@ export const orderColumnsForDetails = ({
 	},
 	{
 		accessorKey: 'diagnosis_proposed_cost',
-		header: () => (
-			<>
-				Proposed <br /> Cost
-			</>
-		),
+		header: 'Proposed \nCost',
 		size: 40,
 		enableColumnFilter: false,
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
-		header: () => (
-			<>
-				Proceed to <br />
-				Repair
-			</>
-		),
+		header: 'Proceed to \nRepair',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
 		accessorKey: 'is_transferred_for_qc',
-		header: () => (
-			<>
-				Transfer to <br />
-				QC
-			</>
-		),
+		header: 'Transferred to \nQC',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
 		accessorKey: 'is_ready_for_delivery',
-		header: () => (
-			<>
-				Ready for <br />
-				Delivery
-			</>
-		),
+		header: 'Ready for \nDelivery',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <StatusButton value={info.getValue() as boolean} />,
 	},
 	{
 		accessorKey: 'bill_amount',
-		header: () => (
-			<>
-				Bill <br /> Amount
-			</>
-		),
+		header: 'Bill \nAmount',
 		size: 40,
 		enableColumnFilter: false,
 	},
 	{
 		accessorKey: 'ready_for_delivery_date',
-		header: () => (
-			<>
-				Ready For <br /> Delivery Date
-			</>
-		),
+		header: 'Ready for \nDelivery Date',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
@@ -480,12 +439,7 @@ export const orderColumnsForDetails = ({
 	},
 	{
 		id: 'action_trx',
-		header: () => (
-			<>
-				Section <br />
-				Transfer
-			</>
-		),
+		header: 'Section \nTransfer',
 		cell: (info) => (
 			<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
 		),
@@ -542,12 +496,7 @@ export const orderColumns = ({
 	},
 	{
 		accessorKey: 'is_diagnosis_need',
-		header: () => (
-			<>
-				Diagnosis <br />
-				Need
-			</>
-		),
+		header: 'Diagnosis \nNeed',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => (
@@ -563,12 +512,7 @@ export const orderColumns = ({
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
-		header: () => (
-			<>
-				Proceed to <br />
-				Repair
-			</>
-		),
+		header: 'Proceed to \nRepair',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => (
@@ -674,12 +618,7 @@ export const orderColumns = ({
 	},
 	{
 		id: 'action_trx',
-		header: () => (
-			<>
-				Section <br />
-				Transfer
-			</>
-		),
+		header: 'Section \nTransfer',
 		cell: (info) => (
 			<Transfer onClick={() => handleAgainstTrx?.(info.row)} disabled={!info.row.original.is_proceed_to_repair} />
 		),
@@ -718,14 +657,7 @@ export const QCColumns = ({
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_ready_for_delivery',
-		header: () => (
-			<div className='flex items-center gap-1'>
-				<span>
-					Ready For <br />
-					Delivery
-				</span>
-			</div>
-		),
+		header: 'Ready for \nDelivery',
 		enableColumnFilter: false,
 		cell: (info) => (
 			<Switch
@@ -913,14 +845,7 @@ export const RepairingColumns = ({
 } = {}): ColumnDef<IOrderTableData>[] => [
 	{
 		accessorKey: 'is_transferred_for_qc',
-		header: () => (
-			<div className='flex items-center gap-1'>
-				<span>
-					Transfer For <br />
-					QC
-				</span>
-			</div>
-		),
+		header: 'Transfer For \nQC',
 		enableColumnFilter: false,
 		size: 80,
 		cell: (info) => (
@@ -933,14 +858,7 @@ export const RepairingColumns = ({
 	},
 	{
 		accessorKey: 'is_ready_for_delivery',
-		header: () => (
-			<div className='flex items-center gap-1'>
-				<span>
-					Ready For <br />
-					Delivery
-				</span>
-			</div>
-		),
+		header: 'Ready For \nDelivery',
 		enableColumnFilter: false,
 		size: 80,
 		cell: (info) => (
@@ -990,12 +908,7 @@ export const RepairingColumns = ({
 	},
 	{
 		id: 'action_trx',
-		header: () => (
-			<>
-				Section <br />
-				Transfer
-			</>
-		),
+		header: 'Section \nTransfer',
 		cell: (info) => (
 			<Transfer
 				onClick={() => handleAgainstTrx?.(info?.row)}
@@ -1206,6 +1119,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
+		id: 'order_problems_name',
 		header: 'Order Problem',
 		enableColumnFilter: false,
 		size: 180,
@@ -1231,6 +1145,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
+		id: 'diagnosis_problems_name',
 		header: 'Diagnosis Problem',
 		enableColumnFilter: false,
 		size: 180,
@@ -1249,6 +1164,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
+		id: 'repairing_problems_name',
 		header: 'Repairing Problem',
 		enableColumnFilter: false,
 		size: 180,
@@ -1267,6 +1183,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
+		id: 'qc_problems_name',
 		header: 'QC Problem',
 		enableColumnFilter: false,
 		size: 180,
@@ -1283,6 +1200,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
+		id: 'delivery_problems_name',
 		header: 'Delivery Problem',
 		enableColumnFilter: false,
 		size: 180,
@@ -1299,6 +1217,7 @@ export const ReadyDeliveryColumns = (): ColumnDef<IOrderTableData>[] => [
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
+		id: 'accessories_name',
 		header: 'Accessories',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue() as string,
@@ -1339,6 +1258,7 @@ export const diagnosisColumns = ({
 	// },
 	{
 		accessorFn: (row) => OrderID(row),
+		id: 'order_id',
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
@@ -1398,7 +1318,8 @@ export const diagnosisColumns = ({
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
-		header: 'Order Problem',
+		id: 'order_problems_name',
+		header: 'Order \nProblem',
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {
@@ -1424,6 +1345,7 @@ export const diagnosisColumns = ({
 				.replace(/_/g, ' ');
 		},
 		header: 'Diagnosis Problem',
+		id: 'diagnosis_problem',
 		enableColumnFilter: false,
 		size: 180,
 		cell: (info) => {
@@ -1471,12 +1393,7 @@ export const diagnosisColumns = ({
 	},
 	{
 		accessorKey: 'is_proceed_to_repair',
-		header: () => (
-			<>
-				Proceed to <br />
-				Repair
-			</>
-		),
+		header: 'Proceed to \nRepair',
 		size: 40,
 		enableColumnFilter: false,
 		cell: (info) => (
@@ -1528,6 +1445,7 @@ export const processColumns = (): ColumnDef<IProcessTableData>[] => [
 				.join(', ')
 				.replace(/_/g, ' ');
 		},
+		id: 'problems_name',
 		header: 'Order Problem',
 		enableColumnFilter: false,
 		size: 180,

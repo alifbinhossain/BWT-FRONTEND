@@ -7,6 +7,11 @@ const getFlatHeader = (value: any): any => {
 			})
 			.join('');
 	}
+
+	if (typeof value !== 'function') {
+		return value.split('\n').join(' ');
+	}
+
 	return value;
 };
 
