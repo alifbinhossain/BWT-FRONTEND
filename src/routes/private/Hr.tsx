@@ -354,27 +354,6 @@ const HrRoutes: IRoute[] = [
 						actions: ['read'],
 					},
 					{
-						name: 'Monthly Report',
-						path: '/hr/report/monthly',
-						element: <MonthlyReport />,
-						page_name: 'report__monthly_report',
-						actions: ['read'],
-					},
-					{
-						name: 'Daily Report',
-						path: '/hr/report/daily',
-						element: <DailyReport />,
-						page_name: 'report__daily_report',
-						actions: ['read'],
-					},
-					{
-						name: 'Daily Late',
-						path: '/hr/report/daily-late',
-						element: <DailyLate />,
-						page_name: 'report__daily_late',
-						actions: ['read'],
-					},
-					{
 						name: 'Daily Late',
 						path: '/hr/report/daily-late',
 						element: <DailyLate />,
