@@ -300,7 +300,7 @@ export const useHrLateEntriesByEmployeeUUID = <T>(uuid: string, query: string) =
 export const useReportIndividual = <T>(uuid: string, from: string, to: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.reportIndividual(uuid, from, to),
-		url: `/report/attendance-report/${uuid}?from_date=${from}&to_date=${to}`,
+		url: `/report/attendance-report?employee_uuid=${uuid}&from_date=${from}&to_date=${to}`,
 		enabled: !!uuid,
 	});
 
@@ -317,4 +317,11 @@ export const useReportMonthly = <T>(from: string, to: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.reportMonthly(from, to),
 		url: `/report/monthly-attendance-report?from_date=${from}&to_date=${to}`,
+	});
+
+//* Daily Report
+export const useReportDaily = <T>(from: string, to: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.reportDaily(from, to),
+		url: `/report/attendance-report?from_date=${from}&to_date=${to}`,
 	});

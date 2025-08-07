@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 
 import {
+	DateAccessor,
 	IDepartmentReportTableData,
 	IDepartmentTableData,
 	IDesignationTableData,
@@ -448,38 +449,139 @@ export const deviceListColumns = ({
 //? Report ?//
 
 //* Individual Report
-export const individualReportColumns = (): ColumnDef<IIndividualReportTableData>[] => [
+export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndividualReportTableData>[] => [
 	{
 		accessorKey: 'employee_name',
 		header: 'Employee',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'punch_date',
-		header: 'Punch Date',
+		accessorKey: 'shift',
+		header: 'Shift',
 		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+		size: 180,
+		cell: (info) => {
+			const { shift_details } = info.row.original;
+
+			return (
+				<div className='space-y-1'>
+					<span>{shift_details.name}</span>
+					<div className='flex w-fit items-center gap-2 rounded-md border bg-slate-200 px-2'>
+						<DateTime date={shift_details.start_time as Date} isTime={true} isDate={false} />
+						-
+						<DateTime date={shift_details.end_time as Date} isTime={true} isDate={false} />
+					</div>
+				</div>
+			);
+		},
 	},
-	{
-		accessorKey: 'entry_time',
-		header: 'Entry Time',
+	...dateAccessor.map((date) => ({
+		accessorKey: date,
+		header: date,
 		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'exit_time',
-		header: 'Exit Time',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'hours_worked',
-		header: 'Hours Worked',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'expected_hours',
-		header: 'Expected Hours',
-		enableColumnFilter: false,
-	},
+		size: 210,
+		cell: (info: any) => {
+			const { entry_time, exit_time, status, hours_worked, expected_hours, late_hours, early_exit_hours } =
+				info.getValue() as DateAccessor;
+
+			return (
+				<div
+					className={cn(
+						'w-[210px] space-y-3 rounded-lg border p-4 text-sm shadow-sm',
+						status === 'Absent' && 'border-red-200 bg-red-50',
+						status === 'Late' && 'border-yellow-200 bg-yellow-50',
+						status === 'Early Exit' && 'border-orange-200 bg-orange-50',
+						status === 'Present' && 'border-green-200 bg-green-50',
+						status === 'Off Day' && 'border-blue-200 bg-blue-50'
+					)}
+				>
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Status:</strong>
+						<span
+							className={cn(
+								'rounded-full border px-3 py-0.5 text-xs font-medium capitalize',
+								status === 'Absent' && 'border-red-500 bg-red-100 text-red-700',
+								status === 'Late' && 'border-yellow-500 bg-yellow-100 text-yellow-700',
+								status === 'Early Exit' && 'border-orange-500 bg-orange-100 text-orange-700',
+								status === 'Present' && 'border-green-500 bg-green-100 text-green-700',
+								status === 'Off Day' && 'border-blue-500 bg-blue-100 text-blue-700'
+							)}
+						>
+							{status ?? 'N/A'}
+						</span>
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Entry:</strong>
+						{entry_time ? (
+							<DateTime
+								date={entry_time as Date}
+								isTime={true}
+								isDate={false}
+								ClassNameTime={cn(
+									'px-2 text-sm',
+									status === 'Late' && 'rounded-full bg-yellow-200 text-yellow-700'
+								)}
+							/>
+						) : (
+							<span className='px-2'>-</span>
+						)}
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Exit:</strong>
+						{exit_time ? (
+							<DateTime
+								date={exit_time as Date}
+								isTime={true}
+								isDate={false}
+								ClassNameTime={cn(
+									'px-2 text-sm',
+									status === 'Early Exit' && 'rounded-full bg-orange-200 text-yellow-700'
+								)}
+							/>
+						) : (
+							<span className='px-2'>-</span>
+						)}
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Late:</strong>
+						<span
+							className={cn(
+								'px-2',
+								status === 'Late' && 'rounded-full bg-yellow-200 px-2 text-yellow-700'
+							)}
+						>
+							{status === 'Absent' ? '-' : late_hours}
+						</span>
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Early Exit:</strong>
+						<span
+							className={cn(
+								'px-2',
+								status === 'Early Exit' && 'rounded-full bg-orange-200 px-2 text-orange-700'
+							)}
+						>
+							{status === 'Absent' ? '-' : early_exit_hours}
+						</span>
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Worked:</strong>
+						<span className='px-2'>{status === 'Absent' ? '-' : hours_worked}</span>
+					</div>
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Expected:</strong>
+						<span className='px-2'>{status === 'Absent' ? '-' : expected_hours}</span>
+					</div>
+				</div>
+			);
+		},
+	})),
 ];
 
 //* Department Report
