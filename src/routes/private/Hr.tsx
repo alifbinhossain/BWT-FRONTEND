@@ -31,6 +31,7 @@ const LeaveHistory = lazy(() => import('@/pages/hr/report/leave/history'));
 const LeaveBalance = lazy(() => import('@/pages/hr/report/leave/balance'));
 const AbsentSummery = lazy(() => import('@/pages/hr/report/absent/summery'));
 const DailyAbsent = lazy(() => import('@/pages/hr/report/absent/daily'));
+const LateReport = lazy(() => import('@/pages/hr/report/late'));
 
 const HrRoutes: IRoute[] = [
 	{
@@ -313,6 +314,13 @@ const HrRoutes: IRoute[] = [
 								actions: ['read'],
 							},
 						],
+					},
+					{
+						name: 'Late Report',
+						path: '/hr/report/late',
+						element: <LateReport />,
+						page_name: 'report__late',
+						actions: ['read'],
 					},
 				],
 			},
