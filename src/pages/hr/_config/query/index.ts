@@ -318,3 +318,10 @@ export const useReportMonthly = <T>(from: string, to: string) =>
 		queryKey: hrQK.reportMonthly(from, to),
 		url: `/report/monthly-attendance-report?from_date=${from}&to_date=${to}`,
 	});
+
+//* Daily Report
+export const useReportDaily = <T>(from: string, to: string) =>
+	useTQuery<T>({
+		queryKey: hrQK.reportDaily(from, to),
+		url: `/report/attendance-report?from_date=${from}&to_date=${to}`,
+	});

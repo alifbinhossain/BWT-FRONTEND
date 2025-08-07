@@ -485,47 +485,98 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 				info.getValue() as DateAccessor;
 
 			return (
-				<div className='flex flex-col gap-1 text-sm'>
-					<div>
-						<strong>Status:</strong>{' '}
+				<div
+					className={cn(
+						'w-[210px] space-y-3 rounded-lg border p-4 text-sm shadow-sm',
+						status === 'Absent' && 'border-red-200 bg-red-50',
+						status === 'Late' && 'border-yellow-200 bg-yellow-50',
+						status === 'Early Exit' && 'border-orange-200 bg-orange-50',
+						status === 'Present' && 'border-green-200 bg-green-50',
+						status === 'Off Day' && 'border-blue-200 bg-blue-50'
+					)}
+				>
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Status:</strong>
 						<span
 							className={cn(
-								'text-xs',
-								status === 'Absent' &&
-									'rounded-full border border-red-500 bg-red-100 px-3 py-0.5 text-red-700',
-								status === 'Late' &&
-									'rounded-full border border-yellow-500 bg-yellow-100 px-3 py-0.5 text-yellow-700',
-								status === 'Early Exit' &&
-									'rounded-full border border-orange-500 bg-orange-100 px-3 py-0.5 text-orange-700',
-								status === 'Present' &&
-									'rounded-full border border-green-500 bg-green-100 px-3 py-0.5 text-green-700',
-
-								status === 'Off Day' &&
-									'rounded-full border border-blue-500 bg-blue-100 px-3 py-0.5 text-blue-700'
+								'rounded-full border px-3 py-0.5 text-xs font-medium capitalize',
+								status === 'Absent' && 'border-red-500 bg-red-100 text-red-700',
+								status === 'Late' && 'border-yellow-500 bg-yellow-100 text-yellow-700',
+								status === 'Early Exit' && 'border-orange-500 bg-orange-100 text-orange-700',
+								status === 'Present' && 'border-green-500 bg-green-100 text-green-700',
+								status === 'Off Day' && 'border-blue-500 bg-blue-100 text-blue-700'
 							)}
 						>
 							{status ?? 'N/A'}
 						</span>
 					</div>
+
 					<div className='flex items-center gap-2'>
-						<strong>Entry:</strong>{' '}
-						<DateTime date={entry_time as Date} isTime={true} isDate={false} ClassNameTime='text-sm' />
+						<strong className='min-w-[80px]'>Entry:</strong>
+						{entry_time ? (
+							<DateTime
+								date={entry_time as Date}
+								isTime={true}
+								isDate={false}
+								ClassNameTime={cn(
+									'px-2 text-sm',
+									status === 'Late' && 'rounded-full bg-yellow-200 text-yellow-700'
+								)}
+							/>
+						) : (
+							<span className='px-2'>-</span>
+						)}
 					</div>
+
 					<div className='flex items-center gap-2'>
-						<strong>Exit:</strong>{' '}
-						<DateTime date={exit_time as Date} isTime={true} isDate={false} ClassNameTime='text-sm' />
+						<strong className='min-w-[80px]'>Exit:</strong>
+						{exit_time ? (
+							<DateTime
+								date={exit_time as Date}
+								isTime={true}
+								isDate={false}
+								ClassNameTime={cn(
+									'px-2 text-sm',
+									status === 'Early Exit' && 'rounded-full bg-orange-200 text-yellow-700'
+								)}
+							/>
+						) : (
+							<span className='px-2'>-</span>
+						)}
 					</div>
-					<div>
-						<strong>Late:</strong> {late_hours}
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Late:</strong>
+						<span
+							className={cn(
+								'px-2',
+								status === 'Late' && 'rounded-full bg-yellow-200 px-2 text-yellow-700'
+							)}
+						>
+							{status === 'Absent' ? '-' : late_hours}
+						</span>
 					</div>
-					<div>
-						<strong>Early Exit:</strong> {early_exit_hours}
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Early Exit:</strong>
+						<span
+							className={cn(
+								'px-2',
+								status === 'Early Exit' && 'rounded-full bg-orange-200 px-2 text-orange-700'
+							)}
+						>
+							{status === 'Absent' ? '-' : early_exit_hours}
+						</span>
 					</div>
-					<div>
-						<strong>Working Hours:</strong> {hours_worked}
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Worked:</strong>
+						<span className='px-2'>{status === 'Absent' ? '-' : hours_worked}</span>
 					</div>
-					<div>
-						<strong>Expected Hours:</strong> {expected_hours}
+
+					<div className='flex items-center gap-2'>
+						<strong className='min-w-[80px]'>Expected:</strong>
+						<span className='px-2'>{status === 'Absent' ? '-' : expected_hours}</span>
 					</div>
 				</div>
 			);
