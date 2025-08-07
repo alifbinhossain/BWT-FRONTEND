@@ -122,4 +122,5 @@ export const hrQK = {
 	],
 	reportMonthly: (from: string, to: string) => [...hrQK.all(), 'report', 'monthly', from, to],
 	reportDaily: (from: string, to: string) => [...hrQK.all(), 'report', 'daily', from, to],
+	reportDetailed: (from: string, to: string) => [...hrQK.all(), 'report', 'detailed', from, to],
 };

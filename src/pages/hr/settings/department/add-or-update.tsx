@@ -84,7 +84,7 @@ const AddOrUpdate: React.FC<IDepartmentAddOrUpdateProps> = ({
 			onSubmit={onSubmit}
 		>
 			<FormField control={form.control} name='status' render={(props) => <CoreForm.Checkbox {...props} />} />
-			<FormField control={form.control} name='department' render={(props) => <CoreForm.Input {...props} />} />
+			<FormField control={form.control} name='name' render={(props) => <CoreForm.Input {...props} />} />
 			<FormField
 				control={form.control}
 				name='hierarchy'
