@@ -2,8 +2,6 @@ import { IStatus } from '@/types';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { format } from 'date-fns';
 
-
-
 import PageAssign from '@/components/buttons/page-assign';
 import ResetPassword from '@/components/buttons/reset-password';
 import StatusButton from '@/components/buttons/status';
@@ -14,15 +12,10 @@ import ReactSelect from '@/components/ui/react-select';
 import StatusBadge from '@/components/ui/status-badge';
 import { Switch } from '@/components/ui/switch';
 
-
-
 import EmployeeProfile from '@/lib/component/profile';
 import { cn } from '@/lib/utils';
 
-
-
 import { IDailyLateTableData } from './columns.type';
-
 
 // * Daily Late
 export const dailyLateColumns = (): ColumnDef<IDailyLateTableData>[] => [
@@ -41,8 +34,8 @@ export const dailyLateColumns = (): ColumnDef<IDailyLateTableData>[] => [
 				<Profile
 					data={{
 						name: info.row.original.employee_name,
-						department_name: info.row.original.department_name,
-						designation_name: info.row.original.designation_name,
+						department_name: info.row.original.employee_department,
+						designation_name: info.row.original.employee_designation,
 					}}
 					url={`/profile/${info.row.original.employee_uuid}`}
 				/>
@@ -92,13 +85,13 @@ export const dailyLateColumns = (): ColumnDef<IDailyLateTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'late_count',
+		accessorKey: 'monthly_late_count',
 		header: 'Total Late\n This Month',
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'late_count',
-		header: 'Total Late\n This Month',
+		accessorKey: 'total_late_hours',
+		header: 'Total Late\n Hours',
 		enableColumnFilter: false,
 	},
 ];
