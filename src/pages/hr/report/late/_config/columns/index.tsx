@@ -24,7 +24,7 @@ export const absentSummery = (): ColumnDef<ILate>[] => [
 		header: 'Date',
 		enableColumnFilter: false,
 		cell: (info) => {
-			return <DateTime date={info.getValue() as string} />;
+			return <DateTime date={info.getValue() as string} isTime={false} />;
 		},
 	},
 	{
@@ -101,7 +101,7 @@ export const absentSummery = (): ColumnDef<ILate>[] => [
 	},
 	{
 		accessorFn: (row) => row.late_records.map((leaveCategory) => leaveCategory.late_hours),
-		header: 'Entry Time',
+		header: 'Late Hours',
 		enableColumnFilter: false,
 		cell: (info) => {
 			return (

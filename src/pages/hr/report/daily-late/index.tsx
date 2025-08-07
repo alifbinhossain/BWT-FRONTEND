@@ -3,34 +3,31 @@ import { PageProvider, TableProvider } from '@/context';
 import { format } from 'date-fns';
 
 import { IFormSelectOption } from '@/components/core/form/types';
-import { DateTimePicker } from '@/components/ui/date-time-picker';
 import ReactSelect from '@/components/ui/react-select';
 import SingleDatePicker from '@/components/ui/single-date-picker';
 
 import { useOtherDepartment } from '@/lib/common-queries/other';
 import { PageInfo } from '@/utils';
 
-import { dailyAbsentColumns } from '../_config/columns';
-import { IDailyAbsentTableData } from '../_config/columns/columns.type';
-import { useReportDailyAbsent } from '../_config/query';
-import { statusOptions } from '../summery/utiils';
+import { dailyLateColumns } from './_config/columns';
+import { IDailyLateTableData } from './_config/columns/columns.type';
+import { useReportDailyLate } from './_config/query';
 
 const Info = () => {
 	const [date, setDate] = useState(new Date());
 	const [status, setStatus] = useState<string | undefined>(undefined);
-	const [department, setDepartment] = useState<string | undefined>('');
+	const [department, setDepartment] = useState(undefined);
 	const { data: departmentOptions } = useOtherDepartment<IFormSelectOption[]>();
 
-	const { data, url, isLoading, refetch } = useReportDailyAbsent<IDailyAbsentTableData[]>(
+	const { data, url, isLoading, refetch } = useReportDailyLate<IDailyLateTableData[]>(
 		format(date, 'yyyy/MM/dd'),
-		status,
 		department
 	);
 
-	const pageInfo = useMemo(() => new PageInfo('Report/Daily Absent', url, 'report__absent_daily'), []);
+	const pageInfo = useMemo(() => new PageInfo('Report/Daily Late', url, 'report__daily_late'), []);
 
 	//* Table Columns
-	const columns = dailyAbsentColumns();
+	const columns = dailyLateColumns();
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
@@ -55,19 +52,6 @@ const Info = () => {
 							}}
 							onChange={(e: any) => {
 								setDepartment(e?.value);
-							}}
-						/>
-						<ReactSelect
-							placeholder='Select Status'
-							options={statusOptions}
-							value={statusOptions.find((option) => option.value === status)}
-							menuPortalTarget={document.body}
-							styles={{
-								menuPortal: (base) => ({ ...base, zIndex: 999 }),
-								control: (base) => ({ ...base, minWidth: 120 }),
-							}}
-							onChange={(e: any) => {
-								setStatus(e?.value);
 							}}
 						/>
 					</>
