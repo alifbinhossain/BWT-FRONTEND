@@ -205,3 +205,63 @@ export type ILateApprovalTableData = {
 	reason: string;
 	approved: boolean;
 };
+
+//? Report ?//
+
+//* Individual Report
+export type IIndividualReportTableData = {
+	user_uuid: string;
+	employee_name: string;
+	punch_date: string;
+	entry_time: string;
+	exit_time: string;
+	hours_worked: string;
+	expected_hours: string;
+};
+
+//* Department Report
+export type IDepartmentReportTableData = {
+	user_uuid: string;
+	employee_name: string;
+	designation_uuid: string;
+	designation_name: string;
+	department_uuid: string;
+	department_name: string;
+	workplace_uuid: string;
+	workplace_name: string;
+	employment_type_uuid: string;
+	employment_type_name: string;
+	present_days: string;
+	absent_days: string;
+	leave_days: string;
+};
+
+//* Monthly Report
+export type IMonthlyReportTableData = {
+	employee_uuid: string;
+	user_uuid: string;
+	employee_name: string;
+	designation_uuid: string | null;
+	designation_name: string | null;
+	department_uuid: string | null;
+	department_name: string | null;
+	workplace_uuid: string | null;
+	workplace_name: string | null;
+	employment_type_uuid: string | null;
+	employment_type_name: string | null;
+	total_days: number;
+	working_days: number;
+	present_days: number;
+	absent_days: number;
+	leave_days: number;
+	off_days: number;
+	general_holidays: number;
+	special_holidays: number;
+	late_days: number;
+	approved_lates: number;
+	field_visit_days: number;
+	expected_hours: number;
+	total_late_hours: number;
+	working_hours: number;
+	difference_hours: number;
+};

@@ -17,15 +17,16 @@ export const LinkOnly = ({ uri, title }: ILinkOnlyProps) => {
 	);
 };
 
-export const CustomLink = ({ label = '', url = '', showCopyButton = true, openInNewTab = false, className = '' }) => {
-	if (!label) return '--';
+export const CustomLink = ({ label = '', url = '', name = '', showCopyButton = true, openInNewTab = false, className = '' }) => {
+	if (!label) return '';
 
+	const displayName = name ? name : label;
 	return (
 		<div className={cn('flex items-center gap-2', className)}>
 			{showCopyButton && <CopyClipboard text={label} />}
 
 			{url === null ? (
-				<span>{label}</span>
+				<span>{displayName}</span>
 			) : (
 				<Link
 					to={url}
@@ -35,7 +36,7 @@ export const CustomLink = ({ label = '', url = '', showCopyButton = true, openIn
 					)}
 					target={openInNewTab ? '_blank' : '_self'}
 				>
-					{label}
+					{displayName}
 				</Link>
 			)}
 		</div>

@@ -67,7 +67,6 @@ const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) => {
 	const { data, updateData, deleteData, isLoading, refetch } = useHrEmployeesByUUID<IEmployeeDetails>(
 		uuid ? uuid : (user?.employee_uuid as string)
 	);
-	console.log('Profile Data:', user, data);
 	useEffect(() => {
 		if (!uuid) {
 			navigate(`/profile/${user?.employee_uuid}`);

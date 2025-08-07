@@ -9,11 +9,14 @@ import {
 	useOtherBranch,
 	useOtherDepartment,
 	useOtherDesignation,
+	useOtherUser,
 	useOtherUserByQuery,
 	useOtherZone,
 } from '@/lib/common-queries/other';
 
+import { IInfoTableData } from '../../_config/columns/columns.type';
 import { IInfo } from '../../_config/schema';
+import { status } from '../utils';
 import { businessTypeOptions, platformTypeOptions } from './utils';
 
 interface ICustomUserType extends IFormSelectOption {
@@ -21,11 +24,12 @@ interface ICustomUserType extends IFormSelectOption {
 	zone_uuid: string;
 }
 
-const Header = ({ isUpdate }: { isUpdate: boolean }) => {
+const Header = ({ isUpdate, data }: { isUpdate: boolean; data?: IInfoTableData }) => {
 	const form = useFormContext<IInfo>();
 
 	const { data: userOption } = useOtherUserByQuery<ICustomUserType[]>('?type=customer');
 	const { data: branchOptions } = useOtherBranch<IFormSelectOption[]>();
+	const { data: userOptions } = useOtherUser<IFormSelectOption[]>();
 	const isProductReceived = form.watch('is_product_received');
 	const isNewCustomer = form.watch('is_new_customer');
 	const isUser = form.watch('business_type') === 'user';
@@ -83,7 +87,7 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 					)}
 				</div>
 			}
-			className='lg:grid-cols-2'
+			className='lg:grid-cols-3'
 		>
 			<div className='flex flex-col gap-4'>
 				{!isNewCustomer ? (
@@ -177,11 +181,7 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 			</div>
 
 			<div className='flex flex-col gap-4'>
-				<FormField
-					control={form.control}
-					name='location'
-					render={(props) => <CoreForm.Textarea {...props} />}
-				/>
+				{' '}
 				<FormField
 					control={form.control}
 					name='branch_uuid'
@@ -197,6 +197,11 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 				/>
 				<FormField
 					control={form.control}
+					name='location'
+					render={(props) => <CoreForm.Textarea {...props} />}
+				/>
+				<FormField
+					control={form.control}
 					name='zone_uuid'
 					render={(props) => (
 						<CoreForm.ReactSelect
@@ -209,6 +214,57 @@ const Header = ({ isUpdate }: { isUpdate: boolean }) => {
 					)}
 				/>
 				<FormField control={form.control} name='remarks' render={(props) => <CoreForm.Textarea {...props} />} />
+			</div>
+
+			<div className='flex flex-col gap-4'>
+				<FormField
+					control={form.control}
+					name='reference_user_uuid'
+					render={(props) => (
+						<CoreForm.ReactSelect
+							menuPortalTarget={document.body}
+							label='Reference User'
+							options={userOptions || []}
+							placeholder='Select user'
+							{...props}
+						/>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='is_commission_amount'
+					render={(props) => <CoreForm.Checkbox label='In BDT' {...props} />}
+				/>
+				<FormField
+					control={form.control}
+					name='commission_amount'
+					render={(props) => (
+						<CoreForm.JoinInputUnit
+							unit={form.watch('is_commission_amount') ? 'BDT' : '%'}
+							type='number'
+							{...props}
+						/>
+					)}
+				/>
+				{data?.submitted_by === 'customer' && (
+					<div className='flex flex-col gap-4'>
+						<FormField
+							control={form.control}
+							name='is_contact_with_customer'
+							render={(props) => <CoreForm.Checkbox label='Contact' {...props} />}
+						/>
+						<FormField
+							control={form.control}
+							name='order_info_status'
+							render={(props) => <CoreForm.ReactSelect label='Status' options={status} {...props} />}
+						/>
+						<FormField
+							control={form.control}
+							name='customer_feedback'
+							render={(props) => <CoreForm.Textarea label='Customer Feedback' {...props} />}
+						/>
+					</div>
+				)}
 			</div>
 		</CoreForm.Section>
 	);

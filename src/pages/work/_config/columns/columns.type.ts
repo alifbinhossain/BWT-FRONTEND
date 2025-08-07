@@ -13,6 +13,10 @@ export type IDiagnosisTableData = {
 	uuid: string;
 	id: string;
 	diagnosis_id: string;
+	info_id: string;
+	reclaimed_order_uuid: string;
+	reclaimed_order_id: string;
+	is_reclaimed: boolean;
 	order_uuid: string;
 	info_uuid: string;
 	order_id: string;
@@ -20,6 +24,9 @@ export type IDiagnosisTableData = {
 	user_phone: string;
 	engineer_uuid: string;
 	problems_uuid: string[];
+	brand_name: string;
+	model_name: string;
+	serial_no: string;
 	diagnosis_problems_name: string[];
 	order_problems_name: string[];
 	order_problem_statement: string;
@@ -34,6 +41,10 @@ export type IDiagnosisTableData = {
 	created_by: string;
 	created_at: string;
 	updated_at: string;
+
+	image_1?: string;
+	image_2?: string;
+	image_3?: string;
 };
 //* Transfer
 export type ITransferTableData = {
@@ -65,9 +76,16 @@ export type IStockActionTrx = {
 };
 //* Order Columns
 export type IOrderTableData = {
+	is_reclaimed: boolean;
+	reclaimed_order_uuid: any;
+	reclaimed_order_id: string;
+	new_order_id: string;
+	reclaimed_id: string;
 	id: string;
 	order_id: string;
+	order_uuid: string;
 	is_proceed_to_repair: boolean;
+	new_order_uuid: string;
 	uuid: string;
 	user_name: string;
 	user_phone: string;
@@ -123,14 +141,16 @@ export type IOrderTableData = {
 	product_transfer?: ITransferTableData[];
 	process?: IProcessTableData[];
 	remarks: string;
-
 	image_1?: string;
 	image_2?: string;
 	image_3?: string;
-
 	status_update_date: string;
 	status: string;
 	diagnosis_proposed_cost: number;
+	bill_amount: number;
+	proposed_cost: number;
+	challan_no: string;
+	challan_type: string;
 };
 //* Info Columns
 export type IInfoTableData = {
@@ -141,11 +161,14 @@ export type IInfoTableData = {
 	name: string;
 	phone: string;
 	user_phone: string;
+	user_email: string;
 	submitted_by: 'customer' | 'employee';
 	user_id: string;
 	id: string;
 	info_id: string;
-
+	customer_feedback?: string;
+	is_contact_with_customer?: boolean;
+	order_info_status: 'accepted' | 'pending' | 'rejected';
 	user_uuid: string;
 	user_name: string;
 	zone_name: string;
@@ -161,6 +184,10 @@ export type IInfoTableData = {
 	delivered_count: number;
 	order_count: number;
 	order_entry: IOrderTableData[];
+
+	reference_user_name: string;
+	commission_amount: number;
+	is_commission_amount: boolean;
 };
 
 //* Section Columns

@@ -13,6 +13,9 @@ import {
 	Warehouse,
 } from 'lucide-react';
 
+import ColumnImage from '@/components/core/data-table/_views/column-image';
+import { CustomLink } from '@/components/others/link';
+
 import { cn } from '@/lib/utils';
 
 import { TLocationProps, TProblemProps, TProductProps, TStoreProductProps, TWarrantyProps } from '../types';
@@ -137,17 +140,85 @@ export const Location = ({ branch_name, warehouse_name, rack_name, floor_name, b
 };
 export const UserNamePhone = ({ user_name, phone }: { user_name: string; phone: string }) => {
 	return (
-		<div className='relative flex flex-1 flex-shrink-0 items-center gap-2'>
-			<div className='flex flex-col items-start'>
-				<div className='flex items-start gap-2'>
-					<User className='size-4' />
-					<span className='truncate capitalize'>{user_name}</span>
+		<div className='relative flex flex-shrink-0 items-center gap-2 overflow-hidden'>
+			<div className='flex min-w-0 flex-col items-start'>
+				<div className='flex w-full items-start gap-2 overflow-hidden'>
+					<User className='size-4 flex-shrink-0' />
+					<span className='line-clamp-1 flex-1 capitalize' title={user_name}>
+						{user_name}
+					</span>
 				</div>
 				<div className='flex items-start gap-2'>
-					<Phone className='size-4' />
-					<span className='text-[.8rem] capitalize'>{phone}</span>
+					<Phone className='size-4 flex-shrink-0' />
+					<span className='truncate text-[.8rem] capitalize' title={phone}>
+						{phone}
+					</span>
 				</div>
 			</div>
+		</div>
+	);
+};
+
+export const OrderImages = ({
+	image_1,
+	image_2,
+	image_3,
+}: {
+	image_1?: string;
+	image_2?: string;
+	image_3?: string;
+}) => {
+	return (
+		<div className='flex gap-2'>
+			{image_1 && <ColumnImage src={image_1 as string} alt={'image_1'} />}
+			{image_2 && <ColumnImage src={image_2 as string} alt={'image_2'} />}
+			{image_3 && <ColumnImage src={image_3 as string} alt={'image_3'} />}
+		</div>
+	);
+};
+
+export const Address = ({ location, zone_name }: { location: string; zone_name: string }) => {
+	return (
+		<div className='flex flex-col gap-2'>
+			<div className='flex items-center gap-1'>
+				<MapPin className='size-4' />
+				<span className='inline-block flex-1'>{location}</span>
+			</div>
+			<div className='flex items-center gap-1'>
+				<Pin className='size-4' />
+				<span className='inline-block flex-1 text-sm'>{zone_name}</span>
+			</div>
+		</div>
+	);
+};
+
+export const OderID = ({
+	info_uuid,
+	uuid,
+	order_id,
+	reclaimed_order_uuid,
+	reclaimed_order_id,
+}: {
+	info_uuid: string;
+	uuid: string;
+	order_id: string;
+	reclaimed_order_uuid?: string;
+	reclaimed_order_id?: string;
+}) => {
+	return (
+		<div>
+			<CustomLink
+				url={`/work/info/details/${info_uuid}/order/details/${uuid}`}
+				label={order_id as string}
+				openInNewTab={true}
+			/>
+			{reclaimed_order_uuid && (
+				<CustomLink
+					url={`/work/info/details/${info_uuid}/order/details/${reclaimed_order_uuid}`}
+					label={reclaimed_order_id as string}
+					openInNewTab={true}
+				/>
+			)}
 		</div>
 	);
 };

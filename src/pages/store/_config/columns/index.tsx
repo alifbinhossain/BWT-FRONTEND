@@ -101,8 +101,8 @@ export const vendorColumns = (): ColumnDef<IVendorTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'model_name',
-		header: 'Model',
+		accessorKey: 'brand_name',
+		header: 'Brand',
 		enableColumnFilter: false,
 	},
 	{
@@ -174,12 +174,7 @@ export const productColumns = ({
 	const columns: ColumnDef<IProductTableData>[] = [
 		{
 			accessorKey: 'is_maintaining_stock',
-			header: () => (
-				<>
-					Maintain <br />
-					Stock
-				</>
-			),
+			header: 'Maintain \nStock',
 			enableColumnFilter: false,
 			size: 40,
 			cell: (info) => {
@@ -207,23 +202,13 @@ export const productColumns = ({
 		},
 		{
 			accessorKey: 'warranty_days',
-			header: () => (
-				<>
-					Warranty <br />
-					Days
-				</>
-			),
+			header: 'Warranty \nDays',
 			size: 40,
 			enableColumnFilter: false,
 		},
 		{
 			accessorKey: 'service_warranty_days',
-			header: () => (
-				<>
-					Service <br />
-					Warranty
-				</>
-			),
+			header: 'Service \nWarranty',
 			size: 40,
 			enableColumnFilter: false,
 		},
@@ -235,12 +220,7 @@ export const productColumns = ({
 		},
 		{
 			id: 'action_trx',
-			header: () => (
-				<>
-					Internal <br />
-					Transfer
-				</>
-			),
+			header: 'Internal \nTransfer',
 			cell: (info) => <Transfer onClick={() => handleAgainstTrx(info.row)} />,
 			size: 40,
 			meta: {
@@ -371,7 +351,14 @@ export const purchaseEntryColumns = (): ColumnDef<IPurchaseEntryTableData>[] => 
 		),
 	},
 	{
-		accessorFn: (row) => LocationName(row),
+		accessorFn: (row) =>
+			LocationName({
+				branch_name: row.branch_name ?? '',
+				warehouse_name: row.warehouse_name ?? '',
+				rack_name: row.rack_name ?? '',
+				floor_name: row.floor_name ?? '',
+				box_name: row.box_name ?? '',
+			}),
 		id: 'location',
 		header: 'Location',
 		enableColumnFilter: false,
@@ -580,7 +567,7 @@ export const internalTransferColumns = (): ColumnDef<IInternalTransferTableData>
 	},
 ];
 //* Transfer Columns
-export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
+export const transferColumns = (): ColumnDef<ITransferTableData, unknown>[] => [
 	{
 		accessorKey: 'order_id',
 		header: 'ID',
@@ -619,19 +606,18 @@ export const transferColumns = (): ColumnDef<ITransferTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorFn: (row) => LocationName(row),
+		accessorFn: (row) =>
+			LocationName({
+				branch_name: row.branch_name ?? '',
+				warehouse_name: row.warehouse_name ?? '',
+			}),
 		id: 'location',
 		header: 'Location',
 		enableColumnFilter: false,
 		size: 170,
 		cell: (info) => {
 			const { branch_name, warehouse_name } = info.row.original;
-			return (
-				<Location
-					branch_name={branch_name}
-					warehouse_name={warehouse_name}
-				/>
-			);
+			return <Location branch_name={branch_name!} warehouse_name={warehouse_name} />;
 		},
 	},
 ];

@@ -43,6 +43,7 @@ export type IUser = {
 	name: string;
 	department: string;
 	employee_uuid: string;
+	user_type: 'employee' | 'customer' | 'vendor';
 };
 
 export type IRoute = RouteObject & {
@@ -112,6 +113,35 @@ export interface IDefaultAddOrUpdateProps {
 		any
 	>;
 	updateData: UseMutationResult<
+		IToast,
+		AxiosError<IToast, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+export interface IFileAddOrUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	imagePostData: UseMutationResult<
+		IToast,
+		AxiosError<IToast, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+	imageUpdateData: UseMutationResult<
 		IToast,
 		AxiosError<IToast, any>,
 		{

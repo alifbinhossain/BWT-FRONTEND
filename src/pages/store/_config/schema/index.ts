@@ -93,7 +93,7 @@ export type ISize = z.infer<typeof SIZE_SCHEMA>;
 
 //* Vendor Schema
 export const VENDOR_SCHEMA = z.object({
-	model_uuid: STRING_REQUIRED,
+	brand_uuid: STRING_REQUIRED,
 	name: STRING_REQUIRED,
 	company_name: STRING_REQUIRED,
 	phone: PHONE_NUMBER_REQUIRED,
@@ -104,7 +104,7 @@ export const VENDOR_SCHEMA = z.object({
 });
 
 export const VENDOR_NULL: Partial<IVendor> = {
-	model_uuid: '',
+	brand_uuid: '',
 	name: '',
 	company_name: '',
 	phone: '',

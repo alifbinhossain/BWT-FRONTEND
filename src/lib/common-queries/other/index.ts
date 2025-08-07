@@ -287,3 +287,5 @@ export const useOtherPurchaseEntry = <T>(query?: string) =>
 		queryKey: otherQK.purchaseEntry(query),
 		url: query ? `/other/store/purchase-entry/value/label?${query}` : `/other/store/purchase-entry/value/label`,
 	});
+
+//

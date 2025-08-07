@@ -50,6 +50,10 @@ const User = () => {
 			label: 'Vendor',
 			value: 'vendor',
 		},
+		{
+			label: 'Employee',
+			value: 'employee',
+		},
 	];
 
 	// Add/Update Modal state

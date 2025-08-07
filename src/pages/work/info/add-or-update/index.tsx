@@ -17,6 +17,7 @@ import Formdata from '@/utils/formdata';
 import { IInfoTableData } from '../../_config/columns/columns.type';
 import { useWorkInfo, useWorkInfoByUUID } from '../../_config/query';
 import { IInfo, INFO_NULL, INFO_SCHEMA } from '../../_config/schema';
+import { orderFields } from '../../order/utill';
 import Header from './header';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
 import useGenerateFieldDefsV2 from './useGenerateFieldDefsV2';
@@ -31,8 +32,11 @@ const AddOrUpdate = () => {
 
 	const { url: infoUrl, updateData, postData, imagePostData, imageUpdateData, deleteData } = useWorkInfo();
 	const { invalidateQuery: invalidateCustomer } = useOtherUserByQuery<IFormSelectOption[]>('?type=customer');
-
-	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(uuid as string);
+	const { invalidateQuery: invalidateWorkInfo } = useWorkInfo<IInfoTableData[]>(`status=pending`);
+	const { data, invalidateQuery: invalidateTestDetails } = useWorkInfoByUUID<IInfoTableData>(
+		uuid as string,
+		isUpdate
+	);
 
 	const form = useRHF(INFO_SCHEMA, INFO_NULL);
 	const isProductReceived = form.watch('is_product_received');
@@ -75,7 +79,6 @@ const AddOrUpdate = () => {
 				...values,
 				...(isNewCustomer && { user_uuid: nanoid() }),
 				...(!isBusinessTypeCompany && { department_uuid: null, designation_uuid: null }),
-				submitted_by: 'employee',
 				updated_at: getDateTime(),
 			};
 			if ('order_entry' in infoData) {
@@ -88,20 +91,28 @@ const AddOrUpdate = () => {
 				isOnCloseNeeded: false,
 			});
 
-			const order_entry_promise = values.order_entry.map((item) => {
+			const order_entry_promise = values.order_entry.map((item, index) => {
 				if (item.uuid === undefined) {
 					const newData = {
 						...item,
 						info_uuid: uuid,
-
 						created_at: getDateTime(),
 						created_by: user?.uuid,
 						uuid: nanoid(),
 					};
+					const formData = Formdata({ ...newData, proposed_cost: 0 });
+					orderFields.forEach((field) => {
+						if (
+							newData[field as keyof typeof values] == null ||
+							newData[field as keyof typeof values] === 0
+						) {
+							formData.delete(field);
+						}
+					});
 
-					return postData.mutateAsync({
+					return imagePostData.mutateAsync({
 						url: '/work/order',
-						newData: newData,
+						newData: formData,
 						isOnCloseNeeded: false,
 					});
 				} else {
@@ -110,9 +121,17 @@ const AddOrUpdate = () => {
 
 						updated_at: getDateTime(),
 					};
-					return updateData.mutateAsync({
+					const formData = Formdata(updatedData);
+
+					orderFields.forEach((field) => {
+						if (item[field as keyof typeof values] == null || item[field as keyof typeof values] === 0) {
+							formData.delete(field);
+						}
+					});
+
+					return imageUpdateData.mutateAsync({
 						url: `/work/order/${item.uuid}`,
-						updatedData,
+						updatedData: formData,
 						isOnCloseNeeded: false,
 					});
 				}
@@ -124,6 +143,8 @@ const AddOrUpdate = () => {
 					.then(() => {
 						invalidateCustomer();
 						invalidateTestDetails();
+						invalidateTestDetails();
+						invalidateWorkInfo();
 						navigate(`/work/info/details/${uuid}`);
 					});
 			} catch (err) {
@@ -171,7 +192,14 @@ const AddOrUpdate = () => {
 		}));
 
 		const order_entry_entries_promise = order_entry_entries.map((item) => {
-			const formData = Formdata(item);
+			const formData = Formdata({ ...item, proposed_cost: 0 });
+
+			orderFields.forEach((field) => {
+				if (item[field as keyof typeof values] == null || item[field as keyof typeof values] === 0) {
+					formData.delete(field);
+				}
+			});
+
 			return imagePostData.mutateAsync({
 				url: '/work/order',
 				newData: formData,
@@ -186,6 +214,7 @@ const AddOrUpdate = () => {
 				.then(() => {
 					invalidateCustomer();
 					invalidateTestDetails();
+					invalidateWorkInfo();
 					navigate(`/work/info/details/${info_uuid}`);
 				});
 		} catch (err) {
@@ -198,7 +227,7 @@ const AddOrUpdate = () => {
 			is_diagnosis_need: false,
 			model_uuid: '',
 			size_uuid: '',
-			quantity: 0,
+			quantity: 1,
 			serial_no: '',
 			problems_uuid: [],
 			problem_statement: '',
@@ -208,6 +237,8 @@ const AddOrUpdate = () => {
 			floor_uuid: null,
 			box_uuid: null,
 			remarks: null,
+			reclaimed_order_uuid: null,
+			reclaimed_order_id: null,
 		});
 	};
 
@@ -238,15 +269,41 @@ const AddOrUpdate = () => {
 			model_uuid: field.model_uuid,
 			serial_no: field.serial_no,
 			quantity: field.quantity,
-			problems_uuid: field.problems_uuid,
-			problem_statement: field.problem_statement,
 			accessories: field.accessories,
 			warehouse_uuid: field.warehouse_uuid,
 			rack_uuid: field.rack_uuid,
 			floor_uuid: field.floor_uuid,
 			box_uuid: field.box_uuid,
 			remarks: field.remarks,
+			reclaimed_order_uuid: '',
+			reclaimed_order_id: '',
 		});
+	};
+	const handleReclaimed = (index: number, isReclaimed: boolean) => {
+		const field = form.watch('order_entry')[index];
+		if (isReclaimed) {
+			append({
+				is_diagnosis_need: field.is_diagnosis_need,
+				brand_uuid: field.brand_uuid,
+				model_uuid: field.model_uuid,
+				serial_no: field.serial_no,
+				quantity: field.quantity,
+				problems_uuid: field.problems_uuid,
+				problem_statement: field.problem_statement,
+				accessories: field.accessories,
+				warehouse_uuid: field.warehouse_uuid,
+				rack_uuid: field.rack_uuid,
+				floor_uuid: field.floor_uuid,
+				box_uuid: field.box_uuid,
+				remarks: 'Reclaimed',
+				reclaimed_order_uuid: field.uuid,
+				reclaimed_order_id: field.order_id,
+			});
+		} else {
+			const removeIdx = fields.findIndex((item) => item.reclaimed_order_uuid === field.uuid);
+			console.log(removeIdx);
+			handleRemove(removeIdx);
+		}
 	};
 	//!Remove it when Version confirm
 	const [version, setVersion] = useState(2);
@@ -257,6 +314,7 @@ const AddOrUpdate = () => {
 		form: form,
 		isProductReceived: isProductReceived,
 		isUpdate: isUpdate,
+		handleReclaimed: handleReclaimed,
 	});
 	const fieldDefsV2 = useGenerateFieldDefsV2({
 		copy: handleCopy,
@@ -272,7 +330,7 @@ const AddOrUpdate = () => {
 			form={form}
 			onSubmit={onSubmit}
 		>
-			<Header isUpdate={isUpdate} />
+			<Header isUpdate={isUpdate} data={data} />
 			{version === 1 && (
 				<CoreForm.DynamicFields
 					title={

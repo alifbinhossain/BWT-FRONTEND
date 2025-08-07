@@ -61,6 +61,37 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 		},
 	];
 
+	const diagnosis: IItemProps[] = [
+		{
+			label: 'Problems',
+			value: data.order_problems_name.join(', ').replace(/_/g, ' '),
+		},
+		{
+			label: 'Statement',
+			value: data.problem_statement,
+		},
+		{
+			label: 'Proposed Cost',
+			value: data?.proposed_cost,
+		},
+		{
+			label: 'Customer FeedBack',
+			value: data.diagnosis?.customer_remarks,
+		},
+		{
+			label: 'Bill Amount',
+			value: data?.bill_amount,
+		},
+		{
+			label: 'Challan No.',
+			value: data?.challan_no,
+		},
+		{
+			label: 'Challan Type',
+			value: data?.challan_type,
+		},
+	];
+
 	const statusItems = [
 		{
 			label: 'Diagnosing',
@@ -155,28 +186,11 @@ const OrderCard: React.FC<{ data: IOrderTableData }> = ({ data }) => {
 				</div>
 				<Separator className='my-3' />
 
+				{/* diagnosis */}
 				<div className='mb-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs'>
-					<div>
-						<span className='mb-0.5 block text-slate-500'>Problems</span>
-						<span>{data.order_problems_name.join(', ').replace(/_/g, ' ')}</span>
-					</div>
-					<div>
-						<span className='mb-0.5 block text-xs font-medium text-slate-600'>Statement</span>
-						<span>{data.problem_statement}</span>
-					</div>
-
-					{data.is_diagnosis_need && (
-						<>
-							<div>
-								<span className='mb-0.5 block text-slate-500'>Proposed Cost</span>
-								<span className='text-xs'>{data.diagnosis?.proposed_cost}</span>
-							</div>
-							<div>
-								<span className='mb-0.5 block text-slate-500'>Customer FeedBack</span>
-								<span className='text-xs'>{data.diagnosis?.customer_remarks}</span>
-							</div>
-						</>
-					)}
+					{diagnosis.map((item, index) => (
+						<Item key={index} label={item.label} value={item.value} />
+					))}
 				</div>
 
 				<Separator className='my-3' />

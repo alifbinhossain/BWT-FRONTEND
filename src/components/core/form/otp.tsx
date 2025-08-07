@@ -42,7 +42,7 @@ const FormOTP: React.FC<FormOtpProps> = ({
 				>
 					<InputOTPGroup>
 						{[...Array(maxLength).keys()].map((index) => (
-							<InputOTPSlot key={index} index={index} />
+							<InputOTPSlot key={index} index={index} className='w-[2.05rem] md:w-[2.25rem]' />
 						))}
 					</InputOTPGroup>
 				</InputOTP>

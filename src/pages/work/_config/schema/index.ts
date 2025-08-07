@@ -3,8 +3,11 @@ import { z } from 'zod';
 import {
 	BOOLEAN_OPTIONAL,
 	BOOLEAN_REQUIRED,
+	NUMBER,
 	NUMBER_DOUBLE_OPTIONAL,
 	NUMBER_DOUBLE_REQUIRED,
+	NUMBER_OPTIONAL,
+	NUMBER_REQUIRED,
 	PHONE_NUMBER_OPTIONAL,
 	STRING_ARRAY,
 	STRING_ARRAY_OPTIONAL,
@@ -34,16 +37,18 @@ export const ORDER_SCHEMA = z
 		model_id: STRING_OPTIONAL,
 		quantity: NUMBER_DOUBLE_REQUIRED,
 		proposed_cost: NUMBER_DOUBLE_OPTIONAL,
+		reclaimed_order_uuid: STRING_NULLABLE.optional(),
 		bill_amount: NUMBER_DOUBLE_OPTIONAL.default(0),
-		serial_no: STRING_OPTIONAL,
+		serial_no: STRING_OPTIONAL.nullable(),
 		problems_uuid: STRING_ARRAY,
 		problem_statement: STRING_REQUIRED,
-		qc_problems_uuid: STRING_ARRAY_OPTIONAL,
+		qc_problems_uuid: STRING_ARRAY_OPTIONAL.nullable(),
 		qc_problem_statement: STRING_NULLABLE,
 		delivery_problems_uuid: STRING_ARRAY_OPTIONAL,
 		delivery_problem_statement: STRING_NULLABLE,
-		accessories: STRING_ARRAY_OPTIONAL,
+		accessories: STRING_ARRAY_OPTIONAL.nullable(),
 		warehouse_uuid: STRING_NULLABLE,
+		is_reclaimed: BOOLEAN_OPTIONAL.default(false),
 		rack_uuid: STRING_NULLABLE,
 		floor_uuid: STRING_NULLABLE,
 		box_uuid: STRING_NULLABLE,
@@ -78,15 +83,18 @@ export const ORDER_NULL: Partial<IOrder> = {
 	model_uuid: '',
 	serial_no: '',
 	quantity: 1,
-	problems_uuid: [],
+	problems_uuid: undefined,
 	problem_statement: '',
-	accessories: [],
+	accessories: undefined,
 	warehouse_uuid: null,
 	rack_uuid: null,
 	floor_uuid: null,
 	box_uuid: null,
 	remarks: null,
-
+	qc_problems_uuid: undefined,
+	delivery_problems_uuid: undefined,
+	delivery_problem_statement: null,
+	qc_problem_statement: null,
 	image_1: null,
 	image_2: null,
 	image_3: null,
@@ -98,7 +106,7 @@ export const REPAIR_SCHEMA = z
 		uuid: STRING_OPTIONAL,
 		is_transferred_for_qc: BOOLEAN_OPTIONAL.default(false),
 		is_ready_for_delivery: BOOLEAN_OPTIONAL.default(false),
-		repairing_problems_uuid: STRING_ARRAY,
+		repairing_problems_uuid: STRING_ARRAY_OPTIONAL,
 		repairing_problem_statement: STRING_NULLABLE,
 		repair_product_transfer: BOOLEAN_OPTIONAL.default(false),
 		product_transfer: z.array(
@@ -124,6 +132,8 @@ export const REPAIR_SCHEMA = z
 export const REPAIR_NULL: Partial<IRepair> = {
 	is_transferred_for_qc: false,
 	is_ready_for_delivery: false,
+	repairing_problems_uuid: undefined,
+
 	repair_product_transfer: false,
 	product_transfer: [
 		{
@@ -135,6 +145,14 @@ export const REPAIR_NULL: Partial<IRepair> = {
 	remarks: null,
 };
 export type IRepair = z.infer<typeof REPAIR_SCHEMA>;
+
+export const MESSAGE_SCHEMA = z.object({
+	message: STRING_REQUIRED,
+});
+export const MESSAGE_NULL: Partial<IMessage> = {
+	message: '',
+};
+export type IMessage = z.infer<typeof MESSAGE_SCHEMA>;
 
 //* Info Schema
 const ORDER_SCHEMA_FOR_INFO = (ORDER_SCHEMA as any)._def.schema.omit({
@@ -152,6 +170,10 @@ export const INFO_SCHEMA = z
 		phone: PHONE_NUMBER_OPTIONAL,
 		business_type: STRING_OPTIONAL,
 		branch_uuid: STRING_REQUIRED,
+		customer_feedback: STRING_NULLABLE.optional(),
+		is_contact_with_customer: BOOLEAN_OPTIONAL.default(false),
+
+		order_info_status: z.enum(['accepted', 'pending', 'rejected', 'cancel']).nullable().optional(),
 		where_they_find_us: z.enum(['whatsapp', 'instagram', 'facebook', 'youtube', 'person', 'none']).optional(),
 		designation_uuid: STRING_OPTIONAL,
 		department_uuid: STRING_OPTIONAL,
@@ -159,8 +181,12 @@ export const INFO_SCHEMA = z
 		location: STRING_REQUIRED,
 		zone_uuid: STRING_REQUIRED,
 		received_date: STRING_NULLABLE,
+
 		remarks: STRING_NULLABLE,
 		order_entry: z.array(ORDER_SCHEMA_FOR_INFO),
+		reference_user_uuid: STRING_OPTIONAL.nullable(),
+		is_commission_amount: BOOLEAN_OPTIONAL.default(false),
+		commission_amount: NUMBER_REQUIRED.default(0),
 	})
 	.superRefine((data, ctx) => {
 		if (!data.is_new_customer && !data.user_uuid) {
@@ -175,6 +201,19 @@ export const INFO_SCHEMA = z
 			}
 			if (!data.business_type) {
 				ctx.addIssue(customIssue('Required', 'business_type'));
+			}
+		}
+		if (
+			data?.reference_user_uuid !== null &&
+			data?.reference_user_uuid !== '' &&
+			data?.reference_user_uuid !== undefined
+		) {
+			if (data?.commission_amount < 1) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: ['commission_amount'],
+					message: 'Amount must be greater than 0',
+				});
 			}
 		}
 
@@ -197,10 +236,21 @@ export const INFO_NULL: Partial<IInfo> = {
 	uuid: '',
 	user_uuid: null,
 	is_product_received: false,
+
 	received_date: null,
 	where_they_find_us: 'none',
 	name: '',
 	phone: undefined,
+	business_type: '',
+	branch_uuid: '',
+	designation_uuid: '',
+	department_uuid: '',
+	location: '',
+	zone_uuid: '',
+	reference_user_uuid: null,
+	is_commission_amount: false,
+
+	commission_amount: 0,
 	order_entry: [ORDER_NULL as IOrder],
 	remarks: null,
 };
@@ -212,7 +262,7 @@ export const DIAGNOSIS_SCHEMA = z.object({
 	problems_uuid: STRING_ARRAY,
 	problem_statement: STRING_NULLABLE,
 	customer_problem_statement: STRING_NULLABLE,
-	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable']),
+	status: z.enum(['pending', 'rejected', 'accepted', 'not_repairable', 'customer_reject']),
 	proposed_cost: NUMBER_DOUBLE_REQUIRED,
 	is_proceed_to_repair: BOOLEAN_OPTIONAL.default(false),
 	remarks: STRING_NULLABLE,
@@ -350,3 +400,16 @@ export const TRANSFER_NULL: Partial<ITransfer> = {
 };
 
 export type ITransfer = z.infer<typeof TRANSFER_SCHEMA>;
+
+//* Info Pop Up
+export const INFO_POPUP_SCHEMA = z.object({
+	customer_feedback: STRING_OPTIONAL,
+	is_contact_with_customer: BOOLEAN_OPTIONAL.default(false),
+	order_info_status: z.enum(['accepted', 'pending', 'rejected', 'cancel']).optional(),
+});
+export const INFO_POPUP_NULL: Partial<IInfoPopup> = {
+	customer_feedback: '',
+	is_contact_with_customer: false,
+	order_info_status: 'pending',
+};
+export type IInfoPopup = z.infer<typeof INFO_POPUP_SCHEMA>;

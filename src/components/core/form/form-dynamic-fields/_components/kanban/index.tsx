@@ -1,5 +1,6 @@
 import React from 'react';
 
+import DateTime from '@/components/ui/date-time';
 import { FormField } from '@/components/ui/form';
 import { Skeleton } from '@/components/ui/skeleton';
 import CoreForm from '@core/form';
@@ -38,9 +39,6 @@ const KanbanDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs' 
 
 											{fieldDef.type === 'custom' && fieldDef.accessorKey === 'actions' && (
 												<div className='bg-gradient rounded-y absolute left-0 right-0 top-0 flex items-center justify-between border-b px-4 py-1.5'>
-													<span className='text-sm font-medium'>
-														Entry # {fieldIndex + 1}
-													</span>
 													{fieldDef.component(fieldIndex)}
 												</div>
 											)}
@@ -141,7 +139,8 @@ const KanbanDynamicFields: React.FC<Omit<DynamicFieldsProps, 'title' | 'viewAs' 
 													control={form.control}
 													name={`${fieldName}.${fieldIndex}.${fieldDef.accessorKey}`}
 													render={(props) => (
-														<CoreForm.MultiSelect
+														<CoreForm.ReactSelect
+															isMulti
 															options={fieldDef.options}
 															placeholder={fieldDef.placeholder}
 															label={fieldDef.header}

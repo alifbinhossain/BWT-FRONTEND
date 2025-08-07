@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+import { ShowLocalToast } from '@/components/others/toast';
 import CoreForm from '@core/form';
 
 import nanoid from '@/lib/nanoid';
@@ -22,7 +23,6 @@ const AddOrUpdate = () => {
 	const navigate = useNavigate();
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
-	
 
 	const { url: challanUrl, updateData, postData, deleteData } = useDeliveryChallan();
 
@@ -30,6 +30,7 @@ const AddOrUpdate = () => {
 
 	const form = useRHF(CHALLAN_SCHEMA, CHALLAN_NULL);
 	const { data: order } = useWorkOrderByCustomerUUID(form.watch('customer_uuid'));
+	console.log(form.formState.errors);
 
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
@@ -72,7 +73,6 @@ const AddOrUpdate = () => {
 			form.setValue('vehicle_uuid', null);
 			form.setValue('courier_uuid', null);
 		} else if (challanType === 'courier_delivery') {
-			form.setValue('employee_uuid', null);
 			form.setValue('vehicle_uuid', null);
 		} else if (challanType === 'employee_delivery') {
 			form.setValue('vehicle_uuid', null);
@@ -86,6 +86,13 @@ const AddOrUpdate = () => {
 		/* -------------------------------------------------------------------------- */
 		/*                                 UPDATE TEST                                */
 		/* -------------------------------------------------------------------------- */
+		if (form.watch('challan_entries').length === 0 && form.watch('is_delivery_complete')) {
+			ShowLocalToast({
+				type: 'error',
+				message: 'Please add at least one entry to the challan before marking it as completed.',
+			});
+			return;
+		}
 		if (isUpdate) {
 			const challan_data = {
 				...values,
@@ -226,7 +233,6 @@ const AddOrUpdate = () => {
 		});
 		return total;
 	}, [fields]);
-	
 
 	return (
 		<CoreForm.AddEditWrapper
@@ -260,14 +266,14 @@ const AddOrUpdate = () => {
 				})}
 				fields={fields}
 			>
-			<tr>
-				<td className='border-t text-right font-semibold' colSpan={4}>
-					Grand Total:
-				</td>
+				<tr>
+					<td className='border-t text-right font-semibold' colSpan={4}>
+						Grand Total:
+					</td>
 
-				<td className='border-t px-3 py-2'>{grandTotal()}</td>
-				<td className='border-t px-3 py-2'></td>
-			</tr>
+					<td className='border-t px-3 py-2'>{grandTotal()}</td>
+					<td className='border-t px-3 py-2'></td>
+				</tr>
 			</CoreForm.DynamicFields>
 			<Suspense fallback={null}>
 				<DeleteModal

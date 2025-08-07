@@ -11,7 +11,7 @@ import { IInfoTableData } from '../config/columns/columns.type';
 
 const Information: React.FC<{ data: IInfoTableData }> = ({ data }) => {
 	let currentStatus = '';
-	if (!data?.order_entry.some((item) => !item.is_delivery_complete)) {
+	if (!data?.order_entry?.some((item) => !item.is_delivery_complete)) {
 		currentStatus = 'Delivered';
 	} else if (data?.is_product_received) {
 		currentStatus = 'Product Received';

@@ -1,45 +1,31 @@
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
-
-
-// import { IFormSelectOption } from '@/components/core/form/types';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
-
-
-
-
-
 import '@/lib/common-queries/other';
-
-
 
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useStoreProducts } from '@/pages/store/_config/query';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
-
-
 import { IFormSelectOption } from '@/components/core/form/types';
-import { ShowLocalToast } from '@/components/others/toast';
 
-
-
-import { useOtherProblem, useOtherProduct, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
+import { useOtherProblem, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
-
-
+import Formdata from '@/utils/formdata';
 
 import { IOrderTableData } from '../_config/columns/columns.type';
-import { useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
-import { IRepair, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
+import { useWorkChat, useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
+import { IRepair, MESSAGE_NULL, MESSAGE_SCHEMA, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
+import ChatInterface from '../../../components/others/message';
 import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '../order/details/transfer/utills';
+import { orderFields } from '../order/utill';
+import Information from './information';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
-
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
@@ -48,18 +34,27 @@ const AddOrUpdate = () => {
 	const { uuid } = useParams();
 	const isUpdate: boolean = !!uuid;
 	const navigate = useNavigate();
+	//* Data and Invalidation Queries
 	const { data: purchaseEntryOptions, invalidateQuery: invalidateQueryOtherProduct } = useOtherPurchaseEntry<
 		ICustomProductsSelectOption[]
 	>(`is_warehouse=true&&is_purchase_return_entry=false`);
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
-	const { data: warehouseOptions, invalidateQuery: invalidateQueryOtherWarehouse } =
-		useOtherWarehouse<ICustomWarehouseSelectOption[]>();
-	const { data, updateData, postData, deleteData } = useWorkOrderByUUID<IOrderTableData>(uuid as string);
-	const { invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(uuid as string);
+	const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
+
+	const { data, updateData, postData, imageUpdateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(
+		uuid as string
+	);
+	const { data: orderData, invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
+		uuid as string
+	);
+	const { data: chatData, invalidateQuery: invalidateQueryChat, refetch } = useWorkChat<Message[]>(uuid as string);
+	const { invalidateQuery: invalidateQueryOtherWarehouse } = useOtherWarehouse<ICustomWarehouseSelectOption[]>();
 	const { invalidateQuery: invalidateQueryRepairing } = useWorkRepairing<IOrderTableData[]>();
 	const { invalidateQuery: invalidateQueryProduct } = useStoreProducts<IFormSelectOption[]>();
 
+	//* Form and Field Arrays
 	const form = useRHF(REPAIR_SCHEMA, REPAIR_NULL);
+	const messageForm = useRHF(MESSAGE_SCHEMA, MESSAGE_NULL);
 
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
@@ -72,6 +67,7 @@ const AddOrUpdate = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, isUpdate]);
+
 	const handleAdd = () => {
 		append({
 			purchase_entry_uuid: '',
@@ -102,43 +98,104 @@ const AddOrUpdate = () => {
 			remove(index);
 		}
 	};
+	const [deleteMessage, setDeleteMessage] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
+	const handleDelete = (uuid: string) => {
+		const message = chatData?.find((msg) => msg.uuid === uuid);
+		setDeleteMessage({
+			id: uuid,
+			name: message?.message || 'Message',
+		});
+	};
 	const felidDefs = useGenerateFieldDefs({
 		remove: handleRemove,
 		watch: form.watch,
 		form,
 		data,
+		isUpdate,
 	});
+	interface Message {
+		uuid: string;
+		message: string;
+		page: 'repair' | 'diagnosis';
+		created_by_name?: string;
+		order_uuid?: string;
+		created_by?: string;
+		created_at?: string;
+		updated_at?: string | undefined;
+	}
 
+	const handleSend = async (editId?: string, editText?: string) => {
+		try {
+			const now = getDateTime();
+
+			if (editId === undefined && messageForm.getValues('message')) {
+				// Create new user message
+				const userMsg: Message = {
+					uuid: nanoid(),
+					message: messageForm.getValues('message'),
+					page: 'repair',
+					order_uuid: uuid,
+					created_by: user?.uuid,
+					created_at: now,
+					updated_at: undefined,
+				};
+				await postData.mutateAsync({
+					url: '/work/chat',
+					newData: userMsg,
+					isOnCloseNeeded: false,
+				});
+				messageForm.reset(MESSAGE_NULL);
+				invalidateQueryChat();
+			} else {
+				// Update existing message
+				const updatedMsg: Message = {
+					uuid: editId || '',
+					message: editText || '',
+					page: 'repair',
+					order_uuid: uuid,
+					created_by: user?.uuid,
+					updated_at: now,
+				};
+				await updateData.mutateAsync({
+					url: `/work/chat/${editId}`,
+					updatedData: updatedMsg,
+					isOnCloseNeeded: false,
+				});
+				invalidateQueryChat();
+				setEditingMessageId(null);
+			}
+		} catch (error) {
+			console.error(`${editId ? 'Update' : 'Create'} failed:`, error);
+		}
+	};
 	// Submit handler
 	async function onSubmit(values: IRepair) {
-		let valid = true;
-
-		values.product_transfer.forEach((item: any, index: number) => {
-			const warehouse = warehouseOptions?.find((w) => w.value === item.warehouse_uuid);
-			const product = purchaseEntryOptions?.find((p) => p.value === item.purchase_entry_uuid);
-
-			if (!product) {
-				ShowLocalToast({
-					type: 'error',
-					message: `Product not found for the selected purchase entry: ${item.purchase_entry_uuid}.`,
-				});
-				valid = false;
-				return;
-			}
-		});
-		if (!valid) {
-			return;
-		}
-
 		if (isUpdate) {
 			const order_data = {
 				...values,
+				product_transfer: null,
 				updated_at: getDateTime(),
 			};
-
-			const order_promise = await updateData.mutateAsync({
+			const formData = Formdata({
+				...order_data,
+			});
+			orderFields.forEach((field) => {
+				if (
+					values[field as keyof typeof values] == null ||
+					values[field as keyof typeof values] === '' ||
+					values[field as keyof typeof values] === undefined ||
+					(Array.isArray(values[field as keyof typeof values]) &&
+						(values[field as keyof typeof values] as unknown[]).length === 0)
+				) {
+					formData.delete(field);
+				}
+			});
+			const order_promise = await imageUpdateData.mutateAsync({
 				url: `/work/order/${uuid}`,
-				updatedData: order_data,
+				updatedData: formData,
 				isOnCloseNeeded: false,
 			});
 
@@ -192,94 +249,125 @@ const AddOrUpdate = () => {
 	}
 
 	return (
-		<CoreForm.AddEditWrapper
-			title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
-			form={form}
-			onSubmit={onSubmit}
-		>
-			<CoreForm.Section
-				title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
-				className='flex'
-				extraHeader={
-					<div className='flex gap-2 text-warning-foreground'>
-						<FormField
-							control={form.control}
-							name='is_transferred_for_qc'
-							render={(props) => (
-								<CoreForm.Checkbox
-									className='bg-warning-foreground'
-									label='Transfer to QC'
-									{...props}
-								/>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='is_ready_for_delivery'
-							render={(props) => (
-								<CoreForm.Checkbox
-									label='Ready for Delivery'
-									className='bg-warning-foreground'
-									{...props}
-								/>
-							)}
-						/>
-					</div>
-				}
-			>
-				<FormField
-					control={form.control}
-					name='repairing_problems_uuid'
-					render={(props) => (
-						<CoreForm.ReactSelect
-							isMulti
-							label='Problems'
-							menuPortalTarget={document.body}
-							options={problemOption!}
-							placeholder='Select Problems'
-							{...props}
-						/>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='repairing_problem_statement'
-					render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
-				/>
-				<FormField
-					control={form.control}
-					name='remarks'
-					render={(props) => <CoreForm.Textarea label='Remarks' className='flex-1' {...props} />}
-				/>
-			</CoreForm.Section>
+		<div className='gap-2'>
+			<Information data={(orderData || []) as IOrderTableData} />
+			<div className='grid grid-cols-2 gap-4'>
+				<div className='gap-4'>
+					<CoreForm.AddEditWrapper
+						title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
+						form={form}
+						onSubmit={onSubmit}
+					>
+						<CoreForm.Section
+							title={isUpdate ? 'Edit Repairing Order' : ' Add Repairing Order'}
+							className='flex'
+							extraHeader={
+								<div className='flex gap-2 text-warning-foreground'>
+									<FormField
+										control={form.control}
+										name='is_transferred_for_qc'
+										render={(props) => (
+											<CoreForm.Checkbox
+												className='bg-warning-foreground'
+												label='Transfer to QC'
+												{...props}
+											/>
+										)}
+									/>
+									<FormField
+										control={form.control}
+										name='is_ready_for_delivery'
+										render={(props) => (
+											<CoreForm.Checkbox
+												label='Ready for Delivery'
+												className='bg-warning-foreground'
+												{...props}
+											/>
+										)}
+									/>
+								</div>
+							}
+						>
+							<FormField
+								control={form.control}
+								name='repairing_problems_uuid'
+								render={(props) => (
+									<CoreForm.ReactSelect
+										isMulti
+										label='Problems'
+										menuPortalTarget={document.body}
+										options={problemOption!}
+										placeholder='Select Problems'
+										{...props}
+									/>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='repairing_problem_statement'
+								render={(props) => <CoreForm.Textarea label='Problem Statement' {...props} />}
+							/>
+							<FormField
+								control={form.control}
+								name='remarks'
+								render={(props) => <CoreForm.Textarea label='Remarks' className='flex-1' {...props} />}
+							/>
+						</CoreForm.Section>
 
-			<CoreForm.DynamicFields
-				title='Repairing Product Transfer'
-				form={form}
-				fieldName='product_transfer'
-				fieldDefs={felidDefs}
-				handleAdd={handleAdd}
-				fields={fields}
-			/>
+						<CoreForm.DynamicFields
+							title='Repairing Product Transfer'
+							form={form}
+							fieldName='product_transfer'
+							fieldDefs={felidDefs}
+							handleAdd={handleAdd}
+							fields={fields}
+						/>
 
-			<Suspense fallback={null}>
-				<DeleteModal
-					{...{
-						deleteItem,
-						setDeleteItem,
-						url: `/store/product-transfer`,
-						deleteData,
-						onClose: () => {
-							form.setValue(
-								'product_transfer',
-								form.getValues('product_transfer').filter((item) => item.uuid !== deleteItem?.id)
-							);
-						},
-						needRefresh: true,
-					}}
+						<Suspense fallback={null}>
+							<DeleteModal
+								{...{
+									deleteItem,
+									setDeleteItem,
+									url: `/store/product-transfer`,
+									deleteData,
+									onClose: () => {
+										form.setValue(
+											'product_transfer',
+											form
+												.getValues('product_transfer')
+												.filter((item) => item.uuid !== deleteItem?.id)
+										);
+									},
+									needRefresh: true,
+								}}
+							/>
+							<DeleteModal
+								{...{
+									deleteItem: deleteMessage,
+									setDeleteItem: setDeleteMessage,
+									url: `/work/chat`,
+									deleteData,
+
+									invalidateQueries: invalidateQueryChat,
+								}}
+							/>
+						</Suspense>
+					</CoreForm.AddEditWrapper>
+				</div>
+				<ChatInterface
+					handleSend={handleSend}
+					form={messageForm}
+					data={chatData || []}
+					title='Chat With Repairing'
+					subTitle={`${data?.order_id}`}
+					page='repair'
+					deleteMessage={handleDelete}
+					refetch={refetch}
+					editingMessageId={editingMessageId}
+					setEditingMessageId={setEditingMessageId}
 				/>
-			</Suspense>
-		</CoreForm.AddEditWrapper>
+			</div>
+		</div>
 	);
 };
 

@@ -13,11 +13,14 @@ import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 
 import {
+	IDepartmentReportTableData,
 	IDepartmentTableData,
 	IDesignationTableData,
 	IDeviceListTableData,
 	IEmployeeTableData,
+	IIndividualReportTableData,
 	IManualEntryTableData,
+	IMonthlyReportTableData,
 	IUserTableData,
 } from './columns.type';
 
@@ -191,12 +194,7 @@ export function userColumns({
 		{
 			accessorKey: 'reset_pass_actions',
 			id: 'reset_pass_actions',
-			header: () => (
-				<span>
-					Reset <br />
-					Password
-				</span>
-			),
+			header: 'Reset \nPassword',
 			enableColumnFilter: false,
 			enableSorting: false,
 			cell: (info) => <ResetPassword onClick={() => handleResetPassword(info.row)} />,
@@ -210,12 +208,7 @@ export function userColumns({
 		{
 			accessorKey: 'page_assign_actions',
 			id: 'page_assign_actions',
-			header: () => (
-				<span>
-					Page <br />
-					Assign
-				</span>
-			),
+			header: 'Page \nAssign',
 			enableColumnFilter: false,
 			enableSorting: false,
 			cell: (info) => <PageAssign onClick={() => handlePageAssign(info.row)} />,
@@ -294,12 +287,7 @@ export function employeeColumns({
 		{
 			accessorKey: 'reset_pass_actions',
 			id: 'reset_pass_actions',
-			header: () => (
-				<span>
-					Reset <br />
-					Password
-				</span>
-			),
+			header: 'Reset \nPassword',
 			enableColumnFilter: false,
 			enableSorting: false,
 			cell: (info) => <ResetPassword onClick={() => handleResetPassword(info.row)} />,
@@ -313,12 +301,7 @@ export function employeeColumns({
 		{
 			accessorKey: 'page_assign_actions',
 			id: 'page_assign_actions',
-			header: () => (
-				<span>
-					Page <br />
-					Assign
-				</span>
-			),
+			header: 'Page \nAssign',
 			enableColumnFilter: false,
 			enableSorting: false,
 			cell: (info) => <PageAssign onClick={() => handlePageAssign(info.row)} />,
@@ -459,5 +442,216 @@ export const deviceListColumns = ({
 		header: 'Employees',
 		enableColumnFilter: false,
 		cell: (info) => <Button onClick={() => handleDevices(info.row)}>Assign Employee</Button>,
+	},
+];
+
+//? Report ?//
+
+//* Individual Report
+export const individualReportColumns = (): ColumnDef<IIndividualReportTableData>[] => [
+	{
+		accessorKey: 'employee_name',
+		header: 'Employee',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'punch_date',
+		header: 'Punch Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'entry_time',
+		header: 'Entry Time',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'exit_time',
+		header: 'Exit Time',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'hours_worked',
+		header: 'Hours Worked',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'expected_hours',
+		header: 'Expected Hours',
+		enableColumnFilter: false,
+	},
+];
+
+//* Department Report
+export const departmentReportColumns = (): ColumnDef<IDepartmentReportTableData>[] => [
+	{
+		accessorKey: 'employee_name',
+		header: 'Employee',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'designation_name',
+		header: 'Designation',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'department_name',
+		header: 'Department',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'workplace_name',
+		header: 'Workplace',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'employment_type_name',
+		header: 'Employment Type',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'present_days',
+		header: 'Present Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'absent_days',
+		header: 'Absent Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'leave_days',
+		header: 'Leave Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'punch_date',
+		header: 'Punch Date',
+		enableColumnFilter: false,
+		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+	},
+	{
+		accessorKey: 'entry_time',
+		header: 'Entry Time',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'exit_time',
+		header: 'Exit Time',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'hours_worked',
+		header: 'Hours Worked',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'expected_hours',
+		header: 'Expected Hours',
+		enableColumnFilter: false,
+	},
+];
+
+//* Monthly Report
+export const monthlyReportColumns = (): ColumnDef<IMonthlyReportTableData>[] => [
+	{
+		accessorKey: 'employee_name',
+		header: 'Employee',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'designation_name',
+		header: 'Designation',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'department_name',
+		header: 'Department',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'workplace_name',
+		header: 'Workplace',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'employment_type_name',
+		header: 'Employment Type',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'total_days',
+		header: 'Total Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'working_days',
+		header: 'Working Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'present_days',
+		header: 'Present Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'absent_days',
+		header: 'Absent Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'leave_days',
+		header: 'Leave Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'off_days',
+		header: 'Off Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'general_holidays',
+		header: 'General Holidays',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'special_holidays',
+		header: 'Special Holidays',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'late_days',
+		header: 'Late Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'approved_lates',
+		header: 'Approved Lates',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'field_visit_days',
+		header: 'Field Visit Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'expected_hours',
+		header: 'Expected Hours',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'total_late_hours',
+		header: 'Total Late Hours',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'working_hours',
+		header: 'Working Hours',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'difference_hours',
+		header: 'Difference Hours',
+		enableColumnFilter: false,
 	},
 ];

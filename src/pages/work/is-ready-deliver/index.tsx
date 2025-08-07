@@ -13,7 +13,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const Order = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
+	const { data, isLoading, url, deleteData, imagePostData, imageUpdateData, refetch } =
 		useWorkIsDeliveryReady<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Ready to Deliver', url, 'work__is_ready_for_delivery'), [url]);
@@ -61,6 +61,7 @@ const Order = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
+				defaultSorting={[{ id: 'ready_for_delivery_date', desc: true }]}
 				defaultVisibleColumns={{ updated_at: false, created_at: false, created_by_name: false }}
 			>
 				{renderSuspenseModals([
@@ -71,8 +72,8 @@ const Order = () => {
 							setOpen: setIsOpenAddModal,
 							updatedData,
 							setUpdatedData,
-							postData,
-							updateData,
+							imagePostData,
+							imageUpdateData,
 						}}
 					/>,
 

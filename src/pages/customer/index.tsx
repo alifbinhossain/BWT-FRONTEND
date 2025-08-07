@@ -13,6 +13,7 @@ import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 import Formdata from '@/utils/formdata';
 
+import { orderFields } from '../work/order/utill';
 import { IInfoTableData } from './_config/columns/columns.type';
 import { useWorkInfo, useWorkInfoByUUID } from './_config/query';
 import { IInfo, INFO_NULL, INFO_SCHEMA } from './_config/schema';
@@ -98,6 +99,11 @@ const AddOrUpdate = () => {
 
 		const order_entry_entries_promise = order_entry_entries.map((item) => {
 			const formData = Formdata(item);
+			orderFields.forEach((field) => {
+				if (item[field as keyof typeof item] == null) {
+					formData.delete(field);
+				}
+			});
 			return imagePostData.mutateAsync({
 				url: '/work/order',
 				newData: formData,

@@ -1,24 +1,18 @@
-import { useState } from 'react';
+import { watch } from 'fs';
 import { UseFormWatch } from 'react-hook-form';
 
 import FieldActionButton from '@/components/buttons/field-action';
+import DateTime from '@/components/ui/date-time';
+import { DateTimePicker } from '@/components/ui/date-time-picker';
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 import { FieldDef } from '@core/form/form-dynamic-fields/types';
 import { IFormSelectOption } from '@core/form/types';
 
-import {
-	useOtherAccessories,
-	useOtherBox,
-	useOtherBrand,
-	useOtherFloor,
-	useOtherModelByQuery,
-	useOtherProblem,
-	useOtherRack,
-	useOtherWarehouse,
-} from '@/lib/common-queries/other';
+import { useOtherAccessories, useOtherBrand, useOtherProblem } from '@/lib/common-queries/other';
 
 import { IInfo } from '../../_config/schema';
+import ActionHeader from './action-header';
 import Location from './location';
 import ModelFilter from './model-filter';
 
@@ -29,6 +23,7 @@ interface IGenerateFieldDefsProps {
 	isProductReceived?: boolean;
 	form: any;
 	isUpdate: boolean;
+	handleReclaimed: (index: number, isReclaimed: boolean) => void;
 }
 
 const useGenerateFieldDefs = ({
@@ -37,9 +32,8 @@ const useGenerateFieldDefs = ({
 	isProductReceived,
 	form,
 	isUpdate,
+	handleReclaimed,
 }: IGenerateFieldDefsProps): FieldDef[] => {
-	const [brand, setBrand] = useState([]);
-
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('customer');
 	const { data: accessoriesOption } = useOtherAccessories<IFormSelectOption[]>();
 	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
@@ -54,9 +48,19 @@ const useGenerateFieldDefs = ({
 					form.watch(`order_entry.${index}.is_home_repair`) ||
 					form.watch(`order_entry.${index}.is_proceed_to_repair`)
 				) {
-					return <FieldActionButton handleCopy={copy} index={index} />;
+					return (
+						<div className='flex w-full items-center justify-between'>
+							<ActionHeader index={index} form={form} />
+							<FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />
+						</div>
+					);
 				}
-				return <FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />;
+				return (
+					<div className='flex w-full items-center justify-between'>
+						<ActionHeader index={index} form={form} />
+						<FieldActionButton handleCopy={copy} handleRemove={remove} index={index} />
+					</div>
+				);
 			},
 		},
 		{
@@ -65,29 +69,83 @@ const useGenerateFieldDefs = ({
 			type: 'custom',
 			component: (index: number) => {
 				return (
-					<div className='flex gap-2'>
-						<FormField
-							control={form.control}
-							name={`order_entry.${index}.is_diagnosis_need`}
-							render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
-						/>
-						<FormField
-							control={form.control}
-							name={`order_entry.${index}.is_proceed_to_repair`}
-							render={(props) => <CoreForm.Checkbox label='Proceed to Repair' {...props} />}
-						/>
-						<FormField
-							control={form.control}
-							name={`order_entry.${index}.is_home_repair`}
-							render={(props) => <CoreForm.Checkbox label='Home Repair' {...props} />}
-						/>
-						{form.watch(`order_entry.${index}.is_home_repair`) && (
+					<div className='flex flex-col gap-4'>
+						<div className='flex gap-2'>
 							<FormField
 								control={form.control}
-								name={`order_entry.${index}.is_challan_needed`}
-								render={(props) => <CoreForm.Checkbox label='Challan Needed' {...props} />}
+								name={`order_entry.${index}.is_home_repair`}
+								render={(props) => (
+									<CoreForm.Checkbox
+										label='Home Repair'
+										{...props}
+										onCheckedChange={(e) => {
+											form.setValue(`order_entry.${index}.is_home_repair`, e);
+											if (e) {
+												form.setValue(`order_entry.${index}.is_proceed_to_repair`, false);
+												form.setValue(`order_entry.${index}.bill_amount`, 0);
+											}
+										}}
+									/>
+								)}
 							/>
-						)}
+							{form.watch(`order_entry.${index}.uuid`) && (
+								<FormField
+									control={form.control}
+									name={`order_entry.${index}.is_reclaimed`}
+									render={(props) => (
+										<CoreForm.Checkbox
+											label='Reclaimed'
+											{...props}
+											onCheckedChange={(e) => {
+												form.setValue(`order_entry.${index}.is_reclaimed`, e);
+												handleReclaimed(index, e as boolean);
+											}}
+										/>
+									)}
+								/>
+							)}
+							{form.watch(`order_entry.${index}.is_home_repair`) && (
+								<FormField
+									control={form.control}
+									name={`order_entry.${index}.is_challan_needed`}
+									render={(props) => <CoreForm.Checkbox label='Challan Needed' {...props} />}
+								/>
+							)}
+						</div>
+						<div className='flex gap-2'>
+							<FormField
+								control={form.control}
+								name={`order_entry.${index}.is_diagnosis_need`}
+								render={(props) => <CoreForm.Checkbox label='Diagnosis Needed' {...props} />}
+							/>
+						</div>
+						<div className='flex gap-2'>
+							{!form.watch(`order_entry.${index}.is_home_repair`) && (
+								<FormField
+									control={form.control}
+									name={`order_entry.${index}.is_proceed_to_repair`}
+									render={(props) => (
+										<CoreForm.Checkbox
+											label='Proceed to Repair'
+											{...props}
+											onCheckedChange={(e) => {
+												form.setValue(`order_entry.${index}.is_proceed_to_repair`, e);
+												if (!e) {
+													form.setValue(`order_entry.${index}.bill_amount`, 0);
+												}
+											}}
+										/>
+									)}
+								/>
+							)}
+							{form.watch(`order_entry.${index}.is_proceed_to_repair`) && (
+								<FormField
+									control={form.control}
+									name={`order_entry.${index}.bill_amount`}
+									render={(props) => <CoreForm.Input type='number' label='Bill Amount' {...props} />}
+								/>
+							)}
+						</div>
 					</div>
 				);
 			},
@@ -97,7 +155,6 @@ const useGenerateFieldDefs = ({
 			accessorKey: 'brand_uuid',
 			type: 'custom',
 			component: (index: number) => {
-				setBrand(form.watch(`order_entry.${index}.brand_uuid`));
 				return (
 					<FormField
 						control={form.control}

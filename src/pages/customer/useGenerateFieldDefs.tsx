@@ -24,7 +24,6 @@ const useGenerateFieldDefs = ({ copy, remove, form, isUpdate }: IGenerateFieldDe
 	const [brand, setBrand] = useState([]);
 	const { data: modelOption } = useOtherModelByQuery<IFormSelectOption[]>(`is_brand=false&brand_uuid=${brand}`);
 	const { data: brandOptions } = useOtherBrand<IFormSelectOption[]>();
-console.log(brand);
 	return [
 		{
 			header: 'Actions',

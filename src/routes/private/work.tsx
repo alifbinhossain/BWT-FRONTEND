@@ -17,9 +17,7 @@ import RepairingEntry from '@/pages/work/repairing/add-or-update';
 import Section from '@/pages/work/section';
 import { IRoute } from '@/types';
 
-
-
-
+import Chat from '@/components/others/message';
 
 const User = lazy(() => import('@/pages/hr/user'));
 
@@ -41,6 +39,7 @@ const workRoutes: IRoute[] = [
 					'click_reset_password',
 					'click_page_assign',
 					'click_rating_change',
+					'create_employee',
 				],
 			},
 			{
@@ -48,7 +47,13 @@ const workRoutes: IRoute[] = [
 				path: '/work/info',
 				element: <Info />,
 				page_name: 'work__info',
-				actions: ['create', 'read', 'update', 'delete'],
+				actions: [
+					'create',
+					'read',
+					'update',
+					'delete',
+					'click_contact_with_customer_override',
+				],
 			},
 
 			{
@@ -121,6 +126,13 @@ const workRoutes: IRoute[] = [
 					'click_trx',
 				],
 			},
+			// {
+			// 	name: 'chat',
+			// 	path: '/work/chat',
+			// 	element: <Chat />,
+			// 	page_name: 'work__chat',
+			// 	actions: ['create', 'read', 'update', 'delete'],
+			// },
 			{
 				name: 'Repairing Update',
 				path: '/work/repairing/update/:uuid',

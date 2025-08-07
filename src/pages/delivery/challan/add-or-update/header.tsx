@@ -10,17 +10,18 @@ import { IChallan } from '../../_config/schema';
 
 const Header = ({ challan_uuid }: { challan_uuid: string }) => {
 	const form = useFormContext<IChallan>();
-	const query = challan_uuid
-		? `?challan_uuid=${challan_uuid}`
-		: `?type=customer&is_challan_needed=true`;
+	const query = challan_uuid ? `?challan_uuid=${challan_uuid}` : `?type=customer&is_challan_needed=true`;
+	const employeeQuery =
+		form.watch('challan_type') === 'courier_delivery' ? '?type=employee' : `?type=employee&department=delivery`;
 	const { data: customerOption } = useOtherUserByQuery<IFormSelectOption[]>(query);
 	const { data: vehicleOption } = useOtherVehicle<IFormSelectOption[]>();
-	const { data: employeeOption } = useOtherUserByQuery<IFormSelectOption[]>('?type=employee&designation=delivery');
+	const { data: employeeOption } = useOtherUserByQuery<IFormSelectOption[]>(employeeQuery);
 	const { data: courierOption } = useOtherCourier<IFormSelectOption[]>();
 	const { data: branchOption } = useOtherBranch<IFormSelectOption[]>();
 	const paymentMethodOptions = [
 		{ value: 'cash', label: 'Cash' },
 		{ value: 'due', label: 'Due' },
+		{ value: 'on_condition', label: 'On Condition' },
 	];
 	const typeOption = [
 		{ label: 'Customer Pickup', value: 'customer_pickup' },
@@ -102,8 +103,7 @@ const Header = ({ challan_uuid }: { challan_uuid: string }) => {
 					/>
 				)}
 			/>
-			{(form.watch('challan_type') === 'employee_delivery' ||
-				form.watch('challan_type') === 'vehicle_delivery') && (
+			{form.watch('challan_type') !== 'customer_pickup' && (
 				<FormField
 					control={form.control}
 					name='employee_uuid'
