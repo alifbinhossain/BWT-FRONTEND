@@ -11,7 +11,7 @@ import { hrQK } from './queryKeys';
 export const useReportDailyAbsent = <T>(date: string, status?: string, department?: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.reportDailyAbsent(date, status || '', department || ''),
-		url: `/report/daily-absent-report?date=${date}&status=${status}&department_uuid=${department}`,
+		url: `/report/daily-absent-report?from_date=${date}&status=${status}&department_uuid=${department}`,
 		enabled: !!date,
 	});
 
