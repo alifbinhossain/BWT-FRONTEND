@@ -1262,7 +1262,7 @@ export const diagnosisColumns = ({
 		header: 'Order ID',
 		enableColumnFilter: false,
 		cell: (info) => {
-			const uuid = info.row.original.uuid;
+			const uuid = info.row.original.order_uuid;
 			const info_uuid = info.row.original.info_uuid;
 			const reclaimed_order_uuid = info.row.original.reclaimed_order_uuid;
 			return (
