@@ -27,6 +27,11 @@ const ShiftsGroups = lazy(() => import('@/pages/hr/shifts-management/shifts-grou
 const Roasters = lazy(() => import('@/pages/hr/shifts-management/roasters'));
 const IndividualReport = lazy(() => import('@/pages/hr/report/individual-report'));
 const DepartmentReport = lazy(() => import('@/pages/hr/report/department-report'));
+const LeaveHistory = lazy(() => import('@/pages/hr/report/leave/history'));
+const LeaveBalance = lazy(() => import('@/pages/hr/report/leave/balance'));
+const AbsentSummery = lazy(() => import('@/pages/hr/report/absent/summery'));
+const DailyAbsent = lazy(() => import('@/pages/hr/report/absent/daily'));
+const LateReport = lazy(() => import('@/pages/hr/report/late'));
 const MonthlyReport = lazy(() => import('@/pages/hr/report/monthly-report'));
 const DailyReport = lazy(() => import('@/pages/hr/report/daily-report'));
 
@@ -275,6 +280,52 @@ const HrRoutes: IRoute[] = [
 						actions: ['read'],
 					},
 					{
+
+						name: 'Leave Report',
+						children: [
+							{
+								name: 'History',
+								path: '/hr/report/leave/history',
+								element: <LeaveHistory />,
+								page_name: 'report__leave_history',
+								actions: ['read'],
+							},
+							{
+								name: 'Balance',
+								path: '/hr/report/leave/balance',
+								element: <LeaveBalance />,
+								page_name: 'report__leave_balance',
+								actions: ['read'],
+							},
+						],
+					},
+					{
+						name: 'Absent',
+						children: [
+							{
+								name: 'Daily Absent',
+								path: '/hr/report/absent/daily',
+								element: <DailyAbsent />,
+								page_name: 'report__absent_daily',
+								actions: ['read'],
+							},
+							{
+								name: 'Summery',
+								path: '/hr/report/absent/summery',
+								element: <AbsentSummery />,
+								page_name: 'report__absent_summery',
+								actions: ['read'],
+							},
+						],
+					},
+					{
+						name: 'Late Report',
+						path: '/hr/report/late',
+						element: <LateReport />,
+						page_name: 'report__late',
+						actions: ['read'],
+					},
+					{
 						name: 'Monthly Report',
 						path: '/hr/report/monthly',
 						element: <MonthlyReport />,
@@ -287,7 +338,7 @@ const HrRoutes: IRoute[] = [
 						element: <DailyReport />,
 						page_name: 'report__daily_report',
 						actions: ['read'],
-					}
+					},
 				],
 			},
 		],

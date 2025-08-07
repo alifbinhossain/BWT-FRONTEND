@@ -26,7 +26,9 @@ const FieldVisit = () => {
 	const params = {} as IPaginationQuery;
 	searchParams.forEach((value, key) => ((params as any)[key] = value));
 
-	const { data, pagination, isLoading, url, deleteData, refetch } = useHrApplyLeave2<IApplyLeaveTableData[]>(params);
+	const { data, pagination, isLoading, url, deleteData, refetch } = useHrApplyLeave2<{
+		data: IApplyLeaveTableData[];
+	}>(params);
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Apply Leave', url, 'admin__leave_apply_leave'), [url]);
 
@@ -87,7 +89,7 @@ const FieldVisit = () => {
 						title={pageInfo.getTitle()}
 						pagination={pagination!}
 						columns={columns}
-						data={data ?? []}
+						data={data?.data ?? []}
 						isLoading={isLoading}
 						handleCreate={handleCreate}
 						handleUpdate={handleUpdate}

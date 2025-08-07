@@ -1,16 +1,17 @@
 import { UserCheck, UserMinus } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 import useProfile from '@/hooks/useProfile';
 
 import { Button } from '@/components/ui/button';
 
 import { getDateTime } from '@/utils';
 
-const ResignEmployee = () => {
+const ResignEmployee = (data: any) => {
 	const { user, profileData, updateProfileData } = useProfile();
 
 	const onSubmit = async () => {
 		await updateProfileData.mutateAsync({
-			url: `/hr/employee/${user?.employee_uuid}`,
+			url: `/hr/employee/${data?.data?.uuid}`,
 			updatedData: {
 				is_resign: profileData?.is_resign ? false : true,
 				updated_at: getDateTime(),

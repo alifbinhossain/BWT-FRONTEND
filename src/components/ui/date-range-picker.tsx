@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, type FC } from 'react';
+import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -13,52 +14,41 @@ import SingleDatePicker from './single-date-picker';
 import { Switch } from './switch';
 
 export interface DateRangePickerProps {
-	/** Click handler for applying the updates from DateRangePicker. */
+	/** Click handler for applying updates from DateRangePicker */
 	onUpdate?: (values: { range: DateRange; rangeCompare?: DateRange }) => void;
 	/** Initial value for start date */
 	initialDateFrom?: Date | string;
 	/** Initial value for end date */
 	initialDateTo?: Date | string;
-	/** Initial value for start date for compare */
+	/** Initial value for compare start date */
 	initialCompareFrom?: Date | string;
-	/** Initial value for end date for compare */
+	/** Initial value for compare end date */
 	initialCompareTo?: Date | string;
 	/** Alignment of popover */
 	align?: 'start' | 'center' | 'end';
-	/** Option for locale */
+	/** Locale identifier */
 	locale?: string;
-	/** Option for showing compare feature */
+	/** Enable compare feature */
 	showCompare?: boolean;
-
+	/** Clear handler */
 	onClear?: () => void;
-
 	isModal?: boolean;
-
 	isMobile?: boolean;
-
 	className?: string;
+	/** Minimum selectable date */
+	minDate?: Date;
+	/** Maximum selectable date */
+	maxDate?: Date;
 }
 
-const formatDate = (date: Date, locale: string = 'en-us'): string => {
-	return date.toLocaleDateString(locale, {
-		month: 'short',
-		day: 'numeric',
-		year: 'numeric',
-	});
-};
+const formatDate = (date: Date, locale: string = 'en-US'): string => format(date, 'yyyy/MM/dd');
 
 const getDateAdjustedForTimezone = (dateInput: Date | string): Date => {
 	if (typeof dateInput === 'string') {
-		// Split the date string to get year, month, and day parts
-		const parts = dateInput.split('-').map((part) => parseInt(part, 10));
-		// Create a new Date object using the local timezone
-		// Note: Month is 0-indexed, so subtract 1 from the month part
-		const date = new Date(parts[0], parts[1] - 1, parts[2]);
-		return date;
-	} else {
-		// If dateInput is already a Date object, return it directly
-		return dateInput;
+		const [year, month, day] = dateInput.split('-').map(Number);
+		return new Date(year, month - 1, day);
 	}
+	return dateInput;
 };
 
 interface DateRange {
@@ -71,7 +61,6 @@ interface Preset {
 	label: string;
 }
 
-// Define presets
 const PRESETS: Preset[] = [
 	{ name: 'lastThreeMonths', label: '3 Months' },
 	{ name: 'lastSixMonths', label: '6 Months' },
@@ -87,10 +76,7 @@ const PRESETS: Preset[] = [
 	{ name: 'thisYear', label: 'This Year' },
 ];
 
-/** The DateRangePicker component allows a user to select a range of dates */
-export const DateRangePicker: FC<DateRangePickerProps> & {
-	filePath: string;
-} = ({
+export const DateRangePicker: FC<DateRangePickerProps> & { filePath: string } = ({
 	initialDateFrom = new Date(new Date().setHours(0, 0, 0, 0)),
 	initialDateTo,
 	initialCompareFrom,
@@ -102,9 +88,10 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 	onClear,
 	isMobile,
 	className,
+	minDate,
+	maxDate,
 }): React.ReactNode => {
 	const [isOpen, setIsOpen] = useState(false);
-
 	const [range, setRange] = useState<DateRange>({
 		from: getDateAdjustedForTimezone(initialDateFrom),
 		to: initialDateTo ? getDateAdjustedForTimezone(initialDateTo) : getDateAdjustedForTimezone(initialDateFrom),
@@ -120,12 +107,9 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 			: undefined
 	);
 
-	// Refs to store the values of range and rangeCompare when the date picker is opened
 	const openedRangeRef = useRef<DateRange | undefined>(undefined);
 	const openedRangeCompareRef = useRef<DateRange | undefined>(undefined);
-
 	const [selectedPreset, setSelectedPreset] = useState<string | undefined>(undefined);
-
 	const [isSmallScreen, setIsSmallScreen] = useState(
 		typeof window !== 'undefined' ? window.innerWidth < 1080 : false
 	);
@@ -143,13 +127,8 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 		const handleResize = (): void => {
 			setIsSmallScreen(window.innerWidth < 960);
 		};
-
 		window.addEventListener('resize', handleResize);
-
-		// Clean up event listener on unmount
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
+		return () => window.removeEventListener('resize', handleResize);
 	}, []);
 
 	const getPresetRange = (presetName: string): DateRange => {
@@ -196,13 +175,11 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 				from.setHours(0, 0, 0, 0);
 				to.setHours(23, 59, 59, 999);
 				break;
-
 			case 'thisMonth':
 				from.setDate(1);
 				from.setHours(0, 0, 0, 0);
 				to.setHours(23, 59, 59, 999);
 				break;
-
 			case 'lastMonth':
 				from.setMonth(from.getMonth() - 1);
 				from.setDate(1);
@@ -210,19 +187,16 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 				to.setDate(0);
 				to.setHours(23, 59, 59, 999);
 				break;
-
 			case 'lastThreeMonths':
 				from.setDate(from.getDate() - 89);
 				from.setHours(0, 0, 0, 0);
 				to.setHours(23, 59, 59, 999);
 				break;
-
 			case 'lastSixMonths':
 				from.setDate(from.getDate() - 179);
 				from.setHours(0, 0, 0, 0);
 				to.setHours(23, 59, 59, 999);
 				break;
-
 			case 'thisYear':
 				from.setMonth(0);
 				from.setDate(1);
@@ -232,7 +206,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 				to.setHours(23, 59, 59, 999);
 				break;
 		}
-
 		return { from, to };
 	};
 
@@ -256,11 +229,13 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 
 			const normalizedRangeFrom = new Date(range.from);
 			normalizedRangeFrom.setHours(0, 0, 0, 0);
-			const normalizedPresetFrom = new Date(presetRange.from.setHours(0, 0, 0, 0));
+			const normalizedPresetFrom = new Date(presetRange.from);
+			normalizedPresetFrom.setHours(0, 0, 0, 0);
 
-			const normalizedRangeTo = new Date(range.to ?? 0);
+			const normalizedRangeTo = new Date(range.to ?? range.from);
 			normalizedRangeTo.setHours(0, 0, 0, 0);
-			const normalizedPresetTo = new Date(presetRange.to?.setHours(0, 0, 0, 0) ?? 0);
+			const normalizedPresetTo = new Date(presetRange.to ?? presetRange.from);
+			normalizedPresetTo.setHours(0, 0, 0, 0);
 
 			if (
 				normalizedRangeFrom.getTime() === normalizedPresetFrom.getTime() &&
@@ -270,7 +245,6 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 				return;
 			}
 		}
-
 		setSelectedPreset(undefined);
 	};
 
@@ -333,10 +307,23 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 		</Button>
 	);
 
-	// Helper function to check if two date ranges are equal
+	// Fixed areRangesEqual function with proper type checking
 	const areRangesEqual = (a?: DateRange, b?: DateRange): boolean => {
-		if (!a || !b) return a === b; // If either is undefined, return true if both are undefined
-		return a.from.getTime() === b.from.getTime() && (!a.to || !b.to || a.to.getTime() === b.to.getTime());
+		// If either is undefined, they're equal only if both are undefined
+		if (!a || !b) return a === b;
+
+		// Ensure both from dates exist and are Date objects
+		if (!(a.from instanceof Date) || !(b.from instanceof Date)) return false;
+
+		// Compare from dates
+		if (a.from.getTime() !== b.from.getTime()) return false;
+
+		// Handle to dates comparison
+		if (!a.to && !b.to) return true; // Both undefined
+		if (!a.to || !b.to) return false; // One undefined, one not
+		if (!(a.to instanceof Date) || !(b.to instanceof Date)) return false;
+
+		return a.to.getTime() === b.to.getTime();
 	};
 
 	useEffect(() => {
@@ -345,6 +332,13 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 			openedRangeCompareRef.current = rangeCompare;
 		}
 	}, [isOpen]);
+
+	// Create disabled function for calendar
+	const isDateDisabled = (date: Date): boolean => {
+		if (minDate && date < minDate) return true;
+		if (maxDate && date > maxDate) return true;
+		return false;
+	};
 
 	return (
 		<Popover
@@ -431,6 +425,8 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 										disableIcon
 										className='justify-center'
 										selected={range?.from}
+										minDate={minDate}
+										maxDate={maxDate}
 										onSelect={(date) => setRange((prevRange) => ({ ...prevRange, from: date }))}
 									/>
 									<div className='py-1'>-</div>
@@ -438,6 +434,8 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 										disableIcon
 										className='justify-center'
 										selected={range?.to || new Date()}
+										minDate={minDate}
+										maxDate={maxDate}
 										onSelect={(date) => setRange((prevRange) => ({ ...prevRange, to: date }))}
 									/>
 								</div>
@@ -494,6 +492,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 								defaultMonth={
 									new Date(new Date().setMonth(new Date().getMonth() - (isSmallScreen ? 0 : 1)))
 								}
+								disabled={isDateDisabled}
 							/>
 						</div>
 					</div>
@@ -503,7 +502,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 					{onClear && (
 						<Button
 							size={'sm'}
-							aria-label='Cancel'
+							aria-label='Clear Filter'
 							onClick={() => {
 								setIsOpen(false);
 								resetValues();

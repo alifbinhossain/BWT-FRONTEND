@@ -23,6 +23,7 @@ const ProfileInformation = () => {
 	};
 
 	const { profileData, updateProfileData, isLoading } = useProfile();
+	console.log(profileData);
 
 	if (isLoading) return <div>Loading...</div>;
 
@@ -55,7 +56,7 @@ const ProfileInformation = () => {
 					{currentTab === 'Notification Settings' && <NotificationSettings />}
 				</Content>
 			</div>
-			<ActionsSidebar />
+			<ActionsSidebar data={profileData} />
 		</div>
 	);
 };

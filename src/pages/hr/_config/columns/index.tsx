@@ -379,13 +379,13 @@ export const manualEntryColumns = (): ColumnDef<IManualEntryTableData>[] => [
 		accessorKey: 'entry_time',
 		header: 'Entry Time',
 		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+		cell: (info) => <DateTime date={info.getValue() as Date} isDate={false} />,
 	},
 	{
 		accessorKey: 'exit_time',
 		header: 'Exit Time',
 		enableColumnFilter: false,
-		cell: (info) => <DateTime date={info.getValue() as Date} isTime={false} />,
+		cell: (info) => <DateTime date={info.getValue() as Date} isDate={false} />,
 	},
 	{
 		accessorKey: 'approval',

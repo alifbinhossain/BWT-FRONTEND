@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 import useProfile from '@/hooks/useProfile';
 
 import { DeleteModal } from '@/components/core/modal';
 import { Button } from '@/components/ui/button';
 
-const DeleteEmployee = () => {
+const DeleteEmployee = (data: any) => {
 	const { user, deleteProfileData } = useProfile();
+	const { uuid } = useParams();
 	const [deleteItem, setDeleteItem] = useState<{
 		id: string;
 		name: string;
@@ -15,7 +17,9 @@ const DeleteEmployee = () => {
 	return (
 		<>
 			<Button
-				onClick={() => setDeleteItem({ id: user?.employee_uuid as string, name: user?.name as string })}
+				onClick={() =>
+					setDeleteItem({ id: data?.data?.uuid as string, name: data?.data?.employee_name as string })
+				}
 				variant={'destructive'}
 				className={`h-auto w-full justify-start px-4 py-2`}
 			>
