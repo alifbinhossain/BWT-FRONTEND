@@ -25,6 +25,7 @@ const FieldVisit = () => {
 
 	const params = {} as IPaginationQuery;
 	searchParams.forEach((value, key) => ((params as any)[key] = value));
+	console.log(params);
 
 	const { data, pagination, isLoading, url, deleteData, refetch } = useHrApplyLeave2<{
 		data: IApplyLeaveTableData[];
@@ -84,8 +85,8 @@ const FieldVisit = () => {
 			<div>
 				<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 					<TableProviderSSR
-						start_date={params.start_date ? new Date(params.start_date) : undefined}
-						end_date={params.end_date ? new Date(params.end_date) : undefined}
+						start_date={params.start_date ? new Date(params.start_date) : new Date()}
+						end_date={params.end_date ? new Date(params.end_date) : new Date()}
 						title={pageInfo.getTitle()}
 						pagination={pagination!}
 						columns={columns}
@@ -125,7 +126,7 @@ const FieldVisit = () => {
 					</TableProviderSSR>
 				</PageProvider>
 			</div>
-			<div className='w-full rounded-md border bg-white p-4'>
+			{/* <div className='w-full rounded-md border bg-white p-4'>
 				{employeeInfo ? (
 					<div>
 						<EmployeeInformation data={employeeInfo} />
@@ -137,7 +138,7 @@ const FieldVisit = () => {
 						<p>Select an employee to see their information</p>
 					</div>
 				)}
-			</div>
+			</div> */}
 		</div>
 	);
 };
