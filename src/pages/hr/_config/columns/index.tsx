@@ -448,6 +448,14 @@ export const deviceListColumns = ({
 ];
 
 //? Report ?//
+//* Format Decimal Values To Hours
+function formatDecimalHours(decimalHours: number) {
+	if (!decimalHours) return '--';
+	const totalMinutes = Math.round(decimalHours * 60);
+	const hours = Math.floor(totalMinutes / 60);
+	const minutes = totalMinutes % 60;
+	return `${hours}h ${minutes}m`;
+}
 
 //* Individual Report
 export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndividualReportTableData>[] => [
@@ -554,7 +562,7 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 								status === 'Late' && 'rounded-full bg-yellow-200 px-2 text-yellow-700'
 							)}
 						>
-							{status === 'Absent' ? '-' : late_hours}
+							{status === 'Absent' ? '-' : formatDecimalHours(late_hours as number)}
 						</span>
 					</div>
 
@@ -566,32 +574,24 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 								status === 'Early Exit' && 'rounded-full bg-orange-200 px-2 text-orange-700'
 							)}
 						>
-							{status === 'Absent' ? '-' : early_exit_hours}
+							{status === 'Absent' ? '-' : formatDecimalHours(early_exit_hours)}
 						</span>
 					</div>
 
 					<div className='flex items-center gap-2'>
 						<strong className='min-w-[80px]'>Worked:</strong>
-						<span className='px-2'>{status === 'Absent' ? '-' : hours_worked}</span>
+						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(hours_worked as number)}</span>
 					</div>
 
 					<div className='flex items-center gap-2'>
 						<strong className='min-w-[80px]'>Expected:</strong>
-						<span className='px-2'>{status === 'Absent' ? '-' : expected_hours}</span>
+						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(expected_hours as number)}</span>
 					</div>
 				</div>
 			);
 		},
 	})),
 ];
-
-function formatDecimalHours(decimalHours: number) {
-	if (!decimalHours) return '--';
-	const totalMinutes = Math.round(decimalHours * 60);
-	const hours = Math.floor(totalMinutes / 60);
-	const minutes = totalMinutes % 60;
-	return `${hours}h ${minutes}m`;
-}
 
 //* Department Report
 export const departmentReportColumns = (dateAccessor: string[]): ColumnDef<IDepartmentReportTableData>[] => [
@@ -869,20 +869,24 @@ export const monthlyReportColumns = (): ColumnDef<IMonthlyReportTableData>[] => 
 		accessorKey: 'expected_hours',
 		header: 'Expected Hours',
 		enableColumnFilter: false,
+		cell: (info) => formatDecimalHours(info.getValue() as number),
 	},
 	{
 		accessorKey: 'total_late_hours',
 		header: 'Total Late Hours',
 		enableColumnFilter: false,
+		cell: (info) => formatDecimalHours(info.getValue() as number),
 	},
 	{
 		accessorKey: 'working_hours',
 		header: 'Working Hours',
 		enableColumnFilter: false,
+		cell: (info) => formatDecimalHours(info.getValue() as number),
 	},
 	{
 		accessorKey: 'difference_hours',
 		header: 'Difference Hours',
 		enableColumnFilter: false,
+		cell: (info) => formatDecimalHours(info.getValue() as number),
 	},
 ];
