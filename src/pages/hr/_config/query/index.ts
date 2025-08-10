@@ -1,9 +1,14 @@
 import { IPaginationQuery } from '@/types';
 import useTQuery from '@/hooks/useTQuery';
 
+
+
 import addQueryParams from '@/utils/addQueryParams';
 
+
+
 import { hrQK } from './queryKeys';
+
 
 // * User
 
@@ -244,7 +249,7 @@ export const useHrManualEntry = <T>(query?: string) =>
 export const useHrManualEntry2 = <T>(pagination: IPaginationQuery) =>
 	useTQuery<T>({
 		queryKey: hrQK.manualEntry2(pagination),
-		url: addQueryParams('/hr/manual-entry/field-visit/by/pagination', pagination),
+		url: addQueryParams(`/hr/manual-entry/field-visit/by/pagination`, pagination),
 	});
 
 export const useHrManualEntryByUUID = <T>(uuid: string) =>

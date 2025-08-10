@@ -23,12 +23,12 @@ const Info = () => {
 	const [to, setTo] = useState<Date | string>(new Date());
 	const [status, setStatus] = useState<string | undefined>(undefined);
 	const [approval, setApproval] = useState(undefined);
-	const { data: departmentOptions } = useOtherDepartment<IFormSelectOption[]>();
 
 	const { data, url, isLoading, refetch } = useReportFieldVisit<IFieldVisitTableData[]>(
 		format(from, 'yyyy/MM/dd'),
 		format(to, 'yyyy/MM/dd'),
-		status
+		status,
+		approval
 	);
 
 	const pageInfo = useMemo(() => new PageInfo('Report/FieldVisit', url, 'report__field_visit'), []);
@@ -39,7 +39,6 @@ const Info = () => {
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 			<TableProvider
-			
 				title={pageInfo.getTitle()}
 				columns={columns}
 				data={data ?? []}
@@ -82,9 +81,9 @@ const Info = () => {
 							}}
 						/>
 						<ReactSelect
-							placeholder='Select Status'
+							placeholder='Select Approval Status'
 							options={approvalOptions}
-							value={approvalOptions.find((option) => option.value === status)}
+							value={approvalOptions.find((option) => option.value === approval)}
 							menuPortalTarget={document.body}
 							styles={{
 								menuPortal: (base) => ({ ...base, zIndex: 999 }),
