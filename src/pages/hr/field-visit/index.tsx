@@ -4,10 +4,16 @@ import { IPaginationQuery } from '@/types';
 import { Row } from '@tanstack/react-table';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+
+
 import { Separator } from '@/components/ui/separator';
+
+
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
+
+
 
 import { fieldVisitColumns } from '../_config/columns';
 import { IManualEntryTableData } from '../_config/columns/columns.type';
@@ -17,16 +23,19 @@ import { IFieldVisitEmployee } from '../_config/types';
 import EmployeeInformation from './employee-information';
 import FiledVisitInformation from './field_visit_information';
 
+
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const FieldVisit = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 
-	const params = {} as IPaginationQuery;
+	const params = { is_pagination : 'true'} as IPaginationQuery;
 	searchParams.forEach((value, key) => ((params as any)[key] = value));
-	const { data, pagination, isLoading, url, deleteData, refetch } =
-		useHrManualEntry2<IManualEntryTableData[]>(params);
+
+	const { data, pagination, isLoading, url, deleteData, refetch } = useHrManualEntry2<{
+		data: IManualEntryTableData[];
+	}>(params);
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Field Visit', url, 'admin__field_visit'), [url]);
 
@@ -66,9 +75,11 @@ const FieldVisit = () => {
 			<div className='flex-1'>
 				<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 					<TableProviderSSR
+						start_date={params.start_date ? new Date(params.start_date) : new Date()}
+						end_date={params.end_date ? new Date(params.end_date) : new Date()}
 						title={pageInfo.getTitle()}
 						columns={columns}
-						data={data ?? []}
+						data={data?.data ?? []}
 						pagination={pagination!}
 						isLoading={isLoading}
 						handleCreate={handleCreate}

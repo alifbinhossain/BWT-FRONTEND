@@ -34,7 +34,7 @@ const LastFiveFieldVisit: React.FC<{ data: IFieldVisitEmployee }> = ({ data }) =
 	return (
 		<div className='space-y-4'>
 			{data.field_visit && (
-				<TableWithoutTitleBackground title='Last 5 Field Visits' data={data.field_visit} columns={columns} />
+				<TableWithoutTitleBackground title='Last 5 Field Visits' data={data.field_visit||[]} columns={columns} />
 			)}
 		</div>
 	);

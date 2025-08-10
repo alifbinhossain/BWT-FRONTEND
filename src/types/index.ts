@@ -162,6 +162,7 @@ export type IPaginationQuery = {
 	q: string;
 	start_date: string | undefined;
 	end_date: string | undefined;
+	is_pagination?: string;
 	[key: string]: string | number | undefined;
 };
 
