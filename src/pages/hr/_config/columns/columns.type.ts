@@ -213,11 +213,11 @@ export type DateAccessor = {
 	punch_date: Date;
 	entry_time: Date;
 	exit_time: Date;
-	hours_worked: number;
-	expected_hours: number;
+	hours_worked: string | number;
+	expected_hours: string | number;
 	status: string;
 	late_time: Date;
-	late_hours: number;
+	late_hours: string | number;
 	early_exit_before: string;
 	early_exit_hours: number;
 };
