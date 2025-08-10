@@ -11,5 +11,6 @@ export const hrQK = {
 		to,
 		department,
 		status,
+		'reportWorkingHour',
 	],
 };

@@ -126,7 +126,7 @@ const FieldVisit = () => {
 					</TableProviderSSR>
 				</PageProvider>
 			</div>
-			{/* <div className='w-full rounded-md border bg-white p-4'>
+			<div className='w-full rounded-md border bg-white p-4'>
 				{employeeInfo ? (
 					<div>
 						<EmployeeInformation data={employeeInfo} />
@@ -138,7 +138,7 @@ const FieldVisit = () => {
 						<p>Select an employee to see their information</p>
 					</div>
 				)}
-			</div> */}
+			</div>
 		</div>
 	);
 };

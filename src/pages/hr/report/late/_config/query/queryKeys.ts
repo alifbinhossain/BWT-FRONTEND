@@ -9,6 +9,6 @@ export const hrQK = {
 		from,
 		to,
 		status,
-		
+		'reportLate',
 	],
 };
