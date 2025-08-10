@@ -10,7 +10,8 @@ export const hrQK = {
 		to,
 		category,
 		approval,
+		'reportLeaveHistory',
 	],
 	//* Report Leave Balance
-	reportLeaveBalance: (from: string, to: string) => [...hrQK.all(), from, to],
+	reportLeaveBalance: (from: string, to: string) => [...hrQK.all(), from, to,'reportLeaveBalance'],
 };

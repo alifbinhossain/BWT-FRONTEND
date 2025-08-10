@@ -9,6 +9,7 @@ export const hrQK = {
 		date,
 		status,
 		department,
+		'reportDailyAbsent',
 	],
 	//* Report Leave Balance
 	reportAbsentSummery: (from: string, to: string, status?: string, department?: string) => [
@@ -17,5 +18,6 @@ export const hrQK = {
 		to,
 		status,
 		department,
+		'reportAbsentSummery',
 	],
 };
