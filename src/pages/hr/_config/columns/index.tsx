@@ -501,7 +501,8 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 						status === 'Late' && 'border-yellow-200 bg-yellow-50',
 						status === 'Early Exit' && 'border-orange-200 bg-orange-50',
 						status === 'Present' && 'border-green-200 bg-green-50',
-						status === 'Off Day' && 'border-blue-200 bg-blue-50'
+						status === 'Off Day' && 'border-blue-200 bg-blue-50',
+						status === 'Leave' && 'border-purple-200 bg-purple-50'
 					)}
 				>
 					<div className='flex items-center gap-2'>
@@ -513,7 +514,8 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 								status === 'Late' && 'border-yellow-500 bg-yellow-100 text-yellow-700',
 								status === 'Early Exit' && 'border-orange-500 bg-orange-100 text-orange-700',
 								status === 'Present' && 'border-green-500 bg-green-100 text-green-700',
-								status === 'Off Day' && 'border-blue-500 bg-blue-100 text-blue-700'
+								status === 'Off Day' && 'border-blue-500 bg-blue-100 text-blue-700',
+								status === 'Leave' && 'border-purple-500 bg-purple-100 text-purple-700'
 							)}
 						>
 							{status ?? 'N/A'}
@@ -533,7 +535,7 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 								)}
 							/>
 						) : (
-							<span className='px-2'>-</span>
+							<span className='px-2'>--</span>
 						)}
 					</div>
 
@@ -550,7 +552,7 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 								)}
 							/>
 						) : (
-							<span className='px-2'>-</span>
+							<span className='px-2'>--</span>
 						)}
 					</div>
 
@@ -580,12 +582,14 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 
 					<div className='flex items-center gap-2'>
 						<strong className='min-w-[80px]'>Worked:</strong>
-						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(hours_worked as number)}</span>
+						<span className='px-2'>
+							{status === 'Absent' ? '-' : formatDecimalHours(hours_worked as number)}
+						</span>
 					</div>
 
 					<div className='flex items-center gap-2'>
 						<strong className='min-w-[80px]'>Expected:</strong>
-						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(expected_hours as number)}</span>
+						<span className='px-2'>{formatDecimalHours(expected_hours as number)}</span>
 					</div>
 				</div>
 			);
@@ -637,7 +641,8 @@ export const departmentReportColumns = (dateAccessor: string[]): ColumnDef<IDepa
 						status === 'Late' && 'border-yellow-200 bg-yellow-50',
 						status === 'Early Exit' && 'border-orange-200 bg-orange-50',
 						status === 'present' && 'border-green-200 bg-green-50',
-						status === 'Off Day' && 'border-blue-200 bg-blue-50'
+						status === 'Off Day' && 'border-blue-200 bg-blue-50',
+						status === 'Leave' && 'border-purple-200 bg-purple-50'
 					)}
 				>
 					<div className='flex items-center gap-2'>
@@ -649,7 +654,8 @@ export const departmentReportColumns = (dateAccessor: string[]): ColumnDef<IDepa
 								status === 'Late' && 'border-yellow-500 bg-yellow-100 text-yellow-700',
 								status === 'Early Exit' && 'border-orange-500 bg-orange-100 text-orange-700',
 								status === 'present' && 'border-green-500 bg-green-100 text-green-700',
-								status === 'Off Day' && 'border-blue-500 bg-blue-100 text-blue-700'
+								status === 'Off Day' && 'border-blue-500 bg-blue-100 text-blue-700',
+								status === 'Leave' && 'border-purple-500 bg-purple-100 text-purple-700'
 							)}
 						>
 							{status ?? 'N/A'}
@@ -669,7 +675,7 @@ export const departmentReportColumns = (dateAccessor: string[]): ColumnDef<IDepa
 								)}
 							/>
 						) : (
-							<span className='px-2'>-</span>
+							<span className='px-2'>--</span>
 						)}
 					</div>
 
@@ -686,7 +692,7 @@ export const departmentReportColumns = (dateAccessor: string[]): ColumnDef<IDepa
 								)}
 							/>
 						) : (
-							<span className='px-2'>-</span>
+							<span className='px-2'>--</span>
 						)}
 					</div>
 
@@ -721,7 +727,7 @@ export const departmentReportColumns = (dateAccessor: string[]): ColumnDef<IDepa
 
 					<div className='flex items-center gap-2'>
 						<strong className='min-w-[80px]'>Expected:</strong>
-						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(expected_hours)}</span>
+						<span className='px-2'>{formatDecimalHours(expected_hours)}</span>
 					</div>
 				</div>
 			);

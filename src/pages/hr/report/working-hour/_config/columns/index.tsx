@@ -57,6 +57,7 @@ export const workingHourColumns = (dateAccessor: string[]): ColumnDef<IWorkingHo
 		size: 210,
 		cell: (info: any) => {
 			const { entry_time, exit_time, hours_worked, expected_hours, status } = info.getValue() as DateAccessor;
+
 			if (!entry_time && !exit_time) {
 				return '-';
 			} else if (expected_hours > hours_worked && status !== 'Off Day') {
@@ -71,11 +72,11 @@ export const workingHourColumns = (dateAccessor: string[]): ColumnDef<IWorkingHo
 						</span>
 					</div>
 				);
-			} else if (status === 'Off Day') {
+			} else if (status === 'Off Day' || status === 'Leave') {
 				return (
 					<div className='flex flex-col gap-2'>
 						<span className='text-green-500'>{decimalHoursToHourMinute(hours_worked as number)}</span>
-						<span className='text-xs text-gray-400'>Off day</span>
+						<span className='text-xs text-gray-400'>{status}</span>
 					</div>
 				);
 			} else if (expected_hours === hours_worked) {
