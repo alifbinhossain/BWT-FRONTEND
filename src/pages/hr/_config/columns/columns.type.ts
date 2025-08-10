@@ -213,13 +213,13 @@ export type DateAccessor = {
 	punch_date: Date;
 	entry_time: Date;
 	exit_time: Date;
-	hours_worked: string;
-	expected_hours: string;
+	hours_worked: number;
+	expected_hours: number;
 	status: string;
 	late_time: Date;
-	late_hours: string;
+	late_hours: number;
 	early_exit_before: string;
-	early_exit_hours: string;
+	early_exit_hours: number;
 };
 
 export type IIndividualReportTableData = {
@@ -228,8 +228,8 @@ export type IIndividualReportTableData = {
 	punch_date: string;
 	entry_time: string;
 	exit_time: string;
-	hours_worked: string;
-	expected_hours: string;
+	hours_worked: number;
+	expected_hours: number;
 	shift_details: {
 		name: string;
 		start_time: Date;
