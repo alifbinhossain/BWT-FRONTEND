@@ -110,18 +110,11 @@ const FieldVisit = () => {
 								{...{
 									deleteItem,
 									setDeleteItem,
-									url: '/hr/manual-entry',
+									url: '/hr/apply-leave',
 									deleteData,
 								}}
 							/>,
-							<DeleteAllModal
-								{...{
-									deleteItems,
-									setDeleteItems,
-									url: '/hr/manual-entry',
-									deleteData,
-								}}
-							/>,
+							
 						])}
 					</TableProviderSSR>
 				</PageProvider>
