@@ -562,7 +562,7 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 								status === 'Late' && 'rounded-full bg-yellow-200 px-2 text-yellow-700'
 							)}
 						>
-							{status === 'Absent' ? '-' : formatDecimalHours(late_hours)}
+							{status === 'Absent' ? '-' : formatDecimalHours(late_hours as number)}
 						</span>
 					</div>
 
@@ -580,12 +580,12 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 
 					<div className='flex items-center gap-2'>
 						<strong className='min-w-[80px]'>Worked:</strong>
-						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(hours_worked)}</span>
+						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(hours_worked as number)}</span>
 					</div>
 
 					<div className='flex items-center gap-2'>
 						<strong className='min-w-[80px]'>Expected:</strong>
-						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(expected_hours)}</span>
+						<span className='px-2'>{status === 'Absent' ? '-' : formatDecimalHours(expected_hours as number)}</span>
 					</div>
 				</div>
 			);
