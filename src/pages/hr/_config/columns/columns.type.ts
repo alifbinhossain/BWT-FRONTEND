@@ -208,6 +208,17 @@ export type ILateApprovalTableData = {
 
 //? Report ?//
 
+//* Attendance Card
+export type IAttendanceCardProps = {
+	status: string;
+	entry_time: Date;
+	exit_time: Date;
+	late_hours: number;
+	early_exit_hours: number;
+	hours_worked: number;
+	expected_hours: number;
+};
+
 //* Individual Report
 export type DateAccessor = {
 	punch_date: Date;
