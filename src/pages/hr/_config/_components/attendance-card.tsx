@@ -23,7 +23,8 @@ const AttendanceCard: React.FC<IAttendanceCardProps> = ({
 				status === 'Early Exit' && 'border-orange-200 bg-orange-50',
 				status === 'Present' && 'border-green-200 bg-green-50',
 				status === 'Off Day' && 'border-blue-200 bg-blue-50',
-				status === 'Leave' && 'border-purple-200 bg-purple-50'
+				status === 'Leave' && 'border-purple-200 bg-purple-50',
+				status === 'Holiday' && 'border-lime-200 bg-lime-50'
 			)}
 		>
 			<div className='flex items-center gap-2'>
@@ -36,7 +37,9 @@ const AttendanceCard: React.FC<IAttendanceCardProps> = ({
 						status === 'Early Exit' && 'border-orange-500 bg-orange-100 text-orange-700',
 						status === 'Present' && 'border-green-500 bg-green-100 text-green-700',
 						status === 'Off Day' && 'border-blue-500 bg-blue-100 text-blue-700',
-						status === 'Leave' && 'border-purple-500 bg-purple-100 text-purple-700'
+						status === 'Leave' && 'border-purple-500 bg-purple-100 text-purple-700',
+						status === 'Holiday' && 'border-lime-500 bg-lime-100 text-lime-700'
+
 					)}
 				>
 					{status ?? 'N/A'}
