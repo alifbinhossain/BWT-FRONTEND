@@ -782,7 +782,7 @@ export const departmentReportColumns = (dateAccessor: string[]): ColumnDef<IDepa
 		cell: (info) => <p className='w-full text-center'>{formatDecimalHours(info.getValue() as number)}</p>,
 	},
 	{
-		accessorKey: 'total_hour_differences',
+		accessorKey: 'average_hours_worked',
 		header: 'Average Hours',
 		enableColumnFilter: false,
 		cell: (info) => <p className='w-full text-center'>{formatDecimalHours(info.getValue() as number)}</p>,
@@ -859,6 +859,11 @@ export const monthlyReportColumns = (): ColumnDef<IMonthlyReportTableData>[] => 
 	{
 		accessorKey: 'late_days',
 		header: 'Late Days',
+		enableColumnFilter: false,
+	},
+	{
+		accessorKey: 'early_exit_days',
+		header: 'Early Exit Days',
 		enableColumnFilter: false,
 	},
 	{
