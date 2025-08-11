@@ -25,6 +25,7 @@ import {
 	IMonthlyReportTableData,
 	IUserTableData,
 } from './columns.type';
+import { format } from 'date-fns';
 
 // Department Columns
 export const departmentColumns = (): ColumnDef<IDepartmentTableData>[] => [
@@ -486,7 +487,7 @@ export const individualReportColumns = (dateAccessor: string[]): ColumnDef<IIndi
 	},
 	...dateAccessor.map((date) => ({
 		accessorKey: date,
-		header: date,
+		header: `${date} (${format(date, 'EEE')})`,
 		enableColumnFilter: false,
 		size: 210,
 		cell: (info: any) => {
@@ -626,7 +627,7 @@ export const departmentReportColumns = (dateAccessor: string[]): ColumnDef<IDepa
 	},
 	...dateAccessor.map((date) => ({
 		accessorKey: date,
-		header: date,
+		header: `${date} (${format(date, 'EEE')})`,
 		enableColumnFilter: false,
 		size: 210,
 		cell: (info: any) => {
