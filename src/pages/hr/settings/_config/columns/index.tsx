@@ -37,7 +37,7 @@ export const departmentColumns = (
 		},
 	},
 	{
-		accessorKey: 'department',
+		accessorKey: 'name',
 		header: 'Department',
 		enableColumnFilter: false,
 		cell: (info) => info.getValue(),

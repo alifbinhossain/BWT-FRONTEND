@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
-import { format } from 'date-fns';
+import { eachDayOfInterval, format } from 'date-fns';
 
 import { IFormSelectOption } from '@/components/core/form/types';
 import { DateTimePicker } from '@/components/ui/date-time-picker';
@@ -29,8 +29,19 @@ const Info = () => {
 		[]
 	);
 
+	const dateAccessor = useMemo(() => {
+		if (!from || !to || from > to) return [];
+
+		const days = eachDayOfInterval({
+			start: from,
+			end: to,
+		});
+
+		return days.map((day) => format(day, 'yyyy-MM-dd'));
+	}, [from, to]);
+
 	//* Table Columns
-	const columns = individualReportColumns();
+	const columns = individualReportColumns(dateAccessor);
 
 	return (
 		<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>

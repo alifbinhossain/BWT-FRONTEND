@@ -16,10 +16,39 @@ interface IProps {
 	disableIcon?: boolean;
 	className?: string;
 	size?: 'sm' | 'lg' | 'default' | 'xs' | 'icon' | null | undefined;
+	minDate?: Date;
+	maxDate?: Date;
+	disabled?: (date: Date) => boolean;
 }
 
-const SingleDatePicker: React.FC<IProps> = ({ selected, onSelect, disableIcon = false, className, size = 'sm' }) => {
-	if (!selected || !isValid(selected)) return;
+const SingleDatePicker: React.FC<IProps> = ({
+	selected,
+	onSelect,
+	disableIcon = false,
+	className,
+	size = 'sm',
+	minDate,
+	maxDate,
+	disabled,
+}) => {
+	if (!selected || !isValid(selected)) return null;
+
+	// Create a disabled function that combines minDate, maxDate, and custom disabled
+	const isDisabled = React.useCallback(
+		(date: Date) => {
+			// Check minDate constraint
+			if (minDate && date < minDate) return true;
+
+			// Check maxDate constraint
+			if (maxDate && date > maxDate) return true;
+
+			// Check custom disabled function
+			if (disabled && disabled(date)) return true;
+
+			return false;
+		},
+		[minDate, maxDate, disabled]
+	);
 
 	return (
 		<Popover>
@@ -45,6 +74,7 @@ const SingleDatePicker: React.FC<IProps> = ({ selected, onSelect, disableIcon = 
 						if (!date) return;
 						onSelect(date);
 					}}
+					disabled={isDisabled}
 					initialFocus
 				/>
 			</PopoverContent>

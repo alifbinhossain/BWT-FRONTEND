@@ -25,8 +25,11 @@ const FieldVisit = () => {
 
 	const params = {} as IPaginationQuery;
 	searchParams.forEach((value, key) => ((params as any)[key] = value));
+	console.log(params);
 
-	const { data, pagination, isLoading, url, deleteData, refetch } = useHrApplyLeave2<IApplyLeaveTableData[]>(params);
+	const { data, pagination, isLoading, url, deleteData, refetch } = useHrApplyLeave2<{
+		data: IApplyLeaveTableData[];
+	}>(params);
 
 	const pageInfo = useMemo(() => new PageInfo('HR/Apply Leave', url, 'admin__leave_apply_leave'), [url]);
 
@@ -82,12 +85,12 @@ const FieldVisit = () => {
 			<div>
 				<PageProvider pageName={pageInfo.getTab()} pageTitle={pageInfo.getTabName()}>
 					<TableProviderSSR
-						start_date={params.start_date ? new Date(params.start_date) : undefined}
-						end_date={params.end_date ? new Date(params.end_date) : undefined}
+						start_date={params.start_date ? new Date(params.start_date) : new Date()}
+						end_date={params.end_date ? new Date(params.end_date) : new Date()}
 						title={pageInfo.getTitle()}
 						pagination={pagination!}
 						columns={columns}
-						data={data ?? []}
+						data={data?.data ?? []}
 						isLoading={isLoading}
 						handleCreate={handleCreate}
 						handleUpdate={handleUpdate}
@@ -107,18 +110,11 @@ const FieldVisit = () => {
 								{...{
 									deleteItem,
 									setDeleteItem,
-									url: '/hr/manual-entry',
+									url: '/hr/apply-leave',
 									deleteData,
 								}}
 							/>,
-							<DeleteAllModal
-								{...{
-									deleteItems,
-									setDeleteItems,
-									url: '/hr/manual-entry',
-									deleteData,
-								}}
-							/>,
+							
 						])}
 					</TableProviderSSR>
 				</PageProvider>

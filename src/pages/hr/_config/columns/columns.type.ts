@@ -209,17 +209,48 @@ export type ILateApprovalTableData = {
 //? Report ?//
 
 //* Individual Report
+export type DateAccessor = {
+	punch_date: Date;
+	entry_time: Date;
+	exit_time: Date;
+	hours_worked: string | number;
+	expected_hours: string | number;
+	status: string;
+	late_time: Date;
+	late_hours: string | number;
+	early_exit_before: string;
+	early_exit_hours: number;
+};
+
 export type IIndividualReportTableData = {
 	user_uuid: string;
 	employee_name: string;
 	punch_date: string;
 	entry_time: string;
 	exit_time: string;
-	hours_worked: string;
-	expected_hours: string;
+	hours_worked: number;
+	expected_hours: number;
+	shift_details: {
+		name: string;
+		start_time: Date;
+		end_time: Date;
+	};
 };
 
 //* Department Report
+export type DateAccessorDepartment = {
+	punch_date: Date;
+	entry_time: Date;
+	exit_time: Date;
+	hours_worked: number;
+	expected_hours: number;
+	status: string;
+	late_time: Date;
+	late_hours: number;
+	early_exit_before: string;
+	early_exit_hours: number;
+};
+
 export type IDepartmentReportTableData = {
 	user_uuid: string;
 	employee_name: string;
