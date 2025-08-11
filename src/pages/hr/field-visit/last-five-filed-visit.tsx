@@ -1,9 +1,10 @@
 import TableWithoutTitleBackground from '@/lib/component/table-without-title-background';
+import { Column } from '@/lib/component/type';
 
 import { IFieldVisitEmployee } from '../_config/types';
 
 const LastFiveFieldVisit: React.FC<{ data: IFieldVisitEmployee }> = ({ data }) => {
-	const columns = [
+	const columns: Column[] = [
 		{
 			accessoriesKey: 'area',
 			header: 'Location',
@@ -34,7 +35,11 @@ const LastFiveFieldVisit: React.FC<{ data: IFieldVisitEmployee }> = ({ data }) =
 	return (
 		<div className='space-y-4'>
 			{data.field_visit && (
-				<TableWithoutTitleBackground title='Last 5 Field Visits' data={data.field_visit||[]} columns={columns} />
+				<TableWithoutTitleBackground
+					title='Last 5 Field Visits'
+					data={data.field_visit || []}
+					columns={columns}
+				/>
 			)}
 		</div>
 	);

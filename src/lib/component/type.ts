@@ -1,11 +1,18 @@
-export type ColumnProps = {
+import { ReactNode } from 'react';
+
+export interface Column {
 	accessoriesKey: string;
 	header: string;
-	type: any;
-	cell?: any;
-};
-export type TableProps = {
-	data: any;
+	type: 'text' | 'date' | 'profile' | 'custom' | 'timing';
+	className?: string;
+	headerClassName?: string;
+	component?: (value: any, rowData: any, index: number) => ReactNode;
+}
+
+export interface TableProps {
+	data: any[];
 	title?: string;
-	columns: ColumnProps[];
-};
+	columns: Column[];
+	tableClassName?: string;
+	headerClassName?: string;
+}

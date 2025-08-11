@@ -1,14 +1,9 @@
 import { IPaginationQuery } from '@/types';
 import useTQuery from '@/hooks/useTQuery';
 
-
-
 import addQueryParams from '@/utils/addQueryParams';
 
-
-
 import { hrQK } from './queryKeys';
-
 
 // * User
 
@@ -156,7 +151,7 @@ export const useHrPunchLogs = <T>(query?: string) =>
 export const useHrPunchLogsPerDay = <T>(uuid: string, query: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.punchLogPerDayByEmployeeUUID(uuid, query),
-		url: `/hr/punch-log-per-day/by/${uuid}?${query}`,
+		url: `/hr/punch-log/employee/${uuid}/per-day?${query}`,
 		enabled: !!uuid && !!query,
 	});
 
@@ -262,7 +257,7 @@ export const useHrManualEntryByUUID = <T>(uuid: string) =>
 export const useHrManualEntryByEmployeeUUID = <T>(uuid: string, type?: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.manualEntryByEmployeeUUID(uuid, type),
-		url: type ? `/hr/manual-entry/by/${uuid}?type=${type}` : `/hr/manual-entry/by/${uuid}`,
+		url: type ? `/hr/manual-entry/employee/${uuid}?type=${type}` : `/hr/manual-entry/employee/${uuid}`,
 		enabled: !!uuid,
 	});
 
@@ -288,14 +283,14 @@ export const useHrDeviceListByUUID = <T>(uuid: string) =>
 export const useHrPunchLateByEmployeeUUID = <T>(uuid: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.punchLateByEmployeeUUID(uuid),
-		url: `/hr/punch-late-log/by/${uuid}`,
+		url: `/hr/punch-log/late-day/${uuid}`,
 		enabled: !!uuid,
 	});
 
 export const useHrLateEntriesByEmployeeUUID = <T>(uuid: string, query: string) =>
 	useTQuery<T>({
 		queryKey: hrQK.punchLateEntriesByEmployeeUUID(uuid, query),
-		url: `/hr/punch-late-log-per-day/by/${uuid}?${query}`,
+		url: `/hr/punch-log/employee/${uuid}/per-day?${query}`,
 		enabled: !!uuid && !!query,
 	});
 

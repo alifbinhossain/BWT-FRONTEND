@@ -1,13 +1,14 @@
 import { TypeIcon } from 'lucide-react';
 
 import TableWithoutTitleBackground from '@/lib/component/table-without-title-background';
+import { Column } from '@/lib/component/type';
 
 import { ILeaveEmployee } from '../_config/types';
 import Card from '../../../../lib/component/card';
 import EmployeeProfile from '../../../../lib/component/employee-profile';
 
 const EmployeeInformation: React.FC<{ data: ILeaveEmployee }> = ({ data }) => {
-	const columns = [
+	const columns: Column[] = [
 		{
 			accessoriesKey: 'name',
 			header: 'Name',

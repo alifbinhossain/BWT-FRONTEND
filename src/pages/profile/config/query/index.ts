@@ -64,6 +64,6 @@ export const useWorkOrderInfoByCustomer = <T>(customer_uuid: string) =>
 export const useHRRoasterByEmployeeUUID = <T>(employee_uuid: string, month: number, year: number) =>
 	useTQuery<T>({
 		queryKey: hrQK.roasterByEmployeeUUID(employee_uuid, month, year),
-		url: `/hr/roster-calendar/by/${employee_uuid}/${month}/${year}`,
+		url: `/hr/roster-calendar/by/${employee_uuid}/${year}/${month}`,
 		enabled: !!employee_uuid && !!month && !!year,
 	});
