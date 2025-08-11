@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useState } from 'react';
 import { getMonth, getYear } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayPicker, DayPickerProps } from 'react-day-picker';
@@ -18,8 +18,13 @@ function Calendar({
 	showOutsideDays = true,
 	...props
 }: DayPickerProps & { selected: Date | any }) {
+	// Keep track of the currently displayed month
+	const [month, setMonth] = useState<Date>(props.selected || new Date());
+
 	return (
 		<DayPicker
+			month={month}
+			onMonthChange={setMonth} // updates month when chevrons are clicked
 			showOutsideDays={showOutsideDays}
 			className={cn('p-3', className)}
 			classNames={{
@@ -64,11 +69,18 @@ function Calendar({
 					),
 
 				MonthsDropdown: ({ onChange, options }) => {
-					const currentMonth = getMonth(new Date(props.selected));
-
+					const currentMonth = getMonth(month);
 					return (
-						<select defaultValue={currentMonth} onChange={onChange}>
-							{options?.map((e, index) => (
+						<select
+							value={currentMonth}
+							onChange={(e) => {
+								const newMonth = new Date(month);
+								newMonth.setMonth(Number(e.target.value));
+								setMonth(newMonth);
+								onChange?.(e);
+							}}
+						>
+							{options?.map((e) => (
 								<option key={e.label} value={e.value}>
 									{e.label}
 								</option>
@@ -78,10 +90,18 @@ function Calendar({
 				},
 
 				YearsDropdown: ({ onChange, options }) => {
-					const currentMonth = getYear(new Date(props.selected));
+					const currentYear = getYear(month);
 					return (
-						<select defaultValue={currentMonth} onChange={onChange}>
-							{options?.map((e, index) => (
+						<select
+							value={currentYear}
+							onChange={(e) => {
+								const newMonth = new Date(month);
+								newMonth.setFullYear(Number(e.target.value));
+								setMonth(newMonth);
+								onChange?.(e);
+							}}
+						>
+							{options?.map((e) => (
 								<option key={e.label} value={e.value}>
 									{e.label}
 								</option>
