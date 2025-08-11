@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { IPagination, IPaginationQuery, IResponse, ITableFilterOptionSSR } from '@/types';
 import { RankingInfo } from '@tanstack/match-sorter-utils';
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
@@ -46,8 +46,8 @@ declare module '@tanstack/react-table' {
 }
 
 interface ITableContextSSR<TData> {
-	title: string;
-	subtitle?: string;
+	title: string | React.ReactNode;
+	subtitle?: string| React.ReactNode;
 	pagination: IPagination;
 	handleSearchParams: (params: Partial<IPaginationQuery>) => void;
 	clearSearchParams: () => void;
@@ -78,8 +78,8 @@ interface ITableContextSSR<TData> {
 export const TableContextSSR = createContext({} as ITableContextSSR<any>);
 
 interface ITableProviderProps<TData, TValue> {
-	title: string;
-	subtitle?: string;
+	title: string | React.ReactNode;
+	subtitle?: string| React.ReactNode;
 	pagination: IPagination;
 	isEntry?: boolean;
 	children?: React.ReactNode;

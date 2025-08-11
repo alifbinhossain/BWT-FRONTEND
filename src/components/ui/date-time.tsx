@@ -23,8 +23,8 @@ const DateTime: React.FC<IDateTimeProps> = ({
 }) => {
 	if (!date) return null;
 
-	const customizedDate = format(new Date(date), 'dd/MM/yy');
-	const customizedTime = format(new Date(date), 'h:mm a');
+	const customizedDate = date ? format(new Date(date), 'dd/MM/yy') : '--';
+	const customizedTime = date ? format(new Date(date), 'h:mm a') : '--';
 
 	if (onlyTime) return <Body value={customizedTime} />;
 
