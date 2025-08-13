@@ -4,7 +4,7 @@ export interface Column {
 	accessoriesKey: string;
 	header: string;
 	type: 'text' | 'date' | 'profile' | 'custom' | 'timing';
-	className?: string;
+	className?: string | ((rowData: any) => string);
 	headerClassName?: string;
 	component?: (value: any, rowData: any, index: number) => ReactNode;
 }

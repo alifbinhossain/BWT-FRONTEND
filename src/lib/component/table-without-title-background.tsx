@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 import { cn } from '@/lib/utils';
 
-import { TableProps } from './type';
+import { Column, TableProps } from './type';
 
 const TableWithoutTitleBackground: React.FC<TableProps> = ({
 	data,
@@ -13,15 +13,13 @@ const TableWithoutTitleBackground: React.FC<TableProps> = ({
 	tableClassName,
 	headerClassName,
 }) => {
-	const renderCellContent = (column: any, value: any, rowData: any, rowIndex: number) => {
+	const renderCellContent = (column: Column, value: any, rowData: any, rowIndex: number) => {
 		switch (column.type) {
 			case 'text':
 				return value[column.accessoriesKey];
-
 			case 'date':
 				const dateValue = value[column.accessoriesKey];
 				return dateValue ? <DateTime date={new Date(dateValue)} /> : '-';
-
 			case 'profile':
 				return (
 					<div className='flex items-center gap-2'>
@@ -34,16 +32,21 @@ const TableWithoutTitleBackground: React.FC<TableProps> = ({
 						<span className='text-sm'>{value[column.accessoriesKey]}</span>
 					</div>
 				);
-
 			case 'custom':
-				// ✅ Use custom component if provided, otherwise fallback
 				return column.component
 					? column.component(value, rowData, rowIndex)
 					: value[column.accessoriesKey] || value.cell || '-';
-
 			default:
 				return value[column.accessoriesKey];
 		}
+	};
+
+	// Determine className: string or function(rowData)
+	const getCellClassName = (column: Column, rowData: any) => {
+		if (typeof column.className === 'function') {
+			return column.className(rowData);
+		}
+		return column.className || '';
 	};
 
 	return (
@@ -66,15 +69,15 @@ const TableWithoutTitleBackground: React.FC<TableProps> = ({
 								</TableRow>
 							</TableHeader>
 							<TableBody className='bg-white'>
-								{data?.map((rowData: any, rowIndex: number) => (
+								{data.map((rowData, rowIndex) => (
 									<TableRow
 										key={rowIndex}
 										className={cn('h-11', rowIndex % 2 === 0 ? '' : 'bg-base')}
 									>
-										{columns?.map((column, colIndex) => (
+										{columns.map((column, colIndex) => (
 											<TableCell
 												key={`${column.accessoriesKey}-${colIndex}`}
-												className={column.className}
+												className={getCellClassName(column, rowData)}
 											>
 												{renderCellContent(column, rowData, rowData, rowIndex)}
 											</TableCell>
@@ -91,3 +94,5 @@ const TableWithoutTitleBackground: React.FC<TableProps> = ({
 };
 
 export default TableWithoutTitleBackground;
+
+

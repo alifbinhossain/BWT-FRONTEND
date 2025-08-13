@@ -2,13 +2,10 @@ import { IResponse } from '@/types';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import {
-	IDepartmentTableData,
-	IDesignationTableData,
-	IPageAssign,
-	IResetPassword,
-	IUserTableData,
-} from '../columns/columns.type';
+
+
+import { IDepartmentTableData, IDesignationTableData, IPageAssign, IResetPassword, IUserTableData } from '../columns/columns.type';
+
 
 //* user
 
@@ -216,4 +213,5 @@ export type IPunchLateLog = {
 	device_list_uuid: string;
 	punch_type: string;
 	punch_time: string;
+	entry_time: string;
 };
