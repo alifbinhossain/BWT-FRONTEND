@@ -4,20 +4,25 @@ import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
+
+
 import { getDateTime, PageInfo } from '@/utils';
 import Formdata from '@/utils/formdata';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
+
+
 import { diagnosisColumns } from '../_config/columns';
 import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkDiagnosis } from '../_config/query';
+
 
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const Diagnosis = () => {
 	const navigate = useNavigate();
-	const { data, isLoading, url, deleteData, postData, updateData, imageUpdateData, refetch } =
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
 		useWorkDiagnosis<IDiagnosisTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Diagnosis', url, 'work__diagnosis'), [url]);
@@ -62,10 +67,10 @@ const Diagnosis = () => {
 		const is_proceed_to_repair = !row?.original?.is_proceed_to_repair;
 		const updated_at = getDateTime();
 
-		const formData = Formdata({ is_proceed_to_repair, updated_at });
+		const formData = { is_proceed_to_repair, updated_at };
 
-		await imageUpdateData.mutateAsync({
-			url: `/work/order/${row?.original?.order_uuid}`,
+		await updateData.mutateAsync({
+			url: `/work/order-without-form/${row?.original?.order_uuid}`,
 			updatedData: formData,
 		});
 	};

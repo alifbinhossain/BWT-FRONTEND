@@ -151,6 +151,7 @@ export type IOrderTableData = {
 	proposed_cost: number;
 	challan_no: string;
 	challan_type: string;
+	
 };
 //* Info Columns
 export type IInfoTableData = {

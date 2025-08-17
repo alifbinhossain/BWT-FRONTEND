@@ -1,17 +1,23 @@
 import React from 'react';
 import useAccess from '@/hooks/useAccess';
 
+
+
 import StatusButton from '@/components/buttons/status';
 import SwitchStatus from '@/components/buttons/switch-or-satus';
 import { CustomLink } from '@/components/others/link';
 import SectionContainer from '@/components/others/section-container';
 import TableList, { ITableListItems } from '@/components/others/table-list';
 
+
+
 import { getDateTime } from '@/utils';
 import { formatDateTable } from '@/utils/formatDate';
-import Formdata from '@/utils/formdata';
+
+
 
 import { IOrderTableData } from '../../_config/columns/columns.type';
+
 
 const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ data, updateData }) => {
 	const pageAccess = useAccess('work__order_details') as string[];
@@ -107,15 +113,6 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 	const renderStatusItems = (): ITableListItems => {
 		return [
 			{
-				label: 'Received',
-				value: (
-					<div className='flex flex-col gap-2'>
-						<StatusButton value={data.is_product_received as boolean} />
-						<span>{formatDateTable(data?.received_date)}</span>
-					</div>
-				),
-			},
-			{
 				label: 'Reclaimed',
 				value: (
 					<div className='flex flex-col gap-2'>
@@ -131,13 +128,32 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 				),
 			},
 			{
+				label: 'Home Repair',
+				value: <StatusButton value={data.is_home_repair as boolean} />,
+			},
+			{
+				label: 'Challan Needed',
+				value: <StatusButton value={data.is_challan_needed as boolean} />,
+			},
+			{
+				label: 'Received',
+				value: (
+					<div className='flex flex-col gap-2'>
+						<StatusButton value={data.is_product_received as boolean} />
+						<span className='text-xs font-bold'>
+							{data?.is_product_received ? formatDateTable(data?.received_date) : '-'}
+						</span>
+					</div>
+				),
+			},
+
+			{
 				label: 'Diagnosing Needed',
 				value: (
 					<SwitchStatus
 						checked={data?.is_diagnosis_need}
 						onCheckedChange={() => handelDiagnosisStatusChange()}
-						disabled={!haveDiagnosedNeedAccess}
-						isClickable={data?.is_delivery_complete}
+						disabled={!haveDiagnosedNeedAccess || data?.is_delivery_complete}
 					/>
 				),
 			},
@@ -147,27 +163,18 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 					<SwitchStatus
 						checked={data?.is_proceed_to_repair}
 						onCheckedChange={() => handelProceedToRepair()}
-						disabled={!haveProceedToRepairAccess}
-						isClickable={data?.is_delivery_complete}
+						disabled={!haveProceedToRepairAccess || data?.is_delivery_complete}
 					/>
 				),
 			},
-			{
-				label: 'Home Repair',
-				value: <StatusButton value={data.is_home_repair as boolean} />,
-			},
-			{
-				label: 'Challan Needed',
-				value: <StatusButton value={data.is_challan_needed as boolean} />,
-			},
+
 			{
 				label: 'Transfer For QC',
 				value: (
 					<SwitchStatus
 						checked={data?.is_transferred_for_qc}
 						onCheckedChange={() => handelQCStatusChange()}
-						disabled={!haveQCAccess}
-						isClickable={data?.is_delivery_complete}
+						disabled={!haveQCAccess || data?.is_delivery_complete}
 					/>
 				),
 			},
@@ -178,10 +185,11 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 						<SwitchStatus
 							checked={data?.is_ready_for_delivery}
 							onCheckedChange={() => handelDeliveryStatusChange()}
-							disabled={!haveDeliveryAccess}
-							isClickable={data?.is_delivery_complete}
+							disabled={!haveDeliveryAccess || data?.is_delivery_complete}
 						/>
-						<span>{formatDateTable(data?.ready_for_delivery_date)}</span>
+						<span className='text-xs font-bold'>
+							{data?.is_ready_for_delivery ? formatDateTable(data?.ready_for_delivery_date) : '-'}
+						</span>
 					</div>
 				),
 			},
@@ -261,46 +269,43 @@ const Information: React.FC<{ data: IOrderTableData; updateData: any }> = ({ dat
 		];
 	};
 	const handelDiagnosisStatusChange = async () => {
-		const form = Formdata({
+		const form = {
 			is_diagnosis_need: !data?.is_diagnosis_need,
-		});
+		};
 		await updateData.mutateAsync({
-			url: `/work/order/${data?.uuid}`,
+			url: `/work/order-without-form/${data?.uuid}`,
 			updatedData: form,
 			isOnCloseNeeded: false,
 		});
 	};
 	const handelProceedToRepair = async () => {
-		const form = Formdata({
+		const form = {
 			is_proceed_to_repair: !data?.is_proceed_to_repair,
-		});
+		};
 		await updateData.mutateAsync({
-			url: `/work/order/${data?.uuid}`,
+			url: `/work/order-without-form/${data?.uuid}`,
 			updatedData: form,
 			isOnCloseNeeded: false,
 		});
 	};
 	const handelQCStatusChange = async () => {
-		const form = Formdata({
+		const form = {
 			is_transferred_for_qc: !data?.is_transferred_for_qc,
-		});
+		};
 		await updateData.mutateAsync({
-			url: `/work/order/${data?.uuid}`,
+			url: `/work/order-without-form/${data?.uuid}`,
 			updatedData: form,
 			isOnCloseNeeded: false,
 		});
 	};
 
 	const handelDeliveryStatusChange = async () => {
-		const form = Formdata({
+		const form = {
 			is_ready_for_delivery: !data?.is_ready_for_delivery,
 			ready_for_delivery_date: data.is_ready_for_delivery ? null : getDateTime(),
-		});
-		if (data?.is_ready_for_delivery) {
-			form.delete('ready_for_delivery_date');
-		}
+		};
 		await updateData.mutateAsync({
-			url: `/work/order/${data?.uuid}`,
+			url: `/work/order-without-form/${data?.uuid}`,
 			updatedData: form,
 			isOnCloseNeeded: false,
 		});
