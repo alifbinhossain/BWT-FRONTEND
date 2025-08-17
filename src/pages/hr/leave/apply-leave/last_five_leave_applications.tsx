@@ -1,6 +1,7 @@
 import { differenceInDays, format } from 'date-fns';
 
 import TableWithoutTitleBackground from '@/lib/component/table-without-title-background';
+import { Column } from '@/lib/component/type';
 
 import { ILeaveEmployee } from '../_config/types';
 
@@ -15,7 +16,7 @@ const LastFiveLeaveApplications: React.FC<{ data: ILeaveEmployee }> = ({ data })
 			number_of_days: differenceInDays(format_to_date, format_from_date) + 1,
 		};
 	});
-	const LastFiveLeaveColumns = [
+	const LastFiveLeaveColumns: Column[] = [
 		{
 			accessoriesKey: 'leave_category_name',
 			header: 'Category',

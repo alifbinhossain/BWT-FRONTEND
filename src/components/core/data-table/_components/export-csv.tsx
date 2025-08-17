@@ -38,7 +38,7 @@ const TableExportCSV = ({ start_date, end_date, table, title, isEntry, className
 
 	const startTime = format(start_date as Date, 'dd-MM-yyyy');
 	const endTime = format(end_date as Date, 'dd-MM-yyyy');
-	const filename = `${title.toLowerCase()} - ${startTime} to ${endTime}.csv`;
+	const filename = typeof title === 'string' ? `${title.toLowerCase()} - ${startTime} to ${endTime}.csv` : 'Table.csv';
 
 	return (
 		<CSVLink

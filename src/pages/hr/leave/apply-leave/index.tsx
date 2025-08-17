@@ -25,7 +25,7 @@ const FieldVisit = () => {
 
 	const params = {} as IPaginationQuery;
 	searchParams.forEach((value, key) => ((params as any)[key] = value));
-	console.log(params);
+
 
 	const { data, pagination, isLoading, url, deleteData, refetch } = useHrApplyLeave2<{
 		data: IApplyLeaveTableData[];
