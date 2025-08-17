@@ -10,7 +10,7 @@ import Transfer from './transfer';
 
 const DetailsPage = () => {
 	const { uuid } = useParams();
-	const { data, isLoading, imageUpdateData } = useWorkOrderByDetails<IOrderTableData>(uuid as string);
+	const { data, isLoading, updateData } = useWorkOrderByDetails<IOrderTableData>(uuid as string);
 
 	useEffect(() => {
 		document.title = 'Order Details';
@@ -20,7 +20,7 @@ const DetailsPage = () => {
 
 	return (
 		<div className='space-y-8'>
-			<Information data={(data || []) as IOrderTableData} updateData={imageUpdateData} />
+			<Information data={(data || []) as IOrderTableData} updateData={updateData} />
 			{data?.is_proceed_to_repair && (
 				<Transfer data={(data || []) as IOrderTableData} isLoading={isLoading} order_uuid={data?.uuid} />
 			)}

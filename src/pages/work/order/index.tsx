@@ -26,8 +26,7 @@ const Order = () => {
 	const actionTrxAccess = pageAccess.includes('click_trx');
 	const actionProceedToRepair = pageAccess.includes('click_proceed_to_repair');
 	const actionDiagnosisNeed = pageAccess.includes('click_diagnosis_need');
-	const { data, isLoading, url, deleteData, imagePostData, imageUpdateData, updateData, refetch } =
-		useWorkInHandWork<IOrderTableData[]>();
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = useWorkInHandWork<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Order', url, 'work__order'), [url]);
 
@@ -62,9 +61,9 @@ const Order = () => {
 	const handleProceedToRepair = async (row: Row<IOrderTableData>) => {
 		const is_proceed_to_repair = !row?.original?.is_proceed_to_repair;
 		const updated_at = getDateTime();
-		const formData = Formdata({ is_proceed_to_repair, updated_at });
-		await imageUpdateData.mutateAsync({
-			url: `/work/order/${row?.original?.uuid}`,
+		const formData = { is_proceed_to_repair, updated_at };
+		await updateData.mutateAsync({
+			url: `/work/order-without-form/${row?.original?.uuid}`,
 			updatedData: formData,
 		});
 		invalidateDiagnosis();
@@ -73,9 +72,9 @@ const Order = () => {
 	const handelDiagnosisStatusChange = async (row: Row<IOrderTableData>) => {
 		const is_diagnosis_need = !row?.original?.is_diagnosis_need;
 		const updated_at = getDateTime();
-		const formData = Formdata({ is_diagnosis_need, updated_at });
-		await imageUpdateData.mutateAsync({
-			url: `/work/order/${row?.original?.uuid}`,
+		const formData = { is_diagnosis_need, updated_at };
+		await updateData.mutateAsync({
+			url: `/work/order-without-form/${row?.original?.uuid}`,
 			updatedData: formData,
 		});
 		invalidateDiagnosis();
@@ -111,13 +110,12 @@ const Order = () => {
 				{renderSuspenseModals([
 					<AddOrUpdate
 						{...{
-							url: '/work/order',
-							
-							open: isOpenAddModal,
 							setOpen: setIsOpenAddModal,
-							imageUpdateData,
+							url: '/work/order-without-form',
+							updateData,
+							open: isOpenAddModal,
 							setUpdatedData,
-							imagePostData,
+							postData,
 							updatedData,
 						}}
 					/>,

@@ -2,7 +2,13 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { RouteObject } from 'react-router-dom';
 
+
+
 import { IFormSelectOption } from '@/components/core/form/types';
+
+
+
+
 
 export * from './table-filter-ssr';
 
@@ -112,6 +118,42 @@ export interface IDefaultAddOrUpdateProps {
 		},
 		any
 	>;
+	updateData: UseMutationResult<
+		IToast,
+		AxiosError<IToast, any>,
+		{
+			url: string;
+			updatedData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+export interface IDefaultAddProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
+	postData: UseMutationResult<
+		IToast,
+		AxiosError<IToast, any>,
+		{
+			url: string;
+			newData: any;
+			isOnCloseNeeded?: boolean;
+			onClose?: (() => void) | undefined;
+		},
+		any
+	>;
+}
+export interface IDefaultUpdateProps {
+	url: string;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+
+	setUpdatedData?: React.Dispatch<React.SetStateAction<any | null>>;
 	updateData: UseMutationResult<
 		IToast,
 		AxiosError<IToast, any>,

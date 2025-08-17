@@ -43,16 +43,16 @@ export const ORDER_SCHEMA = z
 		problems_uuid: STRING_ARRAY,
 		problem_statement: STRING_REQUIRED,
 		qc_problems_uuid: STRING_ARRAY_OPTIONAL.nullable(),
-		qc_problem_statement: STRING_NULLABLE,
+		qc_problem_statement: STRING_NULLABLE.optional(),
 		delivery_problems_uuid: STRING_ARRAY_OPTIONAL,
-		delivery_problem_statement: STRING_NULLABLE,
+		delivery_problem_statement: STRING_NULLABLE.optional(),
 		accessories: STRING_ARRAY_OPTIONAL.nullable(),
 		warehouse_uuid: STRING_NULLABLE,
 		is_reclaimed: BOOLEAN_OPTIONAL.default(false),
-		rack_uuid: STRING_NULLABLE,
-		floor_uuid: STRING_NULLABLE,
-		box_uuid: STRING_NULLABLE,
-		remarks: STRING_NULLABLE,
+		rack_uuid: STRING_NULLABLE.optional(),
+		floor_uuid: STRING_NULLABLE.optional(),
+		box_uuid: STRING_NULLABLE.optional(),
+		remarks: STRING_NULLABLE.optional(),
 
 		// This is for the Work Info form
 		image_1: z.instanceof(File).or(STRING_NULLABLE).optional(),
@@ -109,6 +109,7 @@ export const REPAIR_SCHEMA = z
 		repairing_problems_uuid: STRING_ARRAY_OPTIONAL,
 		repairing_problem_statement: STRING_NULLABLE,
 		repair_product_transfer: BOOLEAN_OPTIONAL.default(false),
+		ready_for_delivery_date: STRING_NULLABLE.optional(),
 		product_transfer: z.array(
 			z.object({
 				uuid: STRING_OPTIONAL,
@@ -133,7 +134,7 @@ export const REPAIR_NULL: Partial<IRepair> = {
 	is_transferred_for_qc: false,
 	is_ready_for_delivery: false,
 	repairing_problems_uuid: undefined,
-
+	ready_for_delivery_date: null,
 	repair_product_transfer: false,
 	product_transfer: [
 		{

@@ -29,8 +29,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	setOpen,
 	updatedData,
 	setUpdatedData,
-	imagePostData,
-	imageUpdateData,
+	updateData,
 }) => {
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
@@ -59,58 +58,31 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 
 	// Submit handler
 	async function onSubmit(values: IOrderTableData) {
-		
 		const payload = {
 			...values,
 		};
 
-		if (isUpdate) {
-			const formData = Formdata({
-				...payload,
-				updated_at: getDateTime(),
-			});
-			orderFields.forEach((field) => {
-				if (
-					payload[field as keyof typeof values] == null ||
-					payload[field as keyof typeof values] === 0 ||
-					payload[field as keyof typeof values] === '' ||
-					payload[field as keyof typeof values] === undefined ||
-					(Array.isArray(payload[field as keyof typeof values]) &&
-						(payload[field as keyof typeof values] as unknown[]).length === 0)
-				) {
-					formData.delete(field);
-				}
-			});
-			await imageUpdateData.mutateAsync({
-				url: `${url}/${updatedData?.uuid}`,
-				updatedData: formData,
-				onClose,
-			});
-		} else {
-			const formData = Formdata({
-				...payload,
-				created_at: getDateTime(),
-				created_by: user?.uuid,
-				uuid: nanoid(),
-			});
-			orderFields.forEach((field) => {
-				if (
-					payload[field as keyof typeof values] == null ||
-					payload[field as keyof typeof values] === 0 ||
-					payload[field as keyof typeof values] === '' ||
-					payload[field as keyof typeof values] === undefined ||
-					(Array.isArray(payload[field as keyof typeof values]) &&
-						(payload[field as keyof typeof values] as unknown[]).length === 0)
-				) {
-					formData.delete(field);
-				}
-			});
-			await imagePostData.mutateAsync({
-				url,
-				newData: formData,
-				onClose,
-			});
-		}
+		const formData = {
+			...payload,
+			updated_at: getDateTime(),
+		};
+		// orderFields.forEach((field) => {
+		// 	if (
+		// 		payload[field as keyof typeof values] == null ||
+		// 		payload[field as keyof typeof values] === 0 ||
+		// 		payload[field as keyof typeof values] === '' ||
+		// 		payload[field as keyof typeof values] === undefined ||
+		// 		(Array.isArray(payload[field as keyof typeof values]) &&
+		// 			(payload[field as keyof typeof values] as unknown[]).length === 0)
+		// 	) {
+		// 		formData.delete(field);
+		// 	}
+		// });
+		await updateData.mutateAsync({
+			url: `${url}/${updatedData?.uuid}`,
+			updatedData: formData,
+			onClose,
+		});
 	}
 
 	return (

@@ -14,6 +14,7 @@ const Roaster: React.FC = () => {
 	const { month, year, handlePrev, handleNext } = useMonthYearNavigation();
 	const { tableData } = useRosterData(month || 0, year);
 	const { firstDataTable, secondDataTable, thirdDataTable } = tableData;
+	console.log(firstDataTable);
 
 	return (
 		<div>

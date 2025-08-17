@@ -23,14 +23,7 @@ import { IOrderAddOrUpdateProps } from '../_config/types';
 import { orderFields } from '../order/utill';
 import Information from './information';
 
-const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
-	open,
-	setOpen,
-	updatedData,
-	setUpdatedData,
-	imagePostData,
-	imageUpdateData,
-}) => {
+const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({ open, setOpen, updatedData, setUpdatedData, updateData }) => {
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
 	const { data } = useWorkOrderByUUID<IOrderTableData>(updatedData?.uuid as string);
@@ -58,54 +51,31 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	async function onSubmit(values: IOrderTableData) {
 		const payload = {
 			...values,
-		};
-		const formData = Formdata({
-			...payload,
+			ready_for_delivery_date:
+				data?.is_ready_for_delivery !== values.is_ready_for_delivery
+					? values.is_ready_for_delivery
+						? getDateTime()
+						: null
+					: data?.ready_for_delivery_date,
 			updated_at: getDateTime(),
+		};
+
+		const formData = {
+			...payload,
+		};
+		// orderFields.forEach((field) => {
+		// 	if (
+		// 		payload[field as keyof typeof values] == null ||
+		// 		payload[field as keyof typeof values] === undefined
+		// 	) {
+		// 		formData.delete(field);
+		// 	}
+		// });
+		await updateData.mutateAsync({
+			url: `/work/order-without-form/${updatedData?.uuid}`,
+			updatedData: formData,
+			onClose,
 		});
-		orderFields.forEach((field) => {
-			if (
-				payload[field as keyof typeof values] == null ||
-				payload[field as keyof typeof values] === 0 ||
-				payload[field as keyof typeof values] === '' ||
-				payload[field as keyof typeof values] === undefined ||
-				(Array.isArray(payload[field as keyof typeof values]) &&
-					(payload[field as keyof typeof values] as unknown[]).length === 0)
-			) {
-				formData.delete(field);
-			}
-		});
-		if (isUpdate) {
-			await imageUpdateData.mutateAsync({
-				url: `/work/order/${updatedData?.uuid}`,
-				updatedData: formData,
-				onClose,
-			});
-		} else {
-			orderFields.forEach((field) => {
-				if (
-					payload[field as keyof typeof values] == null ||
-					payload[field as keyof typeof values] === 0 ||
-					payload[field as keyof typeof values] === '' ||
-					payload[field as keyof typeof values] === undefined ||
-					(Array.isArray(payload[field as keyof typeof values]) &&
-						(payload[field as keyof typeof values] as unknown[]).length === 0)
-				) {
-					formData.delete(field);
-				}
-			});
-			const formData = Formdata({
-				...payload,
-				created_at: getDateTime(),
-				created_by: user?.uuid,
-				uuid: nanoid(),
-			});
-			await imagePostData.mutateAsync({
-				url: '/work/order',
-				newData: formData,
-				onClose,
-			});
-		}
 	}
 
 	return (

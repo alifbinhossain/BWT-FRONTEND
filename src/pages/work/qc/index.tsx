@@ -14,7 +14,7 @@ import { useWorkQC } from '../_config/query';
 const AddOrUpdate = lazy(() => import('./add-or-update'));
 
 const Order = () => {
-	const { data, isLoading, url, imagePostData, imageUpdateData, refetch } = useWorkQC<IOrderTableData[]>();
+	const { data, isLoading, url, updateData, refetch } = useWorkQC<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/QC', url, 'work__qc'), [url]);
 	const pageAccess = useAccess('work__qc') as string[];
@@ -36,12 +36,12 @@ const Order = () => {
 	// Table Columns
 
 	const handelDeliveryStatusChange = async (row: Row<IOrderTableData>) => {
-		const formData = Formdata({
+		const formData = {
 			is_ready_for_delivery: !row.original.is_ready_for_delivery,
 			ready_for_delivery_date: row.original.is_ready_for_delivery ? null : getDateTime(),
-		});
-		await imageUpdateData.mutateAsync({
-			url: `/work/order/${row.original.uuid}`,
+		};
+		await updateData.mutateAsync({
+			url: `/work/order-without-form/${row.original.uuid}`,
 			updatedData: formData,
 			isOnCloseNeeded: false,
 		});
@@ -63,13 +63,12 @@ const Order = () => {
 				{renderSuspenseModals([
 					<AddOrUpdate
 						{...{
-							url,
+							url: '/work/order-without-form',
 							open: isOpenAddModal,
 							setOpen: setIsOpenAddModal,
 							updatedData,
 							setUpdatedData,
-							imagePostData,
-							imageUpdateData,
+							updateData,
 						}}
 					/>,
 				])}

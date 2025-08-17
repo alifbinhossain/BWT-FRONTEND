@@ -1,24 +1,26 @@
+;
 // import { IResponse } from '@/types';
 // import { UseMutationResult } from '@tanstack/react-query';
 // import { AxiosError } from 'axios';
 
-import { IDefaultAddOrUpdateProps, IFileAddOrUpdateProps, IToast } from '@/types';
+import { IDefaultAddOrUpdateProps, IDefaultUpdateProps, IFileAddOrUpdateProps, IToast } from '@/types';
+
+
+
+
+
 
 import '../columns/columns.type';
+
+
 
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import {
-	IAccessoriesTableData,
-	IDiagnosisTableData,
-	IInfoTableData,
-	IOrderTableData,
-	IProblemsTableData,
-	IProcessTableData,
-	ISectionTableData,
-	IZoneTableData,
-} from '../columns/columns.type';
+
+
+import { IAccessoriesTableData, IDiagnosisTableData, IInfoTableData, IOrderTableData, IProblemsTableData, IProcessTableData, ISectionTableData, IZoneTableData } from '../columns/columns.type';
+
 
 //* Diagnosis
 export interface IDiagnosisAddOrUpdateProps extends IDefaultAddOrUpdateProps {
@@ -31,7 +33,7 @@ export interface IProblemAddOrUpdateProps extends IDefaultAddOrUpdateProps {
 }
 
 //* Orders
-export interface IOrderAddOrUpdateProps extends IFileAddOrUpdateProps {
+export interface IOrderAddOrUpdateProps extends IDefaultUpdateProps {
 	updatedData?: IOrderTableData | null;
 }
 

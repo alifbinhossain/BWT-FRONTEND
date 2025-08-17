@@ -8,6 +8,7 @@ import Gender from './gender';
 import Input from './input';
 import JoinInputSelect from './join-input-select';
 import JoinInputUnit from './join-input-unit';
+import MonthPicker from './month-picker-filed';
 import MultiSelect from './multi-select';
 import Otp from './otp';
 import Phone from './phone';
@@ -48,6 +49,7 @@ const Form = {
 	DateTimePicker,
 	StudentID,
 	TimePicker,
+	MonthPicker,
 };
 
 export default Form;

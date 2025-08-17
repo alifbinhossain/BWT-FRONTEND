@@ -1,31 +1,46 @@
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
+
+
 import { FormField } from '@/components/ui/form';
 import CoreForm from '@core/form';
 
+
+
+
+
+
 import '@/lib/common-queries/other';
 
-import { lazy, Suspense, useEffect, useState } from 'react';
+
+
 import { useStoreProducts } from '@/pages/store/_config/query';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
+
+
 import { IFormSelectOption } from '@/components/core/form/types';
+
+
 
 import { useOtherProblem, useOtherPurchaseEntry, useOtherWarehouse } from '@/lib/common-queries/other';
 import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
 import Formdata from '@/utils/formdata';
 
+
+
+import ChatInterface from '../../../components/others/message';
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkChat, useWorkOrderByDetails, useWorkOrderByUUID, useWorkRepairing } from '../_config/query';
 import { IRepair, MESSAGE_NULL, MESSAGE_SCHEMA, REPAIR_NULL, REPAIR_SCHEMA } from '../_config/schema';
-import ChatInterface from '../../../components/others/message';
 import { ICustomProductsSelectOption, ICustomWarehouseSelectOption } from '../order/details/transfer/utills';
-import { orderFields } from '../order/utill';
 import Information from './information';
 import useGenerateFieldDefs from './useGenerateFieldDefs';
+
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
@@ -41,7 +56,7 @@ const AddOrUpdate = () => {
 	const { data: problemOption } = useOtherProblem<IFormSelectOption[]>('employee');
 	const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
 
-	const { data, updateData, postData, imageUpdateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(
+	const { data, postData, updateData, deleteData } = useWorkOrderByUUID<IOrderTableData>(
 		uuid as string
 	);
 	const { data: orderData, invalidateQuery: invalidateQueryOrderByDetails } = useWorkOrderByDetails<IOrderTableData>(
@@ -173,79 +188,82 @@ const AddOrUpdate = () => {
 	};
 	// Submit handler
 	async function onSubmit(values: IRepair) {
-		if (isUpdate) {
-			const order_data = {
-				...values,
-				product_transfer: null,
-				updated_at: getDateTime(),
-			};
-			const formData = Formdata({
-				...order_data,
-			});
-			orderFields.forEach((field) => {
-				if (
-					values[field as keyof typeof values] == null ||
-					values[field as keyof typeof values] === '' ||
-					values[field as keyof typeof values] === undefined ||
-					(Array.isArray(values[field as keyof typeof values]) &&
-						(values[field as keyof typeof values] as unknown[]).length === 0)
-				) {
-					formData.delete(field);
-				}
-			});
-			const order_promise = await imageUpdateData.mutateAsync({
-				url: `/work/order/${uuid}`,
-				updatedData: formData,
-				isOnCloseNeeded: false,
-			});
+		const order_data = {
+			...values,
+			product_transfer: null,
+			updated_at: getDateTime(),
+			ready_for_delivery_date:
+				data?.is_ready_for_delivery !== values.is_ready_for_delivery
+					? values.is_ready_for_delivery
+						? getDateTime()
+						: null
+					: data?.ready_for_delivery_date,
+		};
+		const formData = {
+			...order_data,
+		};
+		// orderFields.forEach((field) => {
+		// 	if (
+		// 		order_data[field as keyof typeof values] == null ||
+		// 		order_data[field as keyof typeof values] === '' ||
+		// 		order_data[field as keyof typeof values] === undefined
+		// 	) {
+		// 		console.log('Null value found in form data', field, values[field as keyof typeof values]);
+		// 		formData.delete(field);
+		// 	}
+		// });
+		const order_promise = await updateData.mutateAsync({
+			url: `/work/order-without-form/${uuid}`,
+			updatedData: formData,
+			isOnCloseNeeded: false,
+		});
 
-			const product_transfer_promise = values.product_transfer.map((item) => {
-				if (item.uuid === undefined) {
-					const newData = {
-						...item,
-						order_uuid: uuid,
-						quantity: 1,
-						created_at: getDateTime(),
-						created_by: user?.uuid,
-						uuid: nanoid(),
-					};
+		const product_transfer_promise = values.product_transfer.map((item) => {
+			if (item.uuid === undefined) {
+				const newData = {
+					...item,
+					order_uuid: uuid,
+					quantity: 1,
+					created_at: getDateTime(),
+					created_by: user?.uuid,
+					uuid: nanoid(),
+				};
 
-					return postData.mutateAsync({
-						url: '/store/product-transfer',
-						newData: newData,
-						isOnCloseNeeded: false,
-					});
-				} else {
-					const updatedData = {
-						...item,
-						quantity: 1,
-						updated_at: getDateTime(),
-					};
-					return updateData.mutateAsync({
-						url: `/store/product-transfer/${item.uuid}`,
-						updatedData,
-						isOnCloseNeeded: false,
-					});
-				}
-			});
-
-			try {
-				await Promise.all([order_promise, ...product_transfer_promise])
-					.then(() => form.reset(REPAIR_NULL))
-					.then(() => {
-						invalidateQueryOrderByDetails();
-						invalidateQueryOtherProduct();
-						invalidateQueryOtherWarehouse();
-						invalidateQueryRepairing();
-						invalidateQueryProduct();
-						navigate(`/work/repairing`);
-					});
-			} catch (err) {
-				console.error(`Error with Promise.all: ${err}`);
+				return postData.mutateAsync({
+					url: '/store/product-transfer',
+					newData: newData,
+					isOnCloseNeeded: false,
+				});
+			} else {
+				const updatedData = {
+					...item,
+					quantity: 1,
+					updated_at: getDateTime(),
+				};
+				return updateData.mutateAsync({
+					url: `/store/product-transfer/${item.uuid}`,
+					updatedData,
+					isOnCloseNeeded: false,
+				});
 			}
+		});
 
-			return;
+		try {
+			await Promise.all([order_promise, ...product_transfer_promise])
+				.then(() => form.reset(REPAIR_NULL))
+				.then(() => {
+					invalidateQueryOrderByDetails();
+					invalidateQueryOtherProduct();
+					invalidateQueryOtherWarehouse();
+					invalidateQueryRepairing();
+					invalidateQueryProduct();
+					navigate(`/work/repairing`);
+				});
+		} catch (err) {
+			console.error(`Error with Promise.all: ${err}`);
 		}
+
+		return;
 	}
 
 	return (

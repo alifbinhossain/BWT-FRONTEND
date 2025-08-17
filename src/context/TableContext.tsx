@@ -103,6 +103,8 @@ export interface ITableProviderProps<TData, TValue> {
 	onClear?: () => void;
 	isClear?: boolean;
 	otherToolBarComponents?: React.ReactNode;
+	rightColumnPinning?: string[];
+	leftColumnPinning?: string[];
 }
 
 function TableProvider<TData, TValue>({
@@ -132,6 +134,8 @@ function TableProvider<TData, TValue>({
 	onClear,
 	otherToolBarComponents,
 	isClear,
+	rightColumnPinning = [],
+	leftColumnPinning = [],
 }: ITableProviderProps<TData, TValue>) {
 	const [isMounted, setIsMounted] = useState(false);
 
@@ -160,7 +164,7 @@ function TableProvider<TData, TValue>({
 		data: tableData,
 		columns: enableRowSelection ? [TableRowSelection<TData, TValue>(), ...visibleColumns] : visibleColumns,
 		initialState: {
-			columnPinning: { right: ['actions'] },
+			columnPinning: { right: ['actions', ...rightColumnPinning], left: [...leftColumnPinning] },
 		},
 		state: {
 			sorting,
