@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 
 interface TableTitleProps {
-	title: string;
-	subtitle?: string;
+	title: string | React.ReactNode;
+	subtitle?: string | React.ReactNode;
 	titleClassName?: string;
 	subtitleClassName?: string;
 }

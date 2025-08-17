@@ -89,7 +89,7 @@ const Toolbar = () => {
 				{isValid(startDate) && isValid(endDate) && (
 					<TableExportCSV
 						table={table}
-						title={title}
+						title={title || ''}
 						isEntry={isEntry}
 						start_date={startDate}
 						end_date={endDate}
@@ -138,7 +138,7 @@ const Toolbar = () => {
 						'mb-4 flex w-full flex-col justify-between gap-2 border-b pb-4 lg:flex-row lg:items-end'
 					)}
 				>
-					<TableTitle title={title} subtitle={subtitle} />
+					<TableTitle title={title || ''} subtitle={subtitle || ''} />
 				</div>
 
 				<div className={cn('flex items-center justify-between')}>

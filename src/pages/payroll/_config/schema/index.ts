@@ -15,10 +15,7 @@ export const SALARY_SCHEMA = z.object({
 	employee_uuid: STRING_REQUIRED,
 	type: STRING_REQUIRED,
 	amount: NUMBER_DOUBLE_REQUIRED,
-	month: NUMBER_REQUIRED.min(1).max(12),
-	year: NUMBER_REQUIRED.min(1900, { message: 'Year must be 1900 or later' }).max(new Date().getFullYear(), {
-		message: `Year can't be in the future`,
-	}),
+	year_month: STRING_REQUIRED,
 	loan_amount: NUMBER_DOUBLE_OPTIONAL,
 	advance_amount: NUMBER_DOUBLE_OPTIONAL,
 });
@@ -27,13 +24,29 @@ export const SALARY_NULL: Partial<ISalary> = {
 	employee_uuid: '',
 	type: '',
 	amount: 0,
-	month: 0,
-	year: 0,
 	loan_amount: 0,
 	advance_amount: 0,
 };
 
 export type ISalary = z.infer<typeof SALARY_SCHEMA>;
+//* Salary Schema
+export const MONTHLY_SALARY_SCHEMA = z.object({
+	employee_uuid: STRING_OPTIONAL,
+	type: STRING_REQUIRED,
+	amount: NUMBER_DOUBLE_REQUIRED,
+	year_month: STRING_OPTIONAL,
+	loan_amount: NUMBER_DOUBLE_OPTIONAL,
+	advance_amount: NUMBER_DOUBLE_OPTIONAL,
+});
+
+export const MONTHLY_SALARY_NULL: Partial<ISalary> = {
+	employee_uuid: '',
+	type: '',
+	amount: 0,
+	loan_amount: 0,
+	advance_amount: 0,
+};
+export type IMonthlySalary = z.infer<typeof MONTHLY_SALARY_SCHEMA>;
 
 //* Salary Increment Schema
 export const SALARY_INCREMENT_SCHEMA = z.object({

@@ -6,7 +6,7 @@ export interface ISalaryTableData {
 	amount: number;
 	year: number;
 	month: number;
-
+	year_month: string;
 	created_by: string;
 	created_by_name: string;
 	created_at: string;
@@ -36,6 +36,8 @@ export interface IMonthlyDetailsTableData {
 	amount: number;
 	month: number;
 	year: number;
+	total_general_holidays: number;
+	total_special_holidays: number;
 	total_incremented_salary: number;
 	present_days: number;
 	week_days: number;

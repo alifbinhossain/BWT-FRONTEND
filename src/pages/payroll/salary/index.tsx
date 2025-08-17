@@ -1,6 +1,9 @@
 import { lazy, useMemo, useState } from 'react';
 import { PageProvider, TableProvider } from '@/context';
 import { Row } from '@tanstack/react-table';
+import { format } from 'date-fns';
+
+import MonthPickerPopover from '@/components/others/month-picker-pop-up';
 
 import { PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
@@ -13,8 +16,10 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const ManualEntry = () => {
-	const { data, isLoading, url, deleteData, postData, updateData, refetch } =
-		usePayrollSalary<ISalaryTableData[]>();
+	const [date, setDate] = useState(new Date());
+	const { data, isLoading, url, deleteData, postData, updateData, refetch } = usePayrollSalary<ISalaryTableData[]>(
+		`date=${format(date, 'yyyy-MM-dd')}`
+	);
 
 	const pageInfo = useMemo(() => new PageInfo('Payroll/Salary', url, 'payroll__salary'), [url]);
 
@@ -61,6 +66,17 @@ const ManualEntry = () => {
 				handleUpdate={handleUpdate}
 				handleDelete={handleDelete}
 				handleRefetch={refetch}
+				toolbarOptions={[
+					'advance-filter',
+					'all-filter',
+					'export-csv',
+					'export-pdf',
+					'faceted-filter',
+					'other',
+					'refresh',
+					'view',
+				]}
+				otherToolBarComponents={<MonthPickerPopover date={date} setDate={setDate} />}
 			>
 				{renderSuspenseModals([
 					<AddOrUpdate

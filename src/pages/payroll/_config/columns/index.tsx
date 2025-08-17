@@ -1,13 +1,15 @@
-import { Product } from '@/pages/work/_config/utils/component';
-import { ProductName } from '@/pages/work/_config/utils/function';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
+import { format, getYear } from 'date-fns';
+import { ArrowRightCircle } from 'lucide-react';
 
-import StatusButton from '@/components/buttons/status';
-import { CustomLink } from '@/components/others/link';
+
+
 import DateTime from '@/components/ui/date-time';
-import { Switch } from '@/components/ui/switch';
+
+
 
 import { IMonthlyDetailsTableData, ISalaryIncrementTableData, ISalaryTableData } from './columns.type';
+
 
 //* Salary Columns
 export const salaryColumns = (): ColumnDef<ISalaryTableData>[] => [
@@ -27,13 +29,13 @@ export const salaryColumns = (): ColumnDef<ISalaryTableData>[] => [
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'year',
-		header: 'Year',
-		enableColumnFilter: false,
-	},
-	{
-		accessorKey: 'month',
-		header: 'Month',
+		accessorFn: (row) => {
+			const date = row.year_month;
+			const month = format(date, 'MMM');
+			const year = getYear(date);
+			return `${month}, ${year}`;
+		},
+		header: 'Salary Month',
 		enableColumnFilter: false,
 	},
 ];
@@ -61,8 +63,10 @@ export const salaryIncrementColumns = (): ColumnDef<ISalaryIncrementTableData>[]
 //* Monthly details
 export const monthlyDetailsColumns = ({
 	handleRedirect,
+	handlePayment,
 }: {
 	handleRedirect: (row: IMonthlyDetailsTableData) => void;
+	handlePayment: (row: Row<IMonthlyDetailsTableData>) => void;
 }): ColumnDef<IMonthlyDetailsTableData>[] => [
 	{
 		accessorKey: 'employee_name',
@@ -119,7 +123,7 @@ export const monthlyDetailsColumns = ({
 		enableColumnFilter: false,
 	},
 	{
-		accessorKey: 'total_general_holidays',
+		accessorFn: (row) => row.total_general_holidays + row.total_special_holidays,
 		header: 'Holidays Days',
 		enableColumnFilter: false,
 	},
@@ -149,5 +153,21 @@ export const monthlyDetailsColumns = ({
 		header: 'Net Payable',
 		enableColumnFilter: false,
 		cell: (info) => (info.getValue() as number).toFixed(2),
+	},
+	{
+		accessorKey: 'payment',
+		header: 'Pay',
+		size: 40,
+		enableColumnFilter: false,
+		enableSorting: false,
+		enableGlobalFilter: false,
+		cell: (info) => (
+			<button
+				className='flex items-center justify-center rounded-lg bg-transparent p-2 text-xs text-white hover:bg-secondary-foreground'
+				onClick={() => handlePayment(info.row)}
+			>
+				<ArrowRightCircle size={24} absoluteStrokeWidth={true} className='text-primary' />
+			</button>
+		),
 	},
 ];
