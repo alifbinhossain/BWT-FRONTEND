@@ -4,15 +4,20 @@ import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
+
+
 import { getDateTime, PageInfo } from '@/utils';
 import Formdata from '@/utils/formdata';
+
+
 
 import { RepairingColumns } from '../_config/columns';
 import { IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkRepairing } from '../_config/query';
 
+
 const Order = () => {
-	const { data, isLoading, url, imageUpdateData, refetch } = useWorkRepairing<IOrderTableData[]>();
+	const { data, isLoading, url, updateData, refetch } = useWorkRepairing<IOrderTableData[]>();
 	const navigate = useNavigate();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Repairing', url, 'work__repairing'), [url]);
@@ -30,20 +35,20 @@ const Order = () => {
 	// Table Columns
 
 	const handelDeliveryStatusChange = async (row: Row<IOrderTableData>) => {
-		const formData = Formdata({
+		const formData = {
 			is_ready_for_delivery: !row.original.is_ready_for_delivery,
 			ready_for_delivery_date: row.original.is_ready_for_delivery ? null : getDateTime(),
-		});
-		await imageUpdateData.mutateAsync({
-			url: `/work/order/${row.original.uuid}`,
+		};
+		await updateData.mutateAsync({
+			url: `/work/order-without-form/${row.original.uuid}`,
 			updatedData: formData,
 			isOnCloseNeeded: false,
 		});
 	};
 
 	const handelQCStatusChange = async (row: Row<IOrderTableData>) => {
-		await imageUpdateData.mutateAsync({
-			url: `/work/order/${row.original.uuid}`,
+		await updateData.mutateAsync({
+			url: `/work/order-without-form/${row.original.uuid}`,
 			updatedData: {
 				is_transferred_for_qc: !row.original.is_transferred_for_qc,
 			},

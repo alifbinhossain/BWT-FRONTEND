@@ -9,7 +9,7 @@ interface TStartEndDate {
 
 export type TTableExportCSV = TStartEndDate & {
 	isEntry?: boolean;
-	title: string;
+	title: string | React.ReactNode;
 	table: Table<any>;
 	className?: string;
 };

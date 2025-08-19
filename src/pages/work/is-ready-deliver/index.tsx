@@ -13,7 +13,7 @@ const AddOrUpdate = lazy(() => import('./add-or-update'));
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 
 const Order = () => {
-	const { data, isLoading, url, deleteData, imagePostData, imageUpdateData, refetch } =
+	const { data, isLoading, url, deleteData, imagePostData, updateData, refetch } =
 		useWorkIsDeliveryReady<IOrderTableData[]>();
 
 	const pageInfo = useMemo(() => new PageInfo('Work/Ready to Deliver', url, 'work__is_ready_for_delivery'), [url]);
@@ -67,13 +67,13 @@ const Order = () => {
 				{renderSuspenseModals([
 					<AddOrUpdate
 						{...{
-							url: 'work/order',
+							url: '/work/order-without-form',
 							open: isOpenAddModal,
 							setOpen: setIsOpenAddModal,
 							updatedData,
 							setUpdatedData,
-							imagePostData,
-							imageUpdateData,
+
+							updateData,
 						}}
 					/>,
 

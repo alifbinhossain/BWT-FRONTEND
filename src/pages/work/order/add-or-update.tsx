@@ -17,15 +17,12 @@ import {
 	useOtherRack,
 	useOtherWarehouse,
 } from '@/lib/common-queries/other';
-import nanoid from '@/lib/nanoid';
 import { getDateTime } from '@/utils';
-import Formdata from '@/utils/formdata';
 
 import { IDiagnosisTableData, IOrderTableData } from '../_config/columns/columns.type';
 import { useWorkDiagnosis, useWorkOrderByUUID } from '../_config/query';
 import { ORDER_NULL, ORDER_SCHEMA } from '../_config/schema';
 import { IOrderAddOrUpdateProps } from '../_config/types';
-import { orderFields } from './utill';
 
 const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	url,
@@ -33,8 +30,7 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	setOpen,
 	updatedData,
 	setUpdatedData,
-	imagePostData,
-	imageUpdateData,
+	updateData,
 }) => {
 	const isUpdate = !!updatedData;
 	const { user } = useAuth();
@@ -72,29 +68,33 @@ const AddOrUpdate: React.FC<IOrderAddOrUpdateProps> = ({
 	async function onSubmit(values: IOrderTableData) {
 		const payload = {
 			...values,
+			updated_at: getDateTime(),
+			ready_for_delivery_date:
+				data?.is_ready_for_delivery !== values.is_ready_for_delivery
+					? values.is_ready_for_delivery
+						? getDateTime()
+						: null
+					: data?.ready_for_delivery_date,
 		};
-	
 
-		if (isUpdate) {
-			const formData = Formdata({ ...payload, updated_at: getDateTime() });
-			orderFields.forEach((field) => {
-				if (
-					payload[field as keyof typeof values] == null ||
-					payload[field as keyof typeof values] === 0 ||
-					payload[field as keyof typeof values] === ''||
-					payload[field as keyof typeof values] === undefined||
-					(Array.isArray(payload[field as keyof typeof values]) && ((payload[field as keyof typeof values] as unknown[]).length === 0))
-				) {
-					formData.delete(field);
-				}
-			});
-			
-			await imageUpdateData.mutateAsync({
-				url: `${url}/${updatedData?.uuid}`,
-				updatedData: formData,
-				onClose,
-			});
-		}
+		const formData = {
+			...payload,
+		};
+
+		// orderFields.forEach((field) => {
+		// 	if (
+		// 		payload[field as keyof typeof values] == null ||
+		// 		payload[field as keyof typeof values] === undefined
+		// 	) {
+		// 		formData.delete(field);
+		// 	}
+		// });
+
+		await updateData.mutateAsync({
+			url: `${url}/${updatedData?.uuid}`,
+			updatedData: formData,
+			onClose,
+		});
 	}
 	return (
 		<AddModal

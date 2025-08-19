@@ -4,21 +4,14 @@ import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import useAccess from '@/hooks/useAccess';
 
-
-
 import ReactSelect from '@/components/ui/react-select';
-
-
 
 import { getDateTime, PageInfo } from '@/utils';
 import renderSuspenseModals from '@/utils/renderSuspenseModals';
 
-
-
 import { infoColumns } from '../_config/columns';
 import { IInfoTableData } from '../_config/columns/columns.type';
 import { useWorkInfo } from '../_config/query';
-
 
 const DeleteModal = lazy(() => import('@core/modal/delete'));
 const PopUpModal = lazy(() => import('./pop-up-modal'));

@@ -24,7 +24,7 @@ const ApplyForLateApproval = () => {
 	const { data: punchData } = useHrPunchLateByEmployeeUUID<IPunchLateLog[]>(profileData?.uuid as string);
 
 	const options: IFormSelectOption[] =
-		punchData?.map((item) => ({ label: formatDate(new Date(item.punch_time)), value: item.punch_time })) ?? [];
+		punchData?.map((item) => ({ label: formatDate(new Date(item.entry_time)), value: item.entry_time })) ?? [];
 
 	const form = useRHF(MANUAL_ENTRY_SCHEMA, {
 		...MANUAL_ENTRY_NULL,

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { getMonth, getYear } from 'date-fns';
 import useAuth from '@/hooks/useAuth';
 import useRHF from '@/hooks/useRHF';
 
@@ -59,6 +60,8 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<ISalaryTableData>> = ({
 				url: `${url}/${updatedData?.uuid}`,
 				updatedData: {
 					...values,
+					month: getMonth(values.year_month)+1,
+					year: getYear(values.year_month),
 					updated_at: getDateTime(),
 				},
 				onClose,
@@ -71,6 +74,8 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<ISalaryTableData>> = ({
 					...values,
 					created_at: getDateTime(),
 					created_by: user?.uuid,
+					month: getMonth(values.year_month)+1,
+					year: getYear(values.year_month),
 					uuid: nanoid(),
 				},
 				onClose,
@@ -103,7 +108,7 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<ISalaryTableData>> = ({
 			<FormField
 				control={form.control}
 				name='amount'
-				render={(props) => <CoreForm.JoinInputUnit unit='Tk.' type='number' label='amount' {...props} />}
+				render={(props) => <CoreForm.JoinInputUnit unit='BDT' type='number' label='amount' {...props} />}
 			/>
 
 			{form.watch('type') === 'partial' && (
@@ -126,13 +131,8 @@ const AddOrUpdate: React.FC<IAddOrUpdateProps<ISalaryTableData>> = ({
 			)}
 			<FormField
 				control={form.control}
-				name='year'
-				render={(props) => <CoreForm.JoinInputUnit unit='year' type='number' label='year' {...props} />}
-			/>
-			<FormField
-				control={form.control}
-				name='month'
-				render={(props) => <CoreForm.JoinInputUnit unit='month' type='number' label='Month' {...props} />}
+				name='year_month'
+				render={(props) => <CoreForm.MonthPicker label='Salary Month' {...props} />}
 			/>
 		</AddModal>
 	);
